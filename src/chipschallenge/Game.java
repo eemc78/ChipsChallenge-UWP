@@ -30,6 +30,7 @@ public class Game implements Runnable {
         while(true) {
             try {
                 Thread.sleep(TIME_BETWEEN_TICKS);
+                tick();
             } catch (InterruptedException ex) {
                 return;
             }
