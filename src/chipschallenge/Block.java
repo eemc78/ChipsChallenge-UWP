@@ -5,22 +5,22 @@
 
 package chipschallenge;
 
+import chipschallenge.buttonbehaviors.ButtonBehavior;
+import chipschallenge.blockreactions.BlockReaction;
+import chipschallenge.blockreactions.CanMoveBlockReaction;
 import java.awt.Image;
 
 /**
  *
  * @author patrik
  */
-public abstract class Block implements GameListener {
+public class Block implements GameListener {
     private Type mType;
     private Move.Moves mFacing;
     private BlockTickBehavior mTickBehavior; 
-    private ButtonBehavior mBlueButtonBehavior = new NullButtonBehavior();
-    private ButtonBehavior mGreenButtonBehavior = new NullButtonBehavior();
-    private ButtonBehavior mRedButtonBehavior = new NullButtonBehavior();
-    private BlockReaction mFrom = new CanMoveBlockReaction();
-    private BlockReaction mTo = new CanMoveBlockReaction();
-
+    private BlockReaction mFrom = CanMoveBlockReaction.getInstance();
+    private BlockReaction mTo = CanMoveBlockReaction.getInstance();
+    private ButtonBehavior mButtonBehavior = new NullButtonBehavior();;
 
     public static enum Type {
         BLOB, BLOCK, BLUEBUTTON, BLUEKEY, BLUELOCK, BLUEWALL, BOMB,
@@ -30,15 +30,11 @@ public abstract class Block implements GameListener {
         GREENKEY, GREENLOCK, HIDDENWALL, HINT, ICE, ICEBLOCK, ICESKATES,
         INVISIBLEWALL, LOCK, PARAMECIUM, PINKBALL, RECESSEDWALL, REDBUTTON,
         REDKEY, REDLOCK, SOCKET, SUCTIONBOOTS, SWIMMINGCHIP, TANK, TEETH,
-        TELEPORT, THIEF, THINWALL, TOGGLEWALL, TRAP, WALKER, WALL, WATER,
+        TELEPORT, THIEF, THINWALL, TOGGLEWALLCLOSED, TOGGLEWALLOPEN, TRAP, WALKER, WALL, WATER,
         YELLOWKEY, YELLOWLOCK
     }
-    
-    public Block(Block.Type type, Move.Moves facing, BlockTickBehavior tickBehavior) {
-        mType = type;
-        mFacing = facing;
-        mTickBehavior = tickBehavior;
-    }
+
+    public Block() {}
 
     public Type getType() {
         return mType;
@@ -57,20 +53,21 @@ public abstract class Block implements GameListener {
         mTickBehavior.tick(this);
     }
 
-    public void BlueButtonHit() {
-        mBlueButtonBehavior.hit(this);
-    }
 
-    public void GreenButtonHit() {
-        mGreenButtonBehavior.hit(this);
-    }
-
-    public void RedButtonHit() {
-        mRedButtonBehavior.hit(this);
+    public void buttonHit(Block button) {
+        mButtonBehavior.hit(this, button);
     }
 
     public Image getImage() {
         return ImageFactory.get(mType, mFacing);
+    }
+
+    public void setFromReaction(BlockReaction from) {
+        this.mFrom = from;
+    }
+
+    public void setToReaction(BlockReaction to) {
+        this.mTo = to;
     }
 
     @Override

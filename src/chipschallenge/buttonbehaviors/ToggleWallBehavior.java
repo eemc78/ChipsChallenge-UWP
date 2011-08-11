@@ -1,0 +1,23 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package chipschallenge.buttonbehaviors;
+
+import chipschallenge.Block;
+
+/**
+ * If the button was green and the listener is a toggle wall. Toggle it.
+ */
+public class ToggleWallBehavior implements ButtonBehavior {
+    public void hit(Block listener, Block button) {
+        if(button.getType() == Block.Type.GREENBUTTON) {
+            if(listener.getType() == Block.Type.TOGGLEWALLOPEN) {
+                listener.setType(Block.Type.TOGGLEWALLCLOSED);
+            } else if(listener.getType() == Block.Type.TOGGLEWALLCLOSED) {
+                listener.setType(Block.Type.TOGGLEWALLOPEN);
+            }
+        }
+    }
+}

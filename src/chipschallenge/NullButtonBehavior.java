@@ -5,12 +5,14 @@
 
 package chipschallenge;
 
+import chipschallenge.buttonbehaviors.ButtonBehavior;
+
 /**
  *
  * @author patrik
  */
 public class NullButtonBehavior implements ButtonBehavior {
-    public void hit(Block b) {
+    public void hit(Block moving, Block button) {
         // Do nothing
     }
 }
