@@ -13,13 +13,13 @@ import java.util.Set;
  *
  * @author patrik
  */
-public class GreenButtonTo implements BlockReaction {
+public class BrownButtonFrom implements BlockReaction {
 
-    private static Set<Block> listeners = new HashSet<Block>();
+    private Set<Block> listeners = new HashSet<Block>();
 
     public void react(Block moving, Block standing) {
         for(Block b : listeners) {
-            b.buttonDown(standing);
+            b.buttonUp(standing);
         }
     }
 
@@ -27,11 +27,11 @@ public class GreenButtonTo implements BlockReaction {
         return true;
     }
 
-    public static void addGreenButtonsListener(Block b) {
+    public void addBrownButtonListener(Block b) {
         listeners.add(b);
     }
 
-    public static void removeGreenButtonsListener(Block b) {
+    public void removeBrownButtonListener(Block b) {
         listeners.remove(b);
     }
 

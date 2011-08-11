@@ -19,7 +19,7 @@ public class BrownButtonTo implements BlockReaction {
 
     public void react(Block moving, Block standing) {
         for(Block b : listeners) {
-            b.buttonHit(standing);
+            b.buttonDown(standing);
         }
     }
 

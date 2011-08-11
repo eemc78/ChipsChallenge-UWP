@@ -54,8 +54,12 @@ public class Block implements GameListener {
     }
 
 
-    public void buttonHit(Block button) {
-        mButtonBehavior.hit(this, button);
+    public void buttonDown(Block button) {
+        mButtonBehavior.buttonDown(this, button);
+    }
+
+    public void buttonUp(Block button) {
+        mButtonBehavior.buttonUp(this, button);
     }
 
     public Image getImage() {
