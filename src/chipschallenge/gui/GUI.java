@@ -3,9 +3,13 @@
  * and open the template in the editor.
  */
 
-package chipschallenge;
+package chipschallenge.gui;
 
+import chipschallenge.Game;
+import chipschallenge.GameListener;
+import java.awt.Dialog;
 import java.awt.Frame;
+import java.awt.Label;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -17,7 +21,7 @@ import java.awt.event.WindowEvent;
  */
 public class GUI extends Frame implements GameListener, KeyListener {
 
-    public GUI() {
+    private GUI() {
         super("Chip's Challenge");
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -29,8 +33,24 @@ public class GUI extends Frame implements GameListener, KeyListener {
         setVisible(true);
     }
 
+    private static GUI mInstance = null;
+    public static synchronized GUI getInstance() {
+        if(mInstance == null)
+            mInstance = new GUI();
+        return mInstance;
+    }
+
     public static void main(String[] args) {
-        new GUI();
+        GUI.getInstance();
+    }
+
+    public void msgDialog(String msg) {
+        MsgBox msgbox = new MsgBox(this, msg, false);
+    }
+
+    public boolean confirmDialog(String msg) {
+        MsgBox msgbox = new MsgBox(this, msg, true);
+        return msgbox.isOk;
     }
 
     public void tick() {

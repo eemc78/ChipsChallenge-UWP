@@ -19,7 +19,7 @@ public class BombTo implements BlockReaction {
             Game.getInstance().die("Ooops! Don't touch the bombs!");
         } else {
             moving.destroy();
-            standing.destroy();
+            standing.destroy(); //TODO: Play explosion sound
         }
     }
 

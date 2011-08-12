@@ -10,7 +10,6 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.LinkedList;
 import java.util.Queue;
 

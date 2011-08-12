@@ -78,8 +78,8 @@ public class Block implements GameListener {
         mButtonBehavior.buttonUp(this, button);
     }
 
-    public Image getImage() {
-        return ImageFactory.get(mType, mFacing);
+    public Image getImage(boolean overlay) {
+        return ImageFactory.get(mType, mFacing, overlay);
     }
 
     public void setFromReaction(BlockReaction from) {

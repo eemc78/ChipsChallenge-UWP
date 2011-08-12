@@ -1,6 +1,7 @@
 package chipschallenge;
 
 import chipschallenge.Move.Moves;
+import chipschallenge.gui.GUI;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +21,8 @@ public class Game implements Runnable {
     private GameLevel mLevel = null;
     private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
     private GameState mGameState;
+    private BlockFactory mBlockFactory;
+
     private Game(){}
 
     public static synchronized Game getInstance() {
@@ -36,7 +39,7 @@ public class Game implements Runnable {
             } catch (BlockContainerFullException ex) {
                 System.out.println("Block container is full!");
                 System.out.println(ex.getMessage());
-                System.exit(0);
+                System.exit(-1);
             } catch (InterruptedException ex) {
                 return;
             }
@@ -58,7 +61,8 @@ public class Game implements Runnable {
     }
 
     public void die(String msg) {
-
+        //TODO: Play "Bummer"
+        GUI.getInstance().msgDialog(msg);
     }
 
     public GameLevel getLevel() {
@@ -71,6 +75,10 @@ public class Game implements Runnable {
 
     public Inventory getInventory() {
         return mInventory;
+    }
+
+    public BlockFactory getBlockFactory() {
+        return mBlockFactory;
     }
 
 }

@@ -7,7 +7,6 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
-import chipschallenge.BlockFactory;
 import chipschallenge.Game;
 import chipschallenge.Inventory.Boots;
 
@@ -18,14 +17,15 @@ import chipschallenge.Inventory.Boots;
 public class WaterTo implements BlockReaction {
 
     public void react(Block moving, Block standing) {
+        Game g = Game.getInstance();
         switch (moving.getType()) {
             case CHIP:
-                if(!Game.getInstance().getInventory().hasBoots(Boots.FLIPPERS))
-                    Game.getInstance().die("Ooops! Chip can't swim without flippers!");
+                if(!g.getInventory().hasBoots(Boots.FLIPPERS))
+                    g.die("Ooops! Chip can't swim without flippers!");
                 break;
             case BLOCK:
                 moving.destroy();
-                standing.replace(BlockFactory.get(Type.DIRT));
+                standing.replace(g.getBlockFactory().get(Type.DIRT));
                 break;
             case BUG:
             case TEETH:

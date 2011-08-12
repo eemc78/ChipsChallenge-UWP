@@ -6,13 +6,15 @@
 package chipschallenge;
 
 import chipschallenge.Block.Type;
+import chipschallenge.Move.Moves;
 
 /**
  *
  * @author patrik
  */
-public class BlockFactory {
-    public static Block get(Type type) {
-        return null;
+public abstract class BlockFactory {
+    public final Block get(Type type) {
+        return get(type, Moves.DOWN);
     }
+    public abstract Block get(Type type, Moves direction);
 }
