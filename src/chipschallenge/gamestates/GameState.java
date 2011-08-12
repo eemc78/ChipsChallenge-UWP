@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package chipschallenge;
+package chipschallenge.gamestates;
 
+import chipschallenge.Game;
 import java.awt.event.KeyEvent;
 
 /**

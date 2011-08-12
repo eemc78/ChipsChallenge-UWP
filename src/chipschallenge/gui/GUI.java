@@ -29,6 +29,8 @@ public class GUI extends Frame implements GameListener, KeyListener {
                 System.exit(0);
             }
         });
+        Game.getInstance().addGameListener(this);
+        addKeyListener(this);
         setSize (520,400);
         setVisible(true);
     }

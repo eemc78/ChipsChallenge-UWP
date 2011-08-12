@@ -35,6 +35,16 @@ public class Block implements GameListener {
 
     public Block() {}
 
+    public Block(Type t, Moves m, BlockTickBehavior btb, BlockReaction from, BlockReaction to, ButtonBehavior bb) {
+        mType = t;
+        mFacing = m;
+        mTickBehavior = btb;
+        mFrom = from;
+        mTo = to;
+        mButtonBehavior = bb;
+    }
+
+
     public Type getType() {
         return mType;
     }

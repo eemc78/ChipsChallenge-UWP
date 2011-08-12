@@ -1,6 +1,8 @@
 package chipschallenge;
 
+import chipschallenge.gamestates.GameState;
 import chipschallenge.Move.Moves;
+import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
@@ -20,7 +22,7 @@ public class Game implements Runnable {
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
     private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
-    private GameState mGameState;
+    private GameState mGameState = NullGameState.getInstance();
     private BlockFactory mBlockFactory;
 
     private Game(){}
@@ -79,6 +81,10 @@ public class Game implements Runnable {
 
     public BlockFactory getBlockFactory() {
         return mBlockFactory;
+    }
+
+    public void setBlockFactory(BlockFactory bf) {
+        mBlockFactory = bf;
     }
 
 }

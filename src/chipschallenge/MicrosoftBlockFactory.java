@@ -7,6 +7,16 @@ package chipschallenge;
 
 import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
+import chipschallenge.blockreactions.BlockReaction;
+import chipschallenge.blockreactions.BlockTo;
+import chipschallenge.blockreactions.CanMoveBlockReaction;
+import chipschallenge.blockreactions.CannotMoveBlockReaction;
+import chipschallenge.blockreactions.ChipTo;
+import chipschallenge.buttonbehaviors.ButtonBehavior;
+import chipschallenge.buttonbehaviors.NullButtonBehavior;
+import chipschallenge.tickbehaviors.BlockTickBehavior;
+import chipschallenge.tickbehaviors.ChipTickBehavior;
+import chipschallenge.tickbehaviors.NullTickBehavior;
 
 /**
  *
@@ -23,11 +33,16 @@ public class MicrosoftBlockFactory extends BlockFactory {
     }
 
     public Block get(Type type, Moves facing) {
-        Block ret = new Block();
+        Block ret = null;
+        BlockTickBehavior nullTick = NullTickBehavior.getInstance();
+        ButtonBehavior nullButton = NullButtonBehavior.getInstance();
+        BlockReaction canMove = CanMoveBlockReaction.getInstance();
+        BlockReaction CannotMove = CannotMoveBlockReaction.getInstance();
         switch(type) {
             case BLOB:
                 break;
             case BLOCK:
+                ret = new Block(type, facing, nullTick, canMove, BlockTo.getInstance(), nullButton);
                 break;
             case BLUEBUTTON:
                 break;
@@ -46,6 +61,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case BURNEDCHIP:
                 break;
             case CHIP:
+                ret = new Block(type, facing, ChipTickBehavior.getInstance(), canMove, ChipTo.getInstance(), nullButton);
                 break;
             case CLONEBLOCK:
                 break;
@@ -70,6 +86,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case FLIPPERS:
                 break;
             case FLOOR:
+                ret = new Block();
+                ret.setType(Type.FLOOR);
                 break;
             case FORCEFLOOR:
                 break;
@@ -143,6 +161,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case YELLOWLOCK:
                 break;
+        }
+        if(ret == null) {
+            System.out.println("The block requested hasn't been implemented. Creating floor.");
+            ret = new Block();
         }
         return ret;
     }

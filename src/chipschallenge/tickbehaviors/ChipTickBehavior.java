@@ -19,6 +19,14 @@ import java.util.Queue;
  */
 public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior{
 
+    private ChipTickBehavior() {}
+    private static ChipTickBehavior mInstance = null;
+    public static synchronized ChipTickBehavior getInstance() {
+        if(mInstance == null)
+            mInstance = new ChipTickBehavior();
+        return mInstance;
+    }
+
     private Queue<Moves> proposedMoves = new LinkedList<Moves>();
 
     public void tick(Block caller) throws BlockContainerFullException {

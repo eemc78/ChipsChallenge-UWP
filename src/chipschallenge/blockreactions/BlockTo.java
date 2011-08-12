@@ -15,7 +15,15 @@ import chipschallenge.GameLevel;
  *
  * @author patrik
  */
-public class BlockFrom implements BlockReaction {
+public class BlockTo implements BlockReaction {
+
+    private BlockTo() {}
+    private static BlockTo mInstance = null;
+    public static synchronized BlockTo getInstance() {
+        if(mInstance == null)
+            mInstance = new BlockTo();
+        return mInstance;
+    }
 
     // When moving onto a block, the block moves in the same direction
     public void react(Block moving, Block standing) throws BlockContainerFullException {
