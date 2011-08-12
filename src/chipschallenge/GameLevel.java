@@ -57,25 +57,12 @@ public class GameLevel {
         return mBoard[0].length;
     }
 
-    public void moveBlock(Block b, Moves direction) throws BlockContainerFullException {
+    public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {
         Point from = blocks.get(b);
-        Point to = null;
-        switch(direction) {
-            case UP:
-                to = new Point(from.x, from.y-1);
-                break;
-            case DOWN:
-                to = new Point(from.x, from.y+1);
-                break;
-            case LEFT:
-                to = new Point(from.x-1, from.y);
-                break;
-            case RIGHT:
-                to = new Point(from.x+1, from.y);
-                break;
-        }
+        Point to = (Point) from.clone();
+        Move.updatePoint(to, direction);
         if(to.x < 0 || to.x > getWidth() || to.y < 0 || to.y > getHeight()) {
-            // Do not move
+            return false;
         }
         if(mBoard[from.x][from.y].canMoveFrom(b) && mBoard[to.x][to.y].canMoveTo(b)) {
             mBoard[from.x][from.y].moveFrom(b);
@@ -83,12 +70,24 @@ public class GameLevel {
             mBoard[to.x][to.y].push(b);
             blocks.put(b, to);
             mBoard[to.x][to.y].moveTo(b);
+            return true;
         } else {
+            return false;
         }
     }
 
     public void removeBlock(Block b) {
         getBlockContainer(b).remove(b);
         blocks.remove(b);
+    }
+
+    void replaceBlock(Block a, Block b) {
+        BlockContainer bc = getBlockContainer(a);
+        bc.getBlocks().remove(a);
+        a.clearReactions();
+        bc.getBlocks().add(b);
+        Point p = blocks.get(a);
+        blocks.remove(a);
+        blocks.put(b, p);
     }
 }

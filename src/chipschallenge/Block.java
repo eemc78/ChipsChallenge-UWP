@@ -47,20 +47,28 @@ public class Block implements GameListener {
         return mFacing;
     }
 
+    public void setFacing(Moves m) {
+        mFacing = m;
+    }
+
     @Override
     public void tick() {
         mTickBehavior.tick(this);
     }
 
-    public void move(Moves direction) {
-
+    public boolean move(Moves direction) throws BlockContainerFullException {
+        return Game.getInstance().getLevel().moveBlock(this, direction);
     }
 
     public void destroy() {
-        mTickBehavior = NullTickBehavior.getInstance();
-        mButtonBehavior = NullButtonBehavior.getInstance();
+        clearReactions();
         Game.getInstance().removeGameListener(this);
         Game.getInstance().getLevel().removeBlock(this);
+    }
+
+    public void clearReactions() {
+        mTickBehavior = NullTickBehavior.getInstance();
+        mButtonBehavior = NullButtonBehavior.getInstance();
     }
 
     public void buttonDown(Block button) {
@@ -89,6 +97,10 @@ public class Block implements GameListener {
 
     public BlockReaction getToReaction() {
         return mTo;
+    }
+
+    public void replace(Block b) {
+        Game.getInstance().getLevel().replaceBlock(this, b);
     }
 
     @Override

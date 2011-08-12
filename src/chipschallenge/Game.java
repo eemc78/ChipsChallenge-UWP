@@ -4,9 +4,7 @@ import chipschallenge.Move.Moves;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -21,7 +19,6 @@ public class Game implements Runnable {
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
     private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
-    private Queue<Moves> queuedChipMoves = new LinkedList<Moves>();
     private GameState mGameState;
     private Game(){}
 
@@ -62,10 +59,6 @@ public class Game implements Runnable {
 
     public GameLevel getLevel() {
         return mLevel;
-    }
-
-    public void queueChipMove(Moves m) {
-        queuedChipMoves.offer(m);
     }
 
     public void keyPressed(KeyEvent ke) {

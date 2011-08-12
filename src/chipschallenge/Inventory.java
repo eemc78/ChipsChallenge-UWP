@@ -39,6 +39,10 @@ public class Inventory {
         return mKeys.contains(type);
     }
 
+    public boolean hasBoots(Boots type) {
+        return mBoots.contains(type);
+    }
+
     public void clearKeys() {
         mKeys.clear();
     }
