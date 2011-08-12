@@ -49,7 +49,9 @@ public class Block implements GameListener {
         mTickBehavior.tick(this);
     }
 
-    public void move(Moves direction) {}
+    public void move(Moves direction) {
+
+    }
 
     public void buttonDown(Block button) {
         mButtonBehavior.buttonDown(this, button);

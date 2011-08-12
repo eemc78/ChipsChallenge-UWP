@@ -49,4 +49,8 @@ public class Game implements Runnable {
         }
     }
 
+    public void die(String msg) {
+
+    }
+
 }
