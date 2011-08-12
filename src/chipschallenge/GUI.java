@@ -40,10 +40,9 @@ public class GUI extends Frame implements GameListener, KeyListener {
     public void keyTyped(KeyEvent ke) {}
 
     public void keyPressed(KeyEvent ke) {
-
+        Game.getInstance().keyPressed(ke);
     }
 
-    public void keyReleased(KeyEvent ke) {
-    }
+    public void keyReleased(KeyEvent ke) {}
 
 }

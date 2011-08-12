@@ -1,5 +1,6 @@
 package chipschallenge;
 
+import java.awt.Point;
 import java.util.Random;
 
 /**
@@ -10,6 +11,23 @@ public class Move {
 
     private static Random mRandom = null;
     public enum Moves {UP, DOWN, LEFT, RIGHT};
+
+    public static void updatePoint(Point p, Moves m) {
+        switch (m) {
+            case UP:
+                p.y--;
+                break;
+            case DOWN:
+                p.y++;
+                break;
+            case LEFT:
+                p.x--;
+                break;
+            case RIGHT:
+                p.x++;
+                break;
+        }
+    }
 
     public static Moves getRandom() {
         if(mRandom == null) {

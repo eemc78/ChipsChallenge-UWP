@@ -1,9 +1,12 @@
 package chipschallenge;
 
+import chipschallenge.tickbehaviors.BlockTickBehavior;
+import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.Move.Moves;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.blockreactions.BlockReaction;
 import chipschallenge.blockreactions.CanMoveBlockReaction;
+import chipschallenge.tickbehaviors.NullTickBehavior;
 import java.awt.Image;
 
 /**
@@ -13,10 +16,10 @@ import java.awt.Image;
 public class Block implements GameListener {
     private Type mType;
     private Move.Moves mFacing;
-    private BlockTickBehavior mTickBehavior; 
+    private BlockTickBehavior mTickBehavior = NullTickBehavior.getInstance();
     private BlockReaction mFrom = CanMoveBlockReaction.getInstance();
     private BlockReaction mTo = CanMoveBlockReaction.getInstance();
-    private ButtonBehavior mButtonBehavior = new NullButtonBehavior();;
+    private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();;
 
     public static enum Type {
         BLOB, BLOCK, BLUEBUTTON, BLUEKEY, BLUELOCK, BLUEWALL, BOMB,
@@ -51,6 +54,13 @@ public class Block implements GameListener {
 
     public void move(Moves direction) {
 
+    }
+
+    public void destroy() {
+        mTickBehavior = NullTickBehavior.getInstance();
+        mButtonBehavior = NullButtonBehavior.getInstance();
+        Game.getInstance().removeGameListener(this);
+        Game.getInstance().getLevel().removeBlock(this);
     }
 
     public void buttonDown(Block button) {

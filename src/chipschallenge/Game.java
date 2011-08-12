@@ -1,8 +1,12 @@
 package chipschallenge;
 
 import chipschallenge.Move.Moves;
-import java.awt.Point;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -16,6 +20,9 @@ public class Game implements Runnable {
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
+    private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
+    private Queue<Moves> queuedChipMoves = new LinkedList<Moves>();
+    private GameState mGameState;
     private Game(){}
 
     public static synchronized Game getInstance() {
@@ -51,6 +58,22 @@ public class Game implements Runnable {
 
     public void die(String msg) {
 
+    }
+
+    public GameLevel getLevel() {
+        return mLevel;
+    }
+
+    public void queueChipMove(Moves m) {
+        queuedChipMoves.offer(m);
+    }
+
+    public void keyPressed(KeyEvent ke) {
+        mGameState.keyPressed(this, ke);
+    }
+
+    public Inventory getInventory() {
+        return mInventory;
     }
 
 }

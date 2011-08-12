@@ -35,6 +35,10 @@ public class Inventory {
         return mKeys.remove(type);
     }
 
+    public boolean hasKey(Key type) {
+        return mKeys.contains(type);
+    }
+
     public void clearKeys() {
         mKeys.clear();
     }

@@ -1,4 +1,6 @@
-package chipschallenge;
+package chipschallenge.tickbehaviors;
+
+import chipschallenge.Block;
 
 /**
  *

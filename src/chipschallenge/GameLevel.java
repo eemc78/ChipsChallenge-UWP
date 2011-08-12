@@ -25,7 +25,24 @@ public class GameLevel {
     }
 
     public BlockContainer getBlockContainer(int x, int y) {
+        if(x < 0 || x > getWidth() || y < 0 || y > getHeight())
+            return null;
         return mBoard[x][y];
+    }
+
+    public BlockContainer getBlockContainer(Block b) {
+        Point p = blocks.get(b);
+        if(p == null)
+            return null;
+        return getBlockContainer(p.x, p.y);
+    }
+
+    public BlockContainer getBlockContainer(Block b, Moves direction) {
+        Point p = blocks.get(b);
+        if(p == null)
+            return null;
+        Move.updatePoint(p, direction);
+        return getBlockContainer(p.x, p.y);
     }
 
     public int getNumChipsRequired() {
@@ -68,5 +85,10 @@ public class GameLevel {
             mBoard[to.x][to.y].moveTo(b);
         } else {
         }
+    }
+
+    public void removeBlock(Block b) {
+        getBlockContainer(b).remove(b);
+        blocks.remove(b);
     }
 }
