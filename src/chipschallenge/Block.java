@@ -1,5 +1,6 @@
 package chipschallenge;
 
+import chipschallenge.Move.Moves;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.blockreactions.BlockReaction;
 import chipschallenge.blockreactions.CanMoveBlockReaction;
@@ -48,6 +49,7 @@ public class Block implements GameListener {
         mTickBehavior.tick(this);
     }
 
+    public void move(Moves direction) {}
 
     public void buttonDown(Block button) {
         mButtonBehavior.buttonDown(this, button);
