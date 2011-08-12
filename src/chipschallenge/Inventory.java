@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chipschallenge;
 
 import java.util.ArrayList;
@@ -52,4 +47,5 @@ public class Inventory {
         clearKeys();
         clearBoots();
     }
+    
 }

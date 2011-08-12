@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chipschallenge;
 
 import java.awt.Image;
@@ -14,6 +9,7 @@ import java.util.Stack;
  * @author patrik
  */
 public class BlockContainer {
+    
     private Stack<Block> blocks = new Stack<Block>();
 
     public BlockContainer() {
@@ -40,6 +36,5 @@ public class BlockContainer {
         // Do stuff
         return ret;
     }
-
 
 }

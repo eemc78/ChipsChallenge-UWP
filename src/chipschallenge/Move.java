@@ -2,18 +2,15 @@ package chipschallenge;
 
 import java.util.Random;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author patrik
  */
 public class Move {
+
     private static Random mRandom = null;
     public enum Moves {UP, DOWN, LEFT, RIGHT};
+
     public static Moves getRandom() {
         if(mRandom == null) {
            mRandom = new Random();
@@ -36,6 +33,7 @@ public class Move {
         }
         return ret;
     }
+
     public static Moves reverse(Moves m) {
         Moves ret = null;
         switch(m) {
@@ -54,4 +52,5 @@ public class Move {
         }
         return ret;
     }
+    
 }
