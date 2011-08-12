@@ -71,6 +71,14 @@ public class Block implements GameListener {
         this.mTo = to;
     }
 
+    public BlockReaction getFromReaction() {
+        return mFrom;
+    }
+
+    public BlockReaction getToReaction() {
+        return mTo;
+    }
+
     @Override
     public Block clone() throws CloneNotSupportedException {
         return (Block) super.clone();

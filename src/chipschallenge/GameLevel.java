@@ -40,9 +40,9 @@ public class GameLevel {
         return mBoard[0].length;
     }
 
-    public void moveBlock(Block b, Moves direction) {
+    public void moveBlock(Block b, Moves direction) throws BlockContainerFullException {
         Point from = blocks.get(b);
-        Point to;
+        Point to = null;
         switch(direction) {
             case UP:
                 to = new Point(from.x, from.y-1);
@@ -56,6 +56,17 @@ public class GameLevel {
             case RIGHT:
                 to = new Point(from.x+1, from.y);
                 break;
+        }
+        if(to.x < 0 || to.x > getWidth() || to.y < 0 || to.y > getHeight()) {
+            // Do not move
+        }
+        if(mBoard[from.x][from.y].canMoveFrom(b) && mBoard[to.x][to.y].canMoveTo(b)) {
+            mBoard[from.x][from.y].moveFrom(b);
+            mBoard[from.x][from.y].remove(b);
+            mBoard[to.x][to.y].push(b);
+            blocks.put(b, to);
+            mBoard[to.x][to.y].moveTo(b);
+        } else {
         }
     }
 }

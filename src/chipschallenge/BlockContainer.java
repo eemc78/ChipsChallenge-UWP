@@ -36,5 +36,29 @@ public class BlockContainer {
         // Do stuff
         return ret;
     }
+    
+    public boolean canMoveFrom(Block b) {
+        for(Block bl : blocks)
+            if(!bl.getFromReaction().canMove(b, bl))
+                return false;
+        return true;
+    }
+
+    public boolean canMoveTo(Block b) {
+        for(Block bl : blocks)
+            if(!bl.getToReaction().canMove(b, bl))
+                return false;
+        return true;
+    }
+
+    public void moveFrom(Block b) {
+        for(Block bl : blocks)
+            bl.getFromReaction().react(b, bl);
+    }
+
+    public void moveTo(Block b) {
+        for(Block bl : blocks)
+            bl.getToReaction().react(b, bl);
+    }
 
 }
