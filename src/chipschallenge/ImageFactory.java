@@ -57,7 +57,7 @@ public class ImageFactory {
 
         switch(type) {
             case BLOB:
-                y = 12; x = overlay ? 8 : 5;
+                y = 12; x = 5;
                 break;
             case BLOCK:
                 y = 10; x = 0;
@@ -81,11 +81,13 @@ public class ImageFactory {
                 y = 7; x = 2;
                 break;
             case BUG:
+                y = 0; x = 4;
                 break;
             case BURNEDCHIP:
                 y = 4; x = 3;
                 break;
             case CHIP:
+                y = 12; x = 6;
                 break;
             case CLONEBLOCK:
                 y = 0; x = 1;
@@ -112,20 +114,25 @@ public class ImageFactory {
                 y = 4; x = 0;
                 break;
             case FIREBOOTS:
+                y = 9; x = 6;
                 break;
             case FIREBALL:
+                y = 4; x = 4;
                 break;
             case FLIPPERS:
+                y = 8; x = 6;
                 break;
             case FLOOR:
                 y = 0; x = 0;
                 break;
             case FORCEFLOOR:
+                y = 2; x = 1;
                 break;
             case RANDOMFORCEFLOOR:
                 y = 2; x = 3;
                 break;
             case GLIDER:
+                y = 0; x = 5;
                 break;
             case GRAVEL:
                 y = 13; x = 2;
@@ -146,20 +153,27 @@ public class ImageFactory {
                 y = 15; x = 2;
                 break;
             case ICE:
+                y = 12; x = 0;
                 break;
             case ICEBLOCK:
+                y = 10; x = 1;
                 break;
             case ICESKATES:
+                y = 10; x = 6;
                 break;
             case INVISIBLEWALL:
+                y = 0; x = 0;
                 break;
-            case LOCK:
+            case LOCK: // ?
                 break;
             case PARAMECIUM:
+                y = 0; x = 6;
                 break;
             case PINKBALL:
+                y = 8; x = 4;
                 break;
             case RECESSEDWALL:
+                y = 14; x = 2;
                 break;
             case REDBUTTON:
                 y = 4; x = 2;
@@ -174,30 +188,43 @@ public class ImageFactory {
                 y = 2; x = 2;
                 break;
             case SUCTIONBOOTS:
+                y = 11; x = 6;
                 break;
             case SWIMMINGCHIP:
+                y = 12; x = 3;
                 break;
             case TANK:
+                y = 12; x = 4;
                 break;
             case TEETH:
+                y = 4; x = 5;
                 break;
             case TELEPORT:
+                y = 11; x = 2;
                 break;
             case THIEF:
+                y = 1; x = 2;
                 break;
             case THINWALL:
+                y = 6; x = 0;
                 break;
             case TOGGLEWALLCLOSED:
+                y = 5; x = 2;
                 break;
             case TOGGLEWALLOPEN:
+                y = 6; x = 2;
                 break;
             case TRAP:
+                y = 11; x = 2;
                 break;
             case WALKER:
+                y = 8; x = 5;
                 break;
             case WALL:
+                y = 1; x = 0;
                 break;
             case WATER:
+                y = 3; x = 0;
                 break;
             case YELLOWKEY:
                 y = 7; x = 6;
@@ -207,20 +234,33 @@ public class ImageFactory {
                 break;
         }
 
-        switch(moves) {
-            case UP:
-                break;
-            case DOWN:
-                y += 2;
-                break;
-            case LEFT:
-                y += 1;
-                break;
-            case RIGHT:
-                y += 3;
-                break;
+        if(overlay) {
+            if(x > 4) {
+                x += 3;
+                maskX = x + 3;
+            }
         }
 
+        if(x > 4 || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.FORCEFLOOR) {
+            switch(moves) {
+                case UP:
+                    break;
+                case DOWN:
+                    if(type == Type.FORCEFLOOR) {
+                        x = 0; y = 13;
+                    } else {
+                        y += 2;
+                    }
+                    break;
+                case LEFT:
+                    y += 1;
+                    break;
+                case RIGHT:
+                    y += 3;
+                    break;
+            }
+        } 
+        // TODO: Handle masks if overlay == true
         BufferedImage img = tileset.getSubimage(x*32, y*32, 32, 32);
         
         Map<Moves, Image> movesMap = loadedImages.get(type);
