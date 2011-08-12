@@ -5,6 +5,8 @@
 
 package chipschallenge;
 
+import chipschallenge.Move.Moves;
+import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ public class Game implements Runnable {
     private Set<GameListener> listeners = new HashSet<GameListener>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
+    private GameLevel mLevel = null;
     private Game(){}
 
     public static synchronized Game getInstance() {
