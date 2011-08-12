@@ -1,6 +1,7 @@
 package chipschallenge.tickbehaviors;
 
 import chipschallenge.Block;
+import chipschallenge.BlockContainerFullException;
 
 /**
  *
@@ -8,6 +9,6 @@ import chipschallenge.Block;
  */
 public interface BlockTickBehavior {
 
-    public void tick(Block caller);
+    public void tick(Block caller) throws BlockContainerFullException;
 
 }

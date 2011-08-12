@@ -33,6 +33,10 @@ public class Game implements Runnable {
             try {
                 Thread.sleep(TIME_BETWEEN_TICKS);
                 tick();
+            } catch (BlockContainerFullException ex) {
+                System.out.println("Block container is full!");
+                System.out.println(ex.getMessage());
+                System.exit(0);
             } catch (InterruptedException ex) {
                 return;
             }
@@ -47,7 +51,7 @@ public class Game implements Runnable {
         listeners.remove(l);
     }
 
-    public void tick() {
+    public void tick() throws BlockContainerFullException {
         for(GameListener l : listeners) {
             l.tick();
         }

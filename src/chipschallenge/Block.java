@@ -51,8 +51,7 @@ public class Block implements GameListener {
         mFacing = m;
     }
 
-    @Override
-    public void tick() {
+    public void tick() throws BlockContainerFullException {
         mTickBehavior.tick(this);
     }
 

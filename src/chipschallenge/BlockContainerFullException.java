@@ -4,6 +4,6 @@ package chipschallenge;
  *
  * @author patrik
  */
-class BlockContainerFullException extends Exception {
+public class BlockContainerFullException extends Exception {
 
 }

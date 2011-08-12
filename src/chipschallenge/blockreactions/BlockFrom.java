@@ -7,6 +7,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainer;
+import chipschallenge.BlockContainerFullException;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
 
@@ -17,7 +18,7 @@ import chipschallenge.GameLevel;
 public class BlockFrom implements BlockReaction {
 
     // When moving onto a block, the block moves in the same direction
-    public void react(Block moving, Block standing) {
+    public void react(Block moving, Block standing) throws BlockContainerFullException {
         standing.move(moving.getFacing());
     }
 

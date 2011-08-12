@@ -51,12 +51,12 @@ public class BlockContainer {
         return true;
     }
 
-    public void moveFrom(Block b) {
+    public void moveFrom(Block b) throws BlockContainerFullException {
         for(Block bl : blocks)
             bl.getFromReaction().react(b, bl);
     }
 
-    public void moveTo(Block b) {
+    public void moveTo(Block b) throws BlockContainerFullException{
         for(Block bl : blocks)
             bl.getToReaction().react(b, bl);
     }

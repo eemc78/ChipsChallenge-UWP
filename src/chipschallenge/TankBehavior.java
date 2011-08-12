@@ -16,7 +16,7 @@ public class TankBehavior implements BlockTickBehavior, ButtonBehavior {
 
     private boolean isMoving = false;
 
-    public void tick(Block caller) throws Exception {
+    public void tick(Block caller) throws BlockContainerFullException {
         if(isMoving)
             if(!caller.move(caller.getFacing()))
                 isMoving = false;

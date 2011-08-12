@@ -6,6 +6,7 @@
 package chipschallenge.tickbehaviors;
 
 import chipschallenge.Block;
+import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -21,7 +22,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior{
 
     private Queue<Moves> proposedMoves = new LinkedList<Moves>();
 
-    public void tick(Block caller) throws Exception {
+    public void tick(Block caller) throws BlockContainerFullException {
         if(!proposedMoves.isEmpty()) {
             caller.move(proposedMoves.poll());
         }
