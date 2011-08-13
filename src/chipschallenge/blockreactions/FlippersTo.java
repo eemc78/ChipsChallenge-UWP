@@ -6,16 +6,16 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Game;
+import chipschallenge.BlockContainerFullException;
 
 /**
  *
  * @author patrik
  */
-public class CreatureTo extends BlockReaction {
+public class FlippersTo extends BlockReaction {
 
-    public void react(Block moving, Block standing) {
-        Game.getInstance().die("Ooops! Look out for creatures!");
+    public void react(Block moving, Block standing) throws BlockContainerFullException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public boolean canMove(Block moving, Block standing) {

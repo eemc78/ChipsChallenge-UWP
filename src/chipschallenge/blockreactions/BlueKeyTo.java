@@ -13,10 +13,10 @@ import chipschallenge.Inventory.Key;
  *
  * @author patrik
  */
-public class BlueKeyTo implements BlockReaction {
+public class BlueKeyTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
-        if(moving.getType() == Block.Type.CHIP) {
+        if(isChip(moving)) {
             Game.getInstance().getInventory().takeKey(Key.BLUE);
             standing.destroy();
         }

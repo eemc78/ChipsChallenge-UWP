@@ -8,7 +8,7 @@ import java.util.Set;
  *
  * @author patrik
  */
-public class BrownButtonFrom implements BlockReaction {
+public class BrownButtonFrom extends BlockReaction {
 
     private Set<Block> listeners = new HashSet<Block>();
 

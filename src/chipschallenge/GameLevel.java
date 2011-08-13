@@ -4,8 +4,6 @@ import chipschallenge.Move.Moves;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this template, choose Tools | Templates
@@ -20,6 +18,7 @@ public class GameLevel {
     
     private volatile BlockContainer[][] mBoard;
     private volatile Map<Block, Point> blocks = new HashMap<Block, Point>();
+    private volatile Block chip;
     private int mChipsLeft;
     private int mTimeLeft;
 
@@ -33,9 +32,16 @@ public class GameLevel {
     public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
         BlockContainer bc = getBlockContainer(x, y);
         if(bc != null) {
+            if(b.getType() == Block.Type.CHIP)
+                chip = b;
             bc.push(b);
             blocks.put(b, new Point(x,y));
         }
+    }
+
+    public Point getPoint(Block b) {
+        Point p = (Point) blocks.get(b).clone();
+        return p;
     }
 
     public BlockContainer getBlockContainer(int x, int y) {
@@ -45,7 +51,7 @@ public class GameLevel {
     }
 
     public BlockContainer getBlockContainer(Block b) {
-        Point p = (Point) blocks.get(b).clone();
+        Point p = getPoint(b);
         if(p == null)
             return null;
         return getBlockContainer(p.x, p.y);

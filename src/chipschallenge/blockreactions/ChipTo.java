@@ -7,7 +7,7 @@ import chipschallenge.Game;
  *
  * @author patrik
  */
-public class ChipTo implements BlockReaction {
+public class ChipTo extends BlockReaction {
 
     private ChipTo() {}
     private static ChipTo mInstance = null;
@@ -18,7 +18,7 @@ public class ChipTo implements BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        if(moving.getType() != Block.Type.CHIP)
+        if(!isChip(moving))
             Game.getInstance().die("Ooops! Look out for creatures!");
     }
 

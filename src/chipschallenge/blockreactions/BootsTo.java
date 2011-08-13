@@ -13,7 +13,7 @@ import chipschallenge.Inventory.Boots;
  *
  * @author patrik
  */
-public class BootsTo implements BlockReaction {
+public class BootsTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
         switch(standing.getType()) {

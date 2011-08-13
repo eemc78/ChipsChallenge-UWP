@@ -6,7 +6,7 @@ import chipschallenge.Block;
  *
  * @author patrik
  */
-public class CanMoveBlockReaction implements BlockReaction {
+public class CanMoveBlockReaction extends BlockReaction {
     
     private CanMoveBlockReaction() {}
     private static CanMoveBlockReaction mInstance = null;

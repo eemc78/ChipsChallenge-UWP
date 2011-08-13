@@ -15,7 +15,7 @@ import chipschallenge.GameLevel;
  *
  * @author patrik
  */
-public class BlockTo implements BlockReaction {
+public class BlockTo extends BlockReaction {
 
     private BlockTo() {}
     private static BlockTo mInstance = null;
@@ -27,13 +27,13 @@ public class BlockTo implements BlockReaction {
 
     // When moving onto a block, the block moves in the same direction
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if(moving.getType() == Block.Type.CHIP)
+        if(isChip(moving))
             standing.move(moving.getFacing());
     }
 
     // Chip can move a block if the block in turn can move in the same direction
     public boolean canMove(Block moving, Block standing) {
-        if(moving.getType() == Block.Type.CHIP) {
+        if(isChip(moving)) {
             GameLevel level = Game.getInstance().getLevel();
             BlockContainer before = level.getBlockContainer(standing);
             System.out.println("BEFORE: " + before);

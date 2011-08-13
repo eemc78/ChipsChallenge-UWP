@@ -13,7 +13,7 @@ import chipschallenge.Inventory.Key;
  *
  * @author patrik
  */
-public class YellowLockTo implements BlockReaction {
+public class YellowLockTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
         Game.getInstance().getInventory().useKey(Key.YELLOW);
@@ -21,7 +21,7 @@ public class YellowLockTo implements BlockReaction {
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return moving.getType() == Block.Type.CHIP &&
+        return isChip(moving) &&
                Game.getInstance().getInventory().hasKey(Key.YELLOW);
     }
 

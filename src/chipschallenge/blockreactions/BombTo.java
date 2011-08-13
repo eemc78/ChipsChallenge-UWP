@@ -12,14 +12,15 @@ import chipschallenge.Game;
  *
  * @author patrik
  */
-public class BombTo implements BlockReaction {
+public class BombTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
-        if(moving.getType() == Block.Type.CHIP) {
+        moving.destroy();
+        standing.destroy();
+        if(isChip(moving)) {
             Game.getInstance().die("Ooops! Don't touch the bombs!");
         } else {
-            moving.destroy();
-            standing.destroy(); //TODO: Play explosion sound
+             //TODO: Play explosion sound
         }
     }
 

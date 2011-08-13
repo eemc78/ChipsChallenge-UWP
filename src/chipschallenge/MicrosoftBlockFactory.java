@@ -33,7 +33,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
         return mInstance;
     }
 
-    public Block get(Type type, Moves facing) {
+    public Block createBlock(Type type, Moves facing) {
         Block ret = null;
         BlockTickBehavior nullTick = NullTickBehavior.getInstance();
         ButtonBehavior nullButton = NullButtonBehavior.getInstance();

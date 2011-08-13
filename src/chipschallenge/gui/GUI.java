@@ -89,10 +89,12 @@ public class GUI extends Frame implements GameListener {
     }
 
     public void msgDialog(String msg) {
+        mPlayField.repaint();
         MsgBox msgbox = new MsgBox(this, msg, false);
     }
 
     public boolean confirmDialog(String msg) {
+        mPlayField.repaint();
         MsgBox msgbox = new MsgBox(this, msg, true);
         return msgbox.isOk;
     }
