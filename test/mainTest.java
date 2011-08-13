@@ -1,14 +1,8 @@
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
 import chipschallenge.Game;
-import chipschallenge.GameLevel;
 import chipschallenge.MicrosoftBlockFactory;
-import chipschallenge.gamestates.GameState;
 import chipschallenge.gui.GUI;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
-import java.awt.event.KeyEvent;
-import java.util.Random;
 
 /*
  * To change this template, choose Tools | Templates

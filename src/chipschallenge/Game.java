@@ -103,6 +103,9 @@ public class Game {
     }
 
     public void die(String msg) {
+        listeners.clear();
+        addGameListener(GUI.getInstance());
+        tickTimer.cancel();
         //TODO: Play "Bummer"
         GUI.getInstance().msgDialog(msg);
         restart();
