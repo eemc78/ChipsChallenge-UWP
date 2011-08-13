@@ -27,9 +27,9 @@ public class ImageFactory {
     private static BufferedImage tileset;
     static{
         try {
-            tileset = ImageIO.read(new File("tileset.bmp"));
+            tileset = ImageIO.read(new File("tileset.gif"));
         } catch (Exception e) {
-            System.out.println("Could not find tileset.bmp");
+            System.out.println("Could not find tileset.gif");
             System.exit(-1);
         }
     }
