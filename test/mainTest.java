@@ -26,7 +26,7 @@ public class mainTest {
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());
-        new Thread(g).start();
+        g.start();
     }
 
     public static GameLevel getTestLevel() {
@@ -38,7 +38,7 @@ public class mainTest {
             for(int j = 0; j < 10; j++) {
 
                     ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
-                    if (r.nextFloat() > 0.7f) {
+                    if (r.nextFloat() > 0.9f) {
                         ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
                     } else {
                         if (!chipPlaced) {

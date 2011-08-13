@@ -35,7 +35,9 @@ public class BlockTo implements BlockReaction {
         if(moving.getType() == Block.Type.CHIP) {
             GameLevel level = Game.getInstance().getLevel();
             BlockContainer before = level.getBlockContainer(standing);
-            BlockContainer after = level.getBlockContainer(moving, moving.getFacing());
+            System.out.println("BEFORE: " + before);
+            BlockContainer after = level.getBlockContainer(standing, moving.getFacing());
+            System.out.println("AFTER: " + after);
             return before.canMoveFrom(standing) && after.canMoveTo(standing);
         }
         return false;

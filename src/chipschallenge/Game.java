@@ -9,14 +9,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
  * @author patrik
  */
-public class Game implements Runnable {
+public class Game {
 
-    private static final long TIME_BETWEEN_TICKS = 500;
+    private static final long MOVE_MS = 250;
+    private static final long SPEED_FRAC = 3;
+    private static final long TIMER_TICK = MOVE_MS/SPEED_FRAC;
     private Set<GameListener> listeners = new HashSet<GameListener>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
@@ -33,20 +37,23 @@ public class Game implements Runnable {
         return mGame;
     }
 
-    public void run() {
-        while(true) {
-            try {
-                Thread.sleep(TIME_BETWEEN_TICKS);
-                tick();
-            } catch (BlockContainerFullException ex) {
-                System.out.println("Block container is full!");
-                System.out.println(ex.getMessage());
-                System.exit(-1);
-            } catch (InterruptedException ex) {
-                return;
+    public void start() {
+        Timer t = new Timer();
+        TimerTask tt = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    tick();
+                } catch (BlockContainerFullException ex) {
+                    System.out.println("Block container is full!");
+                    System.out.println(ex.getMessage());
+                    System.exit(-1);
+                } 
             }
-        }
+        };
+        t.schedule(tt, 0, TIMER_TICK);
     }
+
     
     public void addGameListener(GameListener l) {
         listeners.add(l);

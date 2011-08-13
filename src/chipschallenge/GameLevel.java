@@ -42,14 +42,14 @@ public class GameLevel {
     }
 
     public BlockContainer getBlockContainer(Block b) {
-        Point p = blocks.get(b);
+        Point p = (Point) blocks.get(b).clone();
         if(p == null)
             return null;
         return getBlockContainer(p.x, p.y);
     }
 
     public BlockContainer getBlockContainer(Block b, Moves direction) {
-        Point p = blocks.get(b);
+        Point p = (Point) blocks.get(b).clone();
         if(p == null)
             return null;
         Move.updatePoint(p, direction);
@@ -61,30 +61,36 @@ public class GameLevel {
     }
 
     public int getWidth() {
-        return mBoard.length;
+        return mBoard.length-1;
     }
 
     public int getHeight() {
-        return mBoard[0].length;
+        return mBoard[0].length-1;
     }
 
     public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {
         System.out.println(b.getType() + " " + direction);
         Point from = blocks.get(b);
-        Point to = (Point) from.clone();
+        Point to = new Point(from.x, from.y);//(Point) from.clone();
         Move.updatePoint(to, direction);
-        if(to.x < 0 || to.x > getWidth() || to.y < 0 || to.y > getHeight()) {
+        if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             System.out.println("Trying to move outside");
             return false;
         }
+
+        //boolean canMoveFrom = mBoard[from.x][from.y].canMoveFrom(b);
+        //boolean canMoveTo = mBoard[to.x][to.y].canMoveTo(b);
+        //if(canMoveFrom && canMoveTo) {
         if(mBoard[from.x][from.y].canMoveFrom(b) && mBoard[to.x][to.y].canMoveTo(b)) {
             mBoard[from.x][from.y].moveFrom(b);
             mBoard[from.x][from.y].remove(b);
+            mBoard[to.x][to.y].moveTo(b);
             mBoard[to.x][to.y].push(b);
             blocks.put(b, to);
-            mBoard[to.x][to.y].moveTo(b);
+            System.out.println("POINT AFTER SUCCESS:" + blocks.get(b));
             return true;
         } else {
+            System.out.println("POINT AFTER FAILURE:" + blocks.get(b));
             System.out.println("Cannot move for other reasons");
             return false;
         }
