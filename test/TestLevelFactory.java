@@ -65,6 +65,7 @@ public class TestLevelFactory extends LevelFactory {
         GameLevel ret = new GameLevel(9,9);
         try {
         boolean chipPlaced = false;
+        boolean flippersPlaced = false;
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
 
@@ -78,6 +79,11 @@ public class TestLevelFactory extends LevelFactory {
                         if (!chipPlaced) {
                             chipPlaced = true;
                             ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
+                        } else {
+                            if (!flippersPlaced) {
+                            flippersPlaced = true;
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLIPPERS));
+                            }
                         }
                     }
 

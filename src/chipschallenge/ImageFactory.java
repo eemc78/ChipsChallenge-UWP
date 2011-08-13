@@ -120,7 +120,7 @@ public class ImageFactory {
                 y = 4; x = 4;
                 break;
             case FLIPPERS:
-                y = 8; x = 6;
+                y = 6; x = 6;
                 break;
             case FLOOR:
                 y = 0; x = 0;

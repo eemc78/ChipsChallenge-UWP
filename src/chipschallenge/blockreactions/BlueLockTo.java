@@ -6,7 +6,6 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Game;
 import chipschallenge.Inventory.Key;
 
 /**
@@ -16,13 +15,13 @@ import chipschallenge.Inventory.Key;
 public class BlueLockTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
-        Game.getInstance().getInventory().useKey(Key.BLUE);
+        useKey(Key.BLUE);
         standing.destroy();
     }
 
     public boolean canMove(Block moving, Block standing) {
         return isChip(moving) &&
-               Game.getInstance().getInventory().hasKey(Key.RED);
+               hasKey(Key.RED);
     }
 
 }

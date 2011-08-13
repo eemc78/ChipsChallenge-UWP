@@ -12,6 +12,7 @@ import chipschallenge.blockreactions.BlockTo;
 import chipschallenge.blockreactions.CanMoveBlockReaction;
 import chipschallenge.blockreactions.CannotMoveBlockReaction;
 import chipschallenge.blockreactions.ChipTo;
+import chipschallenge.blockreactions.FlippersTo;
 import chipschallenge.blockreactions.WaterTo;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
@@ -86,6 +87,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case FIREBALL:
                 break;
             case FLIPPERS:
+                ret = new Block(type, facing, nullTick, canMove, FlippersTo.getInstance(), nullButton);
                 break;
             case FLOOR:
                 ret = new Block();

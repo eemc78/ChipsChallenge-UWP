@@ -29,10 +29,10 @@ public class WaterTo extends BlockReaction {
         switch (moving.getType()) {
             case CHIP:           
                 if(g.getInventory().hasBoots(Boots.FLIPPERS)) {
-                    moving.replace(g.getBlockFactory().get(Type.SWIMMINGCHIP));
+                    moving.setType(Type.SWIMMINGCHIP);
                 } else {
                     moving.destroy();
-                    standing.replace(g.getBlockFactory().get(Type.DROWNEDCHIP));
+                    standing.replace(createBlock(Type.DROWNEDCHIP));
                     g.die("Ooops! Chip can't swim without flippers!");
                 }
                 break;

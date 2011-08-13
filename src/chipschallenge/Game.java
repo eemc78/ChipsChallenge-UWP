@@ -52,6 +52,10 @@ public class Game {
         start();
     }
 
+    public void restart() {
+        nextLevel(mLevelNumber);
+    }
+
     public void start() {
         Timer t = new Timer();
         TimerTask tt = new TimerTask() {
@@ -89,6 +93,7 @@ public class Game {
     public void die(String msg) {
         //TODO: Play "Bummer"
         GUI.getInstance().msgDialog(msg);
+        restart();
     }
 
     public GameLevel getLevel() {

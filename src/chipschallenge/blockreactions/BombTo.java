@@ -6,7 +6,6 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Game;
 
 /**
  *
@@ -18,7 +17,7 @@ public class BombTo extends BlockReaction {
         moving.destroy();
         standing.destroy();
         if(isChip(moving)) {
-            Game.getInstance().die("Ooops! Don't touch the bombs!");
+            die("Ooops! Don't touch the bombs!");
         } else {
              //TODO: Play explosion sound
         }

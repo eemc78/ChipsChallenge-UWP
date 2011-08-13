@@ -37,5 +37,5 @@ public abstract class BlockFactory {
         return b;
     }
 
-    public abstract Block createBlock(Type type, Moves direction);
+    protected abstract Block createBlock(Type type, Moves direction);
 }

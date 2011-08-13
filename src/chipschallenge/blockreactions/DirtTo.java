@@ -6,17 +6,21 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.Block.Type;
+import chipschallenge.BlockContainerFullException;
 
 /**
  *
  * @author patrik
  */
-public class CreatureTo extends BlockReaction {
+public class DirtTo extends BlockReaction {
 
-    public void react(Block moving, Block standing) {
-        die("Ooops! Look out for creatures!");
+    @Override
+    public void react(Block moving, Block standing) throws BlockContainerFullException {
+        standing.replace(createBlock(Type.FLOOR));
     }
 
+    @Override
     public boolean canMove(Block moving, Block standing) {
         return isChip(moving);
     }

@@ -18,23 +18,23 @@ public class BootsTo extends BlockReaction {
     public void react(Block moving, Block standing) {
         switch(standing.getType()) {
             case FLIPPERS:
-                Game.getInstance().getInventory().takeBoots(Boots.FLIPPERS);
+                takeBoots(Boots.FLIPPERS);
                 break;
             case FIREBOOTS:
-                Game.getInstance().getInventory().takeBoots(Boots.FIREBOOTS);
+                takeBoots(Boots.FIREBOOTS);
                 break;
             case ICESKATES:
-                Game.getInstance().getInventory().takeBoots(Boots.ICESKATES);
+                takeBoots(Boots.ICESKATES);
                 break;
             case SUCTIONBOOTS:
-                Game.getInstance().getInventory().takeBoots(Boots.SUCTIONBOOTS);
+                takeBoots(Boots.SUCTIONBOOTS);
                 break;
         }
         standing.destroy();
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return moving.getType() == Block.Type.CHIP;
+        return isChip(moving);
     }
 
 }

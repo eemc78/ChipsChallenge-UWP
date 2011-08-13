@@ -36,11 +36,8 @@ public class BlockTo extends BlockReaction {
         if(isChip(moving)) {
             GameLevel level = Game.getInstance().getLevel();
             BlockContainer before = level.getBlockContainer(standing);
-            System.out.println("BEFORE: " + before);
             BlockContainer after = level.getBlockContainer(standing, moving.getFacing());
-            System.out.println("AFTER: " + after);
             if(after == null) { // Block being pushed at the edge
-                System.out.println("OFF THE EDGE");
                 return false;
             }
             return before.canMoveFrom(standing) && after.canMoveTo(standing);

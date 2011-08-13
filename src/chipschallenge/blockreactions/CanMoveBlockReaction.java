@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.Block.Type;
 
 /**
  *
@@ -17,7 +18,8 @@ public class CanMoveBlockReaction extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        // No reaction
+        if(moving.getType() == Type.SWIMMINGCHIP)
+            moving.setType(Type.CHIP);
     }
 
     public boolean canMove(Block moving, Block standing) {
