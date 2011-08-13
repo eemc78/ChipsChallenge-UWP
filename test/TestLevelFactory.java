@@ -29,7 +29,7 @@ public class TestLevelFactory extends LevelFactory {
             case 1:
                 return getLevel1();
             case 2:
-                return getLevel1();
+                return getLevel2();
         }
         return null;
     }
@@ -45,6 +45,35 @@ public class TestLevelFactory extends LevelFactory {
                     ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
                     if (r.nextFloat() > 0.9f) {
                         ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
+                    } else {
+                        if (!chipPlaced) {
+                            chipPlaced = true;
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
+                        }
+                    }
+
+            }
+        }
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        }
+        return ret;
+    }
+
+    public GameLevel getLevel2() {
+        Random r = new Random();
+        GameLevel ret = new GameLevel(9,9);
+        try {
+        boolean chipPlaced = false;
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+
+                    ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
+                    if (r.nextFloat() > 0.8f) {
+                        if(r.nextBoolean())
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
+                        else
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.WATER));
                     } else {
                         if (!chipPlaced) {
                             chipPlaced = true;

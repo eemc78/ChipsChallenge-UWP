@@ -27,7 +27,8 @@ public class BlockTo implements BlockReaction {
 
     // When moving onto a block, the block moves in the same direction
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        standing.move(moving.getFacing());
+        if(moving.getType() == Block.Type.CHIP)
+            standing.move(moving.getFacing());
     }
 
     // Chip can move a block if the block in turn can move in the same direction

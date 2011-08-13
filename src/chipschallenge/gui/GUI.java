@@ -7,13 +7,11 @@ package chipschallenge.gui;
 
 import chipschallenge.Game;
 import chipschallenge.GameListener;
-import java.awt.Canvas;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -102,4 +100,8 @@ public class GUI extends Frame implements GameListener {
     public void tick() {
         mPlayField.repaint();
     }
+
+    public void setChipsLeft(int n) {}
+    public void setTimeLeft(int t) {}
+    
 }

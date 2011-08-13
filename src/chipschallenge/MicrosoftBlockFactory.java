@@ -12,6 +12,7 @@ import chipschallenge.blockreactions.BlockTo;
 import chipschallenge.blockreactions.CanMoveBlockReaction;
 import chipschallenge.blockreactions.CannotMoveBlockReaction;
 import chipschallenge.blockreactions.ChipTo;
+import chipschallenge.blockreactions.WaterTo;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
@@ -157,6 +158,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case WALL:
                 break;
             case WATER:
+                ret = new Block(type, facing, nullTick, canMove, WaterTo.getInstance(), nullButton);
                 break;
             case YELLOWKEY:
                 break;
@@ -164,8 +166,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
         }
         if(ret == null) {
-            System.out.println("The block requested hasn't been implemented. Creating floor.");
-            ret = new Block();
+            System.out.println("The block requested hasn't been implemented. Using default behaviors");
+            ret = new Block(type, facing);
         }
         return ret;
     }

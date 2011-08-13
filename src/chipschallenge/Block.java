@@ -35,6 +35,11 @@ public class Block implements GameListener {
 
     public Block() {}
 
+    public Block(Type t, Moves m) {
+        mType = t;
+        mFacing = m;
+    }
+
     public Block(Type t, Moves m, BlockTickBehavior btb, BlockReaction from, BlockReaction to, ButtonBehavior bb) {
         mType = t;
         mFacing = m;
@@ -47,6 +52,11 @@ public class Block implements GameListener {
 
     public Type getType() {
         return mType;
+    }
+
+    @Override
+    public String toString() {
+        return getType().toString();
     }
 
     public void setType(Type type) {

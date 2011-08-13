@@ -4,6 +4,8 @@ import chipschallenge.Move.Moves;
 import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this template, choose Tools | Templates
@@ -72,22 +74,26 @@ public class GameLevel {
     public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {
         System.out.println(b.getType() + " " + direction);
         Point from = blocks.get(b);
-        Point to = new Point(from.x, from.y);//(Point) from.clone();
+        Point to = (Point) from.clone();
         Move.updatePoint(to, direction);
         if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             System.out.println("Trying to move outside");
             return false;
         }
 
-        //boolean canMoveFrom = mBoard[from.x][from.y].canMoveFrom(b);
-        //boolean canMoveTo = mBoard[to.x][to.y].canMoveTo(b);
-        //if(canMoveFrom && canMoveTo) {
+
         if(mBoard[from.x][from.y].canMoveFrom(b) && mBoard[to.x][to.y].canMoveTo(b)) {
+            //From reactions
             mBoard[from.x][from.y].moveFrom(b);
+
+            //Actual movement
             mBoard[from.x][from.y].remove(b);
-            mBoard[to.x][to.y].moveTo(b);
-            mBoard[to.x][to.y].push(b);
             blocks.put(b, to);
+            mBoard[to.x][to.y].push(b);
+
+            //To reactions
+            mBoard[to.x][to.y].moveTo(b);            
+
             System.out.println("POINT AFTER SUCCESS:" + blocks.get(b));
             return true;
         } else {
@@ -98,17 +104,20 @@ public class GameLevel {
     }
 
     public void removeBlock(Block b) {
+        System.out.println("Removing " + b);
         getBlockContainer(b).remove(b);
         blocks.remove(b);
     }
 
     void replaceBlock(Block a, Block b) {
-        BlockContainer bc = getBlockContainer(a);
-        bc.getBlocks().remove(a);
-        a.clearReactions();
-        bc.getBlocks().add(b);
-        Point p = blocks.get(a);
-        blocks.remove(a);
-        blocks.put(b, p);
+        Point p = (Point)blocks.get(a).clone();
+        a.destroy();
+        //BlockContainer bc = getBlockContainer(a);
+        try {
+            this.addBlock(p.x, p.y, b);
+        } catch (BlockContainerFullException ex) {
+            System.out.println(ex.getMessage());
+            // Shouldn't happen, of course
+        }
     }
 }

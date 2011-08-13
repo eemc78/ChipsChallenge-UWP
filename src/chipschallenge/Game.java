@@ -5,6 +5,8 @@ import chipschallenge.Move.Moves;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -44,6 +46,12 @@ public class Game {
         start();
     }
 
+    public void nextLevel(int n) {
+        mLevelNumber = n;
+        mLevel = mLevelFactory.getLevel(mLevelNumber);
+        start();
+    }
+
     public void start() {
         Timer t = new Timer();
         TimerTask tt = new TimerTask() {
@@ -71,7 +79,9 @@ public class Game {
     }
 
     public void tick() throws BlockContainerFullException {
-        for(GameListener l : listeners) {
+        //TODO: Remove the need of making a copy
+        Collection<GameListener> listenersCpy= new ArrayList<GameListener>(listeners);
+        for(GameListener l : listenersCpy) {
             l.tick();
         }
     }

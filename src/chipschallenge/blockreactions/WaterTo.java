@@ -16,12 +16,23 @@ import chipschallenge.Inventory.Boots;
  */
 public class WaterTo implements BlockReaction {
 
+    private WaterTo() {}
+    private static WaterTo mInstance = null;
+    public static synchronized WaterTo getInstance() {
+        if(mInstance == null)
+            mInstance = new WaterTo();
+        return mInstance;
+    }
+
     public void react(Block moving, Block standing) {
         Game g = Game.getInstance();
         switch (moving.getType()) {
             case CHIP:
-                if(!g.getInventory().hasBoots(Boots.FLIPPERS))
+                if(!g.getInventory().hasBoots(Boots.FLIPPERS)) {
+                    moving.destroy();
+                    standing.replace(g.getBlockFactory().get(Type.DROWNEDCHIP));
                     g.die("Ooops! Chip can't swim without flippers!");
+                }
                 break;
             case BLOCK:
                 moving.destroy();
