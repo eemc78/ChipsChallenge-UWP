@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public class GameLevel {
     
-    private BlockContainer[][] mBoard;
-    private Map<Block, Point> blocks = new HashMap<Block, Point>();
+    private volatile BlockContainer[][] mBoard;
+    private volatile Map<Block, Point> blocks = new HashMap<Block, Point>();
     private int mNumChipsRequired;
 
     public GameLevel(int width, int height) {
@@ -25,6 +25,14 @@ public class GameLevel {
         for(int i = 0; i < width; i++)
             for(int j = 0; j < height; j++)
                 mBoard[i][j] = new BlockContainer();
+    }
+
+    public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
+        BlockContainer bc = getBlockContainer(x, y);
+        if(bc != null) {
+            bc.push(b);
+            blocks.put(b, new Point(x,y));
+        }
     }
 
     public BlockContainer getBlockContainer(int x, int y) {
@@ -61,10 +69,12 @@ public class GameLevel {
     }
 
     public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {
+        System.out.println(b.getType() + " " + direction);
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
         Move.updatePoint(to, direction);
         if(to.x < 0 || to.x > getWidth() || to.y < 0 || to.y > getHeight()) {
+            System.out.println("Trying to move outside");
             return false;
         }
         if(mBoard[from.x][from.y].canMoveFrom(b) && mBoard[to.x][to.y].canMoveTo(b)) {
@@ -75,6 +85,7 @@ public class GameLevel {
             mBoard[to.x][to.y].moveTo(b);
             return true;
         } else {
+            System.out.println("Cannot move for other reasons");
             return false;
         }
     }

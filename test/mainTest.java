@@ -22,14 +22,10 @@ import java.util.Random;
 public class mainTest {
     public static void main(String[] args) {
         Game g = Game.getInstance();
-        g.setGameState(new GameState(){
-            public void keyPressed(Game g, KeyEvent ke) {
-                ChipTickBehavior.getInstance().keyPressed(ke);
-            }
-        });
         g.setLevel(getTestLevel());
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
+        Gui.addKeyListener(ChipTickBehavior.getInstance());
         new Thread(g).start();
     }
 
@@ -41,13 +37,13 @@ public class mainTest {
         for(int i = 0; i < 10; i++) {
             for(int j = 0; j < 10; j++) {
 
-                    ret.getBlockContainer(i, j).push(MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
+                    ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
                     if (r.nextFloat() > 0.7f) {
-                        ret.getBlockContainer(i, j).push(MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
+                        ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
                     } else {
                         if (!chipPlaced) {
                             chipPlaced = true;
-                            ret.getBlockContainer(i, j).push(MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
                         }
                     }
 

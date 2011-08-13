@@ -19,7 +19,7 @@ import java.util.Queue;
  */
 public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior{
 
-    private ChipTickBehavior() {}
+    private ChipTickBehavior() {System.out.println("CREATED");}
     private static ChipTickBehavior mInstance = null;
     public static synchronized ChipTickBehavior getInstance() {
         if(mInstance == null)
@@ -36,7 +36,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior{
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) { System.out.println("KEY HIT");
         switch(e.getKeyCode()) {
             case KeyEvent.VK_UP:
                 proposedMoves.clear();
@@ -44,15 +44,15 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior{
                 break;
             case KeyEvent.VK_DOWN:
                 proposedMoves.clear();
-                proposedMoves.offer(Moves.UP);
+                proposedMoves.offer(Moves.DOWN);
                 break;
             case KeyEvent.VK_LEFT:
                 proposedMoves.clear();
-                proposedMoves.offer(Moves.UP);
+                proposedMoves.offer(Moves.LEFT);
                 break;
             case KeyEvent.VK_RIGHT:
                 proposedMoves.clear();
-                proposedMoves.offer(Moves.UP);
+                proposedMoves.offer(Moves.RIGHT);
                 break;
         }
     }

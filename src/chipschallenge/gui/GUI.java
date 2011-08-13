@@ -25,7 +25,7 @@ import javax.imageio.ImageIO;
  *
  * @author patrik
  */
-public class GUI extends Frame implements GameListener, KeyListener {
+public class GUI extends Frame implements GameListener {
 
     private Image mBackground;
     private Panel mPlayField;
@@ -40,7 +40,6 @@ public class GUI extends Frame implements GameListener, KeyListener {
             }
         });
         Game.getInstance().addGameListener(this);
-        addKeyListener(this);
         setSize (520,400);
         try {
             mBackground = ImageIO.read(new File("background.bmp"));
@@ -96,13 +95,4 @@ public class GUI extends Frame implements GameListener, KeyListener {
     public void tick() {
         mPlayField.repaint();
     }
-
-    public void keyTyped(KeyEvent ke) {}
-
-    public void keyPressed(KeyEvent ke) {
-        Game.getInstance().keyPressed(ke);
-    }
-
-    public void keyReleased(KeyEvent ke) {}
-
 }

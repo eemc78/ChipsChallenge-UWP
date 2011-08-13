@@ -10,7 +10,7 @@ import java.util.LinkedList;
  */
 public class BlockContainer {
     
-    private LinkedList<Block> blocks = new LinkedList<Block>();
+    private volatile LinkedList<Block> blocks = new LinkedList<Block>();
 
     public BlockContainer() {
     }
