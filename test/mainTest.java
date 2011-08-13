@@ -31,11 +31,11 @@ public class mainTest {
 
     public static GameLevel getTestLevel() {
         Random r = new Random();
-        GameLevel ret = new GameLevel(10,10);
+        GameLevel ret = new GameLevel(9,9);
         try {
         boolean chipPlaced = false;
-        for(int i = 0; i < 10; i++) {
-            for(int j = 0; j < 10; j++) {
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
 
                     ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
                     if (r.nextFloat() > 0.9f) {

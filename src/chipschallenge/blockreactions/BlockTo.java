@@ -38,6 +38,10 @@ public class BlockTo implements BlockReaction {
             System.out.println("BEFORE: " + before);
             BlockContainer after = level.getBlockContainer(standing, moving.getFacing());
             System.out.println("AFTER: " + after);
+            if(after == null) { // Block being pushed at the edge
+                System.out.println("OFF THE EDGE");
+                return false;
+            }
             return before.canMoveFrom(standing) && after.canMoveTo(standing);
         }
         return false;

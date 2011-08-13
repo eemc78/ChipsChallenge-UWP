@@ -36,7 +36,7 @@ public class GameLevel {
     }
 
     public BlockContainer getBlockContainer(int x, int y) {
-        if(x < 0 || x > getWidth() || y < 0 || y > getHeight()) 
+        if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight())
             return null;
         return mBoard[x][y];
     }
@@ -61,11 +61,11 @@ public class GameLevel {
     }
 
     public int getWidth() {
-        return mBoard.length-1;
+        return mBoard.length;
     }
 
     public int getHeight() {
-        return mBoard[0].length-1;
+        return mBoard[0].length;
     }
 
     public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {
