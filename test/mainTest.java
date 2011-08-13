@@ -22,36 +22,12 @@ import java.util.Random;
 public class mainTest {
     public static void main(String[] args) {
         Game g = Game.getInstance();
-        g.setLevel(getTestLevel());
+        g.setLevelFactory(TestLevelFactory.getInstance());
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());
-        g.start();
+        g.nextLevel();
     }
 
-    public static GameLevel getTestLevel() {
-        Random r = new Random();
-        GameLevel ret = new GameLevel(9,9);
-        try {
-        boolean chipPlaced = false;
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
-
-                    ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
-                    if (r.nextFloat() > 0.9f) {
-                        ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
-                    } else {
-                        if (!chipPlaced) {
-                            chipPlaced = true;
-                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
-                        }
-                    }
-
-            }
-        }
-        } catch (BlockContainerFullException ex) {
-            System.out.println("OH NOS");
-        }
-        return ret;
-    }
+    
 }

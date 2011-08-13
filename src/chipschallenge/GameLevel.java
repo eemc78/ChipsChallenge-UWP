@@ -18,7 +18,8 @@ public class GameLevel {
     
     private volatile BlockContainer[][] mBoard;
     private volatile Map<Block, Point> blocks = new HashMap<Block, Point>();
-    private int mNumChipsRequired;
+    private int mChipsLeft;
+    private int mTimeLeft;
 
     public GameLevel(int width, int height) {
         mBoard = new BlockContainer[width][height];
@@ -26,7 +27,7 @@ public class GameLevel {
             for(int j = 0; j < height; j++)
                 mBoard[i][j] = new BlockContainer();
     }
-
+    
     public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
         BlockContainer bc = getBlockContainer(x, y);
         if(bc != null) {
@@ -57,7 +58,7 @@ public class GameLevel {
     }
 
     public int getNumChipsRequired() {
-        return mNumChipsRequired;
+        return mChipsLeft;
     }
 
     public int getWidth() {

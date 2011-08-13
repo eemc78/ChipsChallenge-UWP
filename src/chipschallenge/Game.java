@@ -27,7 +27,9 @@ public class Game {
     private GameLevel mLevel = null;
     private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
     private GameState mGameState = NullGameState.getInstance();
-    private BlockFactory mBlockFactory;
+    private BlockFactory mBlockFactory = null;
+    private LevelFactory mLevelFactory = null;
+    private int mLevelNumber = 0;
 
     private Game(){}
 
@@ -35,6 +37,11 @@ public class Game {
         if(mGame == null)
             mGame = new Game();
         return mGame;
+    }
+
+    public void nextLevel() {
+        mLevel = mLevelFactory.getLevel(++mLevelNumber);
+        start();
     }
 
     public void start() {
@@ -100,6 +107,10 @@ public class Game {
 
     public void setGameState(GameState state) {
         mGameState = state;
+    }
+
+    public void setLevelFactory(LevelFactory lf) {
+        this.mLevelFactory = lf;
     }
 
 }
