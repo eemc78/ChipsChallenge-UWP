@@ -13,6 +13,7 @@ import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
+import creaturetickbehavior.TeethTickBehavior;
 
 /**
  *
@@ -137,6 +138,9 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case TANK:
                 break;
             case TEETH:
+                ret = new Block(type, facing, nullTick, canMove, CreatureTo.getInstance(), nullButton);
+                ret.setBlockTickBehavior(new TeethTickBehavior(ret));
+                Game.getInstance().addGameListener(ret);
                 break;
             case TELEPORT:
                 break;

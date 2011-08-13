@@ -115,9 +115,18 @@ public class GameLevel {
         blocks.remove(b);
     }
 
-    void replaceBlock(Block a, Block b) {
+    public void replaceBlock(Block a, Block b) {
         Point p = (Point)blocks.get(a).clone();
         getBlockContainer(p.x, p.y).replaceBlock(a, b);
         blocks.put(b, p);
     }
+
+    public Point findChip() {
+        return blocks.get(chip);
+    }
+
+    public boolean contains(Block b) {
+        return blocks.containsKey(b);
+    }
+
 }

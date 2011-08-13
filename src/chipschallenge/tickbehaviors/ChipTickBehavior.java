@@ -7,6 +7,7 @@ package chipschallenge.tickbehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.GameListener;
 import chipschallenge.Move.Moves;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -17,7 +18,7 @@ import java.util.Queue;
  *
  * @author patrik
  */
-public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior{
+public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
 
     private ChipTickBehavior() {System.out.println("CREATED");}
     private static ChipTickBehavior mInstance = null;

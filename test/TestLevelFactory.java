@@ -5,6 +5,8 @@ import chipschallenge.GameLevel;
 import chipschallenge.LevelFactory;
 import chipschallenge.MicrosoftBlockFactory;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this template, choose Tools | Templates
@@ -30,8 +32,29 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel1();
             case 2:
                 return getLevel2();
+            case 3:
+                return getLevel3();
+            case 4:
+                return getLevel4();
         }
         return null;
+    }
+
+    private GameLevel getFloors(int width, int height) {
+        GameLevel ret = null;
+        try {
+            ret = new GameLevel(width, height);
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < width; j++) {
+                    ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
+                }
+            }
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
     }
 
     public GameLevel getLevel1() {
@@ -95,6 +118,31 @@ public class TestLevelFactory extends LevelFactory {
             System.out.println("Couldn't create level");
         }
         return ret;
+    }
+
+    public GameLevel getLevel3() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel4() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
+            ret.addBlock(8, 8, MicrosoftBlockFactory.getInstance().get(Block.Type.TEETH));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
     }
 
     @Override

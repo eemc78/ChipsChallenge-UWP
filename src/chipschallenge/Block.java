@@ -111,6 +111,10 @@ public class Block implements GameListener {
         this.mTo = to;
     }
 
+    public void setBlockTickBehavior(BlockTickBehavior btb) {
+        this.mTickBehavior = btb;
+    }
+
     public BlockReaction getFromReaction() {
         return mFrom;
     }

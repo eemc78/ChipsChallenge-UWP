@@ -20,9 +20,9 @@ import java.util.TimerTask;
  */
 public class Game {
 
-    private static final long MOVE_MS = 250;
-    private static final long SPEED_FRAC = 3;
-    private static final long TIMER_TICK = MOVE_MS/SPEED_FRAC;
+    public static final int MOVE_MS = 250;
+    public static final int SPEED_FRAC = 3;
+    public static final int TIMER_TICK = MOVE_MS/SPEED_FRAC;
     private Set<GameListener> listeners = new HashSet<GameListener>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
@@ -32,6 +32,8 @@ public class Game {
     private BlockFactory mBlockFactory = null;
     private LevelFactory mLevelFactory = null;
     private int mLevelNumber = 0;
+    private int enemyTick = 0;
+    private Timer tickTimer = null;
 
     private Game(){}
 
@@ -57,7 +59,9 @@ public class Game {
     }
 
     public void start() {
-        Timer t = new Timer();
+        if(tickTimer != null)
+            tickTimer.cancel();
+        tickTimer = new Timer();
         TimerTask tt = new TimerTask() {
             @Override
             public void run() {
@@ -70,7 +74,7 @@ public class Game {
                 } 
             }
         };
-        t.schedule(tt, 0, TIMER_TICK);
+        tickTimer.schedule(tt, 0, TIMER_TICK);
     }
 
     
@@ -83,6 +87,14 @@ public class Game {
     }
 
     public void tick() throws BlockContainerFullException {
+        //TODO: Remove the need of making a copy
+        Collection<GameListener> listenersCpy= new ArrayList<GameListener>(listeners);
+        for(GameListener l : listenersCpy) {
+            l.tick();
+        }
+    }
+
+    public void creatureTick() throws BlockContainerFullException {
         //TODO: Remove the need of making a copy
         Collection<GameListener> listenersCpy= new ArrayList<GameListener>(listeners);
         for(GameListener l : listenersCpy) {
