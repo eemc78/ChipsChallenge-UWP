@@ -22,7 +22,7 @@ public class CreatureTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        if(isChip(moving))
+        if(moving != standing)
             die("Ooops! Look out for creatures!");
     }
 
