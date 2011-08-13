@@ -28,13 +28,13 @@ public class GameLevel {
             for(int j = 0; j < height; j++)
                 mBoard[i][j] = new BlockContainer();
     }
-    
+
     public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
         BlockContainer bc = getBlockContainer(x, y);
         if(bc != null) {
             if(b.getType() == Block.Type.CHIP)
                 chip = b;
-            bc.push(b);
+            bc.add(b);
             blocks.put(b, new Point(x,y));
         }
     }
@@ -95,7 +95,7 @@ public class GameLevel {
             //Actual movement
             mBoard[from.x][from.y].remove(b);
             blocks.put(b, to);
-            mBoard[to.x][to.y].push(b);
+            mBoard[to.x][to.y].add(b);
 
             //To reactions
             mBoard[to.x][to.y].moveTo(b);            
@@ -117,13 +117,7 @@ public class GameLevel {
 
     void replaceBlock(Block a, Block b) {
         Point p = (Point)blocks.get(a).clone();
-        a.destroy();
-        //BlockContainer bc = getBlockContainer(a);
-        try {
-            this.addBlock(p.x, p.y, b);
-        } catch (BlockContainerFullException ex) {
-            System.out.println(ex.getMessage());
-            // Shouldn't happen, of course
-        }
+        getBlockContainer(p.x, p.y).replaceBlock(a, b);
+        blocks.put(b, p);
     }
 }

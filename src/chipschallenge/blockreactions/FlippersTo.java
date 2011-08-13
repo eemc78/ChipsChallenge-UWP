@@ -24,13 +24,15 @@ public class FlippersTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        takeBoots(Boots.FLIPPERS);
-        standing.destroy();
-        //TODO: Play take-item sound
+        if(isChip(moving)) {
+            takeBoots(Boots.FLIPPERS);
+            standing.destroy();
+            //TODO: Play take-item sound
+        }
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving);
+        return isChip(moving) || isBlock(moving);
     }
 
 }

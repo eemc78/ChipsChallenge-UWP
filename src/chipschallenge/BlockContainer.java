@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  *
@@ -32,12 +33,12 @@ public class BlockContainer {
         sb.append("]");
         return sb.toString();
     }
-
-    public void push(Block b) throws BlockContainerFullException {
-        if(blocks.size() >= 3) {
+  
+    public void add(Block b) throws BlockContainerFullException {
+        if(blocks.size() >= 4) {
             throw new BlockContainerFullException();
         } else {
-            blocks.offer(b);
+            blocks.push(b);
         }
     }
 
@@ -50,7 +51,7 @@ public class BlockContainer {
     }
 
     public Image getImage() {
-        Image ret = blocks.get(blocks.size()-1).getImage(false);
+        Image ret = blocks.peek().getImage(false);
         // Do stuff
         return ret;
     }
@@ -89,6 +90,13 @@ public class BlockContainer {
             Collection<Block> blocksCpy = new ArrayList<Block>(blocks);
             for(Block bl : blocksCpy)
                 bl.getToReaction().react(b, bl);
+    }
+
+    void replaceBlock(Block a, Block b) {
+        System.out.println("KUK");
+        int index = blocks.indexOf(a);       
+        blocks.add(index, b);
+        a.destroy();
     }
 
 }

@@ -15,6 +15,14 @@ import chipschallenge.BlockContainerFullException;
  */
 public class DirtTo extends BlockReaction {
 
+    private DirtTo() {}
+    private static DirtTo mInstance = null;
+    public static synchronized DirtTo getInstance() {
+        if(mInstance == null)
+            mInstance = new DirtTo();
+        return mInstance;
+    }
+
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         standing.replace(createBlock(Type.FLOOR));

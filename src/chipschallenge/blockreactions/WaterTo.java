@@ -28,7 +28,7 @@ public class WaterTo extends BlockReaction {
         Game g = Game.getInstance();
         switch (moving.getType()) {
             case CHIP:           
-                if(g.getInventory().hasBoots(Boots.FLIPPERS)) {
+                if(hasBoots(Boots.FLIPPERS)) {
                     moving.setType(Type.SWIMMINGCHIP);
                 } else {
                     moving.destroy();
@@ -38,7 +38,7 @@ public class WaterTo extends BlockReaction {
                 break;
             case BLOCK:
                 moving.destroy();
-                standing.replace(g.getBlockFactory().get(Type.DIRT));
+                standing.replace(createBlock(Type.DIRT));
                 break;
             case BUG:
             case TEETH:

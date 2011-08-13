@@ -68,13 +68,14 @@ public class TestLevelFactory extends LevelFactory {
         boolean flippersPlaced = false;
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
-
-                    ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
+                    if(r.nextFloat() > 0.8f) {
+                        ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.WATER));
+                    } else {
+                        ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
+                    
                     if (r.nextFloat() > 0.8f) {
                         if(r.nextBoolean())
-                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
-                        else
-                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.WATER));
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));                       
                     } else {
                         if (!chipPlaced) {
                             chipPlaced = true;
@@ -86,6 +87,7 @@ public class TestLevelFactory extends LevelFactory {
                             }
                         }
                     }
+                        }
 
             }
         }

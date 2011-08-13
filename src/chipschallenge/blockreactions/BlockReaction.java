@@ -17,6 +17,10 @@ public abstract class BlockReaction {
         return b.getType() == Block.Type.CHIP || b.getType() == Block.Type.SWIMMINGCHIP;
     }
 
+    public final boolean isBlock(Block b) {
+        return b.getType() == Block.Type.BLOCK;
+    }
+
     public final boolean isCreature(Block b) {
         return b.getType() == Block.Type.BLOB ||
                b.getType() == Block.Type.BUG ||

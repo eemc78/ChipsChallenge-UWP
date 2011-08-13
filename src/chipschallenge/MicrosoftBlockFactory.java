@@ -7,13 +7,7 @@ package chipschallenge;
 
 import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
-import chipschallenge.blockreactions.BlockReaction;
-import chipschallenge.blockreactions.BlockTo;
-import chipschallenge.blockreactions.CanMoveBlockReaction;
-import chipschallenge.blockreactions.CannotMoveBlockReaction;
-import chipschallenge.blockreactions.ChipTo;
-import chipschallenge.blockreactions.FlippersTo;
-import chipschallenge.blockreactions.WaterTo;
+import chipschallenge.blockreactions.*;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
@@ -73,6 +67,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case COMPUTERCHIP:
                 break;
             case DIRT:
+                ret = new Block(type, facing, nullTick, canMove, DirtTo.getInstance(), nullButton);
                 break;
             case DROWNEDCHIP:
                 break;
