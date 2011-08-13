@@ -1,11 +1,8 @@
 package chipschallenge;
 
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 /**
  *
@@ -13,7 +10,7 @@ import java.util.Queue;
  */
 public class BlockContainer {
     
-    private List<Block> blocks = new ArrayList<Block>();
+    private LinkedList<Block> blocks = new LinkedList<Block>();
 
     public BlockContainer() {
     }
@@ -22,7 +19,7 @@ public class BlockContainer {
         if(blocks.size() >= 3) {
             throw new BlockContainerFullException();
         } else {
-            blocks.add(b);
+            blocks.offer(b);
         }
     }
 

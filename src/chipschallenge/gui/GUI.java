@@ -7,6 +7,7 @@ package chipschallenge.gui;
 
 import chipschallenge.Game;
 import chipschallenge.GameListener;
+import java.awt.Canvas;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;

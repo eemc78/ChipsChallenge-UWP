@@ -21,6 +21,7 @@ class PlayField extends Panel {
 
     private int mWidth;
     private int mHeight;
+    private Image offscreen;
 
     public PlayField(int width, int height) {
         mWidth = width;
@@ -30,11 +31,23 @@ class PlayField extends Panel {
     }
 
     @Override
+    public void update(Graphics g) {
+        paint(g);
+    }
+
+    @Override
     public void paint(Graphics g) {
+        if(offscreen == null) {
+               offscreen = createImage(getSize().width, getSize().height);
+        }
+        Graphics og = offscreen.getGraphics();
         GameLevel gl = Game.getInstance().getLevel();
         for(int x = 0; x < mWidth; x++)
             for(int y = 0; y < mHeight; y++)
-                g.drawImage(gl.getBlockContainer(x, y).getImage(), x*32, y*32, null);
+                og.drawImage(gl.getBlockContainer(x, y).getImage(), x*32, y*32, null);
+        super.paint(og);
+        g.drawImage(offscreen, 0, 0, null);
+        og.dispose();
     }
 
 }
