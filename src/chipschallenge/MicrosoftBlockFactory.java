@@ -62,6 +62,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case CHIP:
                 ret = new Block(type, facing, ChipTickBehavior.getInstance(), canMove, ChipTo.getInstance(), nullButton);
+                Game.getInstance().addGameListener(ret);
                 break;
             case CLONEBLOCK:
                 break;

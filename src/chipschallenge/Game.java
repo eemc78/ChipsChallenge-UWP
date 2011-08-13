@@ -91,4 +91,8 @@ public class Game implements Runnable {
         mLevel = gl;
     }
 
+    public void setGameState(GameState state) {
+        mGameState = state;
+    }
+
 }
