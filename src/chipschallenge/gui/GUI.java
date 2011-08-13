@@ -60,6 +60,13 @@ public class GUI extends Frame implements GameListener {
         setVisible(true);
     }
 
+    @Override
+    public void addKeyListener(KeyListener l) {
+        super.addKeyListener(l);
+        mPlayField.addKeyListener(l);
+        mHud.addKeyListener(l);
+    }
+
     private static GUI mInstance = null;
     public static synchronized GUI getInstance() {
         if(mInstance == null)

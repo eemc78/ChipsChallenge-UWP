@@ -10,8 +10,8 @@ import chipschallenge.GameLevel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Panel;
-import java.awt.image.BufferedImage;
 
 /**
  *
@@ -22,6 +22,7 @@ class PlayField extends Panel {
     private int mWidth;
     private int mHeight;
     private Image offscreen;
+    private Insets insets = new Insets(4,4,4,4);
 
     public PlayField(int width, int height) {
         mWidth = width;
