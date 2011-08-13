@@ -28,10 +28,18 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior{
     }
 
     private Queue<Moves> proposedMoves = new LinkedList<Moves>();
+    private int mTicksBeforeTurn;
 
     public void tick(Block caller) throws BlockContainerFullException {
         if(!proposedMoves.isEmpty()) {
             caller.move(proposedMoves.poll());
+            mTicksBeforeTurn = 12;
+        }
+        if(mTicksBeforeTurn > 0) {
+            mTicksBeforeTurn--;
+            if(mTicksBeforeTurn == 0) {
+                caller.setFacing(Moves.DOWN);
+            }
         }
     }
 
