@@ -22,10 +22,13 @@ public class GameLevel {
 
     public GameLevel(int width, int height) {
         mBoard = new BlockContainer[width][height];
+        for(int i = 0; i < width; i++)
+            for(int j = 0; j < height; j++)
+                mBoard[i][j] = new BlockContainer();
     }
 
     public BlockContainer getBlockContainer(int x, int y) {
-        if(x < 0 || x > getWidth() || y < 0 || y > getHeight())
+        if(x < 0 || x > getWidth() || y < 0 || y > getHeight()) 
             return null;
         return mBoard[x][y];
     }

@@ -87,4 +87,8 @@ public class Game implements Runnable {
         mBlockFactory = bf;
     }
 
+    public void setLevel(GameLevel gl) {
+        mLevel = gl;
+    }
+
 }

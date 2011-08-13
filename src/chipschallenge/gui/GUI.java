@@ -7,6 +7,7 @@ package chipschallenge.gui;
 
 import chipschallenge.Game;
 import chipschallenge.GameListener;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -46,12 +47,15 @@ public class GUI extends Frame implements GameListener, KeyListener {
             msgDialog("Couldn't load background.bmp");
             System.exit(-1);
         }
-        
-        mPlayField = new PlayField();
+        FlowLayout layout = new FlowLayout();
+        layout.setHgap(25);
+        layout.setVgap(30);
+        setLayout(layout);
+        mPlayField = new PlayField(9,9);
         mHud = new Hud();
         add(mPlayField);
         add(mHud);
-        
+        //pack();
         this.setResizable(false);
         setVisible(true);
     }
@@ -89,7 +93,7 @@ public class GUI extends Frame implements GameListener, KeyListener {
     }
 
     public void tick() {
-        this.repaint();
+        mPlayField.repaint();
     }
 
     public void keyTyped(KeyEvent ke) {}

@@ -1,8 +1,10 @@
 package chipschallenge;
 
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -11,7 +13,7 @@ import java.util.Queue;
  */
 public class BlockContainer {
     
-    private Queue<Block> blocks = new LinkedList<Block>();
+    private List<Block> blocks = new ArrayList<Block>();
 
     public BlockContainer() {
     }
@@ -20,7 +22,7 @@ public class BlockContainer {
         if(blocks.size() >= 3) {
             throw new BlockContainerFullException();
         } else {
-            blocks.offer(b);
+            blocks.add(b);
         }
     }
 
@@ -33,7 +35,7 @@ public class BlockContainer {
     }
 
     public Image getImage() {
-        Image ret = null;
+        Image ret = blocks.get(blocks.size()-1).getImage(false);
         // Do stuff
         return ret;
     }
