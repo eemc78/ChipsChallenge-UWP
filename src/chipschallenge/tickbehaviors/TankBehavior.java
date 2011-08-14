@@ -11,7 +11,6 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
-import chipschallenge.tickbehaviors.BlockTickBehavior;
 
 /**
  *

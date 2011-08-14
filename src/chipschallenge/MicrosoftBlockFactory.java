@@ -21,6 +21,7 @@ import chipschallenge.tickbehaviors.ParameciumTickBehavior;
 import chipschallenge.tickbehaviors.PinkballTickBehavior;
 import chipschallenge.tickbehaviors.TankBehavior;
 import chipschallenge.tickbehaviors.TeethTickBehavior;
+import chipschallenge.tickbehaviors.WalkerTickBehavior;
 
 /**
  *
@@ -183,6 +184,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case TRAP:
                 break;
             case WALKER:
+                ret = new Block(type, facing, WalkerTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                Creatures.addCreature(ret);
                 break;
             case WALL:
                 break;

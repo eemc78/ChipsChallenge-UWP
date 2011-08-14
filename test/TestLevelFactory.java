@@ -59,6 +59,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel13();
             case 14:
                 return getLevel14();
+            case 15:
+                return getLevel15();
         }
         return null;
     }
@@ -358,6 +360,21 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(8, 7, bf.get(Block.Type.TANK, Moves.DOWN));
             ret.addBlock(7, 8, bf.get(Block.Type.TANK, Moves.RIGHT));
             ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel15() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(4, 4, bf.get(Block.Type.WALKER));
+            ret.addBlock(5, 5, bf.get(Block.Type.WALKER));
+            ret.addBlock(7, 7, bf.get(Block.Type.EXIT));
             return ret;
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");
