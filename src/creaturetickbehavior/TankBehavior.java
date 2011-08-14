@@ -21,7 +21,7 @@ public class TankBehavior extends CreatureTickBehavior implements ButtonBehavior
     private boolean isMoving = false;
 
     @Override
-    public void creatureTick(Block caller) throws BlockContainerFullException {
+    public void tick(Block caller) throws BlockContainerFullException {
         if(isMoving)
             if(!caller.move(caller.getFacing()))
                 isMoving = false;

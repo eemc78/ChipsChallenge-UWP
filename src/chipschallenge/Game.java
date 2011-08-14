@@ -5,6 +5,7 @@ import chipschallenge.Move.Moves;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
 import chipschallenge.gui.MoveListener;
+import creaturetickbehavior.CreatureTickBehavior;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -25,7 +26,9 @@ public class Game {
     public static final int MOVE_MS = 250;
     public static final int SPEED_FRAC = 3;
     public static final int TIMER_TICK = MOVE_MS/SPEED_FRAC;
-    private Set<GameListener> listeners = new HashSet<GameListener>();
+    private Set<GameListener> gameListeners = new HashSet<GameListener>();
+    private Set<Block> creatures = new HashSet<Block>();
+    private Set<Block> blobs = new HashSet<Block>();
     private Set<MoveListener> movelisteners = new HashSet<MoveListener>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
@@ -37,6 +40,8 @@ public class Game {
     private int mLevelNumber = 0;
     private int enemyTick = 0;
     private Timer tickTimer = null;
+    private static int mCreatureTicks = 0;
+    private static boolean blobMove = false;
 
     private Game(){}
 
@@ -48,7 +53,9 @@ public class Game {
 
     public void clearStuff() {
         mInventory.clear();
-        listeners.clear();
+        creatures.clear();
+        blobs.clear();
+        gameListeners.clear();
         if(tickTimer != null)
             tickTimer.cancel();
     }
@@ -104,26 +111,48 @@ public class Game {
     }
     
     public void addGameListener(GameListener l) {
-        listeners.add(l);
+        gameListeners.add(l);
     }
 
     public void removeGameListener(GameListener l) {
-        listeners.remove(l);
+        gameListeners.remove(l);
+    }
+
+    public void addCreature(Block b) {
+        creatures.add(b);
+    }
+
+    public void removeCreature(Block b) {
+        creatures.remove(b);
+    }
+
+    public void addBlob(Block b) {
+        blobs.add(b);
+    }
+
+    public void removeBlob(Block b) {
+        blobs.remove(b);
     }
 
     public void tick() throws BlockContainerFullException {
         //TODO: Remove the need of making a copy
-        Collection<GameListener> listenersCpy= new ArrayList<GameListener>(listeners);
+        Collection<GameListener> listenersCpy= new ArrayList<GameListener>(gameListeners);
         for(GameListener l : listenersCpy) {
             l.tick();
         }
-    }
-
-    public void creatureTick() throws BlockContainerFullException {
-        //TODO: Remove the need of making a copy
-        Collection<GameListener> listenersCpy= new ArrayList<GameListener>(listeners);
-        for(GameListener l : listenersCpy) {
-            l.tick();
+        mCreatureTicks = (mCreatureTicks + 1) % Game.SPEED_FRAC;
+        if(mCreatureTicks == 0) {
+            Collection<Block> creaturesCpy= new ArrayList<Block>(creatures);
+            for(Block l : creaturesCpy) {
+                l.tick();
+            }
+            if(blobMove) {
+                Collection<Block> blobsCpy= new ArrayList<Block>(blobs);
+                for(Block l : blobsCpy) {
+                    l.tick();
+                }
+            }
+            blobMove = !blobMove;
         }
     }
 

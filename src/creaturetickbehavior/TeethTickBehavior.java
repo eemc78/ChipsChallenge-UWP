@@ -39,7 +39,7 @@ public class TeethTickBehavior extends CreatureTickBehavior {
     }
 
     @Override
-    public void creatureTick(Block caller) throws BlockContainerFullException {
+    public void tick(Block caller) throws BlockContainerFullException {
         if(!inUse(caller))
             return;
         Point chip = findChip();

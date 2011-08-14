@@ -25,7 +25,7 @@ public class PinkballTickBehavior extends CreatureTickBehavior {
     }
 
     @Override
-    public void creatureTick(Block caller) throws BlockContainerFullException {
+    public void tick(Block caller) throws BlockContainerFullException {
         Moves m = caller.getFacing();
         if(!caller.move(m)) {
             m = Move.reverse(m);

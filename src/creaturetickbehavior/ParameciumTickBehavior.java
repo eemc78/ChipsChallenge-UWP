@@ -13,13 +13,13 @@ import chipschallenge.Move.Moves;
  *
  * @author patrik
  */
-public class BugTickBehavior extends CreatureTickBehavior {
+public class ParameciumTickBehavior extends CreatureTickBehavior {
 
-    private BugTickBehavior() {}
-    private static BugTickBehavior mInstance = null;
-    public static synchronized BugTickBehavior getInstance() {
+    private ParameciumTickBehavior() {}
+    private static ParameciumTickBehavior mInstance = null;
+    public static synchronized ParameciumTickBehavior getInstance() {
         if(mInstance == null)
-            mInstance = new BugTickBehavior();
+            mInstance = new ParameciumTickBehavior();
         return mInstance;
     }
 
@@ -29,23 +29,27 @@ public class BugTickBehavior extends CreatureTickBehavior {
         outer: for(int i = 0; i < 2; i++) {
             switch(m) {
                 case UP:
-                    caller.setFacing(Moves.LEFT);
-                    if(caller.move(Moves.LEFT))                    
-                        break outer;
-                case RIGHT:
-                    caller.setFacing(Moves.UP);
-                    if(caller.move(Moves.UP))                      
-                        break outer;
-                case DOWN:
                     caller.setFacing(Moves.RIGHT);
-                    if(caller.move(Moves.RIGHT))                       
+                    if(caller.move(Moves.RIGHT)) {
                         break outer;
+                    }
                 case LEFT:
-                    caller.setFacing(Moves.DOWN);
-                    if(caller.move(Moves.DOWN))                      
+                    caller.setFacing(Moves.UP);
+                    if(caller.move(Moves.UP)) {                        
                         break outer;
-                    else
+                    }
+                case DOWN:
+                    caller.setFacing(Moves.LEFT);
+                    if(caller.move(Moves.LEFT)) {
+                        break outer;
+                    }
+                case RIGHT:
+                    caller.setFacing(Moves.DOWN);
+                    if(caller.move(Moves.DOWN)) {                       
+                        break outer;
+                    } else {
                         m = Moves.UP;
+                    }
             }
         }
     }

@@ -13,7 +13,9 @@ import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
+import creaturetickbehavior.BlobTickBehavior;
 import creaturetickbehavior.BugTickBehavior;
+import creaturetickbehavior.ParameciumTickBehavior;
 import creaturetickbehavior.PinkballTickBehavior;
 import creaturetickbehavior.TankBehavior;
 import creaturetickbehavior.TeethTickBehavior;
@@ -40,6 +42,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
         BlockReaction CannotMove = CannotMoveBlockReaction.getInstance();
         switch(type) {
             case BLOB:
+                ret = new Block(type, facing, BlobTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                Game.getInstance().addBlob(ret);
                 break;
             case BLOCK:
                 ret = new Block(type, facing, nullTick, canMove, BlockTo.getInstance(), nullButton);
@@ -58,7 +62,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case BUG:
                 ret = new Block(type, facing, BugTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addGameListener(ret);
+                Game.getInstance().addCreature(ret);
                 break;
             case BURNEDCHIP:
                 break;
@@ -124,10 +128,12 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case LOCK:
                 break;
             case PARAMECIUM:
+                ret = new Block(type, facing, ParameciumTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                Game.getInstance().addCreature(ret);
                 break;
             case PINKBALL:
                 ret = new Block(type, facing, PinkballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addGameListener(ret);
+                Game.getInstance().addCreature(ret);
                 break;
             case RECESSEDWALL:
                 break;
@@ -148,11 +154,11 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 BlockTickBehavior btb = tb;
                 ButtonBehavior bb = tb;
                 ret = new Block(type, facing, tb, canMove, CreatureTo.getInstance(), bb);
-                Game.getInstance().addGameListener(ret);
+                Game.getInstance().addCreature(ret);
                 break;
             case TEETH:
                 ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addGameListener(ret);
+                Game.getInstance().addCreature(ret);
                 break;
             case TELEPORT:
                 break;
