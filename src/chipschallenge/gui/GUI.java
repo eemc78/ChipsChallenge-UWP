@@ -1,11 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chipschallenge.gui;
 
-import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import java.awt.FlowLayout;
 import java.awt.Frame;

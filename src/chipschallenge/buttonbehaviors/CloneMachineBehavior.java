@@ -4,13 +4,10 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
-import chipschallenge.Creatures;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import chipschallenge.Move;
-import chipschallenge.Move.Moves;
 import java.awt.Point;
-import java.util.Collection;
 import java.util.Iterator;
 
 /**

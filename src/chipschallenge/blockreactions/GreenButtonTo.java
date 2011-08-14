@@ -2,8 +2,6 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.Buttons;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  *

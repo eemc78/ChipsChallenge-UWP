@@ -1,11 +1,9 @@
 package wasd;
 
-
 import chipschallenge.Game;
 import chipschallenge.MicrosoftBlockFactory;
 import chipschallenge.gui.GUI;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
-
 
 /**
  *

@@ -1,15 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
-import chipschallenge.Game;
-import chipschallenge.GameLevel;
 
 /**
  *

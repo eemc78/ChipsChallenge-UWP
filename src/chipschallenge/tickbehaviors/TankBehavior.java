@@ -1,12 +1,5 @@
 package chipschallenge.tickbehaviors;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
-
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move;

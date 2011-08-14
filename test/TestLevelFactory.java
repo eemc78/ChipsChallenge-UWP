@@ -11,11 +11,6 @@ import chipschallenge.Move.Moves;
 import chipschallenge.Utils;
 import java.util.Random;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author patrik
