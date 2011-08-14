@@ -35,7 +35,7 @@ public class CloneMachineBehavior extends ButtonBehavior {
             Iterator<Block> it = bc.iterator();
             while(it.hasNext()) {
                 Block b = it.next();
-                if(b.isCreature()) {
+                if(b.isCreature() || b.isA(Type.BLOCK)) {
                     BlockContainer moveTo = gl.getBlockContainer(b, b.getFacing());
                     if(moveTo.canMoveTo(b)) {
                         try {
