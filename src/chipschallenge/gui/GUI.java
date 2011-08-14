@@ -72,6 +72,11 @@ public class GUI extends Frame {
     }
 
     @Override
+    public void repaint() {
+        mPlayField.repaint();
+    }
+
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         int iWidth = mBackground.getWidth(null);

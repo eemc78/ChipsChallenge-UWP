@@ -9,6 +9,7 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.GameListener;
 import chipschallenge.Move.Moves;
+import chipschallenge.gui.GUI;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
@@ -40,6 +41,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
             mTicksBeforeTurn--;
             if(mTicksBeforeTurn == 0) {
                 caller.setFacing(Moves.DOWN);
+                GUI.getInstance().repaint();
             }
         }
     }
