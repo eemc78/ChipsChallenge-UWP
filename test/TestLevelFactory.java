@@ -5,8 +5,6 @@ import chipschallenge.GameLevel;
 import chipschallenge.LevelFactory;
 import chipschallenge.MicrosoftBlockFactory;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * To change this template, choose Tools | Templates
@@ -36,6 +34,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel3();
             case 4:
                 return getLevel4();
+            case 5:
+                return getLevel5();
         }
         return null;
     }
@@ -143,6 +143,43 @@ public class TestLevelFactory extends LevelFactory {
         } finally {
             return ret;
         }
+    }
+
+    public GameLevel getLevel5() {
+        Random r = new Random();
+        GameLevel ret = new GameLevel(32,32);
+        try {
+        boolean chipPlaced = false;
+        boolean flippersPlaced = false;
+        for(int i = 0; i < ret.getWidth(); i++) {
+            for(int j = 0; j < ret.getHeight(); j++) {
+                    if(r.nextFloat() > 0.95f) {
+                        ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.WATER));
+                    } else {
+                        ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
+
+                    if (r.nextFloat() > 0.9f) {
+                        if(r.nextBoolean())
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.BLOCK));
+                    } else {
+                        if (!chipPlaced) {
+                            chipPlaced = true;
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.CHIP));
+                        } else {
+                            if (!flippersPlaced) {
+                            flippersPlaced = true;
+                            ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLIPPERS));
+                            }
+                        }
+                    }
+                        }
+
+            }
+        }
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        }
+        return ret;
     }
 
     @Override
