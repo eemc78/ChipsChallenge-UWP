@@ -1,10 +1,8 @@
 package chipschallenge;
 
 import java.awt.Image;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -12,7 +10,7 @@ import java.util.Queue;
  */
 public class BlockContainer {
     
-    private final LinkedList<Block> blocks = new LinkedList<Block>();
+    private final CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<Block>();
 
     public BlockContainer() {
     }
@@ -38,7 +36,7 @@ public class BlockContainer {
         if(blocks.size() >= 4) {
             throw new BlockContainerFullException();
         } else {
-            blocks.push(b);
+            blocks.add(0,b);
         }
     }
 
@@ -51,7 +49,7 @@ public class BlockContainer {
     }
 
     public Image getImage() {
-        Image ret = blocks.peek().getImage(false);
+        Image ret = blocks.get(0).getImage(false);
         // Do stuff
         return ret;
     }
@@ -59,10 +57,7 @@ public class BlockContainer {
     public boolean canMoveFrom(Block b) {
         for(Block bl : blocks)
             if(!bl.getFromReaction().canMove(b, bl)) {
-                System.out.println(b.getType() + " can't move FROM " + bl.getType());
                 return false;
-            } else {
-                System.out.println(b.getType() + " CAN move FROM " + bl.getType());
             }
         return true;
     }
@@ -70,30 +65,22 @@ public class BlockContainer {
     public boolean canMoveTo(Block b) {
         for(Block bl : blocks)
             if(!bl.getToReaction().canMove(b, bl)) {
-                System.out.println(b.getType() + " can't move TO " + bl.getType());
                 return false;
-            } else {
-                System.out.println(b.getType() + " CAN move TO " + bl.getType());
-            }
+            } 
         return true;
     }
 
     public void moveFrom(Block b) throws BlockContainerFullException {
-            //TODO: Better synchronization solution than copying.
-            Collection<Block> blocksCpy = new ArrayList<Block>(blocks);
-            for(Block bl : blocksCpy)
+            for(Block bl : blocks)
                 bl.getFromReaction().react(b, bl);
     }
 
     public void moveTo(Block b) throws BlockContainerFullException {
-            //TODO: Better synchronization solution than copying.
-            Collection<Block> blocksCpy = new ArrayList<Block>(blocks);
-            for(Block bl : blocksCpy)
+            for(Block bl : blocks)
                 bl.getToReaction().react(b, bl);
     }
 
     void replaceBlock(Block a, Block b) {
-        System.out.println("KUK");
         int index = blocks.indexOf(a);       
         blocks.add(index, b);
         a.destroy();

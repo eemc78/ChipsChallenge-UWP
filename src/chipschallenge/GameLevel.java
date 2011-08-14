@@ -78,15 +78,12 @@ public class GameLevel {
     }
 
     public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {        
-        System.out.println(b.getType() + " " + direction);
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
         Move.updatePoint(to, direction);
         if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
-            System.out.println("Trying to move outside");
             return false;
         }
-
 
         if(mBoard[from.x][from.y].canMoveFrom(b) && mBoard[to.x][to.y].canMoveTo(b)) {
             //From reactions
@@ -101,17 +98,13 @@ public class GameLevel {
             mBoard[to.x][to.y].moveTo(b);            
             Game.getInstance().moveHappened(from);
             Game.getInstance().moveHappened(to);
-            System.out.println("POINT AFTER SUCCESS:" + blocks.get(b));
             return true;
         } else {
-            System.out.println("POINT AFTER FAILURE:" + blocks.get(b));
-            System.out.println("Cannot move for other reasons");
             return false;
         }
     }
 
     public void removeBlock(Block b) {
-        System.out.println("Removing " + b);
         getBlockContainer(b).remove(b);
         if(b.getType() != Block.Type.CHIP)
             blocks.remove(b);
