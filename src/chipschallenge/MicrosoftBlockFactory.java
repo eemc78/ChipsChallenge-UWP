@@ -80,7 +80,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case CLONEBLOCK:
                 break;
             case CLONEMACHINE:
-                ret = new Block(type, facing, nullTick, canMove, CannotMove, CloneMachineBehavior.getInstance());
+                ret = new Block(type, facing, nullTick, CannotMove, CannotMove, CloneMachineBehavior.getInstance());
                 break;
             case COMPUTERCHIP:
                 break;

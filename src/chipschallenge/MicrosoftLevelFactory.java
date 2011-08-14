@@ -5,11 +5,26 @@
 
 package chipschallenge;
 
+import chipschallenge.Block.Type;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Level factory which uses CHIPS.DAT to create levels.
  * @author patrik
  */
 public class MicrosoftLevelFactory extends LevelFactory {
+
+    private Map<Block.Type,Byte> msType = new HashMap<Block.Type,Byte>();
+
+    private void addBlockTypes(Type... blockTypes) {
+        byte i = 0;
+        for(Block.Type t : blockTypes) {
+            if(t != null)
+                msType.put(t, i);
+            i++;
+        }
+    }
 
     private MicrosoftLevelFactory() {
         //TODO: Check if CHIPS.DAT exists

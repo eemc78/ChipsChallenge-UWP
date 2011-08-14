@@ -498,7 +498,7 @@ public class TestLevelFactory extends LevelFactory {
             Block cloner = bf.get(Block.Type.CLONEMACHINE);
             ret.addBlock(8, 7, cloner);
             Block teeth = bf.get(Block.Type.TEETH, Moves.UP);
-            Creatures.removeCreature(teeth);
+            //Creatures.removeCreature(teeth);
             ret.addBlock(8, 7, teeth);
             Block button = bf.get(Block.Type.REDBUTTON);
             Buttons.addRedButtonListener(button, cloner);
