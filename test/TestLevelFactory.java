@@ -49,6 +49,12 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel8();
             case 9:
                 return getLevel9();
+            case 10:
+                return getLevel10();
+            case 11:
+                return getLevel11();
+            case 12:
+                return getLevel12();
         }
         return null;
     }
@@ -227,6 +233,34 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel9() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(8, 8, bf.get(Block.Type.FIREBALL));
+            ret.addBlock(7, 7, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel10() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(8, 8, bf.get(Block.Type.GLIDER));
+            ret.addBlock(7, 7, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel11() {
         Random r = new Random();
         GameLevel ret = new GameLevel(32,32);
         try {
@@ -266,6 +300,27 @@ public class TestLevelFactory extends LevelFactory {
             System.out.println("Couldn't create level");
         }
         return ret;
+    }
+
+    public GameLevel getLevel12() {
+        GameLevel ret = getFloors(32, 32);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(8, 8, bf.get(Block.Type.GLIDER));
+            ret.addBlock(7, 8, bf.get(Block.Type.GLIDER));
+            ret.addBlock(7, 20, bf.get(Block.Type.FIREBALL));
+            ret.addBlock(20, 7, bf.get(Block.Type.BUG));
+            ret.addBlock(10, 10, bf.get(Block.Type.BLOB));
+            ret.addBlock(10, 11, bf.get(Block.Type.BLOB));
+            ret.addBlock(10, 12, bf.get(Block.Type.TEETH));
+            ret.addBlock(10, 12, bf.get(Block.Type.PINKBALL));
+            ret.addBlock(31, 31, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
     }
 
     @Override

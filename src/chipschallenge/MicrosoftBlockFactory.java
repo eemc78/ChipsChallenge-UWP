@@ -15,6 +15,7 @@ import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 import creaturetickbehavior.BlobTickBehavior;
 import creaturetickbehavior.BugTickBehavior;
+import creaturetickbehavior.GliderAndFireballTickBehavior;
 import creaturetickbehavior.ParameciumTickBehavior;
 import creaturetickbehavior.PinkballTickBehavior;
 import creaturetickbehavior.TankBehavior;
@@ -91,6 +92,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case FIREBOOTS:
                 break;
             case FIREBALL:
+                ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                Game.getInstance().addCreature(ret);
                 break;
             case FLIPPERS:
                 ret = new Block(type, facing, nullTick, canMove, FlippersTo.getInstance(), nullButton);
@@ -104,6 +107,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case RANDOMFORCEFLOOR:
                 break;
             case GLIDER:
+                ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                Game.getInstance().addCreature(ret);
                 break;
             case GRAVEL:
                 break;
