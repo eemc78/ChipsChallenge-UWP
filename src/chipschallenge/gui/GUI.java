@@ -6,6 +6,7 @@
 package chipschallenge.gui;
 
 import chipschallenge.Game;
+import chipschallenge.GameLevel;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -105,5 +106,9 @@ public class GUI extends Frame {
 
     public void setChipsLeft(int n) {}
     public void setTimeLeft(int t) {}
+
+    public void scoreDialog(GameLevel mLevel) {
+        msgDialog(mLevel.getScore());
+    }
     
 }

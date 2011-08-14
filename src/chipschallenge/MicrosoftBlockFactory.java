@@ -73,6 +73,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case DROWNEDCHIP:
                 break;
             case EXIT:
+                ret = new Block(type, facing, nullTick, canMove, ExitTo.getInstance(), nullButton);
                 break;
             case FAKEEXIT:
                 break;

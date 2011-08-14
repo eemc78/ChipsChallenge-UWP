@@ -74,12 +74,14 @@ class PlayField extends Panel implements MoveListener {
     }
 
     // Determine whether repaint is needed
-    public void moveHappened(Point location) {
+    public void moveHappened(Point from, Point to) {
         GameLevel gl = Game.getInstance().getLevel();
         Point chip = gl.findChip();
         int top = getTop(gl, chip.y);
         int left = getLeft(gl, chip.x);
-        if(location.y >= top && location.y <= (top+mHeight) && location.x >= left && location.x <= (left+mWidth)) {
+        if(from.y >= top && from.y <= (top+mHeight) && from.x >= left && from.x <= (left+mWidth)) {
+            repaint();
+        } else if(to.y >= top && to.y <= (top+mHeight) && to.x >= left && to.x <= (left+mWidth)) {
             repaint();
         }
 

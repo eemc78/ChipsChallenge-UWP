@@ -65,6 +65,10 @@ public abstract class BlockReaction {
         Game.getInstance().die(msg);
     }
 
+    public final Game game() {
+        return Game.getInstance();
+    }
+
     public abstract void react(Block moving, Block standing) throws BlockContainerFullException;
     public abstract boolean canMove(Block moving, Block standing);
 }

@@ -46,6 +46,10 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
         }
     }
 
+    //TODO: Handle mouse clicks
+    public void moveTo(int x, int y) {
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         switch(e.getKeyCode()) {

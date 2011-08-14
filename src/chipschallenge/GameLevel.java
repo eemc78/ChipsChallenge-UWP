@@ -21,6 +21,8 @@ public class GameLevel {
     private volatile Block chip;
     private int mChipsLeft;
     private int mTimeLeft;
+    private int mNumDeaths = 0;
+    private int mNumber;
 
     public GameLevel(int width, int height) {
         mBoard = new BlockContainer[width][height];
@@ -96,8 +98,7 @@ public class GameLevel {
 
             //To reactions
             mBoard[to.x][to.y].moveTo(b);            
-            Game.getInstance().moveHappened(from);
-            Game.getInstance().moveHappened(to);
+            Game.getInstance().moveHappened(from, to);
             return true;
         } else {
             return false;
@@ -122,6 +123,54 @@ public class GameLevel {
 
     public boolean contains(Block b) {
         return blocks.containsKey(b);
+    }
+
+    public void die() {
+        mNumDeaths++;
+    }
+
+    public int getNumDeaths() {
+        return mNumDeaths;
+    }
+
+    public int getTimeLeft() {
+        return mTimeLeft;
+    }
+
+    public int getNumber() {
+        return mNumber;
+    }
+
+    public String getScore() {
+        StringBuilder sb = new StringBuilder();
+        switch(mNumDeaths) {
+            case 0:
+                sb.append("Yowser! First try!");
+                break;
+            case 1:
+            case 2:
+                sb.append("Go Bit Buster!");
+                break;
+            case 3:
+            case 4:
+                sb.append("Finnished! Good Work!");
+                break;
+            default:
+                sb.append("At last! You did it!");
+                break;
+        }
+        sb.append("\n\n");
+        double timeBonus = mTimeLeft*10;
+        sb.append("Time Bonus: " + timeBonus);
+        sb.append("\n\n");
+        double levelBonus = Math.floor(mNumber * 500 * Math.pow(0.8, mNumDeaths));
+        levelBonus = Math.max(500, levelBonus);
+        sb.append("Level Bonus: " + levelBonus);
+        sb.append("\n\n");
+        double levelScore = timeBonus+levelBonus;
+        sb.append("Level Score: " + levelScore);
+        //TODO: Store totalscore and best time, and output message.
+        return sb.toString();
     }
 
 }

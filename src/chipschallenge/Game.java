@@ -46,12 +46,21 @@ public class Game {
         return mGame;
     }
 
+    public void clearStuff() {
+        listeners.clear();
+        if(tickTimer != null)
+            tickTimer.cancel();
+    }
+
+
     public void nextLevel() {
+        clearStuff();
         mLevel = mLevelFactory.getLevel(++mLevelNumber);
         start();
     }
 
     public void nextLevel(int n) {
+        clearStuff();
         mLevelNumber = n;
         mLevel = mLevelFactory.getLevel(mLevelNumber);
         start();
@@ -59,6 +68,11 @@ public class Game {
 
     public void restart() {
         nextLevel(mLevelNumber);
+    }
+
+    public void levelComplete() {
+        GUI.getInstance().scoreDialog(mLevel);
+        nextLevel();
     }
 
     public void start() {
@@ -113,8 +127,8 @@ public class Game {
     }
 
     public void die(String msg) {
-        listeners.clear();
-        tickTimer.cancel();
+        //listeners.clear();
+        //tickTimer.cancel();
         //TODO: Play "Bummer"
         GUI.getInstance().msgDialog(msg);
         restart();
@@ -152,9 +166,9 @@ public class Game {
         this.mLevelFactory = lf;
     }
 
-    public void moveHappened(Point location) {
+    public void moveHappened(Point from, Point to) {
         for(MoveListener l : movelisteners) {
-            l.moveHappened(location);
+            l.moveHappened(from, to);
         }
     }
 
