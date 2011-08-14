@@ -8,6 +8,7 @@ import chipschallenge.GameLevel;
 import chipschallenge.LevelFactory;
 import chipschallenge.MicrosoftBlockFactory;
 import chipschallenge.Move.Moves;
+import chipschallenge.Utils;
 import java.util.Random;
 
 /*
@@ -30,6 +31,9 @@ public class TestLevelFactory extends LevelFactory {
             mInstance = new TestLevelFactory();
         return mInstance;
     }
+
+    //since the variable r was used many times i did a quickfix like this
+    private static Random r = Utils.r;
 
     public GameLevel getLevel(int n) {
         switch (n) {
@@ -76,7 +80,6 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel1() {
-        Random r = new Random();
         GameLevel ret = new GameLevel(9,9);
         try {
         boolean chipPlaced = false;
@@ -107,7 +110,6 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel2() {
-        Random r = new Random();
         GameLevel ret = new GameLevel(9,9);
         try {
         boolean chipPlaced = false;
@@ -260,7 +262,6 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel11() {
-        Random r = new Random();
         GameLevel ret = new GameLevel(32,32);
         try {
         boolean chipPlaced = false;
@@ -543,7 +544,6 @@ public class TestLevelFactory extends LevelFactory {
         }
                 
     public GameLevel getLevel21() {
-        Random r = new Random();
         GameLevel ret = new GameLevel(9,9);
         try {
         boolean chipPlaced = false;

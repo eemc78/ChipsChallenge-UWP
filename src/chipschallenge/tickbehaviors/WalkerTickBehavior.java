@@ -34,7 +34,7 @@ public class WalkerTickBehavior implements BlockTickBehavior {
     public void tick(Block caller) throws BlockContainerFullException {
         Moves m = caller.getFacing();
         if(!caller.move(m)) {
-            int dir = Utils.getRandom().nextInt(4);
+            int dir = Utils.r.nextInt(4);
             outer : for(int i = 0; i < 2; i++) {
                 switch(dir) {
                     case 0:
