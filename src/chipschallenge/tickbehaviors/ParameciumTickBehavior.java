@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package creaturetickbehavior;
+package chipschallenge.tickbehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;

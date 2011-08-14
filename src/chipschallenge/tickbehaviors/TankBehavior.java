@@ -1,4 +1,4 @@
-package creaturetickbehavior;
+package chipschallenge.tickbehaviors;
 
 /*
  * To change this template, choose Tools | Templates

@@ -14,13 +14,13 @@ import chipschallenge.buttonbehaviors.ToggleWallBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
-import creaturetickbehavior.BlobTickBehavior;
-import creaturetickbehavior.BugTickBehavior;
-import creaturetickbehavior.GliderAndFireballTickBehavior;
-import creaturetickbehavior.ParameciumTickBehavior;
-import creaturetickbehavior.PinkballTickBehavior;
-import creaturetickbehavior.TankBehavior;
-import creaturetickbehavior.TeethTickBehavior;
+import chipschallenge.tickbehaviors.BlobTickBehavior;
+import chipschallenge.tickbehaviors.BugTickBehavior;
+import chipschallenge.tickbehaviors.GliderAndFireballTickBehavior;
+import chipschallenge.tickbehaviors.ParameciumTickBehavior;
+import chipschallenge.tickbehaviors.PinkballTickBehavior;
+import chipschallenge.tickbehaviors.TankBehavior;
+import chipschallenge.tickbehaviors.TeethTickBehavior;
 
 /**
  *
