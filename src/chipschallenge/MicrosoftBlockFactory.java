@@ -95,8 +95,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case FAKEEXIT:
                 break;
             case FIRE:
+                ret = new Block(type, facing, nullTick, canMove, FireTo.getInstance(), nullButton);
                 break;
             case FIREBOOTS:
+                ret = new Block(type, facing, nullTick, canMove, FirebootsTo.getInstance(), nullButton);
                 break;
             case FIREBALL:
                 ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);

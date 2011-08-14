@@ -33,46 +33,27 @@ public class TestLevelFactory extends LevelFactory {
 
     public GameLevel getLevel(int n) {
         switch (n) {
-            case 1:
-                return getLevel1();
-            case 2:
-                return getLevel2();
-            case 3:
-                return getLevel3();
-            case 4:
-                return getLevel4();
-            case 5:
-                return getLevel5();
-            case 6:
-                return getLevel6();
-            case 7:
-                return getLevel7();
-            case 8:
-                return getLevel8();
-            case 9:
-                return getLevel9();
-            case 10:
-                return getLevel10();
-            case 11:
-                return getLevel11();
-            case 12:
-                return getLevel12();
-            case 13:
-                return getLevel13();
-            case 14:
-                return getLevel14();
-            case 15:
-                return getLevel15();
-            case 16:
-                return getLevel16();
-            case 17:
-                return getLevel17();
-            case 18:
-                return getLevel18();
-            case 19:
-                return getLevel19();
-            case 20:
-                return getLevel20();
+            case 1:  return getLevel1();
+            case 2:  return getLevel2();
+            case 3:  return getLevel3();
+            case 4:  return getLevel4();
+            case 5:  return getLevel5();
+            case 6:  return getLevel6();
+            case 7:  return getLevel7();
+            case 8:  return getLevel8();
+            case 9:  return getLevel9();
+            case 10: return getLevel10();
+            case 11: return getLevel11();
+            case 12: return getLevel12();
+            case 13: return getLevel13();
+            case 14: return getLevel14();
+            case 15: return getLevel15();
+            case 16: return getLevel16();
+            case 17: return getLevel17();
+            case 18: return getLevel18();
+            case 19: return getLevel19();
+            case 20: return getLevel20();
+            case 21: return getLevel21();
         }
         return null;
     }
@@ -560,6 +541,50 @@ public class TestLevelFactory extends LevelFactory {
             return ret;
         }
         }
+                
+    public GameLevel getLevel21() {
+        Random r = new Random();
+        GameLevel ret = new GameLevel(9,9);
+        try {
+        boolean chipPlaced = false;
+        boolean flippersPlaced = false;
+        boolean exitPlaced = false;
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                    if(r.nextFloat() > 0.8f) {
+                        ret.addBlock(i, j, bf.get(Block.Type.FIRE));
+                    } else {
+                        ret.addBlock(i, j, bf.get(Block.Type.FLOOR));
+                    
+                    if (r.nextFloat() > 0.8f) {
+                        if(r.nextBoolean())
+                            ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
+                    } else {
+                        if (!chipPlaced) {
+                            chipPlaced = true;
+                            ret.addBlock(i, j, bf.get(Block.Type.CHIP));
+                        } else {
+                            if (!flippersPlaced) {
+                            flippersPlaced = true;
+                            ret.addBlock(i, j, bf.get(Block.Type.FIREBOOTS));
+                            } else
+                                if (!exitPlaced) {
+                            exitPlaced = true;
+                            ret.addBlock(i, j, bf.get(Block.Type.EXIT));
+                        }
+                        }
+                    }
+                        }
+
+            }
+        }
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        }
+        return ret;
+    }
+
+
 
     @Override
     public int getLastLevelNumber() {
