@@ -5,6 +5,7 @@ import chipschallenge.BlockFactory;
 import chipschallenge.GameLevel;
 import chipschallenge.LevelFactory;
 import chipschallenge.MicrosoftBlockFactory;
+import chipschallenge.Move.Moves;
 import java.util.Random;
 
 /*
@@ -42,6 +43,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel5();
             case 6:
                 return getLevel6();
+            case 7:
+                return getLevel7();
         }
         return null;
     }
@@ -167,7 +170,7 @@ public class TestLevelFactory extends LevelFactory {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
-            ret.addBlock(8, 8, bf.get(Block.Type.PINKBALL));
+            ret.addBlock(8, 8, bf.get(Block.Type.PINKBALL, Moves.LEFT));
             ret.addBlock(7, 7, bf.get(Block.Type.EXIT));
             return ret;
         } catch (BlockContainerFullException ex) {
@@ -178,6 +181,20 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel6() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(8, 8, bf.get(Block.Type.BUG, Moves.LEFT));
+            ret.addBlock(7, 7, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel7() {
         Random r = new Random();
         GameLevel ret = new GameLevel(32,32);
         try {

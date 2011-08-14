@@ -13,6 +13,7 @@ import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
+import creaturetickbehavior.BugTickBehavior;
 import creaturetickbehavior.PinkballTickBehavior;
 import creaturetickbehavior.TankBehavior;
 import creaturetickbehavior.TeethTickBehavior;
@@ -56,6 +57,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case BROWNBUTTON:
                 break;
             case BUG:
+                ret = new Block(type, facing, BugTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                Game.getInstance().addGameListener(ret);
                 break;
             case BURNEDCHIP:
                 break;
