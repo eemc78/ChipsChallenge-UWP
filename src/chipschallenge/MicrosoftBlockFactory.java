@@ -51,6 +51,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, BlockTo.getInstance(), nullButton);
                 break;
             case BLUEBUTTON:
+                ret = new Block(type, facing, nullTick, canMove, BlueButtonTo.getInstance(), nullButton);
                 break;
             case BLUEKEY:
                 break;
@@ -162,6 +163,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ButtonBehavior bb = tb;
                 ret = new Block(type, facing, tb, canMove, CreatureTo.getInstance(), bb);
                 Creatures.addCreature(ret);
+                Buttons.addBlueButtonsListener(ret);
                 break;
             case TEETH:
                 ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);

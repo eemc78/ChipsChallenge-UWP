@@ -18,7 +18,6 @@ public class ToggleWallBehavior extends ButtonBehavior {
     }
 
     public void buttonDown(Block listener, Block button) {
-        System.out.println("Button: " + button + ", listener: " + listener);
         if(button.isA(Type.GREENBUTTON)) {
             Game.getInstance().moveHappened(listener.getPoint());
             if(listener.isA(Block.Type.TOGGLEWALLOPEN)) {
