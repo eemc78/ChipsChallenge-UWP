@@ -84,22 +84,27 @@ public class GameLevel {
         if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
         }
+        if(mBoard[from.x][from.y].canMoveFrom(b)) {
+            b.setFacing(direction);
+            if(mBoard[to.x][to.y].canMoveTo(b)) {
+                //From reactions
+                mBoard[from.x][from.y].moveFrom(b);
 
-        if(mBoard[from.x][from.y].canMoveFrom(b) && mBoard[to.x][to.y].canMoveTo(b)) {
-            //From reactions
-            mBoard[from.x][from.y].moveFrom(b);
+                //Actual movement
+                mBoard[from.x][from.y].remove(b);
+                blocks.put(b, to);
+                mBoard[to.x][to.y].add(b);
 
-            //Actual movement
-            mBoard[from.x][from.y].remove(b);
-            blocks.put(b, to);
-            mBoard[to.x][to.y].add(b);
-
-            //To reactions
-            mBoard[to.x][to.y].moveTo(b);                        
-            return true;
+                //To reactions
+                mBoard[to.x][to.y].moveTo(b);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
+        
     }
 
     public void removeBlock(Block b) {
