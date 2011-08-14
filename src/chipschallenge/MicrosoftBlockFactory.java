@@ -13,6 +13,8 @@ import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
+import creaturetickbehavior.PinkballTickBehavior;
+import creaturetickbehavior.TankBehavior;
 import creaturetickbehavior.TeethTickBehavior;
 
 /**
@@ -121,6 +123,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case PARAMECIUM:
                 break;
             case PINKBALL:
+                ret = new Block(type, facing, PinkballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                Game.getInstance().addGameListener(ret);
                 break;
             case RECESSEDWALL:
                 break;
@@ -137,10 +141,14 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case SWIMMINGCHIP:
                 break;
             case TANK:
+                TankBehavior tb = new TankBehavior();
+                BlockTickBehavior btb = tb;
+                ButtonBehavior bb = tb;
+                ret = new Block(type, facing, tb, canMove, CreatureTo.getInstance(), bb);
+                Game.getInstance().addGameListener(ret);
                 break;
             case TEETH:
-                ret = new Block(type, facing, nullTick, canMove, CreatureTo.getInstance(), nullButton);
-                ret.setBlockTickBehavior(new TeethTickBehavior(ret));
+                ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 Game.getInstance().addGameListener(ret);
                 break;
             case TELEPORT:

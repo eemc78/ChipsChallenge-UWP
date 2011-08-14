@@ -47,6 +47,7 @@ public class Game {
     }
 
     public void clearStuff() {
+        mInventory.clear();
         listeners.clear();
         if(tickTimer != null)
             tickTimer.cancel();

@@ -17,76 +17,79 @@ import java.awt.Point;
  */
 public class TeethTickBehavior extends CreatureTickBehavior {
 
-    private Block owner;
 
-    public TeethTickBehavior(Block b) {
-        owner = b;
+    private TeethTickBehavior() {}
+    private static TeethTickBehavior mInstance = null;
+    public static synchronized TeethTickBehavior getInstance() {
+        if(mInstance == null)
+            mInstance = new TeethTickBehavior();
+        return mInstance;
     }
 
     public Point findChip() {
         return Game.getInstance().getLevel().findChip();
     }
 
-    public Point findMe() {
-        return Game.getInstance().getLevel().getPoint(owner);
+    public Point findMe(Block caller) {
+        return Game.getInstance().getLevel().getPoint(caller);
     }
 
-    public boolean inUse() {
-        return Game.getInstance().getLevel().contains(owner);
+    public boolean inUse(Block caller) {
+        return Game.getInstance().getLevel().contains(caller);
     }
 
     @Override
-    public void creatureTick() throws BlockContainerFullException {
-        if(!inUse())
+    public void creatureTick(Block caller) throws BlockContainerFullException {
+        if(!inUse(caller))
             return;
         Point chip = findChip();
-        Point me = findMe();
+        Point me = findMe(caller);
         int dx = chip.x - me.x;
         int dy = chip.y - me.y;
         Moves xDirection = xDirection = dx > 0 ? Moves.RIGHT : Moves.LEFT;
         Moves yDirection = yDirection = dy > 0 ? Moves.DOWN : Moves.UP;
         if(Math.abs(dx) > Math.abs(dy)) {
-            if(!owner.move(xDirection))
-                owner.move(yDirection);
+            if(!caller.move(xDirection))
+                caller.move(yDirection);
         } else if(Math.abs(dy) > Math.abs(dx)) {
-            if(!owner.move(yDirection))
-                owner.move(xDirection);
+            if(!caller.move(yDirection))
+                caller.move(xDirection);
         } else {
-            switch(owner.getFacing()) {
+            switch(caller.getFacing()) {
                 case UP:
                     if(dy > 0) {
-                        if(!owner.move(xDirection))
-                            owner.move(yDirection);
+                        if(!caller.move(xDirection))
+                            caller.move(yDirection);
                     } else {
-                        if(!owner.move(yDirection))
-                            owner.move(xDirection);
+                        if(!caller.move(yDirection))
+                            caller.move(xDirection);
                     }
                     break;
                 case DOWN:
                     if(dy < 0) {
-                        if(!owner.move(xDirection))
-                            owner.move(yDirection);
+                        if(!caller.move(xDirection))
+                            caller.move(yDirection);
                     } else {
-                        if(!owner.move(yDirection))
-                            owner.move(xDirection);
+                        if(!caller.move(yDirection))
+                            caller.move(xDirection);
                     }
                     break;
                 case LEFT:
                     if(dx > 0) {
-                        if(!owner.move(yDirection))
-                            owner.move(xDirection);
+                        if(!caller.move(yDirection))
+                            caller.move(xDirection);
                     } else {
-                        if(!owner.move(xDirection))
-                            owner.move(yDirection);
+                        if(!caller.move(xDirection))
+                            caller.move(yDirection);
                     }
                     break;
                 case RIGHT:
                     if(dx < 0) {
-                        if(!owner.move(yDirection))
-                            owner.move(xDirection);
+                        if(!caller.move(yDirection))
+                            caller.move(xDirection);
                     } else {
-                        if(!owner.move(xDirection))
-                            owner.move(yDirection);
+                        if(!caller.move(xDirection))
+                            caller.move(yDirection);
                     }
                     break;
             }

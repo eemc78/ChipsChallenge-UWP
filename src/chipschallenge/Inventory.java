@@ -21,6 +21,11 @@ public class Inventory {
     private Set<Boots> mBoots = new HashSet<Boots>();
     private Collection<Key> mKeys = new ArrayList<Key>();
 
+    public void clear() {
+        mBoots.clear();
+        mKeys.clear();
+    }
+
     public void takeKey(Key type) {
         mKeys.add(type);
     }

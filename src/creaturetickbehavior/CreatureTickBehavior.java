@@ -21,10 +21,10 @@ public abstract class CreatureTickBehavior implements BlockTickBehavior {
     public final void tick(Block caller) throws BlockContainerFullException {
         mTicksSinceLast = (mTicksSinceLast + 1) % Game.SPEED_FRAC;
         if(mTicksSinceLast == 0) {
-            creatureTick();
+            creatureTick(caller);
         }
     }
 
-    public abstract void creatureTick() throws BlockContainerFullException;
+    public abstract void creatureTick(Block caller) throws BlockContainerFullException;
     
 }
