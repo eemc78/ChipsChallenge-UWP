@@ -20,7 +20,7 @@ public class mainTest {
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());
-        g.nextLevel(6);
+        g.nextLevel(1);
     }
 
     
