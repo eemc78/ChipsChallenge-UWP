@@ -188,6 +188,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 Creatures.addCreature(ret);
                 break;
             case WALL:
+                ret = new Block(type, facing, nullTick, canMove, CannotMove, nullButton);
                 break;
             case WATER:
                 ret = new Block(type, facing, nullTick, canMove, WaterTo.getInstance(), nullButton);
