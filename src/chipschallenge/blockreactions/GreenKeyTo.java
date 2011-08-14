@@ -15,6 +15,14 @@ import chipschallenge.Inventory.Key;
  */
 public class GreenKeyTo extends BlockReaction {
 
+    private GreenKeyTo() {}
+    private static GreenKeyTo mInstance = null;
+    public static synchronized GreenKeyTo getInstance() {
+        if(mInstance == null)
+            mInstance = new GreenKeyTo();
+        return mInstance;
+    }
+
     public void react(Block moving, Block standing) {
         if(isChip(moving)) {
             Game.getInstance().getInventory().takeKey(Key.GREEN);

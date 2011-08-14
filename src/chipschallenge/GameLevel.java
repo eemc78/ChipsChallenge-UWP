@@ -83,6 +83,9 @@ public class GameLevel {
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
         Move.updatePoint(to, direction);
+        // Redraw even if move is impossible, because facing might have changed
+        Game.getInstance().moveHappened(from);
+        Game.getInstance().moveHappened(to);
         if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
         }
@@ -97,9 +100,7 @@ public class GameLevel {
             mBoard[to.x][to.y].add(b);
 
             //To reactions
-            mBoard[to.x][to.y].moveTo(b);            
-            Game.getInstance().moveHappened(from);
-            Game.getInstance().moveHappened(to);
+            mBoard[to.x][to.y].moveTo(b);                        
             return true;
         } else {
             return false;

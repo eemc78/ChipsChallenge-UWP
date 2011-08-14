@@ -15,6 +15,14 @@ import chipschallenge.Inventory.Key;
  */
 public class RedLockTo extends BlockReaction {
 
+    private RedLockTo() {}
+    private static RedLockTo mInstance = null;
+    public static synchronized RedLockTo getInstance() {
+        if(mInstance == null)
+            mInstance = new RedLockTo();
+        return mInstance;
+    }
+
     public void react(Block moving, Block standing) {
         Game.getInstance().getInventory().useKey(Key.RED);
         standing.destroy();

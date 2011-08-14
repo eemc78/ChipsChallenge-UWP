@@ -55,8 +55,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, BlueButtonTo.getInstance(), nullButton);
                 break;
             case BLUEKEY:
+                ret = new Block(type, facing, nullTick, canMove, BlueKeyTo.getInstance(), nullButton);
                 break;
             case BLUELOCK:
+                ret = new Block(type, facing, nullTick, canMove, BlueLockTo.getInstance(), nullButton);
                 break;
             case BLUEWALL:
                 break;
@@ -119,8 +121,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, GreenButtonTo.getInstance(), nullButton);
                 break;
             case GREENKEY:
+                ret = new Block(type, facing, nullTick, canMove, GreenKeyTo.getInstance(), nullButton);
                 break;
             case GREENLOCK:
+                ret = new Block(type, facing, nullTick, canMove, GreenLockTo.getInstance(), nullButton);
                 break;
             case HIDDENWALL:
                 break;
@@ -149,8 +153,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case REDBUTTON:
                 break;
             case REDKEY:
+                ret = new Block(type, facing, nullTick, canMove, RedKeyTo.getInstance(), nullButton);
                 break;
             case REDLOCK:
+                ret = new Block(type, facing, nullTick, canMove, RedLockTo.getInstance(), nullButton);
                 break;
             case SOCKET:
                 break;
@@ -194,8 +200,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, WaterTo.getInstance(), nullButton);
                 break;
             case YELLOWKEY:
+                ret = new Block(type, facing, nullTick, canMove, YellowKeyTo.getInstance(), nullButton);
                 break;
             case YELLOWLOCK:
+                ret = new Block(type, facing, nullTick, canMove, YellowLockTo.getInstance(), nullButton);
                 break;
         }
         if(ret == null) {

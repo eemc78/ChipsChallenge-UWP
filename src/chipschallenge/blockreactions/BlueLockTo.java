@@ -14,6 +14,14 @@ import chipschallenge.Inventory.Key;
  */
 public class BlueLockTo extends BlockReaction {
 
+    private BlueLockTo() {}
+    private static BlueLockTo mInstance = null;
+    public static synchronized BlueLockTo getInstance() {
+        if(mInstance == null)
+            mInstance = new BlueLockTo();
+        return mInstance;
+    }
+
     public void react(Block moving, Block standing) {
         useKey(Key.BLUE);
         standing.destroy();
@@ -21,7 +29,7 @@ public class BlueLockTo extends BlockReaction {
 
     public boolean canMove(Block moving, Block standing) {
         return isChip(moving) &&
-               hasKey(Key.RED);
+               hasKey(Key.BLUE);
     }
 
 }

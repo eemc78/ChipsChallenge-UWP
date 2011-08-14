@@ -63,6 +63,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel15();
             case 16:
                 return getLevel16();
+            case 17:
+                return getLevel17();
         }
         return null;
     }
@@ -400,6 +402,42 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(8, 5, bf.get(Block.Type.WALL));
             ret.addBlock(0, 8, bf.get(Block.Type.PINKBALL,Moves.UP));
             ret.addBlock(0, 6, bf.get(Block.Type.GREENBUTTON));
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel17() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(7, 8, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 6, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 5, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 4, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 3, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 2, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 1, bf.get(Block.Type.WALL));
+
+            ret.addBlock(2, 2, bf.get(Block.Type.BLUEKEY));
+            ret.addBlock(4, 5, bf.get(Block.Type.REDKEY));
+            ret.addBlock(5, 3, bf.get(Block.Type.BLUEKEY));
+            ret.addBlock(6, 2, bf.get(Block.Type.YELLOWKEY));
+            ret.addBlock(3, 3, bf.get(Block.Type.YELLOWKEY));
+            ret.addBlock(4, 4, bf.get(Block.Type.GREENKEY));
+
+            ret.addBlock(8, 7, bf.get(Block.Type.REDLOCK));
+            ret.addBlock(8, 6, bf.get(Block.Type.BLUELOCK));
+            ret.addBlock(8, 5, bf.get(Block.Type.YELLOWLOCK));
+            ret.addBlock(8, 4, bf.get(Block.Type.GREENLOCK));
+            ret.addBlock(8, 3, bf.get(Block.Type.GREENLOCK));
+            ret.addBlock(8, 2, bf.get(Block.Type.YELLOWLOCK));
+            ret.addBlock(8, 1, bf.get(Block.Type.BLUELOCK));
             ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
             return ret;
         } catch (BlockContainerFullException ex) {
