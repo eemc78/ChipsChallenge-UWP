@@ -6,7 +6,6 @@
 package chipschallenge.gui;
 
 import chipschallenge.Game;
-import chipschallenge.GameListener;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -23,10 +22,10 @@ import javax.imageio.ImageIO;
  *
  * @author patrik
  */
-public class GUI extends Frame implements GameListener {
+public class GUI extends Frame {
 
     private Image mBackground;
-    private Panel mPlayField;
+    private PlayField mPlayField;
     private Panel mHud;
 
     private GUI() {
@@ -37,7 +36,6 @@ public class GUI extends Frame implements GameListener {
                 System.exit(0);
             }
         });
-        Game.getInstance().addGameListener(this);
         setSize (520,400);
         try {
             mBackground = ImageIO.read(new File("background.bmp"));
@@ -50,6 +48,7 @@ public class GUI extends Frame implements GameListener {
         layout.setVgap(30);
         setLayout(layout);
         mPlayField = new PlayField(9,9);
+        Game.getInstance().addMoveListener(mPlayField);
         mHud = new Hud();
         add(mPlayField);
         add(mHud);
@@ -97,10 +96,6 @@ public class GUI extends Frame implements GameListener {
         mPlayField.repaint();
         MsgBox msgbox = new MsgBox(this, msg, true);
         return msgbox.isOk;
-    }
-
-    public void tick() {
-        mPlayField.repaint();
     }
 
     public void setChipsLeft(int n) {}

@@ -77,7 +77,7 @@ public class GameLevel {
         return mBoard[0].length;
     }
 
-    public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {
+    public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {        
         System.out.println(b.getType() + " " + direction);
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
@@ -99,7 +99,8 @@ public class GameLevel {
 
             //To reactions
             mBoard[to.x][to.y].moveTo(b);            
-
+            Game.getInstance().moveHappened(from);
+            Game.getInstance().moveHappened(to);
             System.out.println("POINT AFTER SUCCESS:" + blocks.get(b));
             return true;
         } else {
@@ -112,7 +113,8 @@ public class GameLevel {
     public void removeBlock(Block b) {
         System.out.println("Removing " + b);
         getBlockContainer(b).remove(b);
-        blocks.remove(b);
+        if(b.getType() != Block.Type.CHIP)
+            blocks.remove(b);
     }
 
     public void replaceBlock(Block a, Block b) {

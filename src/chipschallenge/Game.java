@@ -4,6 +4,8 @@ import chipschallenge.gamestates.GameState;
 import chipschallenge.Move.Moves;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
+import chipschallenge.gui.MoveListener;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +26,7 @@ public class Game {
     public static final int SPEED_FRAC = 3;
     public static final int TIMER_TICK = MOVE_MS/SPEED_FRAC;
     private Set<GameListener> listeners = new HashSet<GameListener>();
+    private Set<MoveListener> movelisteners = new HashSet<MoveListener>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
@@ -77,6 +80,13 @@ public class Game {
         tickTimer.schedule(tt, 0, TIMER_TICK);
     }
 
+    public void addMoveListener(MoveListener l) {
+        movelisteners.add(l);
+    }
+
+    public void removeMoveListener(MoveListener l) {
+        movelisteners.remove(l);
+    }
     
     public void addGameListener(GameListener l) {
         listeners.add(l);
@@ -104,7 +114,6 @@ public class Game {
 
     public void die(String msg) {
         listeners.clear();
-        addGameListener(GUI.getInstance());
         tickTimer.cancel();
         //TODO: Play "Bummer"
         GUI.getInstance().msgDialog(msg);
@@ -141,6 +150,12 @@ public class Game {
 
     public void setLevelFactory(LevelFactory lf) {
         this.mLevelFactory = lf;
+    }
+
+    public void moveHappened(Point location) {
+        for(MoveListener l : movelisteners) {
+            l.moveHappened(location);
+        }
     }
 
 }

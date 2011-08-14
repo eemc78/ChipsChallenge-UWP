@@ -18,7 +18,7 @@ import java.awt.Point;
  *
  * @author patrik
  */
-class PlayField extends Panel {
+class PlayField extends Panel implements MoveListener {
 
     private int mWidth;
     private int mHeight;
@@ -37,6 +37,24 @@ class PlayField extends Panel {
         paint(g);
     }
 
+    public int getTop(GameLevel gl, int chipY) {
+        int top = chipY - 4;
+        if(top < 0)
+            return 0;
+        if(top > (gl.getHeight()-mHeight))
+            return (gl.getHeight()-mHeight);
+        return top;
+    }
+
+   public int getLeft(GameLevel gl, int chipX) {
+        int left = chipX - 4;
+        if(left < 0)
+            return 0;
+        if(left > (gl.getWidth()-mWidth))
+            return (gl.getWidth()-mWidth);
+        return left;
+    }
+
     @Override
     public void paint(Graphics g) {
         if(offscreen == null) {
@@ -45,18 +63,26 @@ class PlayField extends Panel {
         Graphics og = offscreen.getGraphics();
         GameLevel gl = Game.getInstance().getLevel();
         Point chip = gl.findChip();
-        int top = chip.y - 4;
-        top = top < 0 ? 0 : top;
-        top = top > (gl.getHeight()-mHeight) ? (gl.getHeight()-mHeight) : top;
-        int left = chip.x - 4;
-        left = left < 0 ? 0 : left;
-        left = left > (gl.getWidth()-mWidth) ? (gl.getWidth()-mWidth) : left;
+        int top = getTop(gl, chip.y);
+        int left = getLeft(gl, chip.x);
         for(int x = 0; x < mWidth; x++)
             for(int y = 0; y < mHeight; y++)
                 og.drawImage(gl.getBlockContainer(x+left, y+top).getImage(), x*32, y*32, null);
         super.paint(og);
         g.drawImage(offscreen, 0, 0, null);
         og.dispose();
+    }
+
+    // Determine whether repaint is needed
+    public void moveHappened(Point location) {
+        GameLevel gl = Game.getInstance().getLevel();
+        Point chip = gl.findChip();
+        int top = getTop(gl, chip.y);
+        int left = getLeft(gl, chip.x);
+        if(location.y >= top && location.y <= (top+mHeight) && location.x >= left && location.x <= (left+mWidth)) {
+            repaint();
+        }
+
     }
 
 }
