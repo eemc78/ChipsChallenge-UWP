@@ -99,7 +99,7 @@ public class WasdLevelFactory extends LevelFactory{
     }
 
     @Override
-    public int getLevelNumberByPassword(String pass) {
+    protected int getLevelNumberByPassword(String pass) {
         return -1;
     }
 

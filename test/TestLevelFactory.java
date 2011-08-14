@@ -587,7 +587,7 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     @Override
-    public int getLevelNumberByPassword(String pass) {
+    protected int getLevelNumberByPassword(String pass) {
         if(pass.equals("level1"))
             return 1;
         if(pass.equals("level2"))
