@@ -59,6 +59,10 @@ public class Block implements GameListener {
         return mType == t;
     }
 
+   private boolean isChip() {
+        return mType == Type.CHIP || mType == Type.SWIMMINGCHIP;
+    }
+
     public boolean isCreature() {
         return getType() == Block.Type.BLOB ||
                getType() == Block.Type.BUG ||
@@ -150,6 +154,8 @@ public class Block implements GameListener {
 
     @Override
     public Block clone() throws CloneNotSupportedException {
+        if(isCreature() || isChip())
+            throw new CloneNotSupportedException();
         return (Block) super.clone();
     }
     
