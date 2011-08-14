@@ -9,6 +9,7 @@ import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
 import chipschallenge.blockreactions.*;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
+import chipschallenge.buttonbehaviors.CloneMachineBehavior;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.buttonbehaviors.ToggleWallBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
@@ -79,6 +80,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case CLONEBLOCK:
                 break;
             case CLONEMACHINE:
+                ret = new Block(type, facing, nullTick, canMove, CannotMove, CloneMachineBehavior.getInstance());
                 break;
             case COMPUTERCHIP:
                 break;
@@ -151,6 +153,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case RECESSEDWALL:
                 break;
             case REDBUTTON:
+                ret = new Block(type, facing, nullTick, canMove, RedButtonTo.getInstance(), nullButton);
                 break;
             case REDKEY:
                 ret = new Block(type, facing, nullTick, canMove, RedKeyTo.getInstance(), nullButton);
@@ -173,6 +176,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 Buttons.addBlueButtonsListener(ret);
                 break;
             case TEETH:
+                System.out.println("CREATED TEETH!");
                 ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 Creatures.addCreature(ret);
                 break;

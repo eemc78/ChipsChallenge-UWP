@@ -2,6 +2,7 @@ package chipschallenge;
 
 import java.awt.Image;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -88,6 +89,10 @@ public class BlockContainer {
 
     public void clear() {
         blocks.clear();
+    }
+
+    public Iterator<Block> iterator() {
+        return blocks.iterator();
     }
 
 }

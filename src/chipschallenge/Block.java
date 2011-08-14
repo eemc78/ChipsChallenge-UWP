@@ -59,6 +59,18 @@ public class Block implements GameListener {
         return mType == t;
     }
 
+    public boolean isCreature() {
+        return getType() == Block.Type.BLOB ||
+               getType() == Block.Type.BUG ||
+               getType() == Block.Type.FIREBALL ||
+               getType() == Block.Type.GLIDER ||
+               getType() == Block.Type.PARAMECIUM ||
+               getType() == Block.Type.PINKBALL ||
+               getType() == Block.Type.TANK ||
+               getType() == Block.Type.TEETH ||
+               getType() == Block.Type.WALKER;
+    }
+
     @Override
     public String toString() {
         return getType().toString();

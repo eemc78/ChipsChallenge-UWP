@@ -241,7 +241,7 @@ public class ImageFactory {
             }
         }
 
-        if((x >= 4 && !(y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.FORCEFLOOR) {
+        if((x >= 4 && !(x == 6 && y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.FORCEFLOOR) {
             switch(moves) {
                 case UP:
                     break;

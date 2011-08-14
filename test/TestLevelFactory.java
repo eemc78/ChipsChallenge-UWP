@@ -2,6 +2,8 @@
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.BlockFactory;
+import chipschallenge.Buttons;
+import chipschallenge.Creatures;
 import chipschallenge.GameLevel;
 import chipschallenge.LevelFactory;
 import chipschallenge.MicrosoftBlockFactory;
@@ -67,6 +69,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel17();
             case 18:
                 return getLevel18();
+            case 19:
+                return getLevel19();
         }
         return null;
     }
@@ -464,6 +468,7 @@ public class TestLevelFactory extends LevelFactory {
             ret.getBlockContainer(6,4).clear();
             ret.getBlockContainer(7,4).clear();
             ret.getBlockContainer(8,4).clear();
+            ret.getBlockContainer(6,7).clear();
 
             ret.addBlock(0, 4, bf.get(Block.Type.WATER));
             ret.addBlock(1, 4, bf.get(Block.Type.WATER));
@@ -494,6 +499,28 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(8, 8, bf.get(Block.Type.WALL));
             ret.addBlock(8, 6, bf.get(Block.Type.WALL));
             ret.addBlock(7, 7, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+        public GameLevel getLevel19() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            // TODO: Make factory methods to create cloners more easily
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            Block cloner = bf.get(Block.Type.CLONEMACHINE);
+            ret.addBlock(8, 7, cloner);
+            Block teeth = bf.get(Block.Type.TEETH, Moves.UP);
+            Creatures.removeCreature(teeth);
+            ret.addBlock(8, 7, teeth);
+            Block button = bf.get(Block.Type.REDBUTTON);
+            Buttons.addRedButtonListener(button, cloner);
+            ret.addBlock(0, 8, button);
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
             return ret;
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");
