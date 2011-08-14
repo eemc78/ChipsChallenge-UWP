@@ -71,6 +71,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel18();
             case 19:
                 return getLevel19();
+            case 20:
+                return getLevel20();
         }
         return null;
     }
@@ -527,7 +529,37 @@ public class TestLevelFactory extends LevelFactory {
         } finally {
             return ret;
         }
-    }
+        }
+
+                public GameLevel getLevel20() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            // TODO: Make factory methods to create cloners more easily
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            Block cloner = bf.get(Block.Type.CLONEMACHINE);
+            ret.addBlock(7, 1, cloner);
+            Block block = bf.get(Block.Type.BLOCK, Moves.LEFT);
+            Creatures.removeCreature(block);
+            ret.addBlock(7, 1, block);
+            Block button = bf.get(Block.Type.REDBUTTON);
+            Buttons.addRedButtonListener(button, cloner);
+            ret.addBlock(8, 0, button);
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+
+            for(int i = 0; i <= 8; i++) {
+                for(int j = 3; j <= 6; j++) {
+                    ret.getBlockContainer(i,j).clear();
+                    ret.addBlock(i,j, bf.get(Block.Type.WATER));
+                }
+            }
+
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+        }
 
     @Override
     public int getLastLevelNumber() {
