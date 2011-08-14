@@ -179,6 +179,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case TELEPORT:
                 break;
             case THIEF:
+                ret = new Block(type, facing, nullTick, canMove, ThiefTo.getInstance(), nullButton);
                 break;
             case THINWALL:
                 break;

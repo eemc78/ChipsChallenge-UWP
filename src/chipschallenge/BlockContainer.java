@@ -80,10 +80,14 @@ public class BlockContainer {
                 bl.getToReaction().react(b, bl);
     }
 
-    void replaceBlock(Block a, Block b) {
+    public void replaceBlock(Block a, Block b) {
         int index = blocks.indexOf(a);       
         blocks.add(index, b);
         a.destroy();
+    }
+
+    public void clear() {
+        blocks.clear();
     }
 
 }

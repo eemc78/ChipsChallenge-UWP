@@ -120,7 +120,7 @@ public class ImageFactory {
                 y = 4; x = 4;
                 break;
             case FLIPPERS:
-                y = 6; x = 6;
+                y = 8; x = 6;
                 break;
             case FLOOR:
                 y = 0; x = 0;
@@ -159,7 +159,7 @@ public class ImageFactory {
                 y = 10; x = 1;
                 break;
             case ICESKATES:
-                y = 10; x = 6;
+                y = 10; x = 8;
                 break;
             case INVISIBLEWALL:
                 y = 0; x = 0;
@@ -188,7 +188,7 @@ public class ImageFactory {
                 y = 2; x = 2;
                 break;
             case SUCTIONBOOTS:
-                y = 11; x = 6;
+                y = 11; x = 8;
                 break;
             case SWIMMINGCHIP:
                 y = 12; x = 3;
@@ -241,7 +241,7 @@ public class ImageFactory {
             }
         }
 
-        if((x >= 4 && !(y >= 4 && y <= 7)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.FORCEFLOOR) {
+        if((x >= 4 && !(y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.FORCEFLOOR) {
             switch(moves) {
                 case UP:
                     break;
