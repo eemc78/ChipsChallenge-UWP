@@ -9,13 +9,14 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Game;
 import chipschallenge.Move.Moves;
+import chipschallenge.tickbehaviors.BlockTickBehavior;
 import java.awt.Point;
 
 /**
  *
  * @author patrik
  */
-public class TeethTickBehavior extends CreatureTickBehavior {
+public class TeethTickBehavior implements BlockTickBehavior {
 
 
     private TeethTickBehavior() {}

@@ -8,7 +8,7 @@ import chipschallenge.blockreactions.CannotMoveBlockReaction;
  *
  * @author patrik
  */
-public class TrapBehavior implements ButtonBehavior {
+public class TrapBehavior extends ButtonBehavior {
 
     public void buttonDown(Block listener, Block button) {
         if(button.getType() == Block.Type.BROWNBUTTON) {

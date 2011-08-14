@@ -55,6 +55,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel11();
             case 12:
                 return getLevel12();
+            case 13:
+                return getLevel13();
         }
         return null;
     }
@@ -315,6 +317,29 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(10, 12, bf.get(Block.Type.TEETH));
             ret.addBlock(10, 12, bf.get(Block.Type.PINKBALL));
             ret.addBlock(31, 31, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel13() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(4, 4, bf.get(Block.Type.GREENBUTTON));
+            ret.addBlock(0, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(1, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(2, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(3, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(4, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(5, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(6, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(7, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(8, 6, bf.get(Block.Type.TOGGLEWALLCLOSED));
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
             return ret;
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");

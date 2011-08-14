@@ -8,12 +8,13 @@ package creaturetickbehavior;
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
+import chipschallenge.tickbehaviors.BlockTickBehavior;
 
 /**
  *
  * @author patrik
  */
-public class ParameciumTickBehavior extends CreatureTickBehavior {
+public class ParameciumTickBehavior implements BlockTickBehavior {
 
     private ParameciumTickBehavior() {}
     private static ParameciumTickBehavior mInstance = null;

@@ -8,12 +8,13 @@ package creaturetickbehavior;
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
+import chipschallenge.tickbehaviors.BlockTickBehavior;
 
 /**
  *
  * @author patrik
  */
-public class BugTickBehavior extends CreatureTickBehavior {
+public class BugTickBehavior implements BlockTickBehavior {
 
     private BugTickBehavior() {}
     private static BugTickBehavior mInstance = null;

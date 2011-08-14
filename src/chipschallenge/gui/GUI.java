@@ -12,6 +12,7 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
+import java.awt.Point;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -49,7 +50,6 @@ public class GUI extends Frame {
         layout.setVgap(30);
         setLayout(layout);
         mPlayField = new PlayField(9,9);
-        Game.getInstance().addMoveListener(mPlayField);
         mHud = new Hud();
         add(mPlayField);
         add(mHud);
@@ -74,6 +74,7 @@ public class GUI extends Frame {
 
     @Override
     public void repaint() {
+        //super.repaint();
         mPlayField.repaint();
     }
 
@@ -109,6 +110,10 @@ public class GUI extends Frame {
 
     public void scoreDialog(GameLevel mLevel) {
         msgDialog(mLevel.getScore());
+    }
+
+    public boolean repaintIfNecessary(Point from) {
+        return mPlayField.repaintIfNecessary(from);
     }
     
 }

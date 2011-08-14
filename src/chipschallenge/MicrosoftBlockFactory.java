@@ -10,6 +10,7 @@ import chipschallenge.Move.Moves;
 import chipschallenge.blockreactions.*;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
+import chipschallenge.buttonbehaviors.ToggleWallBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
@@ -44,7 +45,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
         switch(type) {
             case BLOB:
                 ret = new Block(type, facing, BlobTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addBlob(ret);
+                Creatures.addCreature(ret);
                 break;
             case BLOCK:
                 ret = new Block(type, facing, nullTick, canMove, BlockTo.getInstance(), nullButton);
@@ -63,7 +64,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case BUG:
                 ret = new Block(type, facing, BugTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addCreature(ret);
+                Creatures.addCreature(ret);
                 break;
             case BURNEDCHIP:
                 break;
@@ -93,7 +94,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case FIREBALL:
                 ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addCreature(ret);
+                Creatures.addCreature(ret);
                 break;
             case FLIPPERS:
                 ret = new Block(type, facing, nullTick, canMove, FlippersTo.getInstance(), nullButton);
@@ -108,11 +109,12 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case GLIDER:
                 ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addCreature(ret);
+                Creatures.addCreature(ret);
                 break;
             case GRAVEL:
                 break;
             case GREENBUTTON:
+                ret = new Block(type, facing, nullTick, canMove, GreenButtonTo.getInstance(), nullButton);
                 break;
             case GREENKEY:
                 break;
@@ -134,11 +136,11 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case PARAMECIUM:
                 ret = new Block(type, facing, ParameciumTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addCreature(ret);
+                Creatures.addCreature(ret);
                 break;
             case PINKBALL:
                 ret = new Block(type, facing, PinkballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addCreature(ret);
+                Creatures.addCreature(ret);
                 break;
             case RECESSEDWALL:
                 break;
@@ -159,11 +161,11 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 BlockTickBehavior btb = tb;
                 ButtonBehavior bb = tb;
                 ret = new Block(type, facing, tb, canMove, CreatureTo.getInstance(), bb);
-                Game.getInstance().addCreature(ret);
+                Creatures.addCreature(ret);
                 break;
             case TEETH:
                 ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Game.getInstance().addCreature(ret);
+                Creatures.addCreature(ret);
                 break;
             case TELEPORT:
                 break;
@@ -172,8 +174,9 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case THINWALL:
                 break;
             case TOGGLEWALLCLOSED:
-                break;
             case TOGGLEWALLOPEN:
+                ret = new Block(type, facing, nullTick, canMove, ToggleWallTo.getInstance(), ToggleWallBehavior.getInstance());
+                Buttons.addGreenButtonsListener(ret);
                 break;
             case TRAP:
                 break;

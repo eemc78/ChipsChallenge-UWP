@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.Buttons;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,24 +11,22 @@ import java.util.Set;
  */
 public class GreenButtonTo extends BlockReaction {
 
-    private static Set<Block> listeners = new HashSet<Block>();
+    private GreenButtonTo() {}
+    private static GreenButtonTo mInstance = null;
+    public static synchronized GreenButtonTo getInstance() {
+        if(mInstance == null)
+            mInstance = new GreenButtonTo();
+        return mInstance;
+    }
 
     public void react(Block moving, Block standing) {
-        for(Block b : listeners) {
-            b.buttonDown(standing);
-        }
+        Buttons.greenButtonDown(standing);
     }
 
     public boolean canMove(Block moving, Block standing) {
         return true;
     }
 
-    public static void addGreenButtonsListener(Block b) {
-        listeners.add(b);
-    }
 
-    public static void removeGreenButtonsListener(Block b) {
-        listeners.remove(b);
-    }
 
 }

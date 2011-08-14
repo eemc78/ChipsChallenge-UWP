@@ -11,12 +11,13 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
+import chipschallenge.tickbehaviors.BlockTickBehavior;
 
 /**
  *
  * @author patrik
  */
-public class TankBehavior extends CreatureTickBehavior implements ButtonBehavior {
+public class TankBehavior extends ButtonBehavior implements BlockTickBehavior {
 
     private boolean isMoving = false;
 

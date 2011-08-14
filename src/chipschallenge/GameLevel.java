@@ -98,7 +98,8 @@ public class GameLevel {
 
             //To reactions
             mBoard[to.x][to.y].moveTo(b);            
-            Game.getInstance().moveHappened(from, to);
+            Game.getInstance().moveHappened(from);
+            Game.getInstance().moveHappened(to);
             return true;
         } else {
             return false;

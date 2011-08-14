@@ -9,12 +9,13 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 import chipschallenge.Utils;
+import chipschallenge.tickbehaviors.BlockTickBehavior;
 
 /**
  *
  * @author patrik
  */
-public class BlobTickBehavior extends CreatureTickBehavior {
+public class BlobTickBehavior implements BlockTickBehavior {
 
     private BlobTickBehavior() {}
     private static BlobTickBehavior mInstance = null;

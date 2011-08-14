@@ -18,7 +18,7 @@ import java.awt.Point;
  *
  * @author patrik
  */
-class PlayField extends Panel implements MoveListener {
+class PlayField extends Panel {
 
     private int mWidth;
     private int mHeight;
@@ -74,17 +74,16 @@ class PlayField extends Panel implements MoveListener {
     }
 
     // Determine whether repaint is needed
-    public void moveHappened(Point from, Point to) {
+    public boolean repaintIfNecessary(Point from) {
         GameLevel gl = Game.getInstance().getLevel();
         Point chip = gl.findChip();
         int top = getTop(gl, chip.y);
         int left = getLeft(gl, chip.x);
         if(from.y >= top && from.y <= (top+mHeight) && from.x >= left && from.x <= (left+mWidth)) {
             repaint();
-        } else if(to.y >= top && to.y <= (top+mHeight) && to.x >= left && to.x <= (left+mWidth)) {
-            repaint();
-        }
-
+            return true;
+        } 
+        return false;
     }
 
 }

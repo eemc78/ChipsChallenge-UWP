@@ -8,6 +8,7 @@ import chipschallenge.blockreactions.BlockReaction;
 import chipschallenge.blockreactions.CanMoveBlockReaction;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 import java.awt.Image;
+import java.awt.Point;
 
 /**
  *
@@ -52,6 +53,10 @@ public class Block implements GameListener {
 
     public Type getType() {
         return mType;
+    }
+
+    public boolean isA(Type t) {
+        return mType == t;
     }
 
     @Override
@@ -121,6 +126,10 @@ public class Block implements GameListener {
 
     public BlockReaction getToReaction() {
         return mTo;
+    }
+
+    public Point getPoint() {
+        return Game.getInstance().getLevel().getPoint(this);
     }
 
     public void replace(Block b) {
