@@ -84,7 +84,8 @@ public class ImageFactory {
                 y = 6;
                 x = 1;
                 break;
-            case BLUEWALL:
+            case BLUEWALLREAL:
+            case BLUEWALLFAKE:
                 y = 14;
                 x = 1;
                 break;
