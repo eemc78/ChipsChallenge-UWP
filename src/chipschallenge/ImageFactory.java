@@ -312,17 +312,10 @@ public class ImageFactory {
             }
         }
 
-        if ((x >= 4 && !(x == 6 && y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.FORCEFLOOR) {
+        if ((x >= 4 && !(x == 6 && y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL) {
             switch (moves) {
-                case UP:
-                    break;
-                case DOWN:
-                    if (type == Type.FORCEFLOOR) {
-                        x = 0;
-                        y = 13;
-                    } else {
-                        y += 2;
-                    }
+                case DOWN:  
+                    y += 2;
                     break;
                 case LEFT:
                     y += 1;
@@ -332,6 +325,22 @@ public class ImageFactory {
                     break;
             }
         }
+
+        if(type == Type.FORCEFLOOR) {
+            switch (moves) {
+                case DOWN:
+                    x = 0;
+                    y = 13;
+                    break;
+                case LEFT:
+                    y += 2;
+                    break;
+                case RIGHT:
+                    y += 1;
+                    break;
+            }
+        }
+
         // TODO: Handle masks if overlay == true
         BufferedImage img = tileset.getSubimage(x * 32, y * 32, 32, 32);
 

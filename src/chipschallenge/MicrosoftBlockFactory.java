@@ -114,8 +114,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret.setType(Type.FLOOR);
                 break;
             case FORCEFLOOR:
+                ret = new Block(type, facing, nullTick, canMove, ForceFloorTo.getInstance(), nullButton);
                 break;
             case RANDOMFORCEFLOOR:
+                ret = new Block(type, facing, nullTick, canMove, RandomForceFloorTo.getInstance(), nullButton);
                 break;
             case GLIDER:
                 ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);

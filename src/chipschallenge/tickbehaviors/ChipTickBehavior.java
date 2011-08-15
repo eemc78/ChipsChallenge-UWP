@@ -2,6 +2,7 @@ package chipschallenge.tickbehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.Game;
 import chipschallenge.Move.Moves;
 import chipschallenge.gui.GUI;
 import java.awt.event.KeyAdapter;
@@ -28,7 +29,11 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
 
     public void tick(Block caller) throws BlockContainerFullException {
         if(!proposedMoves.isEmpty()) {
-            caller.move(proposedMoves.poll());
+            if(caller.isOnForceFloor())
+                Game.getInstance().removeForcedMove(caller);
+            if(!caller.move(proposedMoves.poll())) {
+                Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
+            }      
             mTicksBeforeTurn = 12;
         }
         if(mTicksBeforeTurn > 0) {

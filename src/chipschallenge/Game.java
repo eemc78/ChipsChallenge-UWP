@@ -115,6 +115,10 @@ public class Game {
         forcedMoves.put(b,m);
     }
 
+    public void removeForcedMove(Block b) {
+        forcedMoves.remove(b);
+    }
+
     public void tick() throws BlockContainerFullException {
         mTickCount++;
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
@@ -126,7 +130,7 @@ public class Game {
                 b.setFacing(Move.reverse(b.getFacing()));
                 mLevel.getBlockContainer(b).moveFrom(b);
             }
-        }        
+        }
         //TODO: Remove the need of making a copy
         Collection<GameListener> listenersCpy= new ArrayList<GameListener>(gameListeners);
         for(GameListener l : listenersCpy) {

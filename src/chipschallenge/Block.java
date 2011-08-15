@@ -72,12 +72,26 @@ public class Block implements GameListener {
         return mType == Type.ICE;
     }
 
+    public boolean isForceFloor() {
+        return mType == Type.FORCEFLOOR || mType == Type.RANDOMFORCEFLOOR;
+    }
+
     public boolean isOnIce() {
         if(!isChip() && !isBlock() && !isCreature())
             return false;
         Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
         for(Block b : blocks)
             if(b.isIce())
+                return true;
+        return false;
+    }
+
+    public boolean isOnForceFloor() {
+        if(!isChip() && !isBlock() && !isCreature())
+            return false;
+        Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
+        for(Block b : blocks)
+            if(b.isForceFloor())
                 return true;
         return false;
     }

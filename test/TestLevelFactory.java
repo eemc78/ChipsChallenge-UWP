@@ -62,6 +62,7 @@ public class TestLevelFactory extends LevelFactory {
             case 28: return getLevel28();
             case 29: return getLevel29();
             case 30: return getLevel30();
+            case 31: return getLevel31();
         }
         return null;
     }
@@ -810,6 +811,76 @@ public GameLevel getLevel24() {
             return ret;
         }
         }
+
+                            public GameLevel getLevel31() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(1, 0, bf.get(Block.Type.WALL));
+
+            ret.addBlock(1, 1, bf.get(Block.Type.WALL));
+            ret.addBlock(1, 2, bf.get(Block.Type.WALL));
+            ret.addBlock(1, 3, bf.get(Block.Type.WALL));
+            ret.addBlock(1, 4, bf.get(Block.Type.WALL));
+            ret.addBlock(1, 5, bf.get(Block.Type.WALL));
+            ret.addBlock(1, 6, bf.get(Block.Type.WALL));
+            ret.addBlock(1, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(2, 1, bf.get(Block.Type.WALL));
+            ret.addBlock(3, 1, bf.get(Block.Type.WALL));
+            ret.addBlock(4, 1, bf.get(Block.Type.WALL));
+            ret.addBlock(5, 1, bf.get(Block.Type.WALL));
+            ret.addBlock(6, 1, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 1, bf.get(Block.Type.WALL));
+            ret.addBlock(2, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(3, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(4, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(5, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(6, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 2, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 3, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 4, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 5, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 6, bf.get(Block.Type.WALL));
+
+            ret.addBlock(0, 1, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
+            ret.addBlock(0, 2, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
+            ret.addBlock(0, 3, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
+            ret.addBlock(0, 4, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
+            ret.addBlock(0, 5, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
+            ret.addBlock(0, 6, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
+            ret.addBlock(0, 7, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
+            ret.addBlock(0, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(1, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(2, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(3, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(4, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(5, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(6, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(7, 8, bf.get(Block.Type.FORCEFLOOR, Moves.RIGHT));
+            ret.addBlock(8, 8, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 7, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 6, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 5, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 4, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 3, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 2, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 1, bf.get(Block.Type.FORCEFLOOR, Moves.UP));
+            ret.addBlock(8, 0, bf.get(Block.Type.FORCEFLOOR, Moves.LEFT));
+            ret.addBlock(7, 0, bf.get(Block.Type.FORCEFLOOR, Moves.LEFT));
+            ret.addBlock(6, 0, bf.get(Block.Type.FORCEFLOOR, Moves.LEFT));
+            ret.addBlock(5, 0, bf.get(Block.Type.FORCEFLOOR, Moves.LEFT));
+            ret.addBlock(4, 0, bf.get(Block.Type.FORCEFLOOR, Moves.LEFT));
+            ret.addBlock(3, 0, bf.get(Block.Type.FORCEFLOOR, Moves.LEFT));
+            ret.addBlock(4, 4, bf.get(Block.Type.TEETH));
+            ret.addBlock(2, 0, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
 
 
 
