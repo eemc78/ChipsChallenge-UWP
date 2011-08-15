@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -36,8 +35,6 @@ public class Game {
     private int mLevelNumber = 0;
     private int enemyTick = 0;
     private Timer tickTimer = null;
-    private static int mCreatureTicks = 0;
-    private static boolean blobMove = false;
     private long mTickCount = 0;
     private long mLastTickDrawn = 0;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
