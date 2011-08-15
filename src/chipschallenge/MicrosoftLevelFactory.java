@@ -3,17 +3,12 @@ package chipschallenge;
 import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
 import chipschallenge.gui.GUI;
-import java.awt.Point;
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Level factory which uses CHIPS.DAT to create levels.
@@ -151,7 +146,6 @@ public class MicrosoftLevelFactory extends LevelFactory {
         try {
             chipDat = new RandomAccessFile("CHIPS.DAT","r");
             int magicNumber = ByteSwapper.swap(chipDat.readInt());
-            System.out.println("MAGIC NUMBER: " + magicNumber);
             if(magicNumber != 0x0002AAAC)
                 throw new Exception("Couldn't parse file");
             short numLevels = ByteSwapper.swap(chipDat.readShort());
@@ -203,90 +197,79 @@ public class MicrosoftLevelFactory extends LevelFactory {
     public GameLevel getLevel(int n) {
         int width = 32;
         int height = 32;
-        GameLevel ret = getFloors(32,32); //new GameLevel(width,height);
+        GameLevel ret = getFloors(width,height); //new GameLevel(width,height);
         try {
+            long offset = 6;
+            chipDat.seek(offset);
             if (n > levelCount) {
                 throw new IllegalArgumentException();
             }
             int level = 1;
-            chipDat.seek(6); // Start of first level
-            while (level < n) {
-                // Read number of bytes for level and skip over it
-                short levelSizeBytes = ByteSwapper.swap(chipDat.readShort());
-                chipDat.skipBytes(levelSizeBytes);
+
+            // Skip over the levels we don't want
+            while(level < n) {
+                short numBytesLevel = ByteSwapper.swap(chipDat.readShort());
+                short levelNumber   = ByteSwapper.swap(chipDat.readShort());
+                short time          = ByteSwapper.swap(chipDat.readShort());
+                short numberOfChips = ByteSwapper.swap(chipDat.readShort());
                 level++;
             }
-            short levelSizeBytes = ByteSwapper.swap(chipDat.readShort());
-            // We should be at the level we want now
-            short levelNumber = ByteSwapper.swap(chipDat.readShort());
-            if(levelNumber != n) {
-                // TODO: Handle this Exception
-            }
-            short time = ByteSwapper.swap(chipDat.readShort());
-            short numChips = ByteSwapper.swap(chipDat.readShort());
-            short mapDetail = ByteSwapper.swap(chipDat.readShort()); // Should be always 1
-            short numBytesInFirstLayer = ByteSwapper.swap(chipDat.readShort());
-            int readBytes = 0;
-            int x = 0;
-            int y = 0;
-            while(readBytes < numBytesInFirstLayer) {
-                byte readByte = chipDat.readByte();
-                readBytes++;
-                if(readByte >= 0x00 && readByte <= 0x6F) {
-                    ret.addBlock(x, y, getBlock(readByte));
-                    x++;
-                    if(x > (width-1)) {
-                        x = 0;
-                        y++;
-                    }
-                } else if(readByte >= 0x70 && readByte <= 0x9F) {
-                    // ORed copies
-                } else if(readByte >= 0x9F && readByte <= 0xCF) {
-                    // XORed copies
-                } else if(readByte == 0xFF) {
-                    // RLE-encoding
-                    byte copies = chipDat.readByte();
-                    byte pad = chipDat.readByte();                                    
-                    readBytes += 2;
-                    for(int i = 0; i < copies; i++) {
-                        ret.addBlock(x, y, getBlock(pad));
-                        x++;
-                        if(x > (width-1)) {
-                            x = 0;
-                            y++;
-                        }
-                    }
-                }
-            }
-            short numBytesInSecondLayer = ByteSwapper.swap(chipDat.readShort());
-            readBytes = 0;
-            x = 0;
-            y = 0;
-            while(readBytes < numBytesInSecondLayer) {
-                byte readByte = chipDat.readByte();
-                readBytes++;
-                if(readByte >= 0x00 && readByte <= 0x6F) {
-                    ret.addBlock(x, y, getBlock(readByte));
-                } else if(readByte >= 0x70 && readByte <= 0x9F) {
-                    // ORed copies
-                } else if(readByte >= 0x9F && readByte <= 0xCF) {
-                    // XORed copies
-                } else if(readByte == 0xFF) {
-                    // RLE-encoding
-                    byte copies = chipDat.readByte();
-                    byte pad = chipDat.readByte();                                   
-                    readBytes += 2;
-                    for(int i = 0; i < copies; i++) {
-                        ret.addBlock(x, y, getBlock(pad));
-                    }
-                }
-            }
-            char optionalBytes = chipDat.readChar();
+            // The level we want
+            short numBytesLevel = ByteSwapper.swap(chipDat.readShort());
+            short levelNumber   = ByteSwapper.swap(chipDat.readShort());
+            short time          = ByteSwapper.swap(chipDat.readShort());
+            short numberOfChips = ByteSwapper.swap(chipDat.readShort());            
+            short mapDetail     = ByteSwapper.swap(chipDat.readShort());
+
+            // Read layer 1
+            readLayer(ret);
+
+            // Read layer 2
+            readLayer(ret);
+            
         } catch (IOException ex) {
         } finally {
             return ret;
         }
     }
+
+    public void readLayer(GameLevel ret) throws IOException, BlockContainerFullException {
+        int width = ret.getWidth();
+        int height = ret.getHeight();
+
+        // Number of bytes for this layer data
+        short numberOfBytes = ByteSwapper.swap(chipDat.readShort());
+        short bytesLeft = numberOfBytes;
+        ByteBuffer bb = ByteBuffer.allocate(numberOfBytes);
+
+        // Read in entire layer to ByteBuffer
+        while(bytesLeft-- > 0)
+            bb.put(chipDat.readByte());
+
+        // Change the ByteOrder
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        bb.position(0);
+        int bytesParsed = 0;
+        int objectsPlaced = 0;
+
+        while(bytesParsed < numberOfBytes) {
+            byte read = bb.get();
+            bytesParsed++;
+            if(read >= 0x00 && read <= 0x6F) { // Object to be placed
+                ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read));
+                objectsPlaced++;
+            } else if(read == 0xFF) { // RLE-encoding
+                byte numRepeats = bb.get();
+                byte fillWith = bb.get();
+                bytesParsed+=2;
+                while(numRepeats-- > 0) {
+                    ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read));
+                    objectsPlaced++;
+                }
+            }
+        }
+    }
+
 
     @Override
     public int getLastLevelNumber() {
@@ -297,5 +280,15 @@ public class MicrosoftLevelFactory extends LevelFactory {
     protected int getLevelNumberByPassword(String pass) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    private void addBlock(GameLevel ret, int blocksAdded, Block block) throws BlockContainerFullException {
+        int width = ret.getWidth();
+        int height = ret.getHeight();
+        int x = blocksAdded % width;
+        int y = blocksAdded / width;
+        ret.addBlock(x, y, block);
+    }
+
+
 
 }

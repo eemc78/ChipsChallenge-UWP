@@ -19,6 +19,30 @@ public class GameLevel {
     private int mNumDeaths = 0;
     private int mNumber;
 
+    public int getChipsLeft() {
+        return mChipsLeft;
+    }
+
+    public void setChipsLeft(int mChipsLeft) {
+        this.mChipsLeft = mChipsLeft;
+    }
+
+    public int getNumber() {
+        return mNumber;
+    }
+
+    public void setNumber(int number) {
+        this.mNumber = number;
+    }
+
+    public int getTimeLeft() {
+        return mTimeLeft;
+    }
+
+    public void setTimeLeft(int mTimeLeft) {
+        this.mTimeLeft = mTimeLeft;
+    }
+
     public GameLevel(int width, int height) {
         mBoard = new BlockContainer[width][height];
         for (int i = 0; i < width; i++) {
@@ -143,14 +167,6 @@ public class GameLevel {
 
     public int getNumDeaths() {
         return mNumDeaths;
-    }
-
-    public int getTimeLeft() {
-        return mTimeLeft;
-    }
-
-    public int getNumber() {
-        return mNumber;
     }
 
     public String getScore() {
