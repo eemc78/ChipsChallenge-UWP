@@ -60,6 +60,7 @@ public class TestLevelFactory extends LevelFactory {
             case 26: return getLevel26();
             case 27: return getLevel27();
             case 28: return getLevel28();
+            case 29: return getLevel29();
         }
         return null;
     }
@@ -741,6 +742,38 @@ public GameLevel getLevel24() {
             ret.addBlock(7, 6, bf.get(Block.Type.INVISIBLEWALL));
             ret.addBlock(8, 6, bf.get(Block.Type.INVISIBLEWALL));
             ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+        public GameLevel getLevel29() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(1, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(2, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(3, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(4, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(5, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(6, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(7, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(8, 0, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(0, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(1, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(2, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(3, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(4, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(5, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(6, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(7, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(8, 1, bf.get(Block.Type.GRAVEL));
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(8, 8, bf.get(Block.Type.BUG));
+            ret.addBlock(4, 4, bf.get(Block.Type.EXIT));
             return ret;
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");

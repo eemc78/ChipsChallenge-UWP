@@ -122,6 +122,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 Creatures.addCreature(ret);
                 break;
             case GRAVEL:
+                ret = new Block(type, facing, nullTick, canMove, GravelTo.getInstance(), nullButton);
                 break;
             case GREENBUTTON:
                 ret = new Block(type, facing, nullTick, canMove, GreenButtonTo.getInstance(), nullButton);
