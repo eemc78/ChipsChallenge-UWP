@@ -17,7 +17,7 @@ class Hud extends Panel {
     private boolean levelNeedsRepaint = false;
     private boolean timeNeedsRepaint = false;
     private boolean chipsLeftNeedsRepaint = false;
-    private boolean backgroundPainted = false;
+    private boolean backgroundNeedsRepaint = true;
 
     public Hud() {
         setPreferredSize(new Dimension(154, 300));
@@ -32,9 +32,9 @@ class Hud extends Panel {
     @Override
     public void paint(Graphics g) {
         //super.paint(g);
-        if (!backgroundPainted) {
+        if (backgroundNeedsRepaint) {
             g.drawImage(HudImageFactory.getInstance().getHudBackground(), 0, 0, null);
-            backgroundPainted = true;
+            backgroundNeedsRepaint = false;
         }
 
         if (levelNeedsRepaint) {
@@ -113,5 +113,13 @@ class Hud extends Panel {
             case 0: return "xxx";
         }
         return "999";
+    }
+
+    public void repaintEverything(){
+        levelNeedsRepaint = true;
+        timeNeedsRepaint = true;
+        chipsLeftNeedsRepaint = true;
+        backgroundNeedsRepaint = true;
+        repaint();
     }
 }

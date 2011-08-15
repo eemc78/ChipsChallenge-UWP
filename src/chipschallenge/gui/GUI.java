@@ -94,6 +94,7 @@ public class GUI extends Frame {
     public void msgDialog(String msg) {
         mPlayField.repaint();
         MsgBox msgbox = new MsgBox(this, msg, false);
+        mHud.repaintEverything();
     }
 
     public boolean confirmDialog(String msg) {
