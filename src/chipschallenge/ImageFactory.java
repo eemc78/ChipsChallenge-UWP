@@ -14,7 +14,6 @@ import java.awt.image.RGBImageFilter;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 import javax.imageio.ImageIO;
 
 /**
@@ -23,7 +22,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageFactory {
 
-    private static Map<Type, Map<Moves, Image>> loadedImages = new WeakHashMap<Type, Map<Moves, Image>>();
+    private static Map<Type, Map<Moves, Image>> loadedImages = new HashMap<Type, Map<Moves, Image>>();
     private static BufferedImage tileset;
     static{
         try {
@@ -37,7 +36,7 @@ public class ImageFactory {
     public static Image get(Type type, Moves moves, boolean overlay) {
         Map<Moves, Image> moveImages = loadedImages.get(type);
         if(moveImages == null) {
-            moveImages = new WeakHashMap<Moves, Image>();
+            moveImages = new HashMap<Moves, Image>();
             loadedImages.put(type, moveImages);
         }
         Image im = moveImages.get(moves);

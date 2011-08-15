@@ -2,15 +2,15 @@ package chipschallenge;
 
 import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  *
  * @author patrik
  */
 public abstract class BlockFactory {
-    private Map<Type, Map<Moves, Block>> loadedBlocks = new WeakHashMap<Type, Map<Moves, Block>>();
+    private Map<Type, Map<Moves, Block>> loadedBlocks = new HashMap<Type, Map<Moves, Block>>();
     
     public final Block get(Type type) {
         return get(type, Moves.DOWN);
@@ -19,7 +19,7 @@ public abstract class BlockFactory {
     public final Block get(Type type, Moves direction) {
         Map<Moves, Block> movesBlocks = loadedBlocks.get(type);
         if(movesBlocks == null) {
-            movesBlocks = new WeakHashMap<Moves, Block>();
+            movesBlocks = new HashMap<Moves, Block>();
             loadedBlocks.put(type, movesBlocks);
         }
         Block b;
