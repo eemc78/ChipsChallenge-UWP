@@ -67,6 +67,10 @@ public class Block implements GameListener {
         return mType == Type.BLOCK;
     }
 
+    public boolean isOnIce() {
+        return false; //TODO: Fix this
+    }
+
     public boolean isCreature() {
         return getType() == Block.Type.BLOB ||
                getType() == Block.Type.BUG ||

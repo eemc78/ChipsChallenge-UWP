@@ -53,6 +53,7 @@ public class TestLevelFactory extends LevelFactory {
             case 19: return getLevel19();
             case 20: return getLevel20();
             case 21: return getLevel21();
+            case 22: return getLevel22();
         }
         return null;
     }
@@ -578,6 +579,38 @@ public class TestLevelFactory extends LevelFactory {
         }
         return ret;
     }
+
+     public GameLevel getLevel22() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            // TODO: Make factory methods to create cloners more easily
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            Block trap = bf.get(Block.Type.TRAP);
+            ret.addBlock(8, 7, trap);
+            ret.addBlock(8,7, bf.get(Block.Type.BUG));
+            Block block = bf.get(Block.Type.BLOCK, Moves.LEFT);
+            Creatures.removeCreature(block);
+            ret.addBlock(7, 1, block);
+            Block button = bf.get(Block.Type.BROWNBUTTON);
+            Buttons.addBrownButtonListener(button, trap);
+            ret.addBlock(8, 0, button);
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+            ret.getBlockContainer(7,8).clear();
+            ret.getBlockContainer(7,7).clear();
+            ret.addBlock(7, 8, bf.get(Block.Type.WALL));
+            ret.addBlock(7, 7, bf.get(Block.Type.WALL));
+            ret.addBlock(5, 8, bf.get(Block.Type.WALL));
+            ret.addBlock(5, 7, bf.get(Block.Type.WALL));
+            ret.getBlockContainer(6,8).clear();
+            ret.addBlock(6, 8, bf.get(Block.Type.WATER));
+
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+        }
 
 
 

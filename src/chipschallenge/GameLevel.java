@@ -81,11 +81,13 @@ public class GameLevel {
         // Redraw even if move is impossible, because facing might have changed
         Game.getInstance().moveHappened(from);
         Game.getInstance().moveHappened(to);
+        if(!b.isOnIce())
+            b.setFacing(direction);
         if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
-        }
+        }       
         if(mBoard[from.x][from.y].canMoveFrom(b)) {
-            b.setFacing(direction);
+            // Do not change facing if sliding            
             if(mBoard[to.x][to.y].canMoveTo(b)) {
                 //From reactions
                 mBoard[from.x][from.y].moveFrom(b);

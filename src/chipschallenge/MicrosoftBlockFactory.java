@@ -7,6 +7,7 @@ import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.buttonbehaviors.CloneMachineBehavior;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.buttonbehaviors.ToggleWallBehavior;
+import chipschallenge.buttonbehaviors.TrapBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
@@ -38,7 +39,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
         BlockTickBehavior nullTick = NullTickBehavior.getInstance();
         ButtonBehavior nullButton = NullButtonBehavior.getInstance();
         BlockReaction canMove = CanMoveBlockReaction.getInstance();
-        BlockReaction CannotMove = CannotMoveBlockReaction.getInstance();
+        BlockReaction cannotMove = CannotMoveBlockReaction.getInstance();
         switch(type) {
             case BLOB:
                 ret = new Block(type, facing, BlobTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
@@ -61,6 +62,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case BOMB:
                 break;
             case BROWNBUTTON:
+                ret = new Block(type, facing, nullTick, BrownButtonFrom.getInstance(), BrownButtonTo.getInstance(), nullButton);
                 break;
             case BUG:
                 ret = new Block(type, facing, BugTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
@@ -75,7 +77,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case CLONEBLOCK:
                 break;
             case CLONEMACHINE:
-                ret = new Block(type, facing, nullTick, CannotMove, CannotMove, CloneMachineBehavior.getInstance());
+                ret = new Block(type, facing, nullTick, cannotMove, cannotMove, CloneMachineBehavior.getInstance());
                 break;
             case COMPUTERCHIP:
                 break;
@@ -190,13 +192,14 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 Buttons.addGreenButtonsListener(ret);
                 break;
             case TRAP:
+                ret = new Block(type, facing, nullTick, cannotMove, canMove, TrapBehavior.getInstance());
                 break;
             case WALKER:
                 ret = new Block(type, facing, WalkerTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 Creatures.addCreature(ret);
                 break;
             case WALL:
-                ret = new Block(type, facing, nullTick, canMove, CannotMove, nullButton);
+                ret = new Block(type, facing, nullTick, canMove, cannotMove, nullButton);
                 break;
             case WATER:
                 ret = new Block(type, facing, nullTick, canMove, WaterTo.getInstance(), nullButton);
