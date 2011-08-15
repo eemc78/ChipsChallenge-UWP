@@ -11,9 +11,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -24,7 +24,7 @@ public class Game {
     public static final int MOVE_MS = 250;
     public static final int SPEED_FRAC = 3;
     public static final int TIMER_TICK = MOVE_MS / SPEED_FRAC;
-    private Set<GameListener> gameListeners = new HashSet<GameListener>();
+    private CopyOnWriteArrayList<GameListener> gameListeners = new CopyOnWriteArrayList<GameListener>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
@@ -141,9 +141,7 @@ public class Game {
                 mLevel.getBlockContainer(b).moveTo(b);
             }
         }
-        //TODO: Remove the need of making a copy
-        Collection<GameListener> listenersCpy = new ArrayList<GameListener>(gameListeners);
-        for (GameListener l : listenersCpy) {
+        for (GameListener l : gameListeners) {
             l.tick();
         }
         Creatures.tick();
