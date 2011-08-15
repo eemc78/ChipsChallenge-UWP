@@ -15,6 +15,10 @@ class Hud extends Panel {
     private GameLevel mLevel;
     private int top = 0;
     private int left = 0;
+    
+    private int level = 0;
+    private int time = 0;
+    private int chipsLeft = 0;
 
     public Hud() {
         add(new Label("Hud"));
@@ -30,6 +34,21 @@ class Hud extends Panel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+    }
+
+    public void setChipsLeft(int chipsLeft) {
+        this.chipsLeft = chipsLeft;
+        repaint();
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+        repaint();
+    }
+
+    public void setTime(int time) {
+        this.time = time;
+        repaint();
     }
 
 }

@@ -5,7 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -22,7 +21,7 @@ public class GUI extends Frame {
 
     private Image mBackground;
     private PlayField mPlayField;
-    private Panel mHud;
+    private Hud mHud;
 
     private GUI() {
         super("Chip's Challenge");
