@@ -27,7 +27,7 @@ public class HudImageFactory {
         }
     }
 
-    public HudImageFactory getInstance(){
+    public static HudImageFactory getInstance(){
         if(instance==null){
             instance = new HudImageFactory();
         }
