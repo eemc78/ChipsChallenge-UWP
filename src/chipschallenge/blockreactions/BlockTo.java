@@ -22,13 +22,13 @@ public class BlockTo extends BlockReaction {
 
     // When moving onto a block, the block moves in the same direction
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if(isChip(moving))
+        if(moving.isChip())
             standing.move(moving.getFacing());
     }
 
     // Chip can move a block if the block in turn can move in the same direction
     public boolean canMove(Block moving, Block standing) {
-        if(isChip(moving)) {
+        if(moving.isChip()) {
             GameLevel level = Game.getInstance().getLevel();
             BlockContainer before = level.getBlockContainer(standing);
             BlockContainer after = level.getBlockContainer(standing, moving.getFacing());

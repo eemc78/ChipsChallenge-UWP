@@ -20,13 +20,12 @@ public class FireTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        Game g = Game.getInstance();
         switch (moving.getType()) {
             case CHIP:           
                 if(!hasBoots(Boots.FIREBOOTS)) {
                     moving.destroy();
                     standing.replace(createBlock(Type.BURNEDCHIP));
-                    g.die("Ooops! Don't step in the fire without fire boots!");
+                    die("Ooops! Don't step in the fire without fire boots!");
                 }
                 break;
             case BUG:

@@ -1,7 +1,6 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Game;
 
 /**
  *
@@ -18,12 +17,12 @@ public class ThiefTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        Game.getInstance().getInventory().clearBoots();
+        inventory().clearBoots();
         //TODO: Play sound
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving);
+        return moving.isChip();
     }
 
 }

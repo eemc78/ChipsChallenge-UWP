@@ -19,13 +19,12 @@ public class GreenLockTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        Game.getInstance().getInventory().useKey(Key.GREEN);
+        useKey(Key.GREEN);
         standing.destroy();
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving) &&
-               Game.getInstance().getInventory().hasKey(Key.GREEN);
+        return moving.isChip() && hasKey(Key.GREEN);
     }
 
 }

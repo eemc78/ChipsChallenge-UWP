@@ -11,7 +11,7 @@ public class BombTo extends BlockReaction {
     public void react(Block moving, Block standing) {
         moving.destroy();
         standing.destroy();
-        if(isChip(moving)) {
+        if(moving.isChip()) {
             die("Ooops! Don't touch the bombs!");
         } else {
              //TODO: Play explosion sound

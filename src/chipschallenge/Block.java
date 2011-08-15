@@ -59,8 +59,12 @@ public class Block implements GameListener {
         return mType == t;
     }
 
-   private boolean isChip() {
+    public boolean isChip() {
         return mType == Type.CHIP || mType == Type.SWIMMINGCHIP;
+    }
+
+    public boolean isBlock() {
+        return mType == Type.BLOCK;
     }
 
     public boolean isCreature() {

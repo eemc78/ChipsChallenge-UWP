@@ -18,8 +18,8 @@ public class ChipTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        if(!isChip(moving))
-            Game.getInstance().die("Ooops! Look out for creatures!");
+        if(!moving.isChip())
+            die("Ooops! Look out for creatures!");
     }
 
     public boolean canMove(Block moving, Block standing) {
