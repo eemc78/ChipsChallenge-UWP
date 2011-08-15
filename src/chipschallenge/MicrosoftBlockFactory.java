@@ -60,6 +60,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case BLUEWALL:
                 break;
             case BOMB:
+                ret = new Block(type, facing, nullTick, canMove, BombTo.getInstance(), nullButton);
                 break;
             case BROWNBUTTON:
                 ret = new Block(type, facing, nullTick, BrownButtonFrom.getInstance(), BrownButtonTo.getInstance(), nullButton);

@@ -9,6 +9,14 @@ import chipschallenge.Inventory.Boots;
  */
 public class BootsTo extends BlockReaction {
 
+    private BootsTo() {}
+    private static BootsTo mInstance = null;
+    public static synchronized BootsTo getInstance() {
+        if(mInstance == null)
+            mInstance = new BootsTo();
+        return mInstance;
+    }
+
     public void react(Block moving, Block standing) {
         switch(standing.getType()) {
             case FLIPPERS:
