@@ -23,8 +23,7 @@ public class BlueLockTo extends BlockReaction {
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving) &&
-               hasKey(Key.BLUE);
+        return moving.isChip() && hasKey(Key.BLUE);
     }
 
 }

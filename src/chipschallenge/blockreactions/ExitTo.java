@@ -19,13 +19,13 @@ public class ExitTo extends BlockReaction {
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if(isChip(moving)) {
+        if(moving.isChip()) {
             game().levelComplete();
         }
     }
 
     @Override
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving) || isBlock(moving);
+        return moving.isChip() || moving.isBlock();
     }
 }

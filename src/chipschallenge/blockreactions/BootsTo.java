@@ -28,7 +28,7 @@ public class BootsTo extends BlockReaction {
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving);
+        return moving.isChip();
     }
 
 }

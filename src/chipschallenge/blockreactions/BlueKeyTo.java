@@ -18,7 +18,7 @@ public class BlueKeyTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        if(isChip(moving)) {
+        if(moving.isChip()) {
             takeKey(Key.BLUE);
             standing.destroy();
         }

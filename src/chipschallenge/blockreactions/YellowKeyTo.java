@@ -19,8 +19,8 @@ public class YellowKeyTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        if(isChip(moving)) {
-            Game.getInstance().getInventory().takeKey(Key.YELLOW);
+        if(moving.isChip()) {
+            takeKey(Key.YELLOW);
             standing.destroy();
         }
     }

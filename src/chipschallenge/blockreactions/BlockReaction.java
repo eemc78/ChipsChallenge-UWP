@@ -3,6 +3,7 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.Game;
+import chipschallenge.Inventory;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.Inventory.Key;
 import chipschallenge.Move.Moves;
@@ -13,26 +14,6 @@ import chipschallenge.Move.Moves;
  */
 public abstract class BlockReaction {
     
-    public final boolean isChip(Block b) {
-        return b.getType() == Block.Type.CHIP || b.getType() == Block.Type.SWIMMINGCHIP;
-    }
-
-    public final boolean isBlock(Block b) {
-        return b.getType() == Block.Type.BLOCK;
-    }
-
-    public final boolean isCreature(Block b) {
-        return b.getType() == Block.Type.BLOB ||
-               b.getType() == Block.Type.BUG ||
-               b.getType() == Block.Type.FIREBALL ||
-               b.getType() == Block.Type.GLIDER ||
-               b.getType() == Block.Type.PARAMECIUM ||
-               b.getType() == Block.Type.PINKBALL ||
-               b.getType() == Block.Type.TANK ||
-               b.getType() == Block.Type.TEETH ||
-               b.getType() == Block.Type.WALKER;
-    }
-
     public final Block createBlock(Type t, Moves d) {
         return Game.getInstance().getBlockFactory().get(t, d);
     }
@@ -67,6 +48,10 @@ public abstract class BlockReaction {
 
     public final Game game() {
         return Game.getInstance();
+    }
+
+    public final Inventory inventory() {
+        return Game.getInstance().getInventory();
     }
 
     public abstract void react(Block moving, Block standing) throws BlockContainerFullException;

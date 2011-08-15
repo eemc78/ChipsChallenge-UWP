@@ -25,7 +25,7 @@ public class DirtTo extends BlockReaction {
 
     @Override
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving);
+        return moving.isChip();
     }
 
 }

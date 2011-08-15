@@ -19,13 +19,12 @@ public class YellowLockTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        Game.getInstance().getInventory().useKey(Key.YELLOW);
+        useKey(Key.YELLOW);
         standing.destroy();
     }
 
     public boolean canMove(Block moving, Block standing) {
-        return isChip(moving) &&
-               Game.getInstance().getInventory().hasKey(Key.YELLOW);
+        return moving.isChip() && hasKey(Key.YELLOW);
     }
 
 }
