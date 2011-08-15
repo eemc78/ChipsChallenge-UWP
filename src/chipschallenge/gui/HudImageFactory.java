@@ -58,7 +58,7 @@ public class HudImageFactory {
         int y = yellow ? 375 : 353;
 
         if (number >= 0) {
-            x = 15 + (number - 1) * 15;
+            x = 15 + number * 14;
         } else if (number == -1) {
             x = 1;
         } else {
@@ -68,8 +68,26 @@ public class HudImageFactory {
 
         BufferedImage img = baseImage.getSubimage(x, y, 13, 21);
         loadedNumbers[code] = img;
-
         return img;
+    }
+
+    public Image getNumber(char number, boolean yellow){
+        return getNumber(charToInt(number), yellow);
+    }
+
+    /**
+     * Used by getNumber only
+     * @param c 0-9 or "-" for - and "x" for blank
+     * @return
+     */
+    private int charToInt(char c){
+        if(c=='-')
+            return -2;
+        if(c=='x')
+            return -1;
+        if(c<'0' || c>'9')
+            throw new IllegalArgumentException("char must be 0 to 9");
+        return (int)(c-'0');
     }
 
     public Image getHudBackground() {
@@ -85,4 +103,5 @@ public class HudImageFactory {
         }
         return itemSlot;
     }
+
 }

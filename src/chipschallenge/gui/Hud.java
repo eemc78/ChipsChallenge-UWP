@@ -2,7 +2,7 @@ package chipschallenge.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Label;
+import java.awt.Image;
 import java.awt.Panel;
 
 /**
@@ -22,6 +22,11 @@ class Hud extends Panel {
     public Hud() {
         setPreferredSize(new Dimension(154, 300));
         setVisible(true);
+
+        //for debugging:
+        setChipsLeft(7);
+        setTime(123);
+        setLevel(14);
     }
 
     @Override
@@ -33,15 +38,36 @@ class Hud extends Panel {
         }
 
         if (levelNeedsRepaint) {
-            //TODO paint only Level
+            String s = intToPaintableString(level);
+            int x=83;
+            int y=38;
+            for (int i = s.length()-1; i >=0; i--) {
+                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), false);
+                g.drawImage(img, x, y, null);
+                x-=17;
+            }
             levelNeedsRepaint = false;
         }
         if (timeNeedsRepaint) {
-            //TODO paint only Time
+            String s = intToPaintableString(time);
+            int x=83;
+            int y=100;
+            for (int i = s.length()-1; i >=0; i--) {
+                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), false);
+                g.drawImage(img, x, y, null);
+                x-=17;
+            }
             timeNeedsRepaint = false;
         }
         if (chipsLeftNeedsRepaint) {
-            //TODO paint only Chips left
+            String s = intToPaintableString(chipsLeft);
+            int x=83;
+            int y=190;
+            for (int i = s.length()-1; i >=0; i--) {
+                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), true);
+                g.drawImage(img, x, y, null);
+                x-=17;
+            }
             chipsLeftNeedsRepaint = false;
         }
     }
@@ -71,5 +97,21 @@ class Hud extends Panel {
         this.time = time;
         timeNeedsRepaint = true;
         repaint();
+    }
+
+    /**
+     * Makes an int into a 3-character String that covers the entire textfield when painted
+     * @param s The string to fix
+     * @return A string that is 3 characters of length
+     */
+    private String intToPaintableString(int n){
+        String s = String.valueOf(n);
+        switch(s.length()){
+            case 3: return s;
+            case 2: return "x"+s;
+            case 1: return "xx"+s;
+            case 0: return "xxx";
+        }
+        return "999";
     }
 }
