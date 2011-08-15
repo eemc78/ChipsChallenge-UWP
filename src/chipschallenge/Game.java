@@ -39,6 +39,7 @@ public class Game {
     private long mLastTickDrawn = 0;
     private boolean levelComplete;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
+    private boolean dead = false;
 
     private Game() {
     }
@@ -76,6 +77,7 @@ public class Game {
     }
 
     public void restart() {
+        dead = false;
         nextLevel(mLevelNumber);
     }
 
@@ -155,6 +157,8 @@ public class Game {
             }
         }
         movesToCheck.clear();
+        if(dead)
+            restart();
         if(levelComplete)
             levelComplete();
     }
@@ -164,7 +168,7 @@ public class Game {
         //tickTimer.cancel();
         //TODO: Play "Bummer"
         GUI.getInstance().msgDialog(msg);
-        restart();
+        dead = true;
     }
 
     public GameLevel getLevel() {
