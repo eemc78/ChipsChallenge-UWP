@@ -4,8 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Buttons;
 
 /**
- *
- * @author patrik
+ * Moving to brown button
  */
 public class BrownButtonTo extends BlockReaction {
 

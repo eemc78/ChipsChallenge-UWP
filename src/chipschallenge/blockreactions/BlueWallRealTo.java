@@ -7,8 +7,7 @@ import chipschallenge.Move;
 import chipschallenge.Move.Moves;
 
 /**
- *
- * @author patrik
+ * Move to real blue wall
  */
 public class BlueWallRealTo extends BlockReaction {
 
@@ -23,6 +22,7 @@ public class BlueWallRealTo extends BlockReaction {
         return mInstance;
     }
 
+    // Converstion to real wall
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         Moves facing = moving.getFacing();
         moving.move(Move.reverse(facing));
@@ -30,6 +30,7 @@ public class BlueWallRealTo extends BlockReaction {
         standing.replace(createBlock(Type.WALL));
     }
 
+    // Only chip can move here
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }

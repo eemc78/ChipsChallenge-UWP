@@ -4,8 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Inventory.Boots;
 
 /**
- *
- * @author patrik
+ * Move to boots
  */
 public class BootsTo extends BlockReaction {
 
@@ -20,6 +19,7 @@ public class BootsTo extends BlockReaction {
         return mInstance;
     }
 
+    // Pick up boots
     public void react(Block moving, Block standing) {
         switch (standing.getType()) {
             case FLIPPERS:
@@ -38,7 +38,8 @@ public class BootsTo extends BlockReaction {
         standing.destroy();
     }
 
+    // Chip and blocks can move here
     public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        return moving.isChip() || moving.isBlock();
     }
 }

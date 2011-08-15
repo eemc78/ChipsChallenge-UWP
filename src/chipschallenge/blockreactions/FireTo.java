@@ -2,12 +2,10 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
-import chipschallenge.Game;
 import chipschallenge.Inventory.Boots;
 
 /**
- *
- * @author patrik
+ * Move to fire
  */
 public class FireTo extends BlockReaction {
 
@@ -22,6 +20,7 @@ public class FireTo extends BlockReaction {
         return mInstance;
     }
 
+    // Kills all enemies except fireball
     public void react(Block moving, Block standing) {
         switch (moving.getType()) {
             case CHIP:
@@ -41,6 +40,7 @@ public class FireTo extends BlockReaction {
         }
     }
 
+    // Everyone can move here except bugs or walkers
     public boolean canMove(Block moving, Block standing) {
         return !(moving.isA(Type.BUG) || moving.isA(Type.WALKER));
     }

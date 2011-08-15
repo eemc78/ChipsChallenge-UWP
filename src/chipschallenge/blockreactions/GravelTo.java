@@ -3,8 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 
 /**
- *
- * @author patrik
+ * Move to gravel
  */
 public class GravelTo extends BlockReaction {
 
@@ -23,6 +22,7 @@ public class GravelTo extends BlockReaction {
         // No reaction
     }
 
+    // Only chip can move
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }

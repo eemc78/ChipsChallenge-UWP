@@ -5,8 +5,7 @@ import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
 
 /**
- *
- * @author patrik
+ * Move to dirt
  */
 public class DirtTo extends BlockReaction {
 
@@ -21,11 +20,13 @@ public class DirtTo extends BlockReaction {
         return mInstance;
     }
 
+    // Convert to floor
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         standing.replace(createBlock(Type.FLOOR));
     }
 
+    // Only chip can move
     @Override
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();

@@ -5,8 +5,7 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
 /**
- *
- * @author patrik
+ * Move to force floor
  */
 public class ForceFloorTo extends BlockReaction {
 
@@ -21,6 +20,7 @@ public class ForceFloorTo extends BlockReaction {
         return mInstance;
     }
 
+    // Force moves, except on chip with suction boots.
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
@@ -28,6 +28,7 @@ public class ForceFloorTo extends BlockReaction {
         }
     }
 
+    // Everything can move here
     @Override
     public boolean canMove(Block moving, Block standing) {
         return true;

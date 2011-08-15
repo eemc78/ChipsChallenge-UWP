@@ -1,11 +1,9 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Game;
 
 /**
- *
- * @author patrik
+ * Move to chip
  */
 public class ChipTo extends BlockReaction {
 
@@ -20,12 +18,14 @@ public class ChipTo extends BlockReaction {
         return mInstance;
     }
 
+    // All moving things kill chip
     public void react(Block moving, Block standing) {
         if (!moving.isChip()) {
             die("Ooops! Look out for creatures!");
         }
     }
 
+    // All things can move
     public boolean canMove(Block moving, Block standing) {
         return true;
     }

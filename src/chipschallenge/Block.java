@@ -24,8 +24,6 @@ public class Block implements GameListener {
     private BlockReaction mTo = CanMoveBlockReaction.getInstance();
     private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
 
-    ;
-
     public static enum Type {
 
         BLOB, BLOCK, BLUEBUTTON, BLUEKEY, BLUELOCK, BLUEWALLREAL, BLUEWALLFAKE, BOMB,

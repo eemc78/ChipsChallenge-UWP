@@ -4,8 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Buttons;
 
 /**
- *
- * @author patrik
+ * Move to green button
  */
 public class GreenButtonTo extends BlockReaction {
 
@@ -24,6 +23,7 @@ public class GreenButtonTo extends BlockReaction {
         Buttons.greenButtonDown(standing);
     }
 
+    // Everything can move
     public boolean canMove(Block moving, Block standing) {
         return true;
     }

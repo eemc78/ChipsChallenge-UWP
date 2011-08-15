@@ -4,8 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 
 /**
- *
- * @author patrik
+ * Standard behavior for when things can move
  */
 public class CanMoveBlockReaction extends BlockReaction {
 

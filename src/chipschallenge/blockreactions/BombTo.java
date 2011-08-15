@@ -3,8 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 
 /**
- *
- * @author patrik
+ * Move to bomb
  */
 public class BombTo extends BlockReaction {
 
@@ -19,6 +18,7 @@ public class BombTo extends BlockReaction {
         return mInstance;
     }
 
+    // If collision, both bomb and other block is removed
     public void react(Block moving, Block standing) {
         if (moving.isChip()) {
             die("Ooops! Don't touch the bombs!");
@@ -29,6 +29,7 @@ public class BombTo extends BlockReaction {
         }
     }
 
+    // All can move here
     public boolean canMove(Block moving, Block standing) {
         return true;
     }

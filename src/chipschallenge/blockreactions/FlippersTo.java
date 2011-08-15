@@ -5,8 +5,7 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
 /**
- *
- * @author patrik
+ * Move to flippers
  */
 public class FlippersTo extends BlockReaction {
 
@@ -21,6 +20,7 @@ public class FlippersTo extends BlockReaction {
         return mInstance;
     }
 
+    // Chip can pick up flippers
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
             takeBoots(Boots.FLIPPERS);
@@ -29,6 +29,7 @@ public class FlippersTo extends BlockReaction {
         }
     }
 
+    // Only chip and blocks
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip() || moving.isBlock();
     }

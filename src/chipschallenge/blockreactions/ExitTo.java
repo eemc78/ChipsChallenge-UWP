@@ -4,8 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 
 /**
- *
- * @author patrik
+ * Move to exit
  */
 public class ExitTo extends BlockReaction {
 
@@ -20,6 +19,7 @@ public class ExitTo extends BlockReaction {
         return mInstance;
     }
 
+    // Completes level
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
@@ -27,6 +27,7 @@ public class ExitTo extends BlockReaction {
         }
     }
 
+    // Only chip and blocks can move
     @Override
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip() || moving.isBlock();

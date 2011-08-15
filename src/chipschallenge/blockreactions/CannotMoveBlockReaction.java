@@ -3,8 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 
 /**
- *
- * @author patrik
+ * Standard behavior for when things CANNOT move
  */
 public class CannotMoveBlockReaction extends BlockReaction {
 

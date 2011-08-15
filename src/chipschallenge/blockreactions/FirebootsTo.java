@@ -5,8 +5,7 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
 /**
- *
- * @author patrik
+ * Move to fire boots
  */
 public class FirebootsTo extends BlockReaction {
 
@@ -21,6 +20,7 @@ public class FirebootsTo extends BlockReaction {
         return mInstance;
     }
 
+    // Chip can pick fireboots
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
             takeBoots(Boots.FIREBOOTS);
@@ -29,6 +29,7 @@ public class FirebootsTo extends BlockReaction {
         }
     }
 
+    // Only chip and blocks
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip() || moving.isBlock();
     }

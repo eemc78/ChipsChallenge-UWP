@@ -4,8 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Inventory.Key;
 
 /**
- *
- * @author patrik
+ * Moving to blue key
  */
 public class BlueKeyTo extends BlockReaction {
 
@@ -20,6 +19,7 @@ public class BlueKeyTo extends BlockReaction {
         return mInstance;
     }
 
+    // Take key
     public void react(Block moving, Block standing) {
         if (moving.isChip()) {
             takeKey(Key.BLUE);
@@ -27,6 +27,7 @@ public class BlueKeyTo extends BlockReaction {
         }
     }
 
+    // Everyone can move here
     public boolean canMove(Block moving, Block standing) {
         return true;
     }

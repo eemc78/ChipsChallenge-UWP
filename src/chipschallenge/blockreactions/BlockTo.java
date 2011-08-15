@@ -7,8 +7,7 @@ import chipschallenge.Game;
 import chipschallenge.GameLevel;
 
 /**
- *
- * @author patrik
+ * Moving to a Block
  */
 public class BlockTo extends BlockReaction {
 

@@ -10,7 +10,7 @@ import chipschallenge.Inventory.Key;
 import chipschallenge.Move.Moves;
 
 /**
- *
+ * Defines whether a block can move, and what the side effects are
  * @author patrik
  */
 public abstract class BlockReaction {
