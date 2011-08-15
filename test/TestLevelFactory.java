@@ -99,6 +99,8 @@ public class TestLevelFactory extends LevelFactory {
                 return getLevel31();
             case 32:
                 return getLevel32();
+            case 33:
+                return getLevel33();
         }
         return null;
     }
@@ -980,6 +982,31 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(4, 4, bf.get(Block.Type.TEETH));
             ret.addBlock(2, 0, bf.get(Block.Type.EXIT));
             return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+    public GameLevel getLevel33() {
+        GameLevel ret = getFloors(32, 32);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            for(int i = 0; i < 32; i++) {
+                for(int j = 1; j < 31; j++) {
+                    if(Utils.r.nextBoolean()) {
+                        //ret.addBlock(i, j, bf.get(Block.Type.FLOOR));
+                    } else if(Utils.r.nextBoolean()) {
+                        ret.addBlock(i, j, bf.get(Block.Type.ICE));
+                    } else if(Utils.r.nextBoolean()) {
+                        ret.addBlock(i, j, bf.get(Block.Type.WATER));
+                    } else {
+                        ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
+                    }
+                }
+            }
+            ret.addBlock(31, 31, bf.get(Block.Type.EXIT));
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");
         } finally {
