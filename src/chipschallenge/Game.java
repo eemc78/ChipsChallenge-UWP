@@ -103,10 +103,8 @@ public class Game {
             public void run() {
                 try {
                     tick();
-                } catch (BlockContainerFullException ex) {
-                    System.out.println("Block container is full!");
-                    System.out.println(ex.getMessage());
-                    System.exit(-1);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         };
