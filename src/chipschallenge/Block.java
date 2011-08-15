@@ -125,7 +125,7 @@ public class Block implements GameListener {
 
     public boolean move(Moves direction) throws BlockContainerFullException {
         //setFacing(direction);
-        return Game.getInstance().getLevel().moveBlock(this, direction);
+        return Game.getInstance().getLevel().moveBlock(this, direction, false);
     }
 
     public void destroy() {

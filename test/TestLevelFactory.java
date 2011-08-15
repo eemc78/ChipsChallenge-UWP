@@ -61,6 +61,7 @@ public class TestLevelFactory extends LevelFactory {
             case 27: return getLevel27();
             case 28: return getLevel28();
             case 29: return getLevel29();
+            case 30: return getLevel30();
         }
         return null;
     }
@@ -781,6 +782,36 @@ public GameLevel getLevel24() {
             return ret;
         }
     }
+        
+                        public GameLevel getLevel30() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            // TODO: Make factory methods to create cloners more easily
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            
+            for(int i = 0; i <= 8; i++) {
+                for(int j = 1; j <= 7; j++) {
+                    ret.getBlockContainer(i,j).clear();
+                    ret.addBlock(i,j, bf.get(Block.Type.ICE));
+                }
+            }
+            for(int i = 0; i <= 8; i++) {
+                ret.getBlockContainer(i,8).clear();
+                if(i == 5)
+                 ret.addBlock(i, 8, bf.get(Block.Type.EXIT));
+                else
+                ret.addBlock(i, 8, bf.get(Block.Type.WATER));
+            }
+
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+        }
+
+
 
 
     @Override

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  *
@@ -110,8 +111,22 @@ public class Game {
         gameListeners.remove(l);
     }
 
+    public void addForcedMove(Block b, Moves m) {
+        forcedMoves.put(b,m);
+    }
+
     public void tick() throws BlockContainerFullException {
         mTickCount++;
+        Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
+        forcedMoves.clear();
+        for(Block b : forcedMovesNow.keySet()) {
+            Moves m = forcedMovesNow.get(b);
+            if(!mLevel.moveBlock(b, m, true)) {
+                // Bounce
+                b.setFacing(Move.reverse(b.getFacing()));
+                mLevel.getBlockContainer(b).moveFrom(b);
+            }
+        }        
         //TODO: Remove the need of making a copy
         Collection<GameListener> listenersCpy= new ArrayList<GameListener>(gameListeners);
         for(GameListener l : listenersCpy) {

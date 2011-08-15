@@ -74,7 +74,7 @@ public class GameLevel {
         return mBoard[0].length;
     }
 
-    public boolean moveBlock(Block b, Moves direction) throws BlockContainerFullException {        
+    public boolean moveBlock(Block b, Moves direction, boolean ignoreFrom) throws BlockContainerFullException {
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
         Move.updatePoint(to, direction);
@@ -86,7 +86,7 @@ public class GameLevel {
         if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
         }       
-        if(mBoard[from.x][from.y].canMoveFrom(b)) {
+        if(ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
             // Do not change facing if sliding            
             if(mBoard[to.x][to.y].canMoveTo(b)) {
                 //From reactions

@@ -139,6 +139,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case HINT:
                 break;
             case ICE:
+                ret = new Block(type, facing, nullTick, IceFrom.getInstance(), IceTo.getInstance(), nullButton);
                 break;
             case ICEBLOCK:
                 break;
