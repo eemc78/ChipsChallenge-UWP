@@ -9,6 +9,7 @@ import chipschallenge.blockreactions.CanMoveBlockReaction;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 import java.awt.Image;
 import java.awt.Point;
+import java.util.Collection;
 
 /**
  *
@@ -67,8 +68,26 @@ public class Block implements GameListener {
         return mType == Type.BLOCK;
     }
 
+    public boolean isIce() {
+        return mType == Type.ICE;
+    }
+
     public boolean isOnIce() {
-        return false; //TODO: Fix this
+        if(!isChip() && !isBlock() && !isCreature())
+            return false;
+        Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
+        for(Block b : blocks)
+            if(b.isIce())
+                return true;
+        return false;
+    }
+
+    public boolean isOnCloner() {
+        Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
+        for(Block b : blocks)
+            if(b.isA(Type.CLONEMACHINE))
+                return true;
+        return false;
     }
 
     public boolean isCreature() {

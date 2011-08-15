@@ -175,7 +175,6 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 Buttons.addBlueButtonsListener(ret);
                 break;
             case TEETH:
-                System.out.println("CREATED TEETH!");
                 ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 Creatures.addCreature(ret);
                 break;
