@@ -10,11 +10,14 @@ import chipschallenge.Inventory.Key;
  */
 public class RedLockTo extends BlockReaction {
 
-    private RedLockTo() {}
+    private RedLockTo() {
+    }
     private static RedLockTo mInstance = null;
+
     public static synchronized RedLockTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new RedLockTo();
+        }
         return mInstance;
     }
 
@@ -26,5 +29,4 @@ public class RedLockTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip() && hasKey(Key.RED);
     }
-
 }

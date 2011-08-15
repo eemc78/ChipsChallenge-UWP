@@ -11,18 +11,21 @@ import chipschallenge.Inventory.Boots;
  */
 public class FireTo extends BlockReaction {
 
-    private FireTo() {}
+    private FireTo() {
+    }
     private static FireTo mInstance = null;
+
     public static synchronized FireTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new FireTo();
+        }
         return mInstance;
     }
 
     public void react(Block moving, Block standing) {
         switch (moving.getType()) {
-            case CHIP:           
-                if(!hasBoots(Boots.FIREBOOTS)) {
+            case CHIP:
+                if (!hasBoots(Boots.FIREBOOTS)) {
                     moving.destroy();
                     standing.replace(createBlock(Type.BURNEDCHIP));
                     die("Ooops! Don't step in the fire without fire boots!");
@@ -41,5 +44,4 @@ public class FireTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return !(moving.isA(Type.BUG) || moving.isA(Type.WALKER));
     }
-
 }

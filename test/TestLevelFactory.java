@@ -16,54 +16,89 @@ import java.util.Random;
  * @author patrik
  */
 public class TestLevelFactory extends LevelFactory {
+
     private BlockFactory bf = null;
+
     private TestLevelFactory() {
         bf = MicrosoftBlockFactory.getInstance();
     }
     private static TestLevelFactory mInstance = null;
+
     public static synchronized TestLevelFactory getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new TestLevelFactory();
+        }
         return mInstance;
     }
-
     //since the variable r was used many times i did a quickfix like this
     private static Random r = Utils.r;
 
     public GameLevel getLevel(int n) {
         switch (n) {
-            case 1:  return getLevel1();
-            case 2:  return getLevel2();
-            case 3:  return getLevel3();
-            case 4:  return getLevel4();
-            case 5:  return getLevel5();
-            case 6:  return getLevel6();
-            case 7:  return getLevel7();
-            case 8:  return getLevel8();
-            case 9:  return getLevel9();
-            case 10: return getLevel10();
-            case 11: return getLevel11();
-            case 12: return getLevel12();
-            case 13: return getLevel13();
-            case 14: return getLevel14();
-            case 15: return getLevel15();
-            case 16: return getLevel16();
-            case 17: return getLevel17();
-            case 18: return getLevel18();
-            case 19: return getLevel19();
-            case 20: return getLevel20();
-            case 21: return getLevel21();
-            case 22: return getLevel22();
-            case 23: return getLevel23();
-            case 24: return getLevel24();
-            case 25: return getLevel25();
-            case 26: return getLevel26();
-            case 27: return getLevel27();
-            case 28: return getLevel28();
-            case 29: return getLevel29();
-            case 30: return getLevel30();
-            case 31: return getLevel31();
-            case 32: return getLevel32();
+            case 1:
+                return getLevel1();
+            case 2:
+                return getLevel2();
+            case 3:
+                return getLevel3();
+            case 4:
+                return getLevel4();
+            case 5:
+                return getLevel5();
+            case 6:
+                return getLevel6();
+            case 7:
+                return getLevel7();
+            case 8:
+                return getLevel8();
+            case 9:
+                return getLevel9();
+            case 10:
+                return getLevel10();
+            case 11:
+                return getLevel11();
+            case 12:
+                return getLevel12();
+            case 13:
+                return getLevel13();
+            case 14:
+                return getLevel14();
+            case 15:
+                return getLevel15();
+            case 16:
+                return getLevel16();
+            case 17:
+                return getLevel17();
+            case 18:
+                return getLevel18();
+            case 19:
+                return getLevel19();
+            case 20:
+                return getLevel20();
+            case 21:
+                return getLevel21();
+            case 22:
+                return getLevel22();
+            case 23:
+                return getLevel23();
+            case 24:
+                return getLevel24();
+            case 25:
+                return getLevel25();
+            case 26:
+                return getLevel26();
+            case 27:
+                return getLevel27();
+            case 28:
+                return getLevel28();
+            case 29:
+                return getLevel29();
+            case 30:
+                return getLevel30();
+            case 31:
+                return getLevel31();
+            case 32:
+                return getLevel32();
         }
         return null;
     }
@@ -86,12 +121,12 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel1() {
-        GameLevel ret = new GameLevel(9,9);
+        GameLevel ret = new GameLevel(9, 9);
         try {
-        boolean chipPlaced = false;
-        boolean exitPlaced = false;
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
+            boolean chipPlaced = false;
+            boolean exitPlaced = false;
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
 
                     ret.addBlock(i, j, bf.get(Block.Type.FLOOR));
                     if (r.nextFloat() > 0.9f) {
@@ -100,15 +135,14 @@ public class TestLevelFactory extends LevelFactory {
                         if (!chipPlaced) {
                             chipPlaced = true;
                             ret.addBlock(i, j, bf.get(Block.Type.CHIP));
-                        } else
-                        if (!exitPlaced) {
+                        } else if (!exitPlaced) {
                             exitPlaced = true;
                             ret.addBlock(i, j, bf.get(Block.Type.EXIT));
                         }
                     }
 
+                }
             }
-        }
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");
         }
@@ -116,40 +150,40 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel2() {
-        GameLevel ret = new GameLevel(9,9);
+        GameLevel ret = new GameLevel(9, 9);
         try {
-        boolean chipPlaced = false;
-        boolean flippersPlaced = false;
-        boolean exitPlaced = false;
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
-                    if(r.nextFloat() > 0.8f) {
+            boolean chipPlaced = false;
+            boolean flippersPlaced = false;
+            boolean exitPlaced = false;
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (r.nextFloat() > 0.8f) {
                         ret.addBlock(i, j, bf.get(Block.Type.WATER));
                     } else {
                         ret.addBlock(i, j, bf.get(Block.Type.FLOOR));
-                    
-                    if (r.nextFloat() > 0.8f) {
-                        if(r.nextBoolean())
-                            ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
-                    } else {
-                        if (!chipPlaced) {
-                            chipPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.CHIP));
+
+                        if (r.nextFloat() > 0.8f) {
+                            if (r.nextBoolean()) {
+                                ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
+                            }
                         } else {
-                            if (!flippersPlaced) {
-                            flippersPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.FLIPPERS));
-                            } else
-                                if (!exitPlaced) {
-                            exitPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.EXIT));
-                        }
+                            if (!chipPlaced) {
+                                chipPlaced = true;
+                                ret.addBlock(i, j, bf.get(Block.Type.CHIP));
+                            } else {
+                                if (!flippersPlaced) {
+                                    flippersPlaced = true;
+                                    ret.addBlock(i, j, bf.get(Block.Type.FLIPPERS));
+                                } else if (!exitPlaced) {
+                                    exitPlaced = true;
+                                    ret.addBlock(i, j, bf.get(Block.Type.EXIT));
+                                }
+                            }
                         }
                     }
-                        }
 
+                }
             }
-        }
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");
         }
@@ -268,40 +302,40 @@ public class TestLevelFactory extends LevelFactory {
     }
 
     public GameLevel getLevel11() {
-        GameLevel ret = new GameLevel(32,32);
+        GameLevel ret = new GameLevel(32, 32);
         try {
-        boolean chipPlaced = false;
-        boolean flippersPlaced = false;
-        boolean exitPlaced = false;
-        for(int i = 0; i < ret.getWidth(); i++) {
-            for(int j = 0; j < ret.getHeight(); j++) {
-                    if(r.nextFloat() > 0.95f) {
+            boolean chipPlaced = false;
+            boolean flippersPlaced = false;
+            boolean exitPlaced = false;
+            for (int i = 0; i < ret.getWidth(); i++) {
+                for (int j = 0; j < ret.getHeight(); j++) {
+                    if (r.nextFloat() > 0.95f) {
                         ret.addBlock(i, j, bf.get(Block.Type.WATER));
                     } else {
                         ret.addBlock(i, j, bf.get(Block.Type.FLOOR));
 
-                    if (r.nextFloat() > 0.9f) {
-                        if(r.nextBoolean())
-                            ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
-                    } else {
-                        if (!chipPlaced) {
-                            chipPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.CHIP));
+                        if (r.nextFloat() > 0.9f) {
+                            if (r.nextBoolean()) {
+                                ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
+                            }
                         } else {
-                            if (!flippersPlaced) {
-                            flippersPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.FLIPPERS));
-                            } else
-                              if (!exitPlaced) {
-                            exitPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.EXIT));
-                        }
+                            if (!chipPlaced) {
+                                chipPlaced = true;
+                                ret.addBlock(i, j, bf.get(Block.Type.CHIP));
+                            } else {
+                                if (!flippersPlaced) {
+                                    flippersPlaced = true;
+                                    ret.addBlock(i, j, bf.get(Block.Type.FLIPPERS));
+                                } else if (!exitPlaced) {
+                                    exitPlaced = true;
+                                    ret.addBlock(i, j, bf.get(Block.Type.EXIT));
+                                }
+                            }
                         }
                     }
-                        }
 
+                }
             }
-        }
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");
         }
@@ -396,7 +430,7 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(6, 5, bf.get(Block.Type.WALL));
             ret.addBlock(7, 5, bf.get(Block.Type.WALL));
             ret.addBlock(8, 5, bf.get(Block.Type.WALL));
-            ret.addBlock(0, 8, bf.get(Block.Type.PINKBALL,Moves.UP));
+            ret.addBlock(0, 8, bf.get(Block.Type.PINKBALL, Moves.UP));
             ret.addBlock(0, 6, bf.get(Block.Type.GREENBUTTON));
             ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
             return ret;
@@ -449,16 +483,16 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
             ret.addBlock(5, 2, bf.get(Block.Type.FLIPPERS));
 
-            ret.getBlockContainer(0,4).clear();
-            ret.getBlockContainer(1,4).clear();
-            ret.getBlockContainer(2,4).clear();
-            ret.getBlockContainer(3,4).clear();
-            ret.getBlockContainer(4,4).clear();
-            ret.getBlockContainer(5,4).clear();
-            ret.getBlockContainer(6,4).clear();
-            ret.getBlockContainer(7,4).clear();
-            ret.getBlockContainer(8,4).clear();
-            ret.getBlockContainer(6,7).clear();
+            ret.getBlockContainer(0, 4).clear();
+            ret.getBlockContainer(1, 4).clear();
+            ret.getBlockContainer(2, 4).clear();
+            ret.getBlockContainer(3, 4).clear();
+            ret.getBlockContainer(4, 4).clear();
+            ret.getBlockContainer(5, 4).clear();
+            ret.getBlockContainer(6, 4).clear();
+            ret.getBlockContainer(7, 4).clear();
+            ret.getBlockContainer(8, 4).clear();
+            ret.getBlockContainer(6, 7).clear();
 
             ret.addBlock(0, 4, bf.get(Block.Type.WATER));
             ret.addBlock(1, 4, bf.get(Block.Type.WATER));
@@ -497,7 +531,7 @@ public class TestLevelFactory extends LevelFactory {
         }
     }
 
-        public GameLevel getLevel19() {
+    public GameLevel getLevel19() {
         GameLevel ret = getFloors(9, 9);
         try {
             // TODO: Make factory methods to create cloners more easily
@@ -517,9 +551,9 @@ public class TestLevelFactory extends LevelFactory {
         } finally {
             return ret;
         }
-        }
+    }
 
-                public GameLevel getLevel20() {
+    public GameLevel getLevel20() {
         GameLevel ret = getFloors(9, 9);
         try {
             // TODO: Make factory methods to create cloners more easily
@@ -534,10 +568,10 @@ public class TestLevelFactory extends LevelFactory {
             ret.addBlock(8, 0, button);
             ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
 
-            for(int i = 0; i <= 8; i++) {
-                for(int j = 3; j <= 6; j++) {
-                    ret.getBlockContainer(i,j).clear();
-                    ret.addBlock(i,j, bf.get(Block.Type.WATER));
+            for (int i = 0; i <= 8; i++) {
+                for (int j = 3; j <= 6; j++) {
+                    ret.getBlockContainer(i, j).clear();
+                    ret.addBlock(i, j, bf.get(Block.Type.WATER));
                 }
             }
 
@@ -547,57 +581,57 @@ public class TestLevelFactory extends LevelFactory {
         } finally {
             return ret;
         }
-        }
-                
+    }
+
     public GameLevel getLevel21() {
-        GameLevel ret = new GameLevel(9,9);
+        GameLevel ret = new GameLevel(9, 9);
         try {
-        boolean chipPlaced = false;
-        boolean flippersPlaced = false;
-        boolean exitPlaced = false;
-        for(int i = 0; i < 9; i++) {
-            for(int j = 0; j < 9; j++) {
-                    if(r.nextFloat() > 0.8f) {
+            boolean chipPlaced = false;
+            boolean flippersPlaced = false;
+            boolean exitPlaced = false;
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (r.nextFloat() > 0.8f) {
                         ret.addBlock(i, j, bf.get(Block.Type.FIRE));
                     } else {
                         ret.addBlock(i, j, bf.get(Block.Type.FLOOR));
-                    
-                    if (r.nextFloat() > 0.8f) {
-                        if(r.nextBoolean())
-                            ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
-                    } else {
-                        if (!chipPlaced) {
-                            chipPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.CHIP));
+
+                        if (r.nextFloat() > 0.8f) {
+                            if (r.nextBoolean()) {
+                                ret.addBlock(i, j, bf.get(Block.Type.BLOCK));
+                            }
                         } else {
-                            if (!flippersPlaced) {
-                            flippersPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.FIREBOOTS));
-                            } else
-                                if (!exitPlaced) {
-                            exitPlaced = true;
-                            ret.addBlock(i, j, bf.get(Block.Type.EXIT));
-                        }
+                            if (!chipPlaced) {
+                                chipPlaced = true;
+                                ret.addBlock(i, j, bf.get(Block.Type.CHIP));
+                            } else {
+                                if (!flippersPlaced) {
+                                    flippersPlaced = true;
+                                    ret.addBlock(i, j, bf.get(Block.Type.FIREBOOTS));
+                                } else if (!exitPlaced) {
+                                    exitPlaced = true;
+                                    ret.addBlock(i, j, bf.get(Block.Type.EXIT));
+                                }
+                            }
                         }
                     }
-                        }
 
+                }
             }
-        }
         } catch (BlockContainerFullException ex) {
             System.out.println("Couldn't create level");
         }
         return ret;
     }
 
-     public GameLevel getLevel22() {
+    public GameLevel getLevel22() {
         GameLevel ret = getFloors(9, 9);
         try {
             // TODO: Make factory methods to create cloners more easily
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
             Block trap = bf.get(Block.Type.TRAP);
             ret.addBlock(8, 7, trap);
-            ret.addBlock(8,7, bf.get(Block.Type.BUG));
+            ret.addBlock(8, 7, bf.get(Block.Type.BUG));
             Block block = bf.get(Block.Type.BLOCK, Moves.LEFT);
             Creatures.removeCreature(block);
             ret.addBlock(7, 1, block);
@@ -605,13 +639,13 @@ public class TestLevelFactory extends LevelFactory {
             Buttons.addBrownButtonListener(button, trap);
             ret.addBlock(8, 0, button);
             ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
-            ret.getBlockContainer(7,8).clear();
-            ret.getBlockContainer(7,7).clear();
+            ret.getBlockContainer(7, 8).clear();
+            ret.getBlockContainer(7, 7).clear();
             ret.addBlock(7, 8, bf.get(Block.Type.WALL));
             ret.addBlock(7, 7, bf.get(Block.Type.WALL));
             ret.addBlock(5, 8, bf.get(Block.Type.WALL));
             ret.addBlock(5, 7, bf.get(Block.Type.WALL));
-            ret.getBlockContainer(6,8).clear();
+            ret.getBlockContainer(6, 8).clear();
             ret.addBlock(6, 8, bf.get(Block.Type.WATER));
 
             return ret;
@@ -620,9 +654,9 @@ public class TestLevelFactory extends LevelFactory {
         } finally {
             return ret;
         }
-        }
+    }
 
-         public GameLevel getLevel23() {
+    public GameLevel getLevel23() {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
@@ -638,7 +672,7 @@ public class TestLevelFactory extends LevelFactory {
         }
     }
 
-public GameLevel getLevel24() {
+    public GameLevel getLevel24() {
         GameLevel ret = getFloors(9, 9);
         try {
             // TODO: Make factory methods to create cloners more easily
@@ -653,9 +687,9 @@ public GameLevel getLevel24() {
             ret.addBlock(8, 0, button);
             ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
 
-            for(int i = 0; i <= 8; i++) {
-                for(int j = 3; j <= 6; j++) {
-                    ret.addBlock(i,j, bf.get(Block.Type.BOMB));
+            for (int i = 0; i <= 8; i++) {
+                for (int j = 3; j <= 6; j++) {
+                    ret.addBlock(i, j, bf.get(Block.Type.BOMB));
                 }
             }
 
@@ -665,7 +699,7 @@ public GameLevel getLevel24() {
         } finally {
             return ret;
         }
-        }
+    }
 
     public GameLevel getLevel25() {
         GameLevel ret = getFloors(9, 9);
@@ -689,7 +723,7 @@ public GameLevel getLevel24() {
         }
     }
 
-        public GameLevel getLevel26() {
+    public GameLevel getLevel26() {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
@@ -711,7 +745,7 @@ public GameLevel getLevel24() {
         }
     }
 
-        public GameLevel getLevel27() {
+    public GameLevel getLevel27() {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
@@ -732,7 +766,7 @@ public GameLevel getLevel24() {
         }
     }
 
-        public GameLevel getLevel28() {
+    public GameLevel getLevel28() {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
@@ -753,7 +787,7 @@ public GameLevel getLevel24() {
         }
     }
 
-        public GameLevel getLevel29() {
+    public GameLevel getLevel29() {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.GRAVEL));
@@ -784,28 +818,28 @@ public GameLevel getLevel24() {
             return ret;
         }
     }
-        
-                        public GameLevel getLevel30() {
+
+    public GameLevel getLevel30() {
         GameLevel ret = getFloors(9, 9);
         try {
             // TODO: Make factory methods to create cloners more easily
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
-            
-            for(int i = 0; i <= 8; i++) {
-                for(int j = 1; j <= 7; j++) {
-                    ret.getBlockContainer(i,j).clear();
-                    ret.addBlock(i,j, bf.get(Block.Type.ICE));
+
+            for (int i = 0; i <= 8; i++) {
+                for (int j = 1; j <= 7; j++) {
+                    ret.getBlockContainer(i, j).clear();
+                    ret.addBlock(i, j, bf.get(Block.Type.ICE));
                 }
             }
-            for(int i = 0; i <= 8; i++) {
-                ret.getBlockContainer(i,8).clear();
-                if(i == 5)
-                 ret.addBlock(i, 8, bf.get(Block.Type.EXIT));
-                else
-                    if(i == 6)
-                        ret.addBlock(i, 8, bf.get(Block.Type.WALL));
-                    else
-                        ret.addBlock(i, 8, bf.get(Block.Type.WATER));
+            for (int i = 0; i <= 8; i++) {
+                ret.getBlockContainer(i, 8).clear();
+                if (i == 5) {
+                    ret.addBlock(i, 8, bf.get(Block.Type.EXIT));
+                } else if (i == 6) {
+                    ret.addBlock(i, 8, bf.get(Block.Type.WALL));
+                } else {
+                    ret.addBlock(i, 8, bf.get(Block.Type.WATER));
+                }
             }
 
             return ret;
@@ -814,14 +848,13 @@ public GameLevel getLevel24() {
         } finally {
             return ret;
         }
-        }
+    }
 
-                            public GameLevel getLevel31() {
+    public GameLevel getLevel31() {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
             ret.addBlock(1, 0, bf.get(Block.Type.WALL));
-
             ret.addBlock(1, 1, bf.get(Block.Type.WALL));
             ret.addBlock(1, 2, bf.get(Block.Type.WALL));
             ret.addBlock(1, 3, bf.get(Block.Type.WALL));
@@ -846,7 +879,6 @@ public GameLevel getLevel24() {
             ret.addBlock(7, 4, bf.get(Block.Type.WALL));
             ret.addBlock(7, 5, bf.get(Block.Type.WALL));
             ret.addBlock(7, 6, bf.get(Block.Type.WALL));
-
             ret.addBlock(0, 1, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
             ret.addBlock(0, 2, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
             ret.addBlock(0, 3, bf.get(Block.Type.FORCEFLOOR, Moves.DOWN));
@@ -886,7 +918,7 @@ public GameLevel getLevel24() {
         }
     }
 
-     public GameLevel getLevel32() {
+    public GameLevel getLevel32() {
         GameLevel ret = getFloors(9, 9);
         try {
             ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
@@ -916,7 +948,6 @@ public GameLevel getLevel24() {
             ret.addBlock(7, 4, bf.get(Block.Type.WALL));
             ret.addBlock(7, 5, bf.get(Block.Type.WALL));
             ret.addBlock(7, 6, bf.get(Block.Type.WALL));
-
             ret.addBlock(0, 1, bf.get(Block.Type.ICE));
             ret.addBlock(0, 2, bf.get(Block.Type.ICE));
             ret.addBlock(0, 3, bf.get(Block.Type.ICE));
@@ -956,9 +987,6 @@ public GameLevel getLevel24() {
         }
     }
 
-
-
-
     @Override
     public int getLastLevelNumber() {
         return 2;
@@ -966,11 +994,12 @@ public GameLevel getLevel24() {
 
     @Override
     protected int getLevelNumberByPassword(String pass) {
-        if(pass.equals("level1"))
+        if (pass.equals("level1")) {
             return 1;
-        if(pass.equals("level2"))
+        }
+        if (pass.equals("level2")) {
             return 2;
+        }
         return -1;
     }
-
 }

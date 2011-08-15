@@ -8,11 +8,14 @@ import chipschallenge.Block;
  */
 public class NullButtonBehavior extends ButtonBehavior {
 
-    private NullButtonBehavior() {}
+    private NullButtonBehavior() {
+    }
     private static NullButtonBehavior mInstance = null;
+
     public static synchronized NullButtonBehavior getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new NullButtonBehavior();
+        }
         return mInstance;
     }
 
@@ -23,5 +26,4 @@ public class NullButtonBehavior extends ButtonBehavior {
     public void buttonUp(Block listener, Block button) {
         // Do nothing
     }
-    
 }

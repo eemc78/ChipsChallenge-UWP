@@ -24,7 +24,7 @@ public class Game {
 
     public static final int MOVE_MS = 250;
     public static final int SPEED_FRAC = 3;
-    public static final int TIMER_TICK = MOVE_MS/SPEED_FRAC;
+    public static final int TIMER_TICK = MOVE_MS / SPEED_FRAC;
     private Set<GameListener> gameListeners = new HashSet<GameListener>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
@@ -42,11 +42,13 @@ public class Game {
     private long mLastTickDrawn = 0;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
 
-    private Game(){}
+    private Game() {
+    }
 
     public static synchronized Game getInstance() {
-        if(mGame == null)
+        if (mGame == null) {
             mGame = new Game();
+        }
         return mGame;
     }
 
@@ -56,10 +58,10 @@ public class Game {
         Creatures.clear();
         mInventory.clear();
         gameListeners.clear();
-        if(tickTimer != null)
+        if (tickTimer != null) {
             tickTimer.cancel();
+        }
     }
-
 
     public void nextLevel() {
         clearStuff();
@@ -85,10 +87,12 @@ public class Game {
 
     public void start() {
         GUI.getInstance().repaint();
-        if(tickTimer != null)
+        if (tickTimer != null) {
             tickTimer.cancel();
+        }
         tickTimer = new Timer();
         TimerTask tt = new TimerTask() {
+
             @Override
             public void run() {
                 try {
@@ -97,7 +101,7 @@ public class Game {
                     System.out.println("Block container is full!");
                     System.out.println(ex.getMessage());
                     System.exit(-1);
-                } 
+                }
             }
         };
         tickTimer.schedule(tt, 0, TIMER_TICK);
@@ -112,7 +116,7 @@ public class Game {
     }
 
     public void addForcedMove(Block b, Moves m) {
-        forcedMoves.put(b,m);
+        forcedMoves.put(b, m);
     }
 
     public void removeForcedMove(Block b) {
@@ -123,26 +127,28 @@ public class Game {
         mTickCount++;
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
-        for(Block b : forcedMovesNow.keySet()) {
+        for (Block b : forcedMovesNow.keySet()) {
             Moves m = forcedMovesNow.get(b);
-            if(!mLevel.moveBlock(b, m, true)) {
+            if (!mLevel.moveBlock(b, m, true)) {
                 // Bounce
                 b.setFacing(Move.reverse(b.getFacing()));
-                mLevel.getBlockContainer(b).moveTo(b);               
+                mLevel.getBlockContainer(b).moveTo(b);
             }
         }
         //TODO: Remove the need of making a copy
-        Collection<GameListener> listenersCpy= new ArrayList<GameListener>(gameListeners);
-        for(GameListener l : listenersCpy) {
+        Collection<GameListener> listenersCpy = new ArrayList<GameListener>(gameListeners);
+        for (GameListener l : listenersCpy) {
             l.tick();
         }
         Creatures.tick();
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away
-        if(mLastTickDrawn != mTickCount) {
-            for(Point move : movesToCheck)
-                if(GUI.getInstance().repaintIfNecessary(move))
+        if (mLastTickDrawn != mTickCount) {
+            for (Point move : movesToCheck) {
+                if (GUI.getInstance().repaintIfNecessary(move)) {
                     break;
+                }
+            }
         }
         movesToCheck.clear();
     }
@@ -198,5 +204,4 @@ public class Game {
     public void hideHint() {
         // TODO
     }
-
 }

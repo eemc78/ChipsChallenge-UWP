@@ -8,11 +8,14 @@ import chipschallenge.Block;
  */
 public class ThiefTo extends BlockReaction {
 
-    private ThiefTo() {}
+    private ThiefTo() {
+    }
     private static ThiefTo mInstance = null;
+
     public static synchronized ThiefTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new ThiefTo();
+        }
         return mInstance;
     }
 
@@ -24,5 +27,4 @@ public class ThiefTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }
-
 }

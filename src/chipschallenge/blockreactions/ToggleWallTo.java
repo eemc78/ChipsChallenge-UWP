@@ -9,11 +9,14 @@ import chipschallenge.BlockContainerFullException;
  */
 public class ToggleWallTo extends BlockReaction {
 
-    private ToggleWallTo() {}
+    private ToggleWallTo() {
+    }
     private static ToggleWallTo mInstance = null;
+
     public static synchronized ToggleWallTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new ToggleWallTo();
+        }
         return mInstance;
     }
 
@@ -24,5 +27,4 @@ public class ToggleWallTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return standing.isA(Block.Type.TOGGLEWALLOPEN);
     }
-
 }

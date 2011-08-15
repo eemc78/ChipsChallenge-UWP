@@ -18,12 +18,12 @@ class PlayField extends Panel {
     private int mWidth;
     private int mHeight;
     private Image offscreen;
-    private Insets insets = new Insets(4,4,4,4);
+    private Insets insets = new Insets(4, 4, 4, 4);
 
     public PlayField(int width, int height) {
         mWidth = width;
         mHeight = height;
-        setPreferredSize(new Dimension(width*32,height*32));
+        setPreferredSize(new Dimension(width * 32, height * 32));
         setVisible(true);
     }
 
@@ -34,35 +34,41 @@ class PlayField extends Panel {
 
     public int getTop(GameLevel gl, int chipY) {
         int top = chipY - 4;
-        if(top < 0)
+        if (top < 0) {
             return 0;
-        if(top > (gl.getHeight()-mHeight))
-            return (gl.getHeight()-mHeight);
+        }
+        if (top > (gl.getHeight() - mHeight)) {
+            return (gl.getHeight() - mHeight);
+        }
         return top;
     }
 
-   public int getLeft(GameLevel gl, int chipX) {
+    public int getLeft(GameLevel gl, int chipX) {
         int left = chipX - 4;
-        if(left < 0)
+        if (left < 0) {
             return 0;
-        if(left > (gl.getWidth()-mWidth))
-            return (gl.getWidth()-mWidth);
+        }
+        if (left > (gl.getWidth() - mWidth)) {
+            return (gl.getWidth() - mWidth);
+        }
         return left;
     }
 
     @Override
     public void paint(Graphics g) {
-        if(offscreen == null) {
-               offscreen = createImage(getSize().width, getSize().height);
+        if (offscreen == null) {
+            offscreen = createImage(getSize().width, getSize().height);
         }
         Graphics og = offscreen.getGraphics();
         GameLevel gl = Game.getInstance().getLevel();
         Point chip = gl.findChip();
         int top = getTop(gl, chip.y);
         int left = getLeft(gl, chip.x);
-        for(int x = 0; x < mWidth; x++)
-            for(int y = 0; y < mHeight; y++)
-                og.drawImage(gl.getBlockContainer(x+left, y+top).getImage(), x*32, y*32, null);
+        for (int x = 0; x < mWidth; x++) {
+            for (int y = 0; y < mHeight; y++) {
+                og.drawImage(gl.getBlockContainer(x + left, y + top).getImage(), x * 32, y * 32, null);
+            }
+        }
         super.paint(og);
         g.drawImage(offscreen, 0, 0, null);
         og.dispose();
@@ -74,11 +80,10 @@ class PlayField extends Panel {
         Point chip = gl.findChip();
         int top = getTop(gl, chip.y);
         int left = getLeft(gl, chip.x);
-        if(from.y >= top && from.y <= (top+mHeight) && from.x >= left && from.x <= (left+mWidth)) {
+        if (from.y >= top && from.y <= (top + mHeight) && from.x >= left && from.x <= (left + mWidth)) {
             repaint();
             return true;
-        } 
+        }
         return false;
     }
-
 }

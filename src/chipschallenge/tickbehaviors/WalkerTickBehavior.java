@@ -11,11 +11,14 @@ import chipschallenge.Utils;
  */
 public class WalkerTickBehavior implements BlockTickBehavior {
 
-    private WalkerTickBehavior() {}
+    private WalkerTickBehavior() {
+    }
     private static WalkerTickBehavior mInstance = null;
+
     public static synchronized WalkerTickBehavior getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new WalkerTickBehavior();
+        }
         return mInstance;
     }
 
@@ -27,22 +30,27 @@ public class WalkerTickBehavior implements BlockTickBehavior {
     @Override
     public void tick(Block caller) throws BlockContainerFullException {
         Moves m = caller.getFacing();
-        if(!caller.move(m)) {
+        if (!caller.move(m)) {
             int dir = Utils.r.nextInt(4);
-            outer : for(int i = 0; i < 2; i++) {
-                switch(dir) {
+            outer:
+            for (int i = 0; i < 2; i++) {
+                switch (dir) {
                     case 0:
-                        if(move(caller, Moves.UP))
+                        if (move(caller, Moves.UP)) {
                             break outer;
+                        }
                     case 1:
-                        if(move(caller, Moves.DOWN))
+                        if (move(caller, Moves.DOWN)) {
                             break outer;
+                        }
                     case 2:
-                        if(move(caller, Moves.LEFT))
+                        if (move(caller, Moves.LEFT)) {
                             break outer;
+                        }
                     case 3:
-                        if(move(caller, Moves.RIGHT))
+                        if (move(caller, Moves.RIGHT)) {
                             break outer;
+                        }
                 }
             }
         }

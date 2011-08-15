@@ -9,11 +9,14 @@ import chipschallenge.Buttons;
  */
 public class RedButtonTo extends BlockReaction {
 
-    private RedButtonTo() {}
+    private RedButtonTo() {
+    }
     private static RedButtonTo mInstance = null;
+
     public static synchronized RedButtonTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new RedButtonTo();
+        }
         return mInstance;
     }
 
@@ -24,7 +27,4 @@ public class RedButtonTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return true;
     }
-
-
-
 }

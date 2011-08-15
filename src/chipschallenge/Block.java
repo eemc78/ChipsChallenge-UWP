@@ -16,14 +16,18 @@ import java.util.Collection;
  * @author patrik
  */
 public class Block implements GameListener {
+
     private Type mType;
     private Move.Moves mFacing;
     private BlockTickBehavior mTickBehavior = NullTickBehavior.getInstance();
     private BlockReaction mFrom = CanMoveBlockReaction.getInstance();
     private BlockReaction mTo = CanMoveBlockReaction.getInstance();
-    private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();;
+    private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
+
+    ;
 
     public static enum Type {
+
         BLOB, BLOCK, BLUEBUTTON, BLUEKEY, BLUELOCK, BLUEWALLREAL, BLUEWALLFAKE, BOMB,
         BROWNBUTTON, BUG, BURNEDCHIP, CHIP, CLONEBLOCK, CLONEMACHINE,
         COMPUTERCHIP, DIRT, DROWNEDCHIP, EXIT, FAKEEXIT, FIRE, FIREBOOTS,
@@ -35,7 +39,8 @@ public class Block implements GameListener {
         YELLOWKEY, YELLOWLOCK
     }
 
-    public Block() {}
+    public Block() {
+    }
 
     public Block(Type t, Moves m) {
         mType = t;
@@ -50,7 +55,6 @@ public class Block implements GameListener {
         mTo = to;
         mButtonBehavior = bb;
     }
-
 
     public Type getType() {
         return mType;
@@ -77,43 +81,51 @@ public class Block implements GameListener {
     }
 
     public boolean isOnIce() {
-        if(!isChip() && !isBlock() && !isCreature())
+        if (!isChip() && !isBlock() && !isCreature()) {
             return false;
+        }
         Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
-        for(Block b : blocks)
-            if(b.isIce())
+        for (Block b : blocks) {
+            if (b.isIce()) {
                 return true;
+            }
+        }
         return false;
     }
 
     public boolean isOnForceFloor() {
-        if(!isChip() && !isBlock() && !isCreature())
+        if (!isChip() && !isBlock() && !isCreature()) {
             return false;
+        }
         Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
-        for(Block b : blocks)
-            if(b.isForceFloor())
+        for (Block b : blocks) {
+            if (b.isForceFloor()) {
                 return true;
+            }
+        }
         return false;
     }
 
     public boolean isOnCloner() {
         Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
-        for(Block b : blocks)
-            if(b.isA(Type.CLONEMACHINE))
+        for (Block b : blocks) {
+            if (b.isA(Type.CLONEMACHINE)) {
                 return true;
+            }
+        }
         return false;
     }
 
     public boolean isCreature() {
-        return getType() == Block.Type.BLOB ||
-               getType() == Block.Type.BUG ||
-               getType() == Block.Type.FIREBALL ||
-               getType() == Block.Type.GLIDER ||
-               getType() == Block.Type.PARAMECIUM ||
-               getType() == Block.Type.PINKBALL ||
-               getType() == Block.Type.TANK ||
-               getType() == Block.Type.TEETH ||
-               getType() == Block.Type.WALKER;
+        return getType() == Block.Type.BLOB
+                || getType() == Block.Type.BUG
+                || getType() == Block.Type.FIREBALL
+                || getType() == Block.Type.GLIDER
+                || getType() == Block.Type.PARAMECIUM
+                || getType() == Block.Type.PINKBALL
+                || getType() == Block.Type.TANK
+                || getType() == Block.Type.TEETH
+                || getType() == Block.Type.WALKER;
     }
 
     @Override
@@ -195,9 +207,9 @@ public class Block implements GameListener {
 
     @Override
     public Block clone() throws CloneNotSupportedException {
-        if(isCreature() || isChip())
+        if (isCreature() || isChip()) {
             throw new CloneNotSupportedException();
+        }
         return (Block) super.clone();
     }
-    
 }

@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author patrik
  */
 public class Creatures {
+
     private static Collection<Block> creatures = new CopyOnWriteArrayList<Block>();
     private static int creatureTicks = 0;
     private static boolean blobMove = false;
@@ -26,14 +27,13 @@ public class Creatures {
 
     public static void tick() throws BlockContainerFullException {
         creatureTicks = (creatureTicks + 1) % Game.SPEED_FRAC;
-        if(creatureTicks == 0) {
+        if (creatureTicks == 0) {
             blobMove = !blobMove;
-            for(Block b : creatures) {
-                if(!b.isA(Block.Type.BLOB) || (b.isA(Block.Type.BLOB) && blobMove)) {
+            for (Block b : creatures) {
+                if (!b.isA(Block.Type.BLOB) || (b.isA(Block.Type.BLOB) && blobMove)) {
                     b.tick();
                 }
             }
         }
     }
-
 }

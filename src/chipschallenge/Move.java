@@ -8,7 +8,10 @@ import java.awt.Point;
  */
 public class Move {
 
-    public enum Moves {UP, DOWN, LEFT, RIGHT};
+    public enum Moves {
+
+        UP, DOWN, LEFT, RIGHT
+    };
 
     public static void updatePoint(Point p, Moves m) {
         switch (m) {
@@ -30,7 +33,7 @@ public class Move {
     public static Moves getRandom() {
         int random = Utils.r.nextInt(4);
         Moves ret = null;
-        switch(random) {
+        switch (random) {
             case 0:
                 ret = Moves.UP;
                 break;
@@ -49,7 +52,7 @@ public class Move {
 
     public static Moves reverse(Moves m) {
         Moves ret = null;
-        switch(m) {
+        switch (m) {
             case UP:
                 ret = Moves.DOWN;
                 break;
@@ -65,5 +68,4 @@ public class Move {
         }
         return ret;
     }
-    
 }

@@ -4,6 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.Game;
 import chipschallenge.Move.Moves;
+
 /**
  *
  * @author patrik
@@ -20,5 +21,6 @@ public abstract class ButtonBehavior {
     }
 
     public abstract void buttonDown(Block listener, Block button);
+
     public abstract void buttonUp(Block listener, Block button);
 }

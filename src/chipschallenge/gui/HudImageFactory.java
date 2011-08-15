@@ -15,10 +15,9 @@ public class HudImageFactory {
     private Image[] loadedNumbers = new Image[24];
     private Image hudBg = null;
     private Image itemSlot = null;
-    
     private static HudImageFactory instance = null;
-    
-    private HudImageFactory(){
+
+    private HudImageFactory() {
         try {
             baseImage = ImageIO.read(new File("window.png"));
         } catch (Exception e) {
@@ -27,8 +26,8 @@ public class HudImageFactory {
         }
     }
 
-    public static HudImageFactory getInstance(){
-        if(instance==null){
+    public static HudImageFactory getInstance() {
+        if (instance == null) {
             instance = new HudImageFactory();
         }
         return instance;
@@ -41,27 +40,28 @@ public class HudImageFactory {
      * @param yellow false = green. true = yellow
      * @return The number as an image
      */
-    public Image getNumber(int number, boolean yellow){
-        if(number>9 || number<-2)
+    public Image getNumber(int number, boolean yellow) {
+        if (number > 9 || number < -2) {
             throw new IllegalArgumentException("number must be between -2 and 9");
+        }
 
-        int code = number+2;
-        if(yellow)
-            code+=12;
+        int code = number + 2;
+        if (yellow) {
+            code += 12;
+        }
 
-        if(loadedNumbers[code]!=null)
+        if (loadedNumbers[code] != null) {
             return loadedNumbers[code];
+        }
 
         int x = 0;
         int y = yellow ? 375 : 353;
-        
-        if(number>=0){
-            x = 15+(number-1)*15;
-        }
-        else if(number==-1){
+
+        if (number >= 0) {
+            x = 15 + (number - 1) * 15;
+        } else if (number == -1) {
             x = 1;
-        }
-        else{
+        } else {
             //number == -2
             x = 155;
         }
@@ -72,16 +72,17 @@ public class HudImageFactory {
         return img;
     }
 
-    public Image getHudBackground(){
-        if(hudBg==null)
+    public Image getHudBackground() {
+        if (hudBg == null) {
             hudBg = baseImage.getSubimage(339, 26, 154, 300);
+        }
         return hudBg;
     }
 
-    public Image getItemSlot(){
-        if(itemSlot==null)
+    public Image getItemSlot() {
+        if (itemSlot == null) {
             itemSlot = baseImage.getSubimage(352, 248, 32, 32);
+        }
         return itemSlot;
     }
-
 }

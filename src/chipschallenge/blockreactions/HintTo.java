@@ -9,11 +9,14 @@ import chipschallenge.Inventory.Boots;
  */
 public class HintTo extends BlockReaction {
 
-    private HintTo() {}
+    private HintTo() {
+    }
     private static HintTo mInstance = null;
+
     public static synchronized HintTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new HintTo();
+        }
         return mInstance;
     }
 
@@ -24,5 +27,4 @@ public class HintTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return true;
     }
-
 }

@@ -16,29 +16,32 @@ import java.util.Queue;
  */
 public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
 
-    private ChipTickBehavior() {}
+    private ChipTickBehavior() {
+    }
     private static ChipTickBehavior mInstance = null;
+
     public static synchronized ChipTickBehavior getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new ChipTickBehavior();
+        }
         return mInstance;
     }
-
     private Queue<Moves> proposedMoves = new LinkedList<Moves>();
     private int mTicksBeforeTurn;
 
     public void tick(Block caller) throws BlockContainerFullException {
-        if(!proposedMoves.isEmpty()) {
-            if(caller.isOnForceFloor())
+        if (!proposedMoves.isEmpty()) {
+            if (caller.isOnForceFloor()) {
                 Game.getInstance().removeForcedMove(caller);
-            if(!caller.move(proposedMoves.poll())) {
+            }
+            if (!caller.move(proposedMoves.poll())) {
                 Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
-            }      
+            }
             mTicksBeforeTurn = 12;
         }
-        if(!caller.isOnIce() && mTicksBeforeTurn > 0) {
+        if (!caller.isOnIce() && mTicksBeforeTurn > 0) {
             mTicksBeforeTurn--;
-            if(mTicksBeforeTurn == 0) {
+            if (mTicksBeforeTurn == 0) {
                 caller.setFacing(Moves.DOWN);
                 GUI.getInstance().repaint();
             }
@@ -51,7 +54,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch(e.getKeyCode()) {
+        switch (e.getKeyCode()) {
             case KeyEvent.VK_UP:
                 proposedMoves.clear();
                 proposedMoves.offer(Moves.UP);
@@ -70,5 +73,4 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
                 break;
         }
     }
-
 }

@@ -11,19 +11,22 @@ import chipschallenge.Inventory.Boots;
  */
 public class WaterTo extends BlockReaction {
 
-    private WaterTo() {}
+    private WaterTo() {
+    }
     private static WaterTo mInstance = null;
+
     public static synchronized WaterTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new WaterTo();
+        }
         return mInstance;
     }
 
     public void react(Block moving, Block standing) {
         Game g = Game.getInstance();
         switch (moving.getType()) {
-            case CHIP:           
-                if(hasBoots(Boots.FLIPPERS)) {
+            case CHIP:
+                if (hasBoots(Boots.FLIPPERS)) {
                     moving.setType(Type.SWIMMINGCHIP);
                 } else {
                     moving.destroy();
@@ -50,5 +53,4 @@ public class WaterTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return true;
     }
-
 }

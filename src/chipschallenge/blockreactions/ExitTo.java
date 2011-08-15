@@ -9,17 +9,20 @@ import chipschallenge.BlockContainerFullException;
  */
 public class ExitTo extends BlockReaction {
 
-    private ExitTo() {}
+    private ExitTo() {
+    }
     private static ExitTo mInstance = null;
+
     public static synchronized ExitTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new ExitTo();
+        }
         return mInstance;
     }
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if(moving.isChip()) {
+        if (moving.isChip()) {
             game().levelComplete();
         }
     }

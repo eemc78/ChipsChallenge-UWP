@@ -10,16 +10,19 @@ import chipschallenge.Inventory.Boots;
  */
 public class FirebootsTo extends BlockReaction {
 
-    private FirebootsTo() {}
+    private FirebootsTo() {
+    }
     private static FirebootsTo mInstance = null;
+
     public static synchronized FirebootsTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new FirebootsTo();
+        }
         return mInstance;
     }
 
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if(moving.isChip()) {
+        if (moving.isChip()) {
             takeBoots(Boots.FIREBOOTS);
             standing.destroy();
             //TODO: Play take-item sound
@@ -29,5 +32,4 @@ public class FirebootsTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip() || moving.isBlock();
     }
-
 }

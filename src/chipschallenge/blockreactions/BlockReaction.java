@@ -1,4 +1,5 @@
 package chipschallenge.blockreactions;
+
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
@@ -13,7 +14,7 @@ import chipschallenge.Move.Moves;
  * @author patrik
  */
 public abstract class BlockReaction {
-    
+
     public final Block createBlock(Type t, Moves d) {
         return Game.getInstance().getBlockFactory().get(t, d);
     }
@@ -55,5 +56,6 @@ public abstract class BlockReaction {
     }
 
     public abstract void react(Block moving, Block standing) throws BlockContainerFullException;
+
     public abstract boolean canMove(Block moving, Block standing);
 }

@@ -10,23 +10,26 @@ import chipschallenge.Inventory.Boots;
  */
 public class ForceFloorTo extends BlockReaction {
 
-    private ForceFloorTo() {}
+    private ForceFloorTo() {
+    }
     private static ForceFloorTo mInstance = null;
+
     public static synchronized ForceFloorTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new ForceFloorTo();
+        }
         return mInstance;
     }
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if(! (moving.isChip() && hasBoots(Boots.SUCTIONBOOTS)))
+        if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
             game().addForcedMove(moving, standing.getFacing());
+        }
     }
 
     @Override
     public boolean canMove(Block moving, Block standing) {
         return true;
     }
-
 }

@@ -10,14 +10,16 @@ import java.util.Set;
  * @author patrik
  */
 public class Inventory {
-    
+
     public static enum Key {
+
         BLUE, GREEN, RED, YELLOW
     }
+
     public static enum Boots {
+
         FIREBOOTS, FLIPPERS, ICESKATES, SUCTIONBOOTS
     }
-
     private Set<Boots> mBoots = new HashSet<Boots>();
     private Collection<Key> mKeys = new ArrayList<Key>();
 
@@ -35,8 +37,9 @@ public class Inventory {
     }
 
     public boolean useKey(Key type) {
-        if(type == Key.GREEN)
+        if (type == Key.GREEN) {
             return mKeys.contains(type);
+        }
         return mKeys.remove(type);
     }
 
@@ -60,5 +63,4 @@ public class Inventory {
         clearKeys();
         clearBoots();
     }
-    
 }

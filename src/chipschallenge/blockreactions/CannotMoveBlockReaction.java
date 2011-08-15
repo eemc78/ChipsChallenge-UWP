@@ -7,12 +7,15 @@ import chipschallenge.Block;
  * @author patrik
  */
 public class CannotMoveBlockReaction extends BlockReaction {
-    
-    private CannotMoveBlockReaction() {}
+
+    private CannotMoveBlockReaction() {
+    }
     private static CannotMoveBlockReaction mInstance = null;
+
     public static synchronized CannotMoveBlockReaction getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new CannotMoveBlockReaction();
+        }
         return mInstance;
     }
 
@@ -23,5 +26,4 @@ public class CannotMoveBlockReaction extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return false;
     }
-
 }

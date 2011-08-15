@@ -8,11 +8,14 @@ import chipschallenge.Block;
  */
 public class GravelTo extends BlockReaction {
 
-    private GravelTo() {}
+    private GravelTo() {
+    }
     private static GravelTo mInstance = null;
+
     public static synchronized GravelTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new GravelTo();
+        }
         return mInstance;
     }
 
@@ -23,5 +26,4 @@ public class GravelTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }
-
 }

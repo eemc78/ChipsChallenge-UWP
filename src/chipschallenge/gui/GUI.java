@@ -26,12 +26,13 @@ public class GUI extends Frame {
     private GUI() {
         super("Chip's Challenge");
         this.addWindowListener(new WindowAdapter() {
+
             @Override
             public void windowClosing(WindowEvent we) {
                 System.exit(0);
             }
         });
-        setSize (520,400);
+        setSize(520, 400);
         try {
             mBackground = ImageIO.read(new File("background.bmp"));
         } catch (IOException ex) {
@@ -42,7 +43,7 @@ public class GUI extends Frame {
         layout.setHgap(25);
         layout.setVgap(30);
         setLayout(layout);
-        mPlayField = new PlayField(9,9);
+        mPlayField = new PlayField(9, 9);
         mHud = new Hud();
         add(mPlayField);
         add(mHud);
@@ -57,11 +58,12 @@ public class GUI extends Frame {
         mPlayField.addKeyListener(l);
         mHud.addKeyListener(l);
     }
-
     private static GUI mInstance = null;
+
     public static synchronized GUI getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new GUI();
+        }
         return mInstance;
     }
 
@@ -78,9 +80,11 @@ public class GUI extends Frame {
         int iHeight = mBackground.getHeight(null);
         int wWidth = getWidth();
         int wHeight = getHeight();
-        for(int x = 0; x < wWidth; x += iWidth)
-            for(int y = 0; y < wHeight; y += iHeight)
+        for (int x = 0; x < wWidth; x += iWidth) {
+            for (int y = 0; y < wHeight; y += iHeight) {
                 g.drawImage(mBackground, x, y, null);
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -98,8 +102,11 @@ public class GUI extends Frame {
         return msgbox.isOk;
     }
 
-    public void setChipsLeft(int n) {}
-    public void setTimeLeft(int t) {}
+    public void setChipsLeft(int n) {
+    }
+
+    public void setTimeLeft(int t) {
+    }
 
     public void scoreDialog(GameLevel mLevel) {
         msgDialog(mLevel.getScore());
@@ -108,5 +115,4 @@ public class GUI extends Frame {
     public boolean repaintIfNecessary(Point from) {
         return mPlayField.repaintIfNecessary(from);
     }
-    
 }

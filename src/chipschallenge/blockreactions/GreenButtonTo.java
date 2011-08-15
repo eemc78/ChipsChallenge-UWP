@@ -9,11 +9,14 @@ import chipschallenge.Buttons;
  */
 public class GreenButtonTo extends BlockReaction {
 
-    private GreenButtonTo() {}
+    private GreenButtonTo() {
+    }
     private static GreenButtonTo mInstance = null;
+
     public static synchronized GreenButtonTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new GreenButtonTo();
+        }
         return mInstance;
     }
 
@@ -24,7 +27,4 @@ public class GreenButtonTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return true;
     }
-
-
-
 }

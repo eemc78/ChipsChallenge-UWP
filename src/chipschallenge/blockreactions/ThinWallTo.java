@@ -13,11 +13,14 @@ import chipschallenge.Move.Moves;
  */
 public class ThinWallTo extends BlockReaction {
 
-    private ThinWallTo() {}
+    private ThinWallTo() {
+    }
     private static ThinWallTo mInstance = null;
+
     public static synchronized ThinWallTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new ThinWallTo();
+        }
         return mInstance;
     }
 
@@ -26,7 +29,7 @@ public class ThinWallTo extends BlockReaction {
     }
 
     public boolean canMove(Block moving, Block standing) {
-        switch(moving.getFacing()) {
+        switch (moving.getFacing()) {
             case UP:
                 return standing.getFacing() != Moves.DOWN;
             case DOWN:
@@ -38,5 +41,4 @@ public class ThinWallTo extends BlockReaction {
         }
         return false;
     }
-
 }

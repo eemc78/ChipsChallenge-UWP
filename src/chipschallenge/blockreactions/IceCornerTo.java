@@ -11,20 +11,23 @@ import chipschallenge.Move.Moves;
  */
 public class IceCornerTo extends BlockReaction {
 
-    private IceCornerTo() {}
+    private IceCornerTo() {
+    }
     private static IceCornerTo mInstance = null;
+
     public static synchronized IceCornerTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new IceCornerTo();
+        }
         return mInstance;
     }
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if(! (moving.isChip() && hasBoots(Boots.ICESKATES))) {
+        if (!(moving.isChip() && hasBoots(Boots.ICESKATES))) {
             Moves m = standing.getFacing();
             Moves force = null;
-            switch(moving.getFacing()) {
+            switch (moving.getFacing()) {
                 case UP:
                     force = m == Moves.UP ? Moves.RIGHT : Moves.LEFT;
                     break;
@@ -45,7 +48,7 @@ public class IceCornerTo extends BlockReaction {
     @Override
     public boolean canMove(Block moving, Block standing) {
         Moves m = standing.getFacing();
-        switch(moving.getFacing()) {
+        switch (moving.getFacing()) {
             case UP:
                 return m == Moves.UP || m == Moves.LEFT;
             case DOWN:
@@ -57,5 +60,4 @@ public class IceCornerTo extends BlockReaction {
         }
         return false;
     }
-
 }

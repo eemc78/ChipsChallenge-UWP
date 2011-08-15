@@ -10,13 +10,14 @@ import java.util.Map;
  */
 public class MicrosoftLevelFactory extends LevelFactory {
 
-    private Map<Block.Type,Byte> msType = new HashMap<Block.Type,Byte>();
+    private Map<Block.Type, Byte> msType = new HashMap<Block.Type, Byte>();
 
     private void addBlockTypes(Type... blockTypes) {
         byte i = 0;
-        for(Block.Type t : blockTypes) {
-            if(t != null)
+        for (Block.Type t : blockTypes) {
+            if (t != null) {
                 msType.put(t, i);
+            }
             i++;
         }
     }
@@ -24,11 +25,12 @@ public class MicrosoftLevelFactory extends LevelFactory {
     private MicrosoftLevelFactory() {
         //TODO: Check if CHIPS.DAT exists
     }
-
     private static MicrosoftLevelFactory mInstance = null;
+
     public static synchronized MicrosoftLevelFactory getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new MicrosoftLevelFactory();
+        }
         return mInstance;
     }
 
@@ -45,5 +47,4 @@ public class MicrosoftLevelFactory extends LevelFactory {
     protected int getLevelNumberByPassword(String pass) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

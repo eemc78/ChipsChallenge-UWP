@@ -15,9 +15,11 @@ public class TankBehavior extends ButtonBehavior implements BlockTickBehavior {
 
     @Override
     public void tick(Block caller) throws BlockContainerFullException {
-        if(isMoving)
-            if(!caller.move(caller.getFacing()))
+        if (isMoving) {
+            if (!caller.move(caller.getFacing())) {
                 isMoving = false;
+            }
+        }
     }
 
     public void buttonDown(Block listener, Block button) {
@@ -28,5 +30,4 @@ public class TankBehavior extends ButtonBehavior implements BlockTickBehavior {
     public void buttonUp(Block listener, Block button) {
         // Do nothing
     }
-
 }

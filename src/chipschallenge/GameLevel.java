@@ -10,7 +10,7 @@ import java.util.Map;
  * @author patrik
  */
 public class GameLevel {
-    
+
     private volatile BlockContainer[][] mBoard;
     private volatile Map<Block, Point> blocks = new HashMap<Block, Point>();
     private volatile Block chip;
@@ -21,18 +21,21 @@ public class GameLevel {
 
     public GameLevel(int width, int height) {
         mBoard = new BlockContainer[width][height];
-        for(int i = 0; i < width; i++)
-            for(int j = 0; j < height; j++)
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 mBoard[i][j] = new BlockContainer();
+            }
+        }
     }
 
     public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
         BlockContainer bc = getBlockContainer(x, y);
-        if(bc != null) {
-            if(b.getType() == Block.Type.CHIP)
+        if (bc != null) {
+            if (b.getType() == Block.Type.CHIP) {
                 chip = b;
+            }
             bc.add(b);
-            blocks.put(b, new Point(x,y));
+            blocks.put(b, new Point(x, y));
         }
     }
 
@@ -42,22 +45,25 @@ public class GameLevel {
     }
 
     public BlockContainer getBlockContainer(int x, int y) {
-        if(x < 0 || x >= getWidth() || y < 0 || y >= getHeight())
+        if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) {
             return null;
+        }
         return mBoard[x][y];
     }
 
     public BlockContainer getBlockContainer(Block b) {
         Point p = getPoint(b);
-        if(p == null)
+        if (p == null) {
             return null;
+        }
         return getBlockContainer(p.x, p.y);
     }
 
     public BlockContainer getBlockContainer(Block b, Moves direction) {
         Point p = (Point) blocks.get(b).clone();
-        if(p == null)
+        if (p == null) {
             return null;
+        }
         Move.updatePoint(p, direction);
         return getBlockContainer(p.x, p.y);
     }
@@ -81,14 +87,15 @@ public class GameLevel {
         // Redraw even if move is impossible, because facing might have changed
         Game.getInstance().moveHappened(from);
         Game.getInstance().moveHappened(to);
-        if(ignoreFrom || !b.isOnIce() && !b.isOnCloner())
+        if (ignoreFrom || !b.isOnIce() && !b.isOnCloner()) {
             b.setFacing(direction);
-        if(to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
+        }
+        if (to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
-        }       
-        if(ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
+        }
+        if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
             // Do not change facing if sliding            
-            if(mBoard[to.x][to.y].canMoveTo(b)) {
+            if (mBoard[to.x][to.y].canMoveTo(b)) {
                 //From reactions
                 mBoard[from.x][from.y].moveFrom(b);
 
@@ -106,17 +113,18 @@ public class GameLevel {
         } else {
             return false;
         }
-        
+
     }
 
     public void removeBlock(Block b) {
         getBlockContainer(b).remove(b);
-        if(b.getType() != Block.Type.CHIP)
+        if (b.getType() != Block.Type.CHIP) {
             blocks.remove(b);
+        }
     }
 
     public void replaceBlock(Block a, Block b) {
-        Point p = (Point)blocks.get(a).clone();
+        Point p = (Point) blocks.get(a).clone();
         getBlockContainer(p.x, p.y).replaceBlock(a, b);
         blocks.put(b, p);
     }
@@ -147,7 +155,7 @@ public class GameLevel {
 
     public String getScore() {
         StringBuilder sb = new StringBuilder();
-        switch(mNumDeaths) {
+        switch (mNumDeaths) {
             case 0:
                 sb.append("Yowser! First try!");
                 break;
@@ -164,17 +172,16 @@ public class GameLevel {
                 break;
         }
         sb.append("\n\n");
-        double timeBonus = mTimeLeft*10;
+        double timeBonus = mTimeLeft * 10;
         sb.append("Time Bonus: " + timeBonus);
         sb.append("\n\n");
         double levelBonus = Math.floor(mNumber * 500 * Math.pow(0.8, mNumDeaths));
         levelBonus = Math.max(500, levelBonus);
         sb.append("Level Bonus: " + levelBonus);
         sb.append("\n\n");
-        double levelScore = timeBonus+levelBonus;
+        double levelScore = timeBonus + levelBonus;
         sb.append("Level Score: " + levelScore);
         //TODO: Store totalscore and best time, and output message.
         return sb.toString();
     }
-
 }

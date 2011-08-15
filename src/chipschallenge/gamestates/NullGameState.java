@@ -9,11 +9,14 @@ import java.awt.event.KeyEvent;
  */
 public class NullGameState implements GameState {
 
-    private NullGameState() {}
+    private NullGameState() {
+    }
     private static NullGameState mInstance = null;
+
     public static synchronized NullGameState getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new NullGameState();
+        }
         return mInstance;
     }
 

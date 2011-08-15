@@ -26,11 +26,14 @@ import chipschallenge.tickbehaviors.WalkerTickBehavior;
  */
 public class MicrosoftBlockFactory extends BlockFactory {
 
-    private MicrosoftBlockFactory(){}
+    private MicrosoftBlockFactory() {
+    }
     private static MicrosoftBlockFactory mInstance = null;
+
     public static synchronized MicrosoftBlockFactory getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new MicrosoftBlockFactory();
+        }
         return mInstance;
     }
 
@@ -40,7 +43,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
         ButtonBehavior nullButton = NullButtonBehavior.getInstance();
         BlockReaction canMove = CanMoveBlockReaction.getInstance();
         BlockReaction cannotMove = CannotMoveBlockReaction.getInstance();
-        switch(type) {
+        switch (type) {
             case BLOB:
                 ret = new Block(type, facing, BlobTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 Creatures.addCreature(ret);
@@ -231,7 +234,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, YellowLockTo.getInstance(), nullButton);
                 break;
         }
-        if(ret == null) {
+        if (ret == null) {
             System.out.println("The block requested hasn't been implemented. Using default behaviors");
             ret = new Block(type, facing);
         }

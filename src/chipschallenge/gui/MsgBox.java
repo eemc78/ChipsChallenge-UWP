@@ -4,7 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class MsgBox extends Dialog implements ActionListener {
-    private Button ok,can;
+
+    private Button ok, can;
     public boolean isOk = false;
 
     /*
@@ -12,28 +13,29 @@ public class MsgBox extends Dialog implements ActionListener {
      * @param msg     message to be displayed
      * @param okcan   true : ok cancel buttons, false : ok button only
      */
-    MsgBox(Frame frame, String msg, boolean okcan){
+    MsgBox(Frame frame, String msg, boolean okcan) {
         super(frame, "Message", true);
         setResizable(false);
         setLayout(new BorderLayout());
-        add("Center",new Label(msg));
+        add("Center", new Label(msg));
         addOKCancelPanel(okcan);
         createFrame();
         pack();
         setVisible(true);
     }
 
-    MsgBox(Frame frame, String msg){
+    MsgBox(Frame frame, String msg) {
         this(frame, msg, false);
     }
 
-    void addOKCancelPanel( boolean okcan ) {
+    void addOKCancelPanel(boolean okcan) {
         Panel p = new Panel();
         p.setLayout(new FlowLayout());
-        createOKButton( p );
-        if (okcan == true)
-            createCancelButton( p );
-        add("South",p);
+        createOKButton(p);
+        if (okcan == true) {
+            createCancelButton(p);
+        }
+        add("South", p);
     }
 
     void createOKButton(Panel p) {
@@ -48,15 +50,14 @@ public class MsgBox extends Dialog implements ActionListener {
 
     void createFrame() {
         Dimension d = getToolkit().getScreenSize();
-        setLocation(d.width/3,d.height/3);
+        setLocation(d.width / 3, d.height / 3);
     }
 
-    public void actionPerformed(ActionEvent ae){
-        if(ae.getSource() == ok) {
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == ok) {
             isOk = true;
             setVisible(false);
-        }
-        else if(ae.getSource() == can) {
+        } else if (ae.getSource() == can) {
             setVisible(false);
         }
     }

@@ -10,11 +10,14 @@ import chipschallenge.BlockContainerFullException;
  */
 public class RecessedWallTo extends BlockReaction {
 
-    private RecessedWallTo() {}
+    private RecessedWallTo() {
+    }
     private static RecessedWallTo mInstance = null;
+
     public static synchronized RecessedWallTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new RecessedWallTo();
+        }
         return mInstance;
     }
 
@@ -25,5 +28,4 @@ public class RecessedWallTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }
-
 }

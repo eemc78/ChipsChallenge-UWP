@@ -10,15 +10,16 @@ import java.util.Map;
  * @author patrik
  */
 public abstract class BlockFactory {
+
     private Map<Type, Map<Moves, Block>> loadedBlocks = new HashMap<Type, Map<Moves, Block>>();
-    
+
     public final Block get(Type type) {
         return get(type, Moves.DOWN);
     }
 
     public final Block get(Type type, Moves direction) {
         Map<Moves, Block> movesBlocks = loadedBlocks.get(type);
-        if(movesBlocks == null) {
+        if (movesBlocks == null) {
             movesBlocks = new HashMap<Moves, Block>();
             loadedBlocks.put(type, movesBlocks);
         }
