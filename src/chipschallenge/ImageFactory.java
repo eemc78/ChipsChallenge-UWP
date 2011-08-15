@@ -197,6 +197,10 @@ public class ImageFactory {
                 y = 12;
                 x = 0;
                 break;
+            case ICECORNER:
+                y = 10;
+                x = 1;
+                break;
             case ICEBLOCK:
                 y = 10;
                 x = 1;
@@ -312,7 +316,7 @@ public class ImageFactory {
             }
         }
 
-        if ((x >= 4 && !(x == 6 && y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL) {
+        if ((x >= 4 && !(x == 6 && y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.ICECORNER) {
             switch (moves) {
                 case DOWN:  
                     y += 2;

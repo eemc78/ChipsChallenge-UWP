@@ -36,7 +36,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
             }      
             mTicksBeforeTurn = 12;
         }
-        if(mTicksBeforeTurn > 0) {
+        if(!caller.isOnIce() && mTicksBeforeTurn > 0) {
             mTicksBeforeTurn--;
             if(mTicksBeforeTurn == 0) {
                 caller.setFacing(Moves.DOWN);

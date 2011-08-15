@@ -139,11 +139,15 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, BlueWallRealTo.getInstance(), nullButton);
                 break;
             case HINT:
+                ret = new Block(type, facing, nullTick, HintFrom.getInstance(), HintTo.getInstance(), nullButton);
                 break;
             case ICE:
                 ret = new Block(type, facing, nullTick, IceFrom.getInstance(), IceTo.getInstance(), nullButton);
                 break;
-            case ICEBLOCK:
+            case ICECORNER:
+                ret = new Block(type, facing, nullTick, IceFrom.getInstance(), IceCornerTo.getInstance(), nullButton);
+                break;
+            case ICEBLOCK: // ?
                 break;
             case ICESKATES:
                 break;

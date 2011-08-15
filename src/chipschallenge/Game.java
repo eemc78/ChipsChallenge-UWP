@@ -128,7 +128,7 @@ public class Game {
             if(!mLevel.moveBlock(b, m, true)) {
                 // Bounce
                 b.setFacing(Move.reverse(b.getFacing()));
-                mLevel.getBlockContainer(b).moveFrom(b);
+                mLevel.getBlockContainer(b).moveTo(b);               
             }
         }
         //TODO: Remove the need of making a copy
@@ -189,6 +189,14 @@ public class Game {
 
     public void moveHappened(Point from) {
         movesToCheck.add(from);
+    }
+
+    public void showHint() {
+        // TODO
+    }
+
+    public void hideHint() {
+        // TODO
     }
 
 }
