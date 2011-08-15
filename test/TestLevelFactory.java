@@ -57,6 +57,9 @@ public class TestLevelFactory extends LevelFactory {
             case 23: return getLevel23();
             case 24: return getLevel24();
             case 25: return getLevel25();
+            case 26: return getLevel26();
+            case 27: return getLevel27();
+            case 28: return getLevel28();
         }
         return null;
     }
@@ -682,6 +685,69 @@ public GameLevel getLevel24() {
         }
     }
 
+        public GameLevel getLevel26() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(0, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(1, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(2, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(3, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(4, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(5, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(6, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(7, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(8, 6, bf.get(Block.Type.RECESSEDWALL));
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+        public GameLevel getLevel27() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(0, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(1, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(2, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(3, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(4, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(5, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(6, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(8, 6, bf.get(Block.Type.HIDDENWALL));
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
+
+        public GameLevel getLevel28() {
+        GameLevel ret = getFloors(9, 9);
+        try {
+            ret.addBlock(0, 0, bf.get(Block.Type.CHIP));
+            ret.addBlock(0, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(1, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(3, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(4, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(5, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(6, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(7, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(8, 6, bf.get(Block.Type.INVISIBLEWALL));
+            ret.addBlock(8, 8, bf.get(Block.Type.EXIT));
+            return ret;
+        } catch (BlockContainerFullException ex) {
+            System.out.println("Couldn't create level");
+        } finally {
+            return ret;
+        }
+    }
 
 
     @Override

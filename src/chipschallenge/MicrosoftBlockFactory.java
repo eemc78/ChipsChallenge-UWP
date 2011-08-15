@@ -133,6 +133,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, GreenLockTo.getInstance(), nullButton);
                 break;
             case HIDDENWALL:
+                ret = new Block(type, facing, nullTick, canMove, BlueWallRealTo.getInstance(), nullButton);
                 break;
             case HINT:
                 break;
@@ -143,6 +144,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case ICESKATES:
                 break;
             case INVISIBLEWALL:
+                ret = new Block(type, facing, nullTick, canMove, cannotMove, nullButton);
                 break;
             case LOCK:
                 break;
@@ -155,6 +157,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 Creatures.addCreature(ret);
                 break;
             case RECESSEDWALL:
+                ret = new Block(type, facing, nullTick, canMove, RecessedWallTo.getInstance(), nullButton);
                 break;
             case REDBUTTON:
                 ret = new Block(type, facing, nullTick, canMove, RedButtonTo.getInstance(), nullButton);
