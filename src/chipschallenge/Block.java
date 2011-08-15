@@ -121,7 +121,7 @@ public class Block implements GameListener {
     }
 
     public Image getImage(boolean overlay) {
-        return ImageFactory.get(mType, mFacing, overlay);
+        return ImageFactory.getInstance().get(mType, mFacing, overlay);
     }
 
     public void setFromReaction(BlockReaction from) {
