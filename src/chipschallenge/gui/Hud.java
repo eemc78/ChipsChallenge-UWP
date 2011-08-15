@@ -19,9 +19,8 @@ class Hud extends Panel {
     private boolean timeNeedsRepaint = false;
     private boolean chipsLeftNeedsRepaint = false;
     private boolean backgroundPainted = false;
-
+    
     public Hud() {
-        add(new Label("Hud"));
         setPreferredSize(new Dimension(9*16,9*32));
         setVisible(true);
     }

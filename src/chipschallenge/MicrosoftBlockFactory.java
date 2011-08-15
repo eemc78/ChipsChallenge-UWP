@@ -184,8 +184,13 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, ThiefTo.getInstance(), nullButton);
                 break;
             case THINWALL:
+                ret = new Block(type, facing, nullTick, ThinWallFrom.getInstance(), ThinWallTo.getInstance(), nullButton);
                 break;
-            case TOGGLEWALLCLOSED:
+            case THINWALLSE:
+                ret = new Block(type, facing, nullTick, ThinWallSeFrom.getInstance(), ThinWallSeTo.getInstance(), nullButton);
+
+                break;
+            case TOGGLEWALLCLOSED: // Yes, fallthrough
             case TOGGLEWALLOPEN:
                 ret = new Block(type, facing, nullTick, canMove, ToggleWallTo.getInstance(), ToggleWallBehavior.getInstance());
                 Buttons.addGreenButtonsListener(ret);

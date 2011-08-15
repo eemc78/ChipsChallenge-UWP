@@ -266,6 +266,10 @@ public class ImageFactory {
                 y = 6;
                 x = 0;
                 break;
+            case THINWALLSE:
+                y = 0;
+                x = 3;
+                break;
             case TOGGLEWALLCLOSED:
                 y = 5;
                 x = 2;
