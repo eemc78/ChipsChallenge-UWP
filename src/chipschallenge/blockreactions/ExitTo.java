@@ -23,7 +23,7 @@ public class ExitTo extends BlockReaction {
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
-            game().levelComplete();
+            game().setLevelComplete();
         }
     }
 

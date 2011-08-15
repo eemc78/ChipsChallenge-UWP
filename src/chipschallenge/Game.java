@@ -37,6 +37,7 @@ public class Game {
     private Timer tickTimer = null;
     private long mTickCount = 0;
     private long mLastTickDrawn = 0;
+    private boolean levelComplete;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
 
     private Game() {
@@ -78,7 +79,12 @@ public class Game {
         nextLevel(mLevelNumber);
     }
 
-    public void levelComplete() {
+    public void setLevelComplete() {
+        levelComplete = true;
+    }
+
+    private void levelComplete() {
+        levelComplete = false;
         GUI.getInstance().scoreDialog(mLevel);
         nextLevel();
     }
@@ -149,6 +155,8 @@ public class Game {
             }
         }
         movesToCheck.clear();
+        if(levelComplete)
+            levelComplete();
     }
 
     public void die(String msg) {
