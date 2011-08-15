@@ -2,6 +2,7 @@ package chipschallenge;
 
 import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -10,7 +11,7 @@ import java.util.WeakHashMap;
  * @author patrik
  */
 public abstract class BlockFactory {
-    private Map<Type, Map<Moves, Block>> loadedBlocks = new WeakHashMap<Type, Map<Moves, Block>>();
+    private Map<Type, Map<Moves, Block>> loadedBlocks = new HashMap<Type, Map<Moves, Block>>();
     
     public final Block get(Type type) {
         return get(type, Moves.DOWN);

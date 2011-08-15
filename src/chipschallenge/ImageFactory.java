@@ -23,7 +23,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageFactory {
 
-    private static Map<Type, Map<Moves, Image>> loadedImages = new WeakHashMap<Type, Map<Moves, Image>>();
+    private static Map<Type, Map<Moves, Image>> loadedImages = new HashMap<Type, Map<Moves, Image>>();
     private static BufferedImage tileset;
     static{
         try {
