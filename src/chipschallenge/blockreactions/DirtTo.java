@@ -10,11 +10,14 @@ import chipschallenge.BlockContainerFullException;
  */
 public class DirtTo extends BlockReaction {
 
-    private DirtTo() {}
+    private DirtTo() {
+    }
     private static DirtTo mInstance = null;
+
     public static synchronized DirtTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new DirtTo();
+        }
         return mInstance;
     }
 
@@ -27,5 +30,4 @@ public class DirtTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }
-
 }

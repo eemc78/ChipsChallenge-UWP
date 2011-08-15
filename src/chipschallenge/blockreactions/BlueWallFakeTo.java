@@ -10,11 +10,14 @@ import chipschallenge.BlockContainerFullException;
  */
 public class BlueWallFakeTo extends BlockReaction {
 
-    private BlueWallFakeTo() {}
+    private BlueWallFakeTo() {
+    }
     private static BlueWallFakeTo mInstance = null;
+
     public static synchronized BlueWallFakeTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new BlueWallFakeTo();
+        }
         return mInstance;
     }
 
@@ -25,5 +28,4 @@ public class BlueWallFakeTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }
-
 }

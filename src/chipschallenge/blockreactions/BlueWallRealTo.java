@@ -12,11 +12,14 @@ import chipschallenge.Move.Moves;
  */
 public class BlueWallRealTo extends BlockReaction {
 
-    private BlueWallRealTo() {}
+    private BlueWallRealTo() {
+    }
     private static BlueWallRealTo mInstance = null;
+
     public static synchronized BlueWallRealTo getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new BlueWallRealTo();
+        }
         return mInstance;
     }
 
@@ -30,5 +33,4 @@ public class BlueWallRealTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return moving.isChip();
     }
-
 }
