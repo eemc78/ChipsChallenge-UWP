@@ -20,7 +20,7 @@ class Hud extends Panel {
     private boolean backgroundPainted = false;
 
     public Hud() {
-        setPreferredSize(new Dimension(9 * 16, 9 * 32));
+        setPreferredSize(new Dimension(154, 300));
         setVisible(true);
     }
 
