@@ -48,6 +48,7 @@ public class GUI extends Frame {
         mHud = new Hud();
         Game.getInstance().addChipListener(mHud);
         Game.getInstance().addNextLevelListener(mHud);
+        Game.getInstance().getInventory().addInventoryListener(mHud);
         add(mPlayField);
         add(mHud);
         //pack();

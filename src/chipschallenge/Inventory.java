@@ -22,25 +22,40 @@ public class Inventory {
     }
     private Set<Boots> mBoots = new HashSet<Boots>();
     private Collection<Key> mKeys = new ArrayList<Key>();
+    private Collection<InventoryListener> listeners = new ArrayList<InventoryListener>();
 
     public void clear() {
         mBoots.clear();
         mKeys.clear();
+        update();
+    }
+
+    public Set<Boots> getBoots() {
+        return mBoots;
+    }
+
+    public Collection<Key> getKeys() {
+        return mKeys;
     }
 
     public void takeKey(Key type) {
-        mKeys.add(type);
+        if(mKeys.add(type))
+           update();
     }
 
     public void takeBoots(Boots type) {
-        mBoots.add(type);
+        if(mBoots.add(type))
+            update();
     }
 
     public boolean useKey(Key type) {
         if (type == Key.GREEN) {
             return mKeys.contains(type);
         }
-        return mKeys.remove(type);
+        boolean ret;
+        if(ret = mKeys.remove(type))
+            update();
+        return ret;
     }
 
     public boolean hasKey(Key type) {
@@ -53,14 +68,25 @@ public class Inventory {
 
     public void clearKeys() {
         mKeys.clear();
+        update();
     }
 
     public void clearBoots() {
         mBoots.clear();
+        update();
     }
 
-    public void clearAll() {
-        clearKeys();
-        clearBoots();
+    public void addInventoryListener(InventoryListener l) {
+        listeners.add(l);
     }
+
+    public void removeInventoryListener(InventoryListener l) {
+        listeners.remove(l);
+    }
+
+    public void update() {
+        for(InventoryListener l : listeners)
+            l.inventoryChange(this);
+    }
+
 }

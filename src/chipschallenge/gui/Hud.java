@@ -2,6 +2,9 @@ package chipschallenge.gui;
 
 import chipschallenge.ChipListener;
 import chipschallenge.GameLevel;
+import chipschallenge.Inventory;
+import chipschallenge.InventoryListener;
+import chipschallenge.NextLevelListener;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -11,7 +14,7 @@ import java.awt.Panel;
  *
  * @author wasd
  */
-class Hud extends Panel implements ChipListener, NextLevelListener {
+class Hud extends Panel implements ChipListener, NextLevelListener, InventoryListener {
 
     private int level = 0;
     private int time = 0;
@@ -133,5 +136,9 @@ class Hud extends Panel implements ChipListener, NextLevelListener {
         setChipsLeft(level.getNumChipsNeeded());
         setLevel(level.getLevelNumber());
         setTime(level.getNumSeconds());
+    }
+
+    public void inventoryChange(Inventory i) {
+        // TODO: Repaint keys and boots
     }
 }

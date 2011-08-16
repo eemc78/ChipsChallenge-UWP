@@ -4,7 +4,6 @@ import chipschallenge.gamestates.GameState;
 import chipschallenge.Move.Moves;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
-import chipschallenge.gui.NextLevelListener;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
