@@ -58,6 +58,7 @@ public class Game {
         mTickCount = 0;
         Buttons.clear();
         Creatures.clear();
+        Teleports.clear();
         forcedMoves.clear();
         mInventory.clear();
         gameListeners.clear();

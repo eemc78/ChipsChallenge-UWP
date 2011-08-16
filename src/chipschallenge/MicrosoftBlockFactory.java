@@ -195,6 +195,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 break;
             case TELEPORT:
+                ret = new Block(type, facing, nullTick, canMove, TeleportTo.getInstance(), nullButton);
                 break;
             case THIEF:
                 ret = new Block(type, facing, nullTick, canMove, ThiefTo.getInstance(), nullButton);

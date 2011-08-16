@@ -48,8 +48,11 @@ public class GameLevel implements ChipListener {
     public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
         BlockContainer bc = getBlockContainer(x, y);
         if (bc != null) {
-            if (b.getType() == Block.Type.CHIP) {
+            if(b.isChip()) {
                 chip = b;
+            }
+            if(b.isA(Block.Type.TELEPORT)) {
+                Teleports.addTeleport(x, y);
             }
             bc.add(b);
             blocks.put(b, new Point(x, y));
@@ -93,6 +96,18 @@ public class GameLevel implements ChipListener {
         return mBoard[0].length;
     }
 
+    // Should be used for true teleportation ONLY
+    public boolean teleport(Block b, Point to) throws BlockContainerFullException {
+        Point from = blocks.get(b);
+        if(mBoard[to.x][to.y].canMoveTo(b)) {
+            mBoard[from.x][from.y].remove(b);
+            blocks.put(b, to);
+            mBoard[to.x][to.y].add(b);
+            return true;
+        }
+        return false;
+    }
+
     public boolean moveBlock(Block b, Moves direction, boolean ignoreFrom) throws BlockContainerFullException {
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
@@ -111,7 +126,6 @@ public class GameLevel implements ChipListener {
             if (mBoard[to.x][to.y].canMoveTo(b)) {
                 //From reactions
                 mBoard[from.x][from.y].moveFrom(b);
-
                 //Actual movement
                 mBoard[from.x][from.y].remove(b);
                 blocks.put(b, to);
@@ -121,6 +135,7 @@ public class GameLevel implements ChipListener {
                 mBoard[to.x][to.y].moveTo(b);
                 return true;
             } else {
+                System.out.println("ROMAN");
                 return false;
             }
         } else {
