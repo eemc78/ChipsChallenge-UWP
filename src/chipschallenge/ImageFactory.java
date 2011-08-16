@@ -118,8 +118,8 @@ public class ImageFactory {
                 x = 3;
                 break;
             case COMPUTERCHIP:
-                y = 0;
-                x = 2;
+                y = 2;
+                x = 0;
                 break;
             case DIRT:
                 y = 11;

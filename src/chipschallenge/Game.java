@@ -231,6 +231,7 @@ public class Game {
     }
 
     public void takeChip() {
+        mLevel.chipTaken();
         for(ChipListener l : chipListeners) {
             l.chipTaken();
         }

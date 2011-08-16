@@ -1,6 +1,7 @@
 package chipschallenge.gui;
 
 import chipschallenge.ChipListener;
+import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import chipschallenge.Inventory;
 import chipschallenge.InventoryListener;
@@ -27,6 +28,15 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     public Hud() {
         setPreferredSize(new Dimension(154, 300));
         setVisible(true);
+
+        // Listen for collected chips
+        Game.getInstance().addChipListener(this);
+
+        // Listen for level change
+        Game.getInstance().addNextLevelListener(this);
+
+        // Listen for inventory change
+        Game.getInstance().getInventory().addInventoryListener(this);
 
         //for debugging:
         setChipsLeft(7);

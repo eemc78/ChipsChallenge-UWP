@@ -88,6 +88,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, cannotMove, cannotMove, CloneMachineBehavior.getInstance());
                 break;
             case COMPUTERCHIP:
+                ret = new Block(type, facing, nullTick, canMove, ComputerChipTo.getInstance(), nullButton);
                 break;
             case DIRT:
                 ret = new Block(type, facing, nullTick, canMove, DirtTo.getInstance(), nullButton);
@@ -181,6 +182,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, RedLockTo.getInstance(), nullButton);
                 break;
             case SOCKET:
+                ret = new Block(type, facing, nullTick, canMove, SocketTo.getInstance(), nullButton);
                 break;
             case SUCTIONBOOTS:
                 ret = new Block(type, facing, nullTick, canMove, SuctionbootsTo.getInstance(), nullButton);

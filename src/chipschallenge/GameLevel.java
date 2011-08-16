@@ -198,7 +198,7 @@ public class GameLevel implements ChipListener {
     }
 
     public void chipTaken() {
-        numChipsNeeded--;
+        numChipsNeeded = numChipsNeeded > 0 ? numChipsNeeded-1 : 0;
     }
 
     public void setDeaths(int deaths) {

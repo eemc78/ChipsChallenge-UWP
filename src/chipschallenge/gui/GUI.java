@@ -46,9 +46,6 @@ public class GUI extends Frame {
         setLayout(layout);
         mPlayField = new PlayField(9, 9);
         mHud = new Hud();
-        Game.getInstance().addChipListener(mHud);
-        Game.getInstance().addNextLevelListener(mHud);
-        Game.getInstance().getInventory().addInventoryListener(mHud);
         add(mPlayField);
         add(mHud);
         //pack();
