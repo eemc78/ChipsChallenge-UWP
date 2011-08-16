@@ -28,25 +28,25 @@ public class BugTickBehavior implements BlockTickBehavior {
         for (int i = 0; i < 2; i++) {
             switch (m) {
                 case UP:
-                    caller.setFacing(Moves.LEFT);
                     if (caller.move(Moves.LEFT)) {
                         break outer;
-                    }
+                    } else
+                        caller.setFacing(m);
                 case RIGHT:
-                    caller.setFacing(Moves.UP);
                     if (caller.move(Moves.UP)) {
                         break outer;
-                    }
+                    } else
+                        caller.setFacing(m);
                 case DOWN:
-                    caller.setFacing(Moves.RIGHT);
                     if (caller.move(Moves.RIGHT)) {
                         break outer;
-                    }
+                    } else
+                        caller.setFacing(m);
                 case LEFT:
-                    caller.setFacing(Moves.DOWN);
                     if (caller.move(Moves.DOWN)) {
                         break outer;
                     } else {
+                        caller.setFacing(m);
                         m = Moves.UP;
                     }
             }

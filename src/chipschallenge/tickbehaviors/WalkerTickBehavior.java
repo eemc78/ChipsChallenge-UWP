@@ -38,18 +38,24 @@ public class WalkerTickBehavior implements BlockTickBehavior {
                     case 0:
                         if (move(caller, Moves.UP)) {
                             break outer;
-                        }
+                        } else
+                        caller.setFacing(m);
                     case 1:
                         if (move(caller, Moves.DOWN)) {
                             break outer;
-                        }
+                        } else
+                        caller.setFacing(m);
                     case 2:
                         if (move(caller, Moves.LEFT)) {
                             break outer;
-                        }
+                        } else
+                        caller.setFacing(m);
                     case 3:
                         if (move(caller, Moves.RIGHT)) {
                             break outer;
+                        } else {
+                            dir = 0;
+                            caller.setFacing(m);
                         }
                 }
             }

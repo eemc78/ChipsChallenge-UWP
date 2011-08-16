@@ -36,11 +36,10 @@ public class MicrosoftLevelFactory extends LevelFactory {
             case 0x0B: return f.get(Type.DIRT);
             case 0x0C: return f.get(Type.ICE);
             case 0x0D: return f.get(Type.FORCEFLOOR, Moves.DOWN);
-            case 0x0E: // Cloning block UP
-            case 0x0F: // Cloning block LEFT
-            case 0x10: // Cloning block DOWN
-            case 0x11: // Cloning block RIGHT
-                return f.get(Type.BLOCK); // For now
+            case 0x0E: return f.get(Type.BLOCK, Moves.UP); // Cloning block UP
+            case 0x0F: return f.get(Type.BLOCK, Moves.LEFT); // Cloning block LEFT
+            case 0x10: return f.get(Type.BLOCK, Moves.DOWN); // Cloning block DOWN
+            case 0x11: return f.get(Type.BLOCK, Moves.RIGHT); // Cloning block RIGHT
             case 0x12: return f.get(Type.FORCEFLOOR, Moves.UP);
             case 0x13: return f.get(Type.FORCEFLOOR, Moves.RIGHT);
             case 0x14: return f.get(Type.FORCEFLOOR, Moves.LEFT);
@@ -304,6 +303,16 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             if(button != null && cloner != null) // Perhaps throw an exception otherwise
                                 Buttons.addRedButtonListener(button, cloner);                            
                         }
+                        break;
+                    case 6: // Password
+                        byte[] ASCIIPassword = new byte[sizeOfField-1];
+                        chipDat.readFully(ASCIIPassword);
+                        for(int i = 0; i < ASCIIPassword.length; i++)
+                            ASCIIPassword[i] ^= 0x99;
+                        String password = new String(ASCIIPassword);
+                        System.out.println("Password: " + password);
+                        // TODO: Set password to ret
+                        chipDat.skipBytes(1);
                         break;
                     case 7: // Hint
                         byte[] ASCIIHint = new byte[sizeOfField-1];

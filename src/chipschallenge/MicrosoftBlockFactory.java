@@ -220,7 +220,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, cannotMove, nullButton);
                 break;
             case WATER:
-                ret = new Block(type, facing, nullTick, canMove, WaterTo.getInstance(), nullButton);
+                ret = new Block(type, facing, nullTick, WaterFrom.getInstance(), WaterTo.getInstance(), nullButton);
                 break;
             case YELLOWKEY:
                 ret = new Block(type, facing, nullTick, canMove, YellowKeyTo.getInstance(), nullButton);

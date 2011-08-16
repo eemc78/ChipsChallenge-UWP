@@ -100,7 +100,7 @@ public class GameLevel implements ChipListener {
         // Redraw even if move is impossible, because facing might have changed
         Game.getInstance().moveHappened(from);
         Game.getInstance().moveHappened(to);
-        if (ignoreFrom || !(b.isOnIce() && !b.isChipWithIceSkates()) && !b.isOnCloner()) {
+        if (ignoreFrom || (!b.isOnIce() || b.isChipWithIceSkates()) && !b.isOnCloner()) {
             b.setFacing(direction);
         }
         if (to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
