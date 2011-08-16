@@ -143,7 +143,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
     private MicrosoftLevelFactory() {
         try {
             chipDat = new RandomAccessFile("CHIPS.DAT","r");
-            int magicNumber = ByteSwapper.swap(chipDat.readInt());
+            int magicNumber = ByteSwapper.swap(chipDat.readInt()) & 0xFFFFFFFF;
             if(magicNumber != 0x0002AAAC)
                 throw new Exception("Couldn't parse file");
             short numLevels = ByteSwapper.swap(chipDat.readShort());
@@ -192,10 +192,11 @@ public class MicrosoftLevelFactory extends LevelFactory {
         }
     }
 
+    // TODO: Make more efficient by reading everything once instef of doing seek(offset);
     public GameLevel getLevel(int n) {
         int width = 32;
         int height = 32;
-        GameLevel ret = getFloors(width,height); //
+        GameLevel ret = new GameLevel(32,32); //getFloors(width,height);
         try {
             long offset = 6;
             chipDat.seek(offset);
@@ -207,6 +208,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
             // Skip over the levels we don't want
             while(level < n) {
                 int numBytesLevel = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                offset += numBytesLevel+2;
                 chipDat.skipBytes(numBytesLevel);
                 level++;
             }
@@ -216,13 +218,17 @@ public class MicrosoftLevelFactory extends LevelFactory {
             int time          = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             int numberOfChips = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             int mapDetail     = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-
+            offset += 10;
             // Read layer 1
-            readLayer(ret);
-
+            int numberOfBytesLayer1= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            offset += 2;
+            chipDat.skipBytes(numberOfBytesLayer1);
+            int numberOfBytesLayer2= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            readLayer(ret, numberOfBytesLayer2);
+            chipDat.seek(offset);
             // Read layer 2
             // TODO: Fix this
-            //readLayer(ret);
+            readLayer(ret, numberOfBytesLayer1);
             
         } catch (IOException ex) {
         } finally {
@@ -230,12 +236,11 @@ public class MicrosoftLevelFactory extends LevelFactory {
         }
     }
 
-    public void readLayer(GameLevel ret) throws IOException, BlockContainerFullException {
+    public void readLayer(GameLevel ret, int numberOfBytes) throws IOException, BlockContainerFullException {
         int width = ret.getWidth();
         int height = ret.getHeight();
 
-        // Number of bytes for this layer data
-        int numberOfBytes = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+        // Number of bytes for this layer data        
         int bytesRead = 0;
         int objectsPlaced = 0;
         while(bytesRead < numberOfBytes) {

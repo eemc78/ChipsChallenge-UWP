@@ -66,6 +66,10 @@ public class Block implements GameListener {
         return mType == Type.CHIP || mType == Type.SWIMMINGCHIP;
     }
 
+    public boolean isChipWithIceSkates() {
+        return isChip() && Game.getInstance().getInventory().hasBoots(Inventory.Boots.ICESKATES);
+    }
+
     public boolean isBlock() {
         return mType == Type.BLOCK;
     }
