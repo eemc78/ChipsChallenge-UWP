@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.Block.Type;
 import chipschallenge.Inventory.Key;
 
 /**
