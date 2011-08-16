@@ -4,12 +4,12 @@ import chipschallenge.gamestates.GameState;
 import chipschallenge.Move.Moves;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
+import chipschallenge.gui.NextLevelListener;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,6 +40,8 @@ public class Game {
     private boolean levelComplete;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
     private boolean dead = false;
+    private Collection<ChipListener> chipListeners = new ArrayList<ChipListener>();
+    private Collection<NextLevelListener> nextLevelListeners = new ArrayList<NextLevelListener>();
 
     private Game() {
     }
@@ -64,15 +66,17 @@ public class Game {
     }
 
     public void nextLevel() {
-        clearStuff();
-        mLevel = mLevelFactory.getLevel(++mLevelNumber);
-        start();
+        mLevelNumber++;
+        nextLevel(mLevelNumber);
     }
 
     public void nextLevel(int n) {
         clearStuff();
         mLevelNumber = n;
         mLevel = mLevelFactory.getLevel(mLevelNumber);
+        for(NextLevelListener l : nextLevelListeners) {
+            l.nextLevel(mLevel);
+        }
         start();
     }
 
@@ -209,5 +213,27 @@ public class Game {
 
     public void hideHint() {
         // TODO
+    }
+
+    public void addChipListener(ChipListener l) {
+        chipListeners.add(l);
+    }
+
+    public void removeChipListener(ChipListener l) {
+        chipListeners.remove(l);
+    }
+
+    public void addNextLevelListener(NextLevelListener l) {
+        nextLevelListeners.add(l);
+    }
+
+    public void removeNextLevelListener(NextLevelListener l) {
+        nextLevelListeners.remove(l);
+    }
+
+    public void takeChip() {
+        for(ChipListener l : chipListeners) {
+            l.chipTaken();
+        }
     }
 }

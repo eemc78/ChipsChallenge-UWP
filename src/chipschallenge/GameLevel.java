@@ -9,39 +9,16 @@ import java.util.Map;
  *
  * @author patrik
  */
-public class GameLevel {
+public class GameLevel implements ChipListener {
 
     private volatile BlockContainer[][] mBoard;
     private volatile Map<Block, Point> blocks = new HashMap<Block, Point>();
     private volatile Block chip;
-    private int mChipsLeft;
-    private int mTimeLeft;
-    private int mNumDeaths = 0;
-    private int mNumber;
-
-    public int getChipsLeft() {
-        return mChipsLeft;
-    }
-
-    public void setChipsLeft(int mChipsLeft) {
-        this.mChipsLeft = mChipsLeft;
-    }
-
-    public int getNumber() {
-        return mNumber;
-    }
-
-    public void setNumber(int number) {
-        this.mNumber = number;
-    }
-
-    public int getTimeLeft() {
-        return mTimeLeft;
-    }
-
-    public void setTimeLeft(int mTimeLeft) {
-        this.mTimeLeft = mTimeLeft;
-    }
+    private int numChipsNeeded;
+    private int numSeconds;
+    private int levelNumber;
+    private int deaths = 0;
+    private String mapTitle = "Untitled";
 
     public GameLevel(int width, int height) {
         mBoard = new BlockContainer[width][height];
@@ -50,6 +27,13 @@ public class GameLevel {
                 mBoard[i][j] = new BlockContainer();
             }
         }
+    }
+
+    public GameLevel(int width, int height, int numChipsNeeded, int numSeconds, int levelNumber) {
+        this(width, height);
+        this.numChipsNeeded = numChipsNeeded;
+        this.numSeconds = numSeconds;
+        this.levelNumber = levelNumber;       
     }
 
     public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
@@ -90,10 +74,6 @@ public class GameLevel {
         }
         Move.updatePoint(p, direction);
         return getBlockContainer(p.x, p.y);
-    }
-
-    public int getNumChipsRequired() {
-        return mChipsLeft;
     }
 
     public int getWidth() {
@@ -162,16 +142,16 @@ public class GameLevel {
     }
 
     public void die() {
-        mNumDeaths++;
+        deaths++;
     }
 
     public int getNumDeaths() {
-        return mNumDeaths;
+        return deaths;
     }
 
     public String getScore() {
         StringBuilder sb = new StringBuilder();
-        switch (mNumDeaths) {
+        switch (deaths) {
             case 0:
                 sb.append("Yowser! First try!");
                 break;
@@ -188,10 +168,10 @@ public class GameLevel {
                 break;
         }
         sb.append("\n\n");
-        double timeBonus = mTimeLeft * 10;
+        double timeBonus = numSeconds * 10;
         sb.append("Time Bonus: " + timeBonus);
         sb.append("\n\n");
-        double levelBonus = Math.floor(mNumber * 500 * Math.pow(0.8, mNumDeaths));
+        double levelBonus = Math.floor(levelNumber * 500 * Math.pow(0.8, deaths));
         levelBonus = Math.max(500, levelBonus);
         sb.append("Level Bonus: " + levelBonus);
         sb.append("\n\n");
@@ -199,5 +179,49 @@ public class GameLevel {
         sb.append("Level Score: " + levelScore);
         //TODO: Store totalscore and best time, and output message.
         return sb.toString();
+    }
+
+    public int getLevelNumber() {
+        return levelNumber;
+    }
+
+    public int getNumChipsNeeded() {
+        return numChipsNeeded;
+    }
+
+    public int getNumSeconds() {
+        return numSeconds;
+    }
+
+    public void setChipsLeft(int chipsLeft) {
+        numChipsNeeded = chipsLeft;
+    }
+
+    public void chipTaken() {
+        numChipsNeeded--;
+    }
+
+    public void setDeaths(int deaths) {
+        this.deaths = deaths;
+    }
+
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
+    }
+
+    public void setNumChipsNeeded(int numChipsNeeded) {
+        this.numChipsNeeded = numChipsNeeded;
+    }
+
+    public void setNumSeconds(int numSeconds) {
+        this.numSeconds = numSeconds;
+    }
+
+    public void setMapTitle(String title) {
+        mapTitle = title;
+    }
+
+    public String getMapTitle() {
+        return mapTitle;
     }
 }

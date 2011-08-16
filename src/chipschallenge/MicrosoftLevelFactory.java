@@ -178,7 +178,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
     private GameLevel getFloors(int width, int height) {
         GameLevel ret = null;
         try {
-            ret = new GameLevel(width, height);
+            ret = new GameLevel(width, height,0,0,1);
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < width; j++) {
                     ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
@@ -196,7 +196,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
     public GameLevel getLevel(int n) {
         int width = 32;
         int height = 32;
-        GameLevel ret = new GameLevel(32,32); //getFloors(width,height);
+        GameLevel ret = null;
         try {
             long offset = 6;
             chipDat.seek(offset);
@@ -213,23 +213,25 @@ public class MicrosoftLevelFactory extends LevelFactory {
                 level++;
             }
             // The level we want
-            int numBytesLevel = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int levelNumber   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int time          = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int numberOfChips = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int mapDetail     = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int numBytesLevel  = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int levelNumber    = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int numSeconds     = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int numChipsNeeded = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int mapDetail      = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            ret = new GameLevel(32,32, numChipsNeeded, numSeconds, levelNumber);
             offset += 10;
-            // Read layer 1
+            
             int numberOfBytesLayer1= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             offset += 2;
             chipDat.skipBytes(numberOfBytesLayer1);
             int numberOfBytesLayer2= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            // Read layer 2
             readLayer(ret, numberOfBytesLayer2);
             chipDat.seek(offset);
-            // Read layer 2
-            // TODO: Fix this
+            // Read layer 1
             readLayer(ret, numberOfBytesLayer1);
-            
+            chipDat.skipBytes(2+numberOfBytesLayer2);
+            // TODO: "Optional" fields
         } catch (IOException ex) {
         } finally {
             return ret;

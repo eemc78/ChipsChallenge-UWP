@@ -1,5 +1,7 @@
 package chipschallenge.gui;
 
+import chipschallenge.ChipListener;
+import chipschallenge.GameLevel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,7 +11,7 @@ import java.awt.Panel;
  *
  * @author wasd
  */
-class Hud extends Panel {
+class Hud extends Panel implements ChipListener, NextLevelListener {
 
     private int level = 0;
     private int time = 0;
@@ -121,5 +123,15 @@ class Hud extends Panel {
         chipsLeftNeedsRepaint = true;
         backgroundNeedsRepaint = true;
         repaint();
+    }
+
+    public void chipTaken() {
+        setChipsLeft(--chipsLeft);
+    }
+
+    public void nextLevel(GameLevel level) {
+        setChipsLeft(level.getNumChipsNeeded());
+        setLevel(level.getLevelNumber());
+        setTime(level.getNumSeconds());
     }
 }
