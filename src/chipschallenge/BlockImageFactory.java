@@ -20,13 +20,13 @@ import javax.imageio.ImageIO;
  *
  * @author patrik
  */
-public class ImageFactory {
+public class BlockImageFactory {
 
     private Map<Type, Map<Moves, Image>> loadedImages = new HashMap<Type, Map<Moves, Image>>();
     private BufferedImage tileset;
-    private static ImageFactory instance = null;
+    private static BlockImageFactory instance = null;
 
-    private ImageFactory() {
+    private BlockImageFactory() {
         try {
             tileset = ImageIO.read(new File("tileset.gif"));
         } catch (Exception e) {
@@ -35,9 +35,9 @@ public class ImageFactory {
         }
     }
 
-    public static ImageFactory getInstance() {
+    public static BlockImageFactory getInstance() {
         if (instance == null) {
-            instance = new ImageFactory();
+            instance = new BlockImageFactory();
         }
         return instance;
     }
