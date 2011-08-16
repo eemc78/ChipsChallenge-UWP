@@ -260,7 +260,7 @@ public class ImageFactory {
                 x = 5;
                 break;
             case TELEPORT:
-                y = 11;
+                y = 9;
                 x = 2;
                 break;
             case THIEF:
