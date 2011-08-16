@@ -23,7 +23,6 @@ public class WaterTo extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        Game g = Game.getInstance();
         switch (moving.getType()) {
             case CHIP:
                 if (hasBoots(Boots.FLIPPERS)) {
@@ -31,7 +30,7 @@ public class WaterTo extends BlockReaction {
                 } else {
                     moving.destroy();
                     standing.replace(createBlock(Type.DROWNEDCHIP));
-                    g.die("Ooops! Chip can't swim without flippers!");
+                    game().die("Ooops! Chip can't swim without flippers!");
                 }
                 break;
             case BLOCK:

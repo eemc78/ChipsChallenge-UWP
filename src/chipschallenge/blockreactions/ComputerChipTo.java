@@ -4,7 +4,6 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
-import chipschallenge.Game;
 
 
 public class ComputerChipTo extends BlockReaction {
@@ -21,7 +20,7 @@ public class ComputerChipTo extends BlockReaction {
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        Game.getInstance().takeChip();
+        game().takeChip();
         standing.replace(createBlock(Type.FLOOR));
     }
 

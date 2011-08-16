@@ -4,6 +4,7 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.Game;
+import chipschallenge.GameLevel;
 import chipschallenge.Inventory;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.Inventory.Key;
@@ -49,6 +50,10 @@ public abstract class BlockReaction {
 
     public final Game game() {
         return Game.getInstance();
+    }
+
+    public final GameLevel level() {
+        return Game.getInstance().getLevel();
     }
 
     public final Inventory inventory() {

@@ -3,7 +3,6 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
-import chipschallenge.Game;
 
 
 public class SocketTo extends BlockReaction {
@@ -25,7 +24,7 @@ public class SocketTo extends BlockReaction {
 
     @Override
     public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() && Game.getInstance().getLevel().getNumChipsNeeded() <= 0;
+        return moving.isChip() && level().getNumChipsNeeded() <= 0;
     }
 
 }
