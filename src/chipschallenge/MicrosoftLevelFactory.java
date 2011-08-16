@@ -5,6 +5,7 @@ import chipschallenge.Move.Moves;
 import chipschallenge.gui.GUI;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -232,6 +233,87 @@ public class MicrosoftLevelFactory extends LevelFactory {
             readLayer(ret, numberOfBytesLayer1);
             chipDat.skipBytes(2+numberOfBytesLayer2);
             // TODO: "Optional" fields
+            int numBytesOptional = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int numOptionalBytesRead = 0;
+            while(numOptionalBytesRead < numBytesOptional) {
+                int fieldType   = chipDat.readByte() & 0xFF;
+                int sizeOfField = chipDat.readByte() & 0xFF;
+                numOptionalBytesRead += 2;
+                switch(fieldType) {
+                    case 3: // Map title
+                        byte[] ASCII = new byte[sizeOfField-1];
+                        chipDat.readFully(ASCII);
+                        String title = new String(ASCII);
+                        ret.setMapTitle(title);
+                        chipDat.skipBytes(1);
+                        break;
+                    case 4: // Brown buttons to traps
+                        for(int i = 0; i < sizeOfField/10; i++) {
+                            int buttonX = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            int buttonY = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            int trapX   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            int trapY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            Block button = null;
+                            Block trap = null;
+                            Collection<Block> blks = null;
+                            // Locate button
+                            blks = ret.getBlockContainer(buttonX, buttonY).getBlocks();
+                            for(Block b : blks) { System.out.println(b);
+                                if(b.isA(Type.BROWNBUTTON)) {
+                                    button = b;
+                                    break;
+                                }
+                            }
+                            // Locate trap
+                            blks = ret.getBlockContainer(trapX, trapY).getBlocks();
+                            for(Block b : blks) { System.out.println(b);
+                                if(b.isA(Type.TRAP)) { 
+                                    trap = b;
+                                    break;
+                                }
+                            }
+                            if(button != null && trap != null) { // Perhaps throw an exception otherwise
+                                Buttons.addBrownButtonListener(button, trap);
+                            } else {
+                            }
+                            chipDat.skipBytes(2);
+                        }
+                        break;
+                    case 5:
+                        for(int i = 0; i < sizeOfField/8; i++) {
+                            int buttonX = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            int buttonY = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            int clonerX   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            int clonerY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                            Block button = null;
+                            Block cloner = null;
+                            Collection<Block> blks = null;
+                            // Locate button
+                            blks = ret.getBlockContainer(buttonX, buttonY).getBlocks();
+                            for(Block b : blks) {
+                                if(b.isA(Type.REDBUTTON)) {
+                                    button = b;
+                                    break;
+                                }
+                            }
+                            // Locate cloner
+                            blks = ret.getBlockContainer(clonerX, clonerY).getBlocks();
+                            for(Block b : blks) {
+                                if(b.isA(Type.CLONEMACHINE)) {
+                                    cloner = b;
+                                    break;
+                                }
+                            }
+                            if(button != null && cloner != null) { // Perhaps throw an exception otherwise
+                                Buttons.addRedButtonListener(button, cloner);
+                            } else {
+                            }
+                        }
+                    default:
+                        chipDat.skipBytes(sizeOfField);                        
+                }
+                numOptionalBytesRead += sizeOfField;
+            }
         } catch (IOException ex) {
         } finally {
             return ret;
