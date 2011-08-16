@@ -240,9 +240,9 @@ public class MicrosoftLevelFactory extends LevelFactory {
                 numOptionalBytesRead += 2;
                 switch(fieldType) {
                     case 3: // Map title
-                        byte[] ASCII = new byte[sizeOfField-1];
-                        chipDat.readFully(ASCII);
-                        String title = new String(ASCII);
+                        byte[] ASCIITitle = new byte[sizeOfField-1];
+                        chipDat.readFully(ASCIITitle);
+                        String title = new String(ASCIITitle);
                         ret.setMapTitle(title);
                         chipDat.skipBytes(1);
                         break;
@@ -257,7 +257,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             Collection<Block> blks = null;
                             // Locate button
                             blks = ret.getBlockContainer(buttonX, buttonY).getBlocks();
-                            for(Block b : blks) { System.out.println(b);
+                            for(Block b : blks) {
                                 if(b.isA(Type.BROWNBUTTON)) {
                                     button = b;
                                     break;
@@ -265,7 +265,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             }
                             // Locate trap
                             blks = ret.getBlockContainer(trapX, trapY).getBlocks();
-                            for(Block b : blks) { System.out.println(b);
+                            for(Block b : blks) {
                                 if(b.isA(Type.TRAP)) { 
                                     trap = b;
                                     break;
@@ -308,6 +308,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             } else {
                             }
                         }
+                        break;
+                    case 7: // Hint
+                        byte[] ASCIIHint = new byte[sizeOfField-1];
+                        chipDat.readFully(ASCIIHint);
+                        String hint = new String(ASCIIHint);
+                        ret.setHint(hint);
+                        chipDat.skipBytes(1);
+                        break;
                     default:
                         chipDat.skipBytes(sizeOfField);                        
                 }

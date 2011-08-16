@@ -9,7 +9,7 @@ import chipschallenge.buttonbehaviors.ButtonBehavior;
  *
  * @author patrik
  */
-public class TankBehavior extends ButtonBehavior implements BlockTickBehavior {
+public class TankBehavior implements ButtonBehavior, BlockTickBehavior {
 
     private boolean isMoving = false;
 

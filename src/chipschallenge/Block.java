@@ -54,6 +54,14 @@ public class Block implements GameListener {
         mButtonBehavior = bb;
     }
 
+    public static Block create(Type t, Moves d) {
+        return Game.getInstance().getBlockFactory().get(t, d);
+    }
+
+    public static Block create(Type t) {
+        return Game.getInstance().getBlockFactory().get(t);
+    }
+
     public Type getType() {
         return mType;
     }

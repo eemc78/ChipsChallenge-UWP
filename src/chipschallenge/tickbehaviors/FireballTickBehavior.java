@@ -8,21 +8,21 @@ import chipschallenge.Move.Moves;
  *
  * @author patrik
  */
-public class GliderAndFireballTickBehavior implements BlockTickBehavior {
+public class FireballTickBehavior implements BlockTickBehavior {
 
-    private GliderAndFireballTickBehavior() {
+    private FireballTickBehavior() {
     }
-    private static GliderAndFireballTickBehavior mInstance = null;
+    private static FireballTickBehavior mInstance = null;
 
-    public static synchronized GliderAndFireballTickBehavior getInstance() {
+    public static synchronized FireballTickBehavior getInstance() {
         if (mInstance == null) {
-            mInstance = new GliderAndFireballTickBehavior();
+            mInstance = new FireballTickBehavior();
         }
         return mInstance;
     }
 
     private boolean move(Block caller, Moves m) throws BlockContainerFullException {
-        caller.setFacing(m);
+        //caller.setFacing(m);
         return caller.move(m);
     }
 

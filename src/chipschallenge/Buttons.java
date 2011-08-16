@@ -1,5 +1,6 @@
 package chipschallenge;
 
+import chipschallenge.gui.HintListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +14,7 @@ public class Buttons {
 
     private static Collection<Block> greenButtonsListeners = new CopyOnWriteArrayList<Block>();
     private static Collection<Block> blueButtonsListeners = new CopyOnWriteArrayList<Block>();
+    private static Collection<Block> hintButtonsListeners = new CopyOnWriteArrayList<Block>();
     private static Map<Block, Collection<Block>> redButtonListeners = new HashMap<Block, Collection<Block>>();
     private static Map<Block, Collection<Block>> brownButtonListeners = new HashMap<Block, Collection<Block>>();
 
@@ -29,6 +31,10 @@ public class Buttons {
 
     public static void addBlueButtonsListener(Block listener) {
         blueButtonsListeners.add(listener);
+    }
+
+    public static void addHintButtonListener(Block b) {
+        hintButtonsListeners.add(b);
     }
 
     public static void addRedButtonListener(Block button, Block listener) {
@@ -108,4 +114,5 @@ public class Buttons {
             }
         }
     }
+
 }

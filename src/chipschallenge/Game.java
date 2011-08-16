@@ -4,6 +4,7 @@ import chipschallenge.gamestates.GameState;
 import chipschallenge.Move.Moves;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
+import chipschallenge.gui.HintListener;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class Game {
     private boolean dead = false;
     private Collection<ChipListener> chipListeners = new ArrayList<ChipListener>();
     private Collection<NextLevelListener> nextLevelListeners = new ArrayList<NextLevelListener>();
+    private static Collection<HintListener> hintListeners = new CopyOnWriteArrayList<HintListener>();
 
     private Game() {
     }
@@ -206,12 +208,24 @@ public class Game {
         movesToCheck.add(from);
     }
 
+    public void addHintListener(HintListener l) {
+        hintListeners.add(l);
+    }
+
+    public void removeHintListener(HintListener l) {
+        hintListeners.remove(l);
+    }
+
     public void showHint() {
-        // TODO
+        for(HintListener l: hintListeners) {
+            l.showHint(mLevel.getHint());
+        }
     }
 
     public void hideHint() {
-        // TODO
+        for(HintListener l: hintListeners) {
+            l.hideHint();
+        }
     }
 
     public void addChipListener(ChipListener l) {

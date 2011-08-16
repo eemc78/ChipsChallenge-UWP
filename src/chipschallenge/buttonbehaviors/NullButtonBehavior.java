@@ -6,7 +6,7 @@ import chipschallenge.Block;
  *
  * @author patrik
  */
-public class NullButtonBehavior extends ButtonBehavior {
+public class NullButtonBehavior implements ButtonBehavior {
 
     private NullButtonBehavior() {
     }

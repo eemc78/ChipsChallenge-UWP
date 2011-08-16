@@ -2,6 +2,7 @@ package chipschallenge.gui;
 
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
+import chipschallenge.NextLevelListener;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -13,7 +14,7 @@ import java.awt.Point;
  *
  * @author patrik
  */
-class PlayField extends Panel {
+class PlayField extends Panel implements NextLevelListener {
 
     private int mWidth;
     private int mHeight;
@@ -24,6 +25,7 @@ class PlayField extends Panel {
         mWidth = width;
         mHeight = height;
         setPreferredSize(new Dimension(width * 32, height * 32));
+        Game.getInstance().addNextLevelListener(this);
         setVisible(true);
     }
 
@@ -85,5 +87,10 @@ class PlayField extends Panel {
             return true;
         }
         return false;
+    }
+
+    public void nextLevel(GameLevel level) {
+        // TODO: Show level name and password in the playfield
+        System.out.println(level.getMapTitle());
     }
 }

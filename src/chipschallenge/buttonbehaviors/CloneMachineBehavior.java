@@ -13,7 +13,7 @@ import java.util.Iterator;
 /**
  * If the button was green and the listener is a toggle wall. Toggle it.
  */
-public class CloneMachineBehavior extends ButtonBehavior {
+public class CloneMachineBehavior implements ButtonBehavior {
 
     private CloneMachineBehavior() {
     }

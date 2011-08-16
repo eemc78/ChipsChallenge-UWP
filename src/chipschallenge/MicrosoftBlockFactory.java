@@ -13,7 +13,8 @@ import chipschallenge.tickbehaviors.ChipTickBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 import chipschallenge.tickbehaviors.BlobTickBehavior;
 import chipschallenge.tickbehaviors.BugTickBehavior;
-import chipschallenge.tickbehaviors.GliderAndFireballTickBehavior;
+import chipschallenge.tickbehaviors.FireballTickBehavior;
+import chipschallenge.tickbehaviors.GliderTickBehavior;
 import chipschallenge.tickbehaviors.ParameciumTickBehavior;
 import chipschallenge.tickbehaviors.PinkballTickBehavior;
 import chipschallenge.tickbehaviors.TankBehavior;
@@ -107,7 +108,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, FirebootsTo.getInstance(), nullButton);
                 break;
             case FIREBALL:
-                ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                ret = new Block(type, facing, FireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 Creatures.addCreature(ret);
                 break;
             case FLIPPERS:
@@ -124,7 +125,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 ret = new Block(type, facing, nullTick, canMove, RandomForceFloorTo.getInstance(), nullButton);
                 break;
             case GLIDER:
-                ret = new Block(type, facing, GliderAndFireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
+                ret = new Block(type, facing, GliderTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
                 Creatures.addCreature(ret);
                 break;
             case GRAVEL:

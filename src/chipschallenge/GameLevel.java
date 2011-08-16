@@ -19,6 +19,15 @@ public class GameLevel implements ChipListener {
     private int levelNumber;
     private int deaths = 0;
     private String mapTitle = "Untitled";
+    private String hint = "No hint";
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+    }
 
     public GameLevel(int width, int height) {
         mBoard = new BlockContainer[width][height];

@@ -7,7 +7,7 @@ import chipschallenge.Game;
 /**
  * If the button was green and the listener is a toggle wall. Toggle it.
  */
-public class ToggleWallBehavior extends ButtonBehavior {
+public class ToggleWallBehavior implements ButtonBehavior {
 
     private ToggleWallBehavior() {
     }
@@ -24,9 +24,9 @@ public class ToggleWallBehavior extends ButtonBehavior {
         if (button.isA(Type.GREENBUTTON)) {
             Game.getInstance().moveHappened(listener.getPoint());
             if (listener.isA(Block.Type.TOGGLEWALLOPEN)) {
-                listener.replace(createBlock(Type.TOGGLEWALLCLOSED));
+                listener.replace(Block.create(Type.TOGGLEWALLCLOSED));
             } else if (listener.isA(Type.TOGGLEWALLCLOSED)) {
-                listener.replace(createBlock(Type.TOGGLEWALLOPEN));
+                listener.replace(Block.create(Type.TOGGLEWALLOPEN));
             }
         }
     }

@@ -1,7 +1,6 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Inventory.Boots;
 
 /**
  *
@@ -21,7 +20,7 @@ public class HintFrom extends BlockReaction {
     }
 
     public void react(Block moving, Block standing) {
-        game().showHint();
+        game().hideHint();
     }
 
     public boolean canMove(Block moving, Block standing) {

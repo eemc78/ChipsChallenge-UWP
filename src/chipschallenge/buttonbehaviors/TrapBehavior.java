@@ -8,7 +8,7 @@ import chipschallenge.blockreactions.CannotMoveBlockReaction;
  *
  * @author patrik
  */
-public class TrapBehavior extends ButtonBehavior {
+public class TrapBehavior implements ButtonBehavior {
 
     private TrapBehavior() {
     }
