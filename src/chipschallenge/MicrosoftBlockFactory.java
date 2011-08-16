@@ -79,8 +79,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case BURNEDCHIP:
                 break;
             case CHIP:
-                ret = new Block(type, facing, ChipTickBehavior.getInstance(), canMove, ChipTo.getInstance(), nullButton);
-                Game.getInstance().addGameListener(ret);
+                  ret = new Block(type, facing, ChipTickBehavior.getInstance(), canMove, ChipTo.getInstance(), nullButton);
+                  Game.getInstance().addGameListener(ret);
                 break;
             case CLONEBLOCK:
                 break;
@@ -235,7 +235,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
         }
         if (ret == null) {
-            System.out.println("The block requested hasn't been implemented. Using default behaviors");
+            //System.out.println("The block requested hasn't been implemented. Using default behaviors");
             ret = new Block(type, facing);
         }
         return ret;

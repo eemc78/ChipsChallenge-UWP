@@ -206,18 +206,16 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
             // Skip over the levels we don't want
             while(level < n) {
-                short numBytesLevel = ByteSwapper.swap(chipDat.readShort());
-                short levelNumber   = ByteSwapper.swap(chipDat.readShort());
-                short time          = ByteSwapper.swap(chipDat.readShort());
-                short numberOfChips = ByteSwapper.swap(chipDat.readShort());
+                int numBytesLevel = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+                chipDat.skipBytes(numBytesLevel);
                 level++;
             }
             // The level we want
-            short numBytesLevel = ByteSwapper.swap(chipDat.readShort());
-            short levelNumber   = ByteSwapper.swap(chipDat.readShort());
-            short time          = ByteSwapper.swap(chipDat.readShort());
-            short numberOfChips = ByteSwapper.swap(chipDat.readShort());            
-            short mapDetail     = ByteSwapper.swap(chipDat.readShort());
+            int numBytesLevel = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int levelNumber   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int time          = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int numberOfChips = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            int mapDetail     = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
 
             // Read layer 1
             readLayer(ret);
@@ -236,7 +234,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
         int height = ret.getHeight();
 
         // Number of bytes for this layer data
-        short numberOfBytes = ByteSwapper.swap(chipDat.readShort());
+        int numberOfBytes = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
         int bytesRead = 0;
         int objectsPlaced = 0;
         while(bytesRead < numberOfBytes) {
