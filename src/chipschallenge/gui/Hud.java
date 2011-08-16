@@ -40,6 +40,9 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
         // Listen for inventory change
         Game.getInstance().getInventory().addInventoryListener(this);
 
+        // Listen for hints
+        Game.getInstance().addHintListener(this);
+
         //for debugging:
         setChipsLeft(7);
         setTime(123);
@@ -147,8 +150,7 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     public void nextLevel(GameLevel level) {
         setChipsLeft(level.getNumChipsNeeded());
         setLevel(level.getLevelNumber());
-        setTime(level.getNumSeconds());
-        Game.getInstance().addHintListener(this);
+        setTime(level.getNumSeconds());        
     }
 
     public void inventoryChange(Inventory i) {
