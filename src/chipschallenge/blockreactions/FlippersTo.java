@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
@@ -24,7 +25,7 @@ public class FlippersTo extends BlockReaction {
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
             takeBoots(Boots.FLIPPERS);
-            standing.destroy();
+            standing.replace(createBlock(Type.FLOOR));
             //TODO: Play take-item sound
         }
     }

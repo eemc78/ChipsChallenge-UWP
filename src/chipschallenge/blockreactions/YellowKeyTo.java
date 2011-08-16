@@ -23,7 +23,7 @@ public class YellowKeyTo extends BlockReaction {
     public void react(Block moving, Block standing) {
         if (moving.isChip()) {
             takeKey(Key.YELLOW);
-            standing.destroy();
+            standing.replace(createBlock(Type.FLOOR));
         }
     }
 

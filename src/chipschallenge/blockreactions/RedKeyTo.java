@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.Block.Type;
 import chipschallenge.Game;
 import chipschallenge.Inventory.Key;
 
@@ -24,7 +25,7 @@ public class RedKeyTo extends BlockReaction {
     public void react(Block moving, Block standing) {
         if (moving.isChip()) {
             takeKey(Key.RED);
-            standing.destroy();
+            standing.replace(createBlock(Type.FLOOR));
         }
     }
 
