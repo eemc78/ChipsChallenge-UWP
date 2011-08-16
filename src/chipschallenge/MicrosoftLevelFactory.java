@@ -52,8 +52,8 @@ public class MicrosoftLevelFactory extends LevelFactory {
             case 0x1B: return f.get(Type.ICECORNER, Moves.LEFT);
             case 0x1C: return f.get(Type.ICECORNER, Moves.DOWN);
             case 0x1D: return f.get(Type.ICECORNER, Moves.RIGHT);
-            case 0x1E: return f.get(Type.BLUEWALLREAL);
-            case 0x1F: return f.get(Type.BLUEWALLFAKE);
+            case 0x1E: return f.get(Type.BLUEWALLFAKE);
+            case 0x1F: return f.get(Type.BLUEWALLREAL);
             case 0x20: return null; // NOT USED
             case 0x21: return f.get(Type.THIEF);
             case 0x22: return f.get(Type.SOCKET);

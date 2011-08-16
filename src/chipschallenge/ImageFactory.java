@@ -207,7 +207,7 @@ public class ImageFactory {
                 break;
             case ICESKATES:
                 y = 10;
-                x = 8;
+                x = 6;
                 break;
             case INVISIBLEWALL:
                 y = 0;
@@ -245,7 +245,7 @@ public class ImageFactory {
                 break;
             case SUCTIONBOOTS:
                 y = 11;
-                x = 8;
+                x = 6;
                 break;
             case SWIMMINGCHIP:
                 y = 12;

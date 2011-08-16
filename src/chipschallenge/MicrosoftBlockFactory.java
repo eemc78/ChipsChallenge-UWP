@@ -153,6 +153,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case ICEBLOCK: // ?
                 break;
             case ICESKATES:
+                ret = new Block(type, facing, nullTick, canMove, IceskatesTo.getInstance(), nullButton);
                 break;
             case INVISIBLEWALL:
                 ret = new Block(type, facing, nullTick, canMove, cannotMove, nullButton);
@@ -182,6 +183,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
             case SOCKET:
                 break;
             case SUCTIONBOOTS:
+                ret = new Block(type, facing, nullTick, canMove, SuctionbootsTo.getInstance(), nullButton);
                 break;
             case SWIMMINGCHIP:
                 break;
