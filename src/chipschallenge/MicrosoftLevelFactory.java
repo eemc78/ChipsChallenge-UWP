@@ -271,10 +271,8 @@ public class MicrosoftLevelFactory extends LevelFactory {
                                     break;
                                 }
                             }
-                            if(button != null && trap != null) { // Perhaps throw an exception otherwise
-                                Buttons.addBrownButtonListener(button, trap);
-                            } else {
-                            }
+                            if(button != null && trap != null) // Perhaps throw an exception otherwise
+                                Buttons.addBrownButtonListener(button, trap);                          
                             chipDat.skipBytes(2);
                         }
                         break;
@@ -303,10 +301,8 @@ public class MicrosoftLevelFactory extends LevelFactory {
                                     break;
                                 }
                             }
-                            if(button != null && cloner != null) { // Perhaps throw an exception otherwise
-                                Buttons.addRedButtonListener(button, cloner);
-                            } else {
-                            }
+                            if(button != null && cloner != null) // Perhaps throw an exception otherwise
+                                Buttons.addRedButtonListener(button, cloner);                            
                         }
                         break;
                     case 7: // Hint
@@ -315,6 +311,24 @@ public class MicrosoftLevelFactory extends LevelFactory {
                         String hint = new String(ASCIIHint);
                         ret.setHint(hint);
                         chipDat.skipBytes(1);
+                        break;
+                    case 10: // Movement
+                        for(int i = 0; i < sizeOfField/2; i++) {
+                            int creatureX = chipDat.readByte() & 0xFF;
+                            int creatureY = chipDat.readByte() & 0xFF;
+                            Block creature = null;
+                            Collection<Block> blks = null;
+                            // Locate creature
+                            blks = ret.getBlockContainer(creatureX, creatureY).getBlocks();
+                            for(Block b : blks) {
+                                if(b.isCreature()) {
+                                    creature = b;
+                                    break;
+                                }
+                            }
+                            if(creature != null) // Perhaps throw an exception otherwise
+                                Creatures.addCreature(creature);
+                        }
                         break;
                     default:
                         chipDat.skipBytes(sizeOfField);                        
@@ -365,13 +379,6 @@ public class MicrosoftLevelFactory extends LevelFactory {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    private void addBlock(GameLevel ret, int blocksAdded, Block block) throws BlockContainerFullException {
-        int width = ret.getWidth();
-        int height = ret.getHeight();
-        int x = blocksAdded % width;
-        int y = blocksAdded / width;
-        ret.addBlock(x, y, block);
-    }
 
 
 

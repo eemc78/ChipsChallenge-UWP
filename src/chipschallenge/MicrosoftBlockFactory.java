@@ -47,7 +47,6 @@ public class MicrosoftBlockFactory extends BlockFactory {
         switch (type) {
             case BLOB:
                 ret = new Block(type, facing, BlobTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case BLOCK:
                 ret = new Block(type, facing, nullTick, canMove, BlockTo.getInstance(), nullButton);
@@ -75,7 +74,6 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case BUG:
                 ret = new Block(type, facing, BugTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case BURNEDCHIP:
                 break;
@@ -109,7 +107,6 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case FIREBALL:
                 ret = new Block(type, facing, FireballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case FLIPPERS:
                 ret = new Block(type, facing, nullTick, canMove, FlippersTo.getInstance(), nullButton);
@@ -126,7 +123,6 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case GLIDER:
                 ret = new Block(type, facing, GliderTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case GRAVEL:
                 ret = new Block(type, facing, nullTick, canMove, GravelTo.getInstance(), nullButton);
@@ -164,11 +160,9 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case PARAMECIUM:
                 ret = new Block(type, facing, ParameciumTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case PINKBALL:
                 ret = new Block(type, facing, PinkballTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case RECESSEDWALL:
                 ret = new Block(type, facing, nullTick, canMove, RecessedWallTo.getInstance(), nullButton);
@@ -195,12 +189,10 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 BlockTickBehavior btb = tb;
                 ButtonBehavior bb = tb;
                 ret = new Block(type, facing, tb, canMove, CreatureTo.getInstance(), bb);
-                Creatures.addCreature(ret);
                 Buttons.addBlueButtonsListener(ret);
                 break;
             case TEETH:
                 ret = new Block(type, facing, TeethTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case TELEPORT:
                 break;
@@ -212,7 +204,6 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case THINWALLSE:
                 ret = new Block(type, facing, nullTick, ThinWallSeFrom.getInstance(), ThinWallSeTo.getInstance(), nullButton);
-
                 break;
             case TOGGLEWALLCLOSED: // Yes, fallthrough
             case TOGGLEWALLOPEN:
@@ -224,7 +215,6 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 break;
             case WALKER:
                 ret = new Block(type, facing, WalkerTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);
-                Creatures.addCreature(ret);
                 break;
             case WALL:
                 ret = new Block(type, facing, nullTick, canMove, cannotMove, nullButton);

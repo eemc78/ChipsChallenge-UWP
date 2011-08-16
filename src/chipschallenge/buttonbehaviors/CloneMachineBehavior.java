@@ -4,6 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.Creatures;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import chipschallenge.Move;
@@ -43,6 +44,9 @@ public class CloneMachineBehavior implements ButtonBehavior {
                             Point p = b.getPoint();
                             Move.updatePoint(p, b.getFacing());
                             gl.addBlock(p.x, p.y, clone);
+                            if(clone.isCreature()) {
+                                Creatures.addCreature(clone);
+                            }
                         } catch (BlockContainerFullException ex) {
                             // Ignore for now. TODO: Fix
                         }
