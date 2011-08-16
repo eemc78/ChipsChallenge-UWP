@@ -26,18 +26,20 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
         }
         return mInstance;
     }
-    private Queue<Moves> proposedMoves = new LinkedList<Moves>();
+    private final Queue<Moves> proposedMoves = new LinkedList<Moves>();
     private int mTicksBeforeTurn;
 
     public void tick(Block caller) throws BlockContainerFullException {
-        if (!proposedMoves.isEmpty()) {
-            if (caller.isOnForceFloor()) {
-                Game.getInstance().removeForcedMove(caller);
+        synchronized (proposedMoves) {
+            if (!proposedMoves.isEmpty()) {
+                if (caller.isOnForceFloor()) {
+                    Game.getInstance().removeForcedMove(caller);
+                }
+                if (!caller.move(proposedMoves.poll())) {
+                    Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
+                }
+                mTicksBeforeTurn = 12;
             }
-            if (!caller.move(proposedMoves.poll())) {
-                Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
-            }
-            mTicksBeforeTurn = 12;
         }
         if (!caller.isOnIce() && mTicksBeforeTurn > 0) {
             mTicksBeforeTurn--;
@@ -54,23 +56,25 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP:
-                proposedMoves.clear();
-                proposedMoves.offer(Moves.UP);
-                break;
-            case KeyEvent.VK_DOWN:
-                proposedMoves.clear();
-                proposedMoves.offer(Moves.DOWN);
-                break;
-            case KeyEvent.VK_LEFT:
-                proposedMoves.clear();
-                proposedMoves.offer(Moves.LEFT);
-                break;
-            case KeyEvent.VK_RIGHT:
-                proposedMoves.clear();
-                proposedMoves.offer(Moves.RIGHT);
-                break;
+        synchronized (proposedMoves) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_UP:
+                    proposedMoves.clear();
+                    proposedMoves.offer(Moves.UP);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    proposedMoves.clear();
+                    proposedMoves.offer(Moves.DOWN);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    proposedMoves.clear();
+                    proposedMoves.offer(Moves.LEFT);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    proposedMoves.clear();
+                    proposedMoves.offer(Moves.RIGHT);
+                    break;
+            }
         }
     }
 }
