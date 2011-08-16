@@ -232,7 +232,6 @@ public class MicrosoftLevelFactory extends LevelFactory {
             // Read layer 1
             readLayer(ret, numberOfBytesLayer1);
             chipDat.skipBytes(2+numberOfBytesLayer2);
-            // TODO: "Optional" fields
             int numBytesOptional = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             int numOptionalBytesRead = 0;
             while(numOptionalBytesRead < numBytesOptional) {
