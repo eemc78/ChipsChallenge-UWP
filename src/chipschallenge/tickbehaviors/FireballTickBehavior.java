@@ -22,11 +22,7 @@ public class FireballTickBehavior implements BlockTickBehavior {
     }
 
     private boolean move(Block caller, Moves m) throws BlockContainerFullException {
-        Moves before = caller.getFacing();
-        boolean ret = caller.move(m);
-        if(!ret)
-            caller.setFacing(before);
-        return ret;
+        return caller.move(m);
     }
 
     @Override

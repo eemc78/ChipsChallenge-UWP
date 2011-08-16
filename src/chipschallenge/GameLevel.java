@@ -109,6 +109,7 @@ public class GameLevel implements ChipListener {
     }
 
     public boolean moveBlock(Block b, Moves direction, boolean ignoreFrom) throws BlockContainerFullException {
+        Moves facingBefore = b.getFacing();
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
         Move.updatePoint(to, direction);
@@ -135,10 +136,12 @@ public class GameLevel implements ChipListener {
                 mBoard[to.x][to.y].moveTo(b);
                 return true;
             } else {
-                System.out.println("ROMAN");
                 return false;
             }
         } else {
+            if(!b.isChip()) {
+                b.setFacing(facingBefore);
+            }
             return false;
         }
 

@@ -37,6 +37,7 @@ public class TeethTickBehavior implements BlockTickBehavior {
 
     @Override
     public void tick(Block caller) throws BlockContainerFullException {
+        Moves m = caller.getFacing();
         if (!inUse(caller)) {
             return;
         }
