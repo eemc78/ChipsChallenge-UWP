@@ -195,7 +195,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
     public GameLevel getLevel(int n) {
         int width = 32;
         int height = 32;
-        GameLevel ret = new GameLevel(width,height); //getFloors(width,height); //
+        GameLevel ret = getFloors(width,height); //
         try {
             long offset = 6;
             chipDat.seek(offset);
@@ -221,7 +221,8 @@ public class MicrosoftLevelFactory extends LevelFactory {
             readLayer(ret);
 
             // Read layer 2
-            readLayer(ret);
+            // TODO: Fix this
+            //readLayer(ret);
             
         } catch (IOException ex) {
         } finally {
@@ -239,16 +240,20 @@ public class MicrosoftLevelFactory extends LevelFactory {
         int objectsPlaced = 0;
         while(bytesRead < numberOfBytes) {
             int read = chipDat.readByte() & 0xFF;
+            bytesRead++;
             if(read >= 0x00 && read <= 0x6F) {
                 ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read));
                 objectsPlaced++;
             } else if(read == 0xFF) {
                 int numRepeats = chipDat.readByte() & 0xFF;
                 int data = chipDat.readByte() & 0xFF;
+                bytesRead += 2;
                 while(numRepeats-- > 0) {
                     ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(data));
                     objectsPlaced++;
                 }
+            } else {
+                System.out.println("Object I couldn't parse");
             }
         }
     }
