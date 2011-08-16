@@ -8,39 +8,23 @@ import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaEventListener;
 import javax.sound.midi.MetaMessage;
+import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.Track;
 
 
-public class Music {
-    private static List<Sequence> loadedSongs = new ArrayList<Sequence>();
-    private static Sequencer sequencer = null;
-    private static int songIndex = 0;
+public class MusicPlayer {
+    private List<Sequence> loadedSongs = new ArrayList<Sequence>();
+    private Sequencer sequencer = null;
+    private int songIndex = 0;
 
-    private static Sequence loadMidi(String filename) throws InvalidMidiDataException {
-        try {
-            return MidiSystem.getSequence(new FileInputStream(filename));
-        } catch (IOException ex) {
-            // File not found
-            return null;
-        }
-    }
-    
-    static {
+    private MusicPlayer() {
         try {
             sequencer = MidiSystem.getSequencer();
             sequencer.open();
-            sequencer.addMetaEventListener(new MetaEventListener() {
-                public void meta(MetaMessage mm) {
-                    if (mm.getType() == 47) { // End of track
-                        if (sequencer.isOpen()) {
-                            sequencer.start();
-                        }
-                    }
-                }
-            });
             Sequence sq = null;
             for (int i = 1; i <= 99; i++) {
                 String num = (i < 10) ? "0" + i : String.valueOf(i);
@@ -62,7 +46,36 @@ public class Music {
         }
     }
 
-    public static void playNextSong() {
+    @Override
+    protected void finalize() throws Throwable {
+        try {
+            sequencer.close();
+        } catch(Exception e) {
+        } finally {
+            super.finalize();
+        }
+    }
+
+
+    private static MusicPlayer mInstance = null;
+    public static synchronized MusicPlayer getInstance() {
+        if (mInstance == null) {
+            mInstance = new MusicPlayer();
+        }
+        return mInstance;
+    }
+
+    private static Sequence loadMidi(String filename) throws InvalidMidiDataException {
+        try {
+            Sequence sc = MidiSystem.getSequence(new FileInputStream(filename));
+            return sc;
+        } catch (IOException ex) {
+            // File not found
+            return null;
+        }
+    }
+
+    public void playNextSong() {
         if (sequencer != null) {
             int size = loadedSongs.size();
             if (size > 0) {
@@ -71,6 +84,7 @@ public class Music {
                     songIndex = songIndex > (size-1) ? 0 : songIndex;
                     sequencer.stop();
                     sequencer.setSequence(loadedSongs.get(songIndex));
+                    sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
                     sequencer.start();
                 } catch (InvalidMidiDataException ex) {
                 } 

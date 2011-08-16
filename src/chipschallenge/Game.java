@@ -99,7 +99,7 @@ public class Game {
 
     public void start() {
         GUI.getInstance().repaint();
-        Music.playNextSong();
+        MusicPlayer.getInstance().playNextSong();
         if (tickTimer != null) {
             tickTimer.cancel();
         }
