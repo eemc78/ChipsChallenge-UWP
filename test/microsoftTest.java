@@ -17,6 +17,6 @@ public class microsoftTest {
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());
-        g.nextLevel(4);
+        g.nextLevel(1);
     }
 }

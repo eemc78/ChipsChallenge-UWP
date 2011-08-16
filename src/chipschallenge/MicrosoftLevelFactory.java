@@ -5,8 +5,6 @@ import chipschallenge.Move.Moves;
 import chipschallenge.gui.GUI;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +18,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
     private int levelCount = -1;
 
-    private Block getBlock(byte objCode) {
+    private Block getBlock(int objCode) {
         MicrosoftBlockFactory f = MicrosoftBlockFactory.getInstance();
         switch(objCode) {
             case 0x00: return f.get(Type.FLOOR);
@@ -197,7 +195,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
     public GameLevel getLevel(int n) {
         int width = 32;
         int height = 32;
-        GameLevel ret = getFloors(width,height); //new GameLevel(width,height);
+        GameLevel ret = new GameLevel(width,height); //getFloors(width,height); //
         try {
             long offset = 6;
             chipDat.seek(offset);
@@ -239,31 +237,18 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
         // Number of bytes for this layer data
         short numberOfBytes = ByteSwapper.swap(chipDat.readShort());
-        short bytesLeft = numberOfBytes;
-        ByteBuffer bb = ByteBuffer.allocate(numberOfBytes);
-
-        // Read in entire layer to ByteBuffer
-        while(bytesLeft-- > 0)
-            bb.put(chipDat.readByte());
-
-        // Change the ByteOrder
-        bb.order(ByteOrder.LITTLE_ENDIAN);
-        bb.position(0);
-        int bytesParsed = 0;
+        int bytesRead = 0;
         int objectsPlaced = 0;
-
-        while(bytesParsed < numberOfBytes) {
-            byte read = bb.get();
-            bytesParsed++;
-            if(read >= 0x00 && read <= 0x6F) { // Object to be placed
+        while(bytesRead < numberOfBytes) {
+            int read = chipDat.readByte() & 0xFF;
+            if(read >= 0x00 && read <= 0x6F) {
                 ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read));
                 objectsPlaced++;
-            } else if(read == 0xFF) { // RLE-encoding
-                byte numRepeats = bb.get();
-                byte fillWith = bb.get();
-                bytesParsed+=2;
+            } else if(read == 0xFF) {
+                int numRepeats = chipDat.readByte() & 0xFF;
+                int data = chipDat.readByte() & 0xFF;
                 while(numRepeats-- > 0) {
-                    ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read));
+                    ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(data));
                     objectsPlaced++;
                 }
             }
