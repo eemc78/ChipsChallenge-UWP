@@ -30,7 +30,7 @@ public class Creatures {
         if (creatureTicks == 0) {
             blobMove = !blobMove;
             for (Block b : creatures) {
-                if (!b.isA(Block.Type.BLOB) || (b.isA(Block.Type.BLOB) && blobMove)) {
+                if (blobMove || !(b.isA(Block.Type.BLOB) || b.isA(Block.Type.TEETH))) {
                     b.tick();
                 }
             }

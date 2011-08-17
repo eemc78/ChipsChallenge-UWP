@@ -3,6 +3,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.SoundPlayer.sounds;
 
 
 public class SocketTo extends BlockReaction {
@@ -20,6 +21,7 @@ public class SocketTo extends BlockReaction {
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         standing.destroy();
+        sound().playSound(sounds.SOCKET);
     }
 
     @Override

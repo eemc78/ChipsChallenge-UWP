@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  *
@@ -21,7 +22,7 @@ public class ThiefTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
         inventory().clearBoots();
-        //TODO: Play sound
+        sound().playSound(sounds.THIEF);
     }
 
     public boolean canMove(Block moving, Block standing) {

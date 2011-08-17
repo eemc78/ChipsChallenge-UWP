@@ -5,6 +5,7 @@ import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move;
 import chipschallenge.Move.Moves;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Move to real blue wall
@@ -28,6 +29,7 @@ public class BlueWallRealTo extends BlockReaction {
         moving.move(Move.reverse(facing));
         moving.setFacing(facing);
         standing.replace(createBlock(Type.WALL));
+        sound().playSound(sounds.CHIPHUM);
     }
 
     // Only chip can move here

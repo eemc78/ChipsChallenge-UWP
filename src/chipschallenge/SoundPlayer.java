@@ -20,7 +20,7 @@ public class SoundPlayer {
 
     public static enum sounds {
         TAKEITEM, BOMB, CHIPHUM, DOOR, EXIT, TELEPORT, WATER, DIE, TAKECHIP,
-        BUTTON, THIEF
+        BUTTON, THIEF, TICK, TIMEOVER, SOCKET
     }
 
     private LineListener ll = new LineListener() {
@@ -53,13 +53,16 @@ public class SoundPlayer {
         loadSoundAs("HIT3.WAV", sounds.BOMB);
         loadSoundAs("OOF3.WAV", sounds.CHIPHUM);
         loadSoundAs("DOOR.WAV", sounds.DOOR);
-        loadSoundAs("DITTY.WAV", sounds.EXIT);
+        loadSoundAs("DITTY1.WAV", sounds.EXIT);
         loadSoundAs("TELEPORT.WAV", sounds.TELEPORT);
         loadSoundAs("WATER2.WAV", sounds.WATER);
         loadSoundAs("BUMMER.WAV", sounds.DIE);
         loadSoundAs("CLICK3.WAV", sounds.TAKECHIP);
+        loadSoundAs("CLICK1.WAV", sounds.TICK);
         loadSoundAs("POP2.WAV", sounds.BUTTON);
         loadSoundAs("STRIKE.WAV", sounds.THIEF);
+        loadSoundAs("BELL.WAV", sounds.TIMEOVER);
+        loadSoundAs("CHIMES.WAV", sounds.SOCKET);
     }
 
     @Override

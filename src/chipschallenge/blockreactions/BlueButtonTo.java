@@ -2,6 +2,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.Buttons;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Moving to a Blue Button
@@ -21,6 +22,7 @@ public class BlueButtonTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
         Buttons.blueButtonDown(standing);
+        sound().playSound(sounds.BUTTON);
     }
 
     public boolean canMove(Block moving, Block standing) {
