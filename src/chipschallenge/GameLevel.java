@@ -45,7 +45,7 @@ public class GameLevel implements ChipListener {
         this.levelNumber = levelNumber;       
     }
 
-    public void addBlock(int x, int y, Block b) throws BlockContainerFullException {
+    public void addBlock(int x, int y, Block b, int layer) throws BlockContainerFullException {
         BlockContainer bc = getBlockContainer(x, y);
         if (bc != null) {
             if(b.isChip()) {
@@ -54,7 +54,7 @@ public class GameLevel implements ChipListener {
             if(b.isA(Block.Type.TELEPORT)) {
                 Teleports.addTeleport(x, y);
             }
-            bc.add(b);
+            bc.add(b, layer);
             blocks.put(b, new Point(x, y));
         }
     }
@@ -121,19 +121,22 @@ public class GameLevel implements ChipListener {
         }
         if (to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
-        }
+        } 
         if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
             // Do not change facing if sliding            
             if (mBoard[to.x][to.y].canMoveTo(b)) {
+               
                 //From reactions
                 mBoard[from.x][from.y].moveFrom(b);
+                              
                 //Actual movement
                 mBoard[from.x][from.y].remove(b);
                 blocks.put(b, to);
-                mBoard[to.x][to.y].add(b);
+                mBoard[to.x][to.y].add(b,2);
 
                 //To reactions
                 mBoard[to.x][to.y].moveTo(b);
+                                                                                    
                 return true;
             } else {
                 return false;

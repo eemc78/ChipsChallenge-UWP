@@ -44,7 +44,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
                     if(caller.isOnForceFloor())
                         Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
                     SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
-                }
+                } 
                 mTicksBeforeTurn = 12;
             }
         }

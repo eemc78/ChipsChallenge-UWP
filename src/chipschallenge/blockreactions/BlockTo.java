@@ -26,6 +26,7 @@ public class BlockTo extends BlockReaction {
         if (moving.isChip()) {
             //standing.move(moving.getFacing());
             level().moveBlock(standing, moving.getFacing(), true);
+            
         }
     }
 
