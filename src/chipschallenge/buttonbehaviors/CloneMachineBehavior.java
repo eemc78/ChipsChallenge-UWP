@@ -33,32 +33,29 @@ public class CloneMachineBehavior implements ButtonBehavior {
             GameLevel gl = g.getLevel();
             BlockContainer bc = gl.getBlockContainer(listener);
             // Take the first creature and clone it
-            Iterator<Block> it = bc.iterator();
-            while (it.hasNext()) {
-                Block b = it.next();
-                if (b.isCreature() || b.isA(Type.BLOCK)) {
-                    BlockContainer moveTo = gl.getBlockContainer(b, b.getFacing());
-                    if (moveTo.canMoveTo(b)) {
-                        try {
-                            Block clone = g.getBlockFactory().get(b.getType(), b.getFacing());
-                            Point p = b.getPoint();
-                            //Move.updatePoint(p, b.getFacing());
-                            if(clone.isCreature() && !(clone.isA(Type.TEETH) || clone.isA(Type.BLOB))) {
-                                g.addBlockDelay(clone, p, 4);
-                            } else {
-                                gl.addBlock(p.x, p.y, clone);
-                                gl.moveBlock(clone, clone.getFacing(), true);
-                                if(clone.isCreature()) {
-                                    Creatures.addCreature(clone);
-                                }
+            Block b = bc.getUpper();
+            if (b.isCreature() || b.isA(Type.BLOCK)) {
+                BlockContainer moveTo = gl.getBlockContainer(b, b.getFacing());
+                if (moveTo.canMoveTo(b)) {
+                    try {
+                        Block clone = g.getBlockFactory().get(b.getType(), b.getFacing());
+                        Point p = b.getPoint();
+                        //Move.updatePoint(p, b.getFacing());
+                        if (clone.isCreature() && !(clone.isA(Type.TEETH) || clone.isA(Type.BLOB))) {
+                            g.addBlockDelay(clone, p, 4);
+                        } else {
+                            gl.addBlock(p.x, p.y, clone);
+                            gl.moveBlock(clone, clone.getFacing(), true);
+                            if (clone.isCreature()) {
+                                Creatures.addCreature(clone);
                             }
-                        } catch (BlockContainerFullException ex) {
-                            // Ignore for now. TODO: Fix
                         }
+                    } catch (BlockContainerFullException ex) {
+                        // Ignore for now. TODO: Fix
                     }
-                    break;
                 }
             }
+
         }
     }
 

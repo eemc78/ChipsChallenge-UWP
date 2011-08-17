@@ -1,9 +1,6 @@
 package chipschallenge;
 
 import java.awt.Image;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *
@@ -11,7 +8,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class BlockContainer {
 
-    private final CopyOnWriteArrayList<Block> blocks = new CopyOnWriteArrayList<Block>();
+    private Block upper = null;
+    private Block lower = null;
 
     public BlockContainer() {
     }
@@ -19,44 +17,53 @@ public class BlockContainer {
     // For debugging
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("[");
-        boolean first = true;
-        for (Block b : blocks) {
-            if (first) {
-                first = false;
-                sb.append(b.getType());
-            } else {
-                sb.append("," + b.getType());
-            }
-        }
-        sb.append("]");
-        return sb.toString();
+        return "["+upper+","+lower+"]";
     }
 
     public void add(Block b) throws BlockContainerFullException {
-        if (blocks.size() >= 4)
-          System.out.println(blocks.size());
-            blocks.add(0, b);
-        
+        if(lower == null)
+            lower = b;
+        else if(upper == null)
+            upper = b;
+        else
+            throw new BlockContainerFullException();
     }
 
     public void remove(Block b) {
-        blocks.remove(b);
+        if(upper == b)
+            upper = null;
+        if(lower == b)
+            lower = null;
     }
 
-    public Collection<Block> getBlocks() {
-        return blocks;
+    public void setUpper(Block b) {
+        upper = b;
+    }
+
+    public Block getUpper() {
+        return upper;
+    }
+
+    public void setLower(Block b) {
+        lower = b;
+    }
+
+    public Block getLower() {
+        return lower;
     }
 
     public Image getImage() {
-        Image ret = blocks.get(0).getImage(false);
-        // Do stuff
-        return ret;
+        if(upper != null)
+            return upper.getImage(false);
+        if(lower != null)
+            return lower.getImage(false);
+        else
+            return BlockImageFactory.getInstance().get(Block.Type.FLOOR, Move.Moves.UP, false);
     }
 
     public boolean canMoveFrom(Block b) {
-        for (Block bl : blocks) {
-            if (!bl.getFromReaction().canMove(b, bl)) {
+        if(lower != null) {
+            if(lower.getFromReaction().canMove(b, lower)) {               
                 return false;
             }
         }
@@ -64,37 +71,38 @@ public class BlockContainer {
     }
 
     public boolean canMoveTo(Block b) {
-        for (Block bl : blocks) {
-            if (!bl.getToReaction().canMove(b, bl)) {
+        if(lower != null)
+            if(lower.getToReaction().canMove(b, lower))
                 return false;
-            }
-        }
+        if(upper != null)
+            if(upper.getToReaction().canMove(b, upper))
+                return false;
         return true;
     }
 
     public void moveFrom(Block b) throws BlockContainerFullException {
-        for (Block bl : blocks) {
-            bl.getFromReaction().react(b, bl);
-        }
+        if(lower != null)
+            lower.getFromReaction().react(b, lower);
     }
 
     public void moveTo(Block b) throws BlockContainerFullException {
-        for (Block bl : blocks) {
-            bl.getToReaction().react(b, bl);
-        }
+        if(lower != null)
+            lower.getToReaction().react(b, lower);
+        if(upper != null)
+            upper.getToReaction().react(b, upper);
     }
 
     public void replaceBlock(Block a, Block b) {
-        int index = blocks.indexOf(a);
-        blocks.add(index, b);
+        if(upper != null && upper == a)
+            upper = b;
+        if(lower != null && lower == a)
+            lower = b;
         a.destroy();
     }
 
     public void clear() {
-        blocks.clear();
+        upper = null;
+        lower = null;
     }
 
-    public Iterator<Block> iterator() {
-        return blocks.iterator();
-    }
 }

@@ -253,23 +253,23 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             int trapY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
                             Block button = null;
                             Block trap = null;
-                            Collection<Block> blks = null;
                             // Locate button
-                            blks = ret.getBlockContainer(buttonX, buttonY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.BROWNBUTTON)) {
-                                    button = b;
-                                    break;
-                                }
-                            }
+                            BlockContainer bc;
+                            Block upper;
+                            Block lower;
+                            bc = ret.getBlockContainer(buttonX, buttonY);
+                            upper = bc.getUpper();
+                            lower = bc.getLower();
+                            if(upper != null && upper.isA(Type.BROWNBUTTON))
+                                button = upper;
+                            else
+                                if(lower != null && lower.isA(Type.BROWNBUTTON))
+                                    button = lower;
+
                             // Locate trap
-                            blks = ret.getBlockContainer(trapX, trapY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.TRAP)) { 
-                                    trap = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(trapX, trapY);
+                            if(lower != null && lower.isA(Type.TRAP))
+                                trap = lower;
                             if(button != null && trap != null) // Perhaps throw an exception otherwise
                                 Buttons.addBrownButtonListener(button, trap);                          
                             chipDat.skipBytes(2);
@@ -283,23 +283,24 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             int clonerY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
                             Block button = null;
                             Block cloner = null;
-                            Collection<Block> blks = null;
+                            BlockContainer bc;
+                            Block upper;
+                            Block lower;
+
                             // Locate button
-                            blks = ret.getBlockContainer(buttonX, buttonY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.REDBUTTON)) {
-                                    button = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(buttonX, buttonY);
+                            upper = bc.getUpper();
+                            lower = bc.getLower();
+                            if(upper != null && upper.isA(Type.REDBUTTON))
+                                button = upper;
+                            else
+                                if(lower != null && lower.isA(Type.REDBUTTON))
+                                    button = lower;
+
                             // Locate cloner
-                            blks = ret.getBlockContainer(clonerX, clonerY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.CLONEMACHINE)) {
-                                    cloner = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(clonerX, clonerY);
+                            if(lower != null && lower.isA(Type.CLONEMACHINE))
+                                    cloner = lower;
                             if(button != null && cloner != null) // Perhaps throw an exception otherwise
                                 Buttons.addRedButtonListener(button, cloner);                            
                         }
@@ -326,15 +327,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             int creatureX = chipDat.readByte() & 0xFF;
                             int creatureY = chipDat.readByte() & 0xFF;
                             Block creature = null;
-                            Collection<Block> blks = null;
+                            BlockContainer bc;
+                            Block upper;
+
                             // Locate creature
-                            blks = ret.getBlockContainer(creatureX, creatureY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isCreature()) {
-                                    creature = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(creatureX, creatureY);
+                            upper = bc.getUpper();
+                            if(upper.isCreature())
+                                creature = upper;
                             if(creature != null) // Perhaps throw an exception otherwise
                                 Creatures.addCreature(creature);
                         }
@@ -344,7 +344,8 @@ public class MicrosoftLevelFactory extends LevelFactory {
                 }
                 numOptionalBytesRead += sizeOfField;
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            System.out.println("While loading level: " + ex.getMessage());
         } finally {
             return ret;
         }

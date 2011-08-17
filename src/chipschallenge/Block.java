@@ -92,39 +92,19 @@ public class Block {
     }
 
     public boolean isOnIce() {
-        if (!isChip() && !isBlock() && !isCreature()) {
+        if (!isChip() && !isBlock() && !isCreature())
             return false;
-        }
-        Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
-        for (Block b : blocks) {
-            if (b.isIce()) {
-                return true;
-            }
-        }
-        return false;
+        return Game.getInstance().getLevel().getBlockContainer(this).getLower().isIce();
     }
 
     public boolean isOnForceFloor() {
-        if (!isChip() && !isBlock() && !isCreature()) {
+        if (!isChip() && !isBlock() && !isCreature()) 
             return false;
-        }
-        Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
-        for (Block b : blocks) {
-            if (b.isForceFloor()) {
-                return true;
-            }
-        }
-        return false;
+        return Game.getInstance().getLevel().getBlockContainer(this).getLower().isForceFloor();
     }
 
     public boolean isOnCloner() {
-        Collection<Block> blocks = Game.getInstance().getLevel().getBlockContainer(this).getBlocks();
-        for (Block b : blocks) {
-            if (b.isA(Type.CLONEMACHINE)) {
-                return true;
-            }
-        }
-        return false;
+        return Game.getInstance().getLevel().getBlockContainer(this).getLower().isA(Type.CLONEMACHINE);
     }
 
     public boolean isCreature() {
