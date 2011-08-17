@@ -15,7 +15,7 @@ import java.util.Collection;
  *
  * @author patrik
  */
-public class Block implements GameListener {
+public class Block {
 
     private Type mType;
     private Move.Moves mFacing;
@@ -23,6 +23,7 @@ public class Block implements GameListener {
     private BlockReaction mFrom = CanMoveBlockReaction.getInstance();
     private BlockReaction mTo = CanMoveBlockReaction.getInstance();
     private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
+    private boolean forced = false;
 
     public static enum Type {
 
@@ -166,7 +167,7 @@ public class Block implements GameListener {
 
     public void destroy() {
         clearReactions();
-        Game.getInstance().removeGameListener(this);
+        Game.getInstance().removeMovingBlock(this);
         Game.getInstance().getLevel().removeBlock(this);
     }
 
@@ -222,4 +223,13 @@ public class Block implements GameListener {
         }
         return (Block) super.clone();
     }
+
+    public void setForced(boolean forced) {
+        this.forced = forced;
+    }
+
+    public boolean wasForced() {
+        return forced;
+    }
+
 }

@@ -26,7 +26,7 @@ public class Game {
     public static final int MOVE_MS = 250;
     public static final int SPEED_FRAC = 3;
     public static final int TIMER_TICK = MOVE_MS / SPEED_FRAC;
-    private CopyOnWriteArrayList<GameListener> gameListeners = new CopyOnWriteArrayList<GameListener>();
+    private CopyOnWriteArrayList<Block> movingBlocks = new CopyOnWriteArrayList<Block>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
@@ -65,7 +65,7 @@ public class Game {
         Teleports.clear();
         forcedMoves.clear();
         mInventory.clear();
-        gameListeners.clear();
+        movingBlocks.clear();
         if (tickTimer != null) {
             tickTimer.cancel();
         }
@@ -151,12 +151,12 @@ public class Game {
         }
     }
 
-    public void addGameListener(GameListener l) {
-        gameListeners.add(l);
+    public void addMovingBlock(Block l) {
+        movingBlocks.add(l);
     }
 
-    public void removeGameListener(GameListener l) {
-        gameListeners.remove(l);
+    public void removeMovingBlock(Block l) {
+        movingBlocks.remove(l);
     }
 
     public void addForcedMove(Block b, Moves m) {
@@ -171,17 +171,25 @@ public class Game {
         mTickCount++;
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
-        for (Block b : forcedMovesNow.keySet()) {
-            Moves m = forcedMovesNow.get(b);
-            if (!mLevel.moveBlock(b, m, true)) {
-                // Bounce
-                b.setFacing(Move.reverse(b.getFacing()));
-                mLevel.getBlockContainer(b).moveTo(b);
+        for (Block b : movingBlocks) {
+            if (b.wasForced()) {
+                    System.out.println("WAS FORCED");
+                    b.tick();
+                    b.setForced(false);
             }
-        }
-        for (GameListener l : gameListeners) {
-            l.tick();
-        }
+            if (forcedMovesNow.containsKey(b)) {
+                    b.setForced(true);
+                    Moves m = forcedMovesNow.get(b);
+                    if (!mLevel.moveBlock(b, m, true)) {
+                        // Bounce
+                        b.setFacing(Move.reverse(b.getFacing()));
+                        mLevel.getBlockContainer(b).moveTo(b);
+                    }
+            } else {
+                b.setForced(false);
+                b.tick();
+            }
+        } 
         Creatures.tick();
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away

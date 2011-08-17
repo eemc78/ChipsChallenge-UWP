@@ -3,6 +3,7 @@ package chipschallenge.tickbehaviors;
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Game;
+import chipschallenge.Inventory.Boots;
 import chipschallenge.Move.Moves;
 import chipschallenge.SoundPlayer;
 import chipschallenge.SoundPlayer.sounds;
@@ -37,8 +38,11 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
                 if (caller.isOnForceFloor()) {
                     Game.getInstance().removeForcedMove(caller);
                 }
-                if (!caller.move(proposedMoves.poll())) {
-                    Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
+                if (caller.isOnIce() && !Game.getInstance().getInventory().hasBoots(Boots.ICESKATES)) {
+                    //proposedMoves.poll(); // Ignore proposed move
+                } else if (!caller.move(proposedMoves.poll())) {
+                    if(caller.isOnForceFloor())
+                        Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
                     SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
                 }
                 mTicksBeforeTurn = 12;
