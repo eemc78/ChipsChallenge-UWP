@@ -41,7 +41,8 @@ public class TeleportTo extends BlockReaction {
             // Totally blocked
         } else {
             level().teleport(moving, remote);
-            sound().playSound(sounds.TELEPORT);
+            if(moving.isChip())
+                sound().playSound(sounds.TELEPORT);
         }
         game().addForcedMove(moving, moving.getFacing());
     }

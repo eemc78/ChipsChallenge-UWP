@@ -171,9 +171,20 @@ public class Game {
         mTickCount++;
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
+        for(Block b : forcedMovesNow.keySet()) {
+            if(b.isCreature() || b.isBlock()) {
+                b.setForced(true);
+                Moves m = forcedMovesNow.get(b);
+                if (!mLevel.moveBlock(b, m, true)) {
+                    // Bounce
+                    b.setFacing(Move.reverse(b.getFacing()));
+                    mLevel.getBlockContainer(b).moveTo(b);
+                }
+            }
+        }
+
         for (Block b : movingBlocks) {
             if (b.wasForced()) {
-                    System.out.println("WAS FORCED");
                     b.tick();
                     b.setForced(false);
             }

@@ -42,8 +42,9 @@ public class CloneMachineBehavior implements ButtonBehavior {
                         try {
                             Block clone = g.getBlockFactory().get(b.getType(), b.getFacing());
                             Point p = b.getPoint();
-                            Move.updatePoint(p, b.getFacing());
+                            //Move.updatePoint(p, b.getFacing());
                             gl.addBlock(p.x, p.y, clone);
+                            gl.moveBlock(clone, clone.getFacing(), true);
                             if(clone.isCreature()) {
                                 Creatures.addCreature(clone);
                             }
