@@ -79,7 +79,7 @@ public class SoundPlayer {
         Clip c = clips.get(s);
         if (c != null) {
             long time = System.currentTimeMillis();
-            if (time > canPlayNextTime) {
+            if (time > canPlayNextTime || s == sounds.EXIT) {
                 if (c.isRunning()) {
                     c.stop();
                 }

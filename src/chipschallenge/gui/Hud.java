@@ -1,10 +1,14 @@
 package chipschallenge.gui;
 
+import chipschallenge.Block.Type;
+import chipschallenge.BlockFactory;
+import chipschallenge.BlockImageFactory;
 import chipschallenge.ChipListener;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import chipschallenge.Inventory;
 import chipschallenge.InventoryListener;
+import chipschallenge.Move.Moves;
 import chipschallenge.NextLevelListener;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -20,10 +24,12 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     private int level = 0;
     private int time = 0;
     private int chipsLeft = 0;
-    private boolean levelNeedsRepaint = false;
-    private boolean timeNeedsRepaint = false;
-    private boolean chipsLeftNeedsRepaint = false;
+    private Inventory inventory = Game.getInstance().getInventory();
+    private boolean levelNeedsRepaint = true;
+    private boolean timeNeedsRepaint = true;
+    private boolean chipsLeftNeedsRepaint = true;
     private boolean backgroundNeedsRepaint = true;
+    private boolean inventoryNeedsRepaint = true;
 
     public Hud() {
         setPreferredSize(new Dimension(154, 300));
@@ -89,6 +95,47 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
                 x-=17;
             }
             chipsLeftNeedsRepaint = false;
+        }
+        if(inventoryNeedsRepaint) {
+            BlockFactory bf = Game.getInstance().getBlockFactory();
+            BlockImageFactory bif = BlockImageFactory.getInstance();
+            int x = 13;
+            int y = 221;
+            Image im = null;
+            Image empty = bif.get(Type.FLOOR, Moves.UP, false);
+            im = empty;
+            if(inventory.hasKey(Inventory.Key.RED))
+                im = bif.get(Type.REDKEY, Moves.UP, false);
+            g.drawImage(im, x, y, null);
+            im = empty;
+            if(inventory.hasKey(Inventory.Key.BLUE))
+                im = bif.get(Type.BLUEKEY, Moves.UP, false);
+            g.drawImage(im, x+32, y, null);
+            im = empty;
+            if(inventory.hasKey(Inventory.Key.YELLOW))
+                im = bif.get(Type.YELLOWKEY, Moves.UP, false);
+            g.drawImage(im, x+2*32, y, null);
+            im = empty;
+            if(inventory.hasKey(Inventory.Key.GREEN))
+                im = bif.get(Type.GREENKEY, Moves.UP, false);
+            g.drawImage(im, x+3*32, y, null);
+            y+=32;
+            im = empty;
+            if(inventory.hasBoots(Inventory.Boots.ICESKATES))
+                im = bif.get(Type.ICESKATES, Moves.UP, false);
+            g.drawImage(im, x, y, null);
+            im = empty;
+            if(inventory.hasBoots(Inventory.Boots.SUCTIONBOOTS))
+                im = bif.get(Type.SUCTIONBOOTS, Moves.UP, false);
+            g.drawImage(im, x+32, y, null);
+            im = empty;
+            if(inventory.hasBoots(Inventory.Boots.FIREBOOTS))
+                im = bif.get(Type.FIREBOOTS, Moves.UP, false);
+            g.drawImage(im, x+2*32, y, null);
+            im = empty;
+            if(inventory.hasBoots(Inventory.Boots.FLIPPERS))
+                im = bif.get(Type.FLIPPERS, Moves.UP, false);
+            g.drawImage(im, x+3*32, y, null);
         }
         g.dispose();
     }
@@ -160,6 +207,9 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     }
 
     public void inventoryChange(Inventory i) {
+        inventory = i;
+        inventoryNeedsRepaint = true;
+        repaint();
         // TODO: Repaint keys and boots
     }
 
