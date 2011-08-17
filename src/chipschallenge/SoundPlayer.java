@@ -76,10 +76,10 @@ public class SoundPlayer {
     }
 
     public void playSound(sounds s) {
-        long time = System.currentTimeMillis();
-        if (time > canPlayNextTime) {
-            Clip c = clips.get(s);
-            if (c != null) {
+        Clip c = clips.get(s);
+        if (c != null) {
+            long time = System.currentTimeMillis();
+            if (time > canPlayNextTime) {
                 if (c.isRunning()) {
                     c.stop();
                 }

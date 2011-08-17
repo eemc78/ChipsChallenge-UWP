@@ -3,6 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.Move.Moves;
 
 /**
  * Moving to a Block
@@ -23,7 +24,8 @@ public class BlockTo extends BlockReaction {
     // When moving onto a block, the block moves in the same direction
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
-            standing.move(moving.getFacing());
+            //standing.move(moving.getFacing());
+            level().moveBlock(standing, moving.getFacing(), true);
         }
     }
 
@@ -35,7 +37,8 @@ public class BlockTo extends BlockReaction {
             if (after == null) { // Block being pushed at the edge
                 return false;
             }
-            return before.canMoveFrom(standing) && after.canMoveTo(standing);
+            return  // before.canMoveFrom(standing) &&
+                    after.canMoveTo(standing);
         }
         return false;
     }
