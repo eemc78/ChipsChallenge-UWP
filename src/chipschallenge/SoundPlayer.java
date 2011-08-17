@@ -54,8 +54,8 @@ public class SoundPlayer {
         loadSoundAs("OOF3.WAV", sounds.CHIPHUM);
         loadSoundAs("DOOR.WAV", sounds.DOOR);
         loadSoundAs("DITTY.WAV", sounds.EXIT);
-        loadSoundAs("TELEPORT.WAV", sounds.EXIT);
-        loadSoundAs("WATER2.WAV", sounds.EXIT);
+        loadSoundAs("TELEPORT.WAV", sounds.TELEPORT);
+        loadSoundAs("WATER2.WAV", sounds.WATER);
         loadSoundAs("BUMMER.WAV", sounds.DIE);
         loadSoundAs("CLICK3.WAV", sounds.TAKECHIP);
         loadSoundAs("POP2.WAV", sounds.BUTTON);

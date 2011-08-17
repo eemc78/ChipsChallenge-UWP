@@ -36,7 +36,9 @@ public abstract class BlockReaction {
     }
 
     public final boolean useKey(Key k) {
-        return Game.getInstance().getInventory().useKey(k);
+        boolean ret = Game.getInstance().getInventory().useKey(k);
+        sound().playSound(sounds.DOOR);
+        return ret;
     }
 
     public final void takeBoots(Boots b) {
