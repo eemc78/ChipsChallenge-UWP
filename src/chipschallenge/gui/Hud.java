@@ -1,7 +1,5 @@
 package chipschallenge.gui;
 
-import chipschallenge.Block;
-import chipschallenge.Buttons;
 import chipschallenge.ChipListener;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
@@ -17,7 +15,7 @@ import java.awt.Panel;
  *
  * @author wasd
  */
-class Hud extends Panel implements ChipListener, NextLevelListener, InventoryListener, HintListener {
+class Hud extends Panel implements ChipListener, NextLevelListener, InventoryListener, HintListener, TimeListener {
 
     private int level = 0;
     private int time = 0;
@@ -26,6 +24,8 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     private boolean timeNeedsRepaint = false;
     private boolean chipsLeftNeedsRepaint = false;
     private boolean backgroundNeedsRepaint = true;
+
+    private Image offscreen = null;
 
     public Hud() {
         setPreferredSize(new Dimension(154, 300));
@@ -43,6 +43,9 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
         // Listen for hints
         Game.getInstance().addHintListener(this);
 
+        // Listen for time
+        Game.getInstance().addTimeListener(this);
+
         //for debugging:
         setChipsLeft(7);
         setTime(123);
@@ -51,9 +54,12 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
 
     @Override
     public void paint(Graphics g) {
-        //super.paint(g);
+        if (offscreen == null) {
+            offscreen = createImage(getSize().width, getSize().height);
+        }
+        Graphics og = offscreen.getGraphics();
         if (backgroundNeedsRepaint) {
-            g.drawImage(HudImageFactory.getInstance().getHudBackground(), 0, 0, null);
+            og.drawImage(HudImageFactory.getInstance().getHudBackground(), 0, 0, null);
             backgroundNeedsRepaint = false;
         }
 
@@ -63,7 +69,7 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
             int y=38;
             for (int i = s.length()-1; i >=0; i--) {
                 Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), false);
-                g.drawImage(img, x, y, null);
+                og.drawImage(img, x, y, null);
                 x-=17;
             }
             levelNeedsRepaint = false;
@@ -74,7 +80,7 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
             int y=100;
             for (int i = s.length()-1; i >=0; i--) {
                 Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), false);
-                g.drawImage(img, x, y, null);
+                og.drawImage(img, x, y, null);
                 x-=17;
             }
             timeNeedsRepaint = false;
@@ -85,11 +91,15 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
             int y=190;
             for (int i = s.length()-1; i >=0; i--) {
                 Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), true);
-                g.drawImage(img, x, y, null);
+                og.drawImage(img, x, y, null);
                 x-=17;
             }
             chipsLeftNeedsRepaint = false;
         }
+        super.paint(og);
+        og.dispose();
+        g.drawImage(offscreen, 0, 0, null);       
+        g.dispose();
     }
 
     public void setChipsLeft(int chipsLeft) {
@@ -143,8 +153,18 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
         repaint();
     }
 
+    @Override
+    public void repaint() {
+        levelNeedsRepaint = true;
+        timeNeedsRepaint = true;
+        chipsLeftNeedsRepaint = true;
+        backgroundNeedsRepaint = true;
+        super.repaint();
+    }
+
     public void chipTaken() {
         setChipsLeft(--chipsLeft);
+        repaint();
     }
 
     public void nextLevel(GameLevel level) {
@@ -164,5 +184,9 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
 
     public void hideHint() {
         // TODO: Hide hint
+    }
+
+    public void timeLeft(int seconds) {
+        setTime(seconds);
     }
 }

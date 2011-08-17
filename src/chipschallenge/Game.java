@@ -6,6 +6,7 @@ import chipschallenge.SoundPlayer.sounds;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
 import chipschallenge.gui.HintListener;
+import chipschallenge.gui.TimeListener;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -36,12 +37,14 @@ public class Game {
     private int mLevelNumber = 0;
     private int enemyTick = 0;
     private Timer tickTimer = null;
+    private Timer secondsTimer = null;
     private long mTickCount = 0;
     private long mLastTickDrawn = 0;
     private boolean levelComplete;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
     private boolean dead = false;
     private Collection<ChipListener> chipListeners = new ArrayList<ChipListener>();
+    private Collection<TimeListener> timeListeners = new CopyOnWriteArrayList<TimeListener>();
     private Collection<NextLevelListener> nextLevelListeners = new ArrayList<NextLevelListener>();
     private static Collection<HintListener> hintListeners = new CopyOnWriteArrayList<HintListener>();
 
@@ -65,6 +68,9 @@ public class Game {
         gameListeners.clear();
         if (tickTimer != null) {
             tickTimer.cancel();
+        }
+        if (secondsTimer != null) {
+            secondsTimer.cancel();
         }
     }
 
@@ -117,6 +123,32 @@ public class Game {
             }
         };
         tickTimer.schedule(tt, 0, TIMER_TICK);
+        final int seconds = mLevel.getNumSeconds();
+        if (seconds > 0) {
+            secondsTimer = new Timer();
+            TimerTask counter = new TimerTask() {
+
+                int counter = seconds;
+
+                @Override
+                public void run() {
+                    counter--;
+                    for (TimeListener l : timeListeners) {
+                        l.timeLeft(counter);
+                    }
+                    if(counter >= 0 && counter <= 10) {
+                        SoundPlayer.getInstance().playSound(sounds.TICK);
+                    }
+                    if (counter == 0) {
+                        SoundPlayer.getInstance().playSound(sounds.TIMEOVER);
+                        GUI.getInstance().msgDialog("Ooops! Out of time!");
+                        dead = true;
+                        secondsTimer.cancel();
+                    }
+                }
+            };
+            secondsTimer.schedule(counter, 1000, 1000);
+        }
     }
 
     public void addGameListener(GameListener l) {
@@ -247,10 +279,19 @@ public class Game {
         nextLevelListeners.remove(l);
     }
 
+    public void addTimeListener(TimeListener l) {
+        timeListeners.add(l);
+    }
+
+    public void removeTimeListener(TimeListener l) {
+        timeListeners.remove(l);
+    }
+
     public void takeChip() {
         mLevel.chipTaken();
         for(ChipListener l : chipListeners) {
             l.chipTaken();
         }
     }
+
 }
