@@ -34,11 +34,10 @@ public class BlockContainer {
     }
 
     public void add(Block b) throws BlockContainerFullException {
-        if (blocks.size() >= 4) {
-            throw new BlockContainerFullException();
-        } else {
+        if (blocks.size() >= 4)
+          System.out.println(blocks.size());
             blocks.add(0, b);
-        }
+        
     }
 
     public void remove(Block b) {

@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,6 +48,8 @@ public class Game {
     private Collection<TimeListener> timeListeners = new CopyOnWriteArrayList<TimeListener>();
     private Collection<NextLevelListener> nextLevelListeners = new ArrayList<NextLevelListener>();
     private static Collection<HintListener> hintListeners = new CopyOnWriteArrayList<HintListener>();
+    private Map<Long, List<Block>> addBlockAtTick = new HashMap<Long, List<Block>>();
+    private Map<Block, Point> addBlocks = new HashMap<Block, Point>();
 
     private Game() {
     }
@@ -169,6 +172,23 @@ public class Game {
 
     public void tick() throws BlockContainerFullException {
         mTickCount++;
+        List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
+        if (blocksToAdd != null) {
+            for (Block b : blocksToAdd) {
+                Point p = addBlocks.get(b);
+                Point dp = (Point) p.clone();
+                Move.updatePoint(dp, b.getFacing());
+                if (mLevel.getBlockContainer(dp.x, dp.y).canMoveTo(b)) {
+                    mLevel.addBlock(p.x, p.y, b);
+                    mLevel.moveBlock(b, b.getFacing(), true);
+                    if (b.isCreature()) {
+                        Creatures.addCreature(b);
+                    }
+                }
+                addBlocks.remove(b);
+            }
+            blocksToAdd.clear();
+        }
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
         for(Block b : forcedMovesNow.keySet()) {
@@ -202,6 +222,7 @@ public class Game {
             }
         } 
         Creatures.tick();
+        
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away
         if (mLastTickDrawn != mTickCount) {
@@ -304,6 +325,17 @@ public class Game {
 
     public void removeTimeListener(TimeListener l) {
         timeListeners.remove(l);
+    }
+
+    public void addBlockDelay(Block b, Point p, int ticks) {
+        long addWhen = mTickCount + ticks;
+        List<Block> blocks = addBlockAtTick.get(addWhen);
+        if(blocks == null) {
+            blocks = new ArrayList<Block>();
+            addBlockAtTick.put(addWhen, blocks);
+        }
+        blocks.add(b);
+        addBlocks.put(b, p);
     }
 
     public void takeChip() {

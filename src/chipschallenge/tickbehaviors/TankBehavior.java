@@ -11,7 +11,7 @@ import chipschallenge.buttonbehaviors.ButtonBehavior;
  */
 public class TankBehavior implements ButtonBehavior, BlockTickBehavior {
 
-    private boolean isMoving = false;
+    private boolean isMoving = true;
 
     @Override
     public void tick(Block caller) throws BlockContainerFullException {

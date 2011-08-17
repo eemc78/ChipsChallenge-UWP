@@ -43,10 +43,14 @@ public class CloneMachineBehavior implements ButtonBehavior {
                             Block clone = g.getBlockFactory().get(b.getType(), b.getFacing());
                             Point p = b.getPoint();
                             //Move.updatePoint(p, b.getFacing());
-                            gl.addBlock(p.x, p.y, clone);
-                            gl.moveBlock(clone, clone.getFacing(), true);
-                            if(clone.isCreature()) {
-                                Creatures.addCreature(clone);
+                            if(clone.isCreature() && !(clone.isA(Type.TEETH) || clone.isA(Type.BLOB))) {
+                                g.addBlockDelay(clone, p, 4);
+                            } else {
+                                gl.addBlock(p.x, p.y, clone);
+                                gl.moveBlock(clone, clone.getFacing(), true);
+                                if(clone.isCreature()) {
+                                    Creatures.addCreature(clone);
+                                }
                             }
                         } catch (BlockContainerFullException ex) {
                             // Ignore for now. TODO: Fix
