@@ -4,6 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move;
+import chipschallenge.SoundPlayer.sounds;
 import chipschallenge.Teleports;
 import java.awt.Point;
 
@@ -39,7 +40,8 @@ public class TeleportTo extends BlockReaction {
         if(remote == origin) {
             // Totally blocked
         } else {
-            level().teleport(moving, remote);           
+            level().teleport(moving, remote);
+            sound().playSound(sounds.TELEPORT);
         }
         game().addForcedMove(moving, moving.getFacing());
     }

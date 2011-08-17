@@ -3,13 +3,10 @@ dist
 private
 nbproject
 build.xml
-manifest.mf
 .classpath
 .project
 manifest.mf
 build-before-profiler.xml
 CHIPS.DAT
-CHIP01.MID
-CHIP02.MID
-CANYON.MID
+*.MID
 *.WAV

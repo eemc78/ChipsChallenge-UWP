@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Move to bomb
@@ -25,7 +26,7 @@ public class BombTo extends BlockReaction {
         } else {
             moving.destroy();
             standing.destroy();
-            //TODO: Play explosion sound
+            sound().playSound(sounds.BOMB);
         }
     }
 

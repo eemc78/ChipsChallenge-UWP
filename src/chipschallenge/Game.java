@@ -2,6 +2,7 @@ package chipschallenge;
 
 import chipschallenge.gamestates.GameState;
 import chipschallenge.Move.Moves;
+import chipschallenge.SoundPlayer.sounds;
 import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
 import chipschallenge.gui.HintListener;
@@ -169,7 +170,7 @@ public class Game {
     public void die(String msg) {
         //listeners.clear();
         //tickTimer.cancel();
-        //TODO: Play "Bummer"
+        SoundPlayer.getInstance().playSound(sounds.DIE);
         GUI.getInstance().msgDialog(msg);
         dead = true;
     }

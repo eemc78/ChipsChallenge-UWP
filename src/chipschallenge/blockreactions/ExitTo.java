@@ -2,6 +2,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Move to exit
@@ -23,6 +24,7 @@ public class ExitTo extends BlockReaction {
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
+            sound().playSound(sounds.EXIT);
             game().setLevelComplete();
         }
     }

@@ -3,6 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Game;
 import chipschallenge.Inventory.Key;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  *
@@ -24,6 +25,7 @@ public class YellowLockTo extends BlockReaction {
     public void react(Block moving, Block standing) {
         useKey(Key.YELLOW);
         standing.destroy();
+        sound().playSound(sounds.DOOR);
     }
 
     public boolean canMove(Block moving, Block standing) {

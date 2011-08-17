@@ -4,6 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.Game;
 import chipschallenge.Inventory.Boots;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  *
@@ -36,6 +37,7 @@ public class WaterTo extends BlockReaction {
             case BLOCK:
                 moving.destroy();
                 standing.replace(createBlock(Type.DIRT));
+                sound().playSound(sounds.WATER);
                 break;
             case BUG:
             case TEETH:

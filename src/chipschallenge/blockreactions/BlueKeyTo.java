@@ -3,6 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.Inventory.Key;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Moving to blue key

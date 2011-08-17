@@ -4,6 +4,8 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Game;
 import chipschallenge.Move.Moves;
+import chipschallenge.SoundPlayer;
+import chipschallenge.SoundPlayer.sounds;
 import chipschallenge.gui.GUI;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -37,6 +39,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
                 }
                 if (!caller.move(proposedMoves.poll())) {
                     Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
+                    SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
                 }
                 mTicksBeforeTurn = 12;
             }

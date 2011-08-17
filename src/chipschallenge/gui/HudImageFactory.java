@@ -26,7 +26,7 @@ public class HudImageFactory {
         }
     }
 
-    public static HudImageFactory getInstance() {
+    public static synchronized HudImageFactory getInstance() {
         if (instance == null) {
             instance = new HudImageFactory();
         }

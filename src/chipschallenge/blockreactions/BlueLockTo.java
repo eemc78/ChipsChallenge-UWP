@@ -2,6 +2,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.Inventory.Key;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Moving to blue lock
@@ -23,6 +24,7 @@ public class BlueLockTo extends BlockReaction {
     public void react(Block moving, Block standing) {
         useKey(Key.BLUE);
         standing.destroy();
+        sound().playSound(sounds.DOOR);
     }
 
     // Only chip can move, when he has a blue key

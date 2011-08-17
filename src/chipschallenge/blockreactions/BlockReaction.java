@@ -9,6 +9,8 @@ import chipschallenge.Inventory;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.Inventory.Key;
 import chipschallenge.Move.Moves;
+import chipschallenge.SoundPlayer;
+import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Defines whether a block can move, and what the side effects are
@@ -26,6 +28,7 @@ public abstract class BlockReaction {
 
     public final void takeKey(Key k) {
         Game.getInstance().getInventory().takeKey(k);
+        sound().playSound(sounds.TAKEITEM);
     }
 
     public final boolean hasKey(Key k) {
@@ -38,6 +41,7 @@ public abstract class BlockReaction {
 
     public final void takeBoots(Boots b) {
         Game.getInstance().getInventory().takeBoots(b);
+        sound().playSound(sounds.TAKEITEM);
     }
 
     public final boolean hasBoots(Boots b) {
@@ -50,6 +54,10 @@ public abstract class BlockReaction {
 
     public final Game game() {
         return Game.getInstance();
+    }
+
+    public final SoundPlayer sound() {
+        return SoundPlayer.getInstance();
     }
 
     public final GameLevel level() {
