@@ -125,7 +125,12 @@ public class Game {
                 }
             }
         };
-        tickTimer.schedule(tt, 0, TIMER_TICK);
+        try {
+            firstTick();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        tickTimer.schedule(tt, TIMER_TICK, TIMER_TICK);
         final int seconds = mLevel.getNumSeconds();
         if (seconds > 0) {
             secondsTimer = new Timer();
@@ -168,6 +173,13 @@ public class Game {
 
     public void removeForcedMove(Block b) {
         forcedMoves.remove(b);
+    }
+
+    public void firstTick() throws BlockContainerFullException {
+        mTickCount++;
+        for(Block b : Creatures.getCreatures()) {
+            mLevel.getBlockContainer(b).moveTo(b);
+        }
     }
 
     public void tick() throws BlockContainerFullException {

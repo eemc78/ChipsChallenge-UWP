@@ -13,6 +13,10 @@ public class Creatures {
     private static int creatureTicks = 0;
     private static boolean blobMove = false;
 
+    public static Collection<Block> getCreatures() {
+        return creatures;
+    }
+
     public static void clear() {
         creatures.clear();
     }
