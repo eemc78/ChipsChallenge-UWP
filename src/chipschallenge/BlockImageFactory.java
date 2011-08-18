@@ -3,7 +3,6 @@ package chipschallenge;
 import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -364,7 +363,7 @@ public class BlockImageFactory {
                 mask = (BufferedImage) TransformGrayToTransparency(mask);
                 img = ApplyTransparency(img, mask);
             } catch (Exception ex) {
-                System.out.println(type + " wasn't drawn");
+                System.out.println(type + " mask wasn't created");
             }
         }
 
@@ -387,7 +386,8 @@ public class BlockImageFactory {
     }
 
     private BufferedImage imageToBufferedImage(Image image) {
-
+        if(image instanceof BufferedImage)
+            return (BufferedImage)image;
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
         g2.drawImage(image, 0, 0, null);

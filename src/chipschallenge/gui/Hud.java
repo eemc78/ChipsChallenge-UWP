@@ -30,6 +30,7 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     private boolean chipsLeftNeedsRepaint = true;
     private boolean backgroundNeedsRepaint = true;
     private boolean inventoryNeedsRepaint = true;
+    private boolean timeLimit = true;
 
     public Hud() {
         setPreferredSize(new Dimension(154, 300));
@@ -49,11 +50,6 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
 
         // Listen for time
         Game.getInstance().addTimeListener(this);
-
-        //for debugging:
-        setChipsLeft(7);
-        setTime(123);
-        setLevel(14);
     }
 
     @Override
@@ -84,11 +80,12 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
             levelNeedsRepaint = false;
         }
         if (timeNeedsRepaint) {
-            String s = intToPaintableString(time);
+            String s = timeLimit ? intToPaintableString(time) : "---";
             int x=83;
-            int y=100;
+            int y = 100;
+            boolean yellow = !timeLimit || time <= 15;
             for (int i = s.length()-1; i >=0; i--) {
-                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), false);
+                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), yellow);
                 g.drawImage(img, x, y, null);
                 x-=17;
             }
@@ -98,8 +95,9 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
             String s = intToPaintableString(chipsLeft);
             int x=83;
             int y=190;
+            boolean yellow = chipsLeft == 0;
             for (int i = s.length()-1; i >=0; i--) {
-                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), true);
+                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), yellow);
                 g.drawImage(img, x, y, null);
                 x-=17;
             }
@@ -207,7 +205,9 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     public void nextLevel(GameLevel level) {
         setChipsLeft(level.getNumChipsNeeded());
         setLevel(level.getLevelNumber());
-        setTime(level.getNumSeconds());        
+        int numSeconds = level.getNumSeconds();
+        timeLimit = numSeconds != 0;
+        setTime(numSeconds);
     }
 
     public void inventoryChange(Inventory i) {

@@ -5,9 +5,6 @@
 
 package chipschallenge;
 
-import chipschallenge.gui.*;
-import chipschallenge.GameLevel;
-
 /**
  *
  * @author patrik

@@ -51,7 +51,7 @@ public abstract class BlockReaction {
     }
 
     public final void die(String msg) {
-        Game.getInstance().die(msg);
+        Game.getInstance().die(msg, sounds.DIE);
     }
 
     public final Game game() {

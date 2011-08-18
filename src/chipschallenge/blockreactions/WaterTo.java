@@ -30,7 +30,7 @@ public class WaterTo extends BlockReaction {
                 } else {
                     moving.destroy();
                     standing.replace(createBlock(Type.DROWNEDCHIP));
-                    game().die("Ooops! Chip can't swim without flippers!");
+                    game().die("Ooops! Chip can't swim without flippers!", sounds.DIE);
                 }
                 break;
             case BLOCK:

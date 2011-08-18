@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -48,8 +49,8 @@ public class GUI extends Frame {
         mHud = new Hud();
         add(mPlayField);
         add(mHud);
-        //pack();
-        this.setResizable(false);
+        setIconImage(HudImageFactory.getInstance().getIcon());
+        setResizable(false);
         setVisible(true);
     }
 
@@ -103,7 +104,7 @@ public class GUI extends Frame {
         MsgBox msgbox = new MsgBox(this, msg, true);
         return msgbox.isOk;
     }
-
+    
     public void setChipsLeft(int n) {
     }
 

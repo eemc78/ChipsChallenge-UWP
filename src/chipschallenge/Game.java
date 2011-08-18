@@ -43,7 +43,7 @@ public class Game {
     private long mLastTickDrawn = 0;
     private boolean levelComplete;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
-    private boolean dead = false;
+    private volatile boolean dead = false;
     private Collection<ChipListener> chipListeners = new ArrayList<ChipListener>();
     private Collection<TimeListener> timeListeners = new CopyOnWriteArrayList<TimeListener>();
     private Collection<NextLevelListener> nextLevelListeners = new ArrayList<NextLevelListener>();
@@ -148,10 +148,7 @@ public class Game {
                         SoundPlayer.getInstance().playSound(sounds.TICK);
                     }
                     if (counter == 0) {
-                        SoundPlayer.getInstance().playSound(sounds.TIMEOVER);
-                        GUI.getInstance().msgDialog("Ooops! Out of time!");
-                        dead = true;
-                        secondsTimer.cancel();
+                        die("Ooops! Out of time!", sounds.TIMEOVER);
                     }
                 }
             };
@@ -251,12 +248,14 @@ public class Game {
             levelComplete();
     }
 
-    public void die(String msg) {
-        //listeners.clear();
-        //tickTimer.cancel();
-        SoundPlayer.getInstance().playSound(sounds.DIE);
-        GUI.getInstance().msgDialog(msg);
+    public void die(String msg, sounds s) {
         dead = true;
+        if (secondsTimer != null) {
+            secondsTimer.cancel();
+        }
+        SoundPlayer.getInstance().playSound(s);
+        GUI.getInstance().msgDialog(msg);
+
     }
 
     public GameLevel getLevel() {
