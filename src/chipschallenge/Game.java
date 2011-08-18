@@ -196,7 +196,7 @@ public class Game {
                     if (b.isCreature()) {
                         Creatures.addCreature(b);
                     }
-                }
+                } 
                 addBlocks.remove(b);
             }
             blocksToAdd.clear();

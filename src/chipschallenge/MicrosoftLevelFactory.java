@@ -5,7 +5,6 @@ import chipschallenge.Move.Moves;
 import chipschallenge.gui.GUI;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -231,22 +230,13 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             Block button = null;
                             Block trap = null;
                             // Locate button
-                            BlockContainer bc;
-                            Block upper;
-                            Block lower;
-                            bc = ret.getBlockContainer(buttonX, buttonY);
-                            upper = bc.getUpper();
-                            lower = bc.getLower();
-                            if(upper != null && upper.isA(Type.BROWNBUTTON))
-                                button = upper;
-                            else
-                                if(lower != null && lower.isA(Type.BROWNBUTTON))
-                                    button = lower;
+                            BlockContainer bc = ret.getBlockContainer(buttonX, buttonY);
+                            button = bc.find(Type.BROWNBUTTON);
 
                             // Locate trap
                             bc = ret.getBlockContainer(trapX, trapY);
-                            if(lower != null && lower.isA(Type.TRAP))
-                                trap = lower;
+                            trap = bc.find(Type.TRAP);
+
                             if(button != null && trap != null) // Perhaps throw an exception otherwise
                                 Buttons.addBrownButtonListener(button, trap);                          
                             chipDat.skipBytes(2);
@@ -261,25 +251,16 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             Block button = null;
                             Block cloner = null;
                             BlockContainer bc;
-                            Block upper;
-                            Block lower;
 
                             // Locate button
                             bc = ret.getBlockContainer(buttonX, buttonY);
-                            upper = bc.getUpper();
-                            lower = bc.getLower();
-                            if(upper != null && upper.isA(Type.REDBUTTON))
-                                button = upper;
-                            else
-                                if(lower != null && lower.isA(Type.REDBUTTON))
-                                    button = lower;
+                            button = bc.find(Type.REDBUTTON);
 
                             // Locate cloner
                             bc = ret.getBlockContainer(clonerX, clonerY);
-                            if(lower != null && lower.isA(Type.CLONEMACHINE))
-                                    cloner = lower;
+                            cloner = bc.find(Type.CLONEMACHINE);
                             if(button != null && cloner != null) // Perhaps throw an exception otherwise
-                                Buttons.addRedButtonListener(button, cloner);                            
+                                Buttons.addRedButtonListener(button, cloner);
                         }
                         break;
                     case 6: // Password
