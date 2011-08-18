@@ -191,12 +191,12 @@ public class Game {
                 Point dp = (Point) p.clone();
                 Move.updatePoint(dp, b.getFacing());
                 if (mLevel.getBlockContainer(dp.x, dp.y).canMoveTo(b)) {
-                    mLevel.addBlock(p.x, p.y, b);
+                    mLevel.addBlock(p.x, p.y, b, 2);
                     mLevel.moveBlock(b, b.getFacing(), true);
                     if (b.isCreature()) {
                         Creatures.addCreature(b);
                     }
-                }
+                } 
                 addBlocks.remove(b);
             }
             blocksToAdd.clear();

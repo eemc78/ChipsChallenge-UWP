@@ -5,7 +5,6 @@ import chipschallenge.Move.Moves;
 import chipschallenge.gui.GUI;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -175,31 +174,13 @@ public class MicrosoftLevelFactory extends LevelFactory {
         return mInstance;
     }
 
-    private GameLevel getFloors(int width, int height) {
-        GameLevel ret = null;
-        try {
-            ret = new GameLevel(width, height,0,0,1);
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < width; j++) {
-                    ret.addBlock(i, j, MicrosoftBlockFactory.getInstance().get(Block.Type.FLOOR));
-                }
-            }
-            return ret;
-        } catch (BlockContainerFullException ex) {
-            System.out.println("Couldn't create level");
-        } finally {
-            return ret;
-        }
-    }
-
     // TODO: Make more efficient by reading everything once instef of doing seek(offset);
     public GameLevel getLevel(int n) {
         int width = 32;
         int height = 32;
         GameLevel ret = null;
         try {
-            long offset = 6;
-            chipDat.seek(offset);
+            chipDat.seek(6);
             if (n > levelCount) {
                 throw new IllegalArgumentException();
             }
@@ -208,7 +189,6 @@ public class MicrosoftLevelFactory extends LevelFactory {
             // Skip over the levels we don't want
             while(level < n) {
                 int numBytesLevel = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                offset += numBytesLevel+2;
                 chipDat.skipBytes(numBytesLevel);
                 level++;
             }
@@ -219,18 +199,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
             int numChipsNeeded = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             int mapDetail      = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             ret = new GameLevel(32,32, numChipsNeeded, numSeconds, levelNumber);
-            offset += 10;
             
             int numberOfBytesLayer1= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            offset += 2;
-            chipDat.skipBytes(numberOfBytesLayer1);
+            // Read layer 1
+            readLayer(ret, numberOfBytesLayer1, 1);
             int numberOfBytesLayer2= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             // Read layer 2
-            readLayer(ret, numberOfBytesLayer2);
-            chipDat.seek(offset);
-            // Read layer 1
-            readLayer(ret, numberOfBytesLayer1);
-            chipDat.skipBytes(2+numberOfBytesLayer2);
+            readLayer(ret, numberOfBytesLayer2, 0);
+
             int numBytesOptional = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
             int numOptionalBytesRead = 0;
             while(numOptionalBytesRead < numBytesOptional) {
@@ -253,23 +229,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             int trapY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
                             Block button = null;
                             Block trap = null;
-                            Collection<Block> blks = null;
                             // Locate button
-                            blks = ret.getBlockContainer(buttonX, buttonY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.BROWNBUTTON)) {
-                                    button = b;
-                                    break;
-                                }
-                            }
+                            BlockContainer bc = ret.getBlockContainer(buttonX, buttonY);
+                            button = bc.find(Type.BROWNBUTTON);
+
                             // Locate trap
-                            blks = ret.getBlockContainer(trapX, trapY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.TRAP)) { 
-                                    trap = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(trapX, trapY);
+                            trap = bc.find(Type.TRAP);
+
                             if(button != null && trap != null) // Perhaps throw an exception otherwise
                                 Buttons.addBrownButtonListener(button, trap);                          
                             chipDat.skipBytes(2);
@@ -283,25 +250,17 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             int clonerY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
                             Block button = null;
                             Block cloner = null;
-                            Collection<Block> blks = null;
+                            BlockContainer bc;
+
                             // Locate button
-                            blks = ret.getBlockContainer(buttonX, buttonY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.REDBUTTON)) {
-                                    button = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(buttonX, buttonY);
+                            button = bc.find(Type.REDBUTTON);
+
                             // Locate cloner
-                            blks = ret.getBlockContainer(clonerX, clonerY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isA(Type.CLONEMACHINE)) {
-                                    cloner = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(clonerX, clonerY);
+                            cloner = bc.find(Type.CLONEMACHINE);
                             if(button != null && cloner != null) // Perhaps throw an exception otherwise
-                                Buttons.addRedButtonListener(button, cloner);                            
+                                Buttons.addRedButtonListener(button, cloner);
                         }
                         break;
                     case 6: // Password
@@ -326,15 +285,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             int creatureX = chipDat.readByte() & 0xFF;
                             int creatureY = chipDat.readByte() & 0xFF;
                             Block creature = null;
-                            Collection<Block> blks = null;
+                            BlockContainer bc;
+                            Block upper;
+
                             // Locate creature
-                            blks = ret.getBlockContainer(creatureX, creatureY).getBlocks();
-                            for(Block b : blks) {
-                                if(b.isCreature()) {
-                                    creature = b;
-                                    break;
-                                }
-                            }
+                            bc = ret.getBlockContainer(creatureX, creatureY);
+                            upper = bc.getUpper();
+                            if(upper.isCreature())
+                                creature = upper;
                             if(creature != null) // Perhaps throw an exception otherwise
                                 Creatures.addCreature(creature);
                         }
@@ -344,13 +302,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
                 }
                 numOptionalBytesRead += sizeOfField;
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            System.out.println("While loading level: " + ex.getMessage());
         } finally {
             return ret;
         }
     }
 
-    public void readLayer(GameLevel ret, int numberOfBytes) throws IOException, BlockContainerFullException {
+    public void readLayer(GameLevel ret, int numberOfBytes, int layer) throws IOException, BlockContainerFullException {
         int width = ret.getWidth();
         int height = ret.getHeight();
 
@@ -361,14 +320,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
             int read = chipDat.readByte() & 0xFF;
             bytesRead++;
             if(read >= 0x00 && read <= 0x6F) {
-                ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read));
+                ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read), layer);
                 objectsPlaced++;
             } else if(read == 0xFF) {
                 int numRepeats = chipDat.readByte() & 0xFF;
                 int data = chipDat.readByte() & 0xFF;
                 bytesRead += 2;
                 while(numRepeats-- > 0) {
-                    ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(data));
+                    ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(data), layer);
                     objectsPlaced++;
                 }
             } else {
