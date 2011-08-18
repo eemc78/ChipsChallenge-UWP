@@ -31,7 +31,22 @@ class PlayField extends Panel implements NextLevelListener {
 
     @Override
     public void update(Graphics g) {
-        paint(g);
+        if (offscreen == null) {
+            offscreen = createImage(getSize().width, getSize().height);
+        }
+        Graphics og = offscreen.getGraphics();
+        GameLevel gl = Game.getInstance().getLevel();
+        Point chip = gl.findChip();
+        int top = getTop(gl, chip.y);
+        int left = getLeft(gl, chip.x);
+        for (int x = 0; x < mWidth; x++) {
+            for (int y = 0; y < mHeight; y++) {
+                og.drawImage(gl.getBlockContainer(x + left, y + top).getImage(), x * 32, y * 32, null);
+            }
+        }
+        super.paint(og);
+        g.drawImage(offscreen, 0, 0, null);
+        og.dispose();
     }
 
     public int getTop(GameLevel gl, int chipY) {
@@ -58,22 +73,7 @@ class PlayField extends Panel implements NextLevelListener {
 
     @Override
     public void paint(Graphics g) {
-        if (offscreen == null) {
-            offscreen = createImage(getSize().width, getSize().height);
-        }
-        Graphics og = offscreen.getGraphics();
-        GameLevel gl = Game.getInstance().getLevel();
-        Point chip = gl.findChip();
-        int top = getTop(gl, chip.y);
-        int left = getLeft(gl, chip.x);
-        for (int x = 0; x < mWidth; x++) {
-            for (int y = 0; y < mHeight; y++) {
-                og.drawImage(gl.getBlockContainer(x + left, y + top).getImage(), x * 32, y * 32, null);
-            }
-        }
-        super.paint(og);
-        g.drawImage(offscreen, 0, 0, null);
-        og.dispose();
+        update(g);
     }
 
     // Determine whether repaint is needed

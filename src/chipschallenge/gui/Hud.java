@@ -58,6 +58,10 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
 
     @Override
     public void paint(Graphics g) {
+        levelNeedsRepaint = true;
+        timeNeedsRepaint = true;
+        chipsLeftNeedsRepaint = true;
+        backgroundNeedsRepaint = true;
         update(g);
     }
 
