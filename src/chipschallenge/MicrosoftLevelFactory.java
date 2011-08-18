@@ -339,7 +339,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
         int bytesRead = 0;
         int objectsPlaced = 0;
         while (bytesRead < numberOfBytes) {
-            int read = chipDat.readByte() & 0xFF;
+            int read = readUnsignedByte();
             bytesRead++;
             if (read >= 0x00 && read <= 0x6F) {
                 ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read), layer);
@@ -432,12 +432,11 @@ public class MicrosoftLevelFactory extends LevelFactory {
             for (int i = 1; i <= levelCount; i++) {
                 String password = getLevelPassword(i);
                 if (password != null && password.equals(pass)) {
-                    System.out.println("Password for level " + i + " is " + password);
                     return i;
                 }
             }
         } catch (IOException ex) {
-            System.out.println("While getting level by password: " + pass);
+            System.out.println("While getting level by password: " + pass + ":" + ex.getMessage());
         }
         return -1;
     }

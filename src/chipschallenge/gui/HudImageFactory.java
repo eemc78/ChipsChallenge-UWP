@@ -108,4 +108,8 @@ public class HudImageFactory {
         return baseImage.getSubimage(547, 289, 32, 32);
     }
 
+    public Image getWindowBackground() {
+        return baseImage.getSubimage(0, 0, 512, 352);
+    }
+
 }

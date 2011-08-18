@@ -3,6 +3,7 @@ package chipschallenge.gui;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import chipschallenge.NextLevelListener;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -42,12 +43,12 @@ public class GUI extends Frame implements NextLevelListener {
             msgDialog("Couldn't load background.bmp");
             System.exit(-1);
         }
-        FlowLayout layout = new FlowLayout();
-        layout.setHgap(25);
-        layout.setVgap(30);
-        setLayout(layout);
+
+        setLayout(null);
         mPlayField = new PlayField(9, 9);
+        mPlayField.setBounds(37, 77, 288, 288);
         mHud = new Hud();
+        mHud.setBounds(344, 70, 154, 300);
         add(mPlayField);
         add(mHud);
         setIconImage(HudImageFactory.getInstance().getIcon());
@@ -81,16 +82,8 @@ public class GUI extends Frame implements NextLevelListener {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
-        int iWidth = mBackground.getWidth(null);
-        int iHeight = mBackground.getHeight(null);
-        int wWidth = getWidth();
-        int wHeight = getHeight();
-        for (int x = 0; x < wWidth; x += iWidth) {
-            for (int y = 0; y < wHeight; y += iHeight) {
-                g.drawImage(mBackground, x, y, null);
-            }
-        }
+        Image im = HudImageFactory.getInstance().getWindowBackground();
+        g.drawImage(im, 5, 45, this);
     }
 
     public static void main(String[] args) {
