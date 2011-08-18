@@ -87,18 +87,72 @@ public class BlockContainer {
             lower = null;
     }
 
-    public Image getImage() {
-        if(visitorHigh != null)
-            return visitorHigh.getImage(false);
-        if(visitorLow != null)
-            return visitorLow.getImage(false);
-        if(upper != null)
-            return upper.getImage(false);
-        if(lower != null)
-            return lower.getImage(false);
-        else { 
-            return BlockImageFactory.getInstance().get(Block.Type.FLOOR, Move.Moves.UP, false);
+    public boolean standsOnMoreThanFloor(Block b) {
+        if((b.isChip() || b.isCreature()) &&
+          !(b.isA(Block.Type.SWIMMINGCHIP) || b.isA(Block.Type.BURNEDCHIP))) {
+            if(b == visitorHigh) {
+                if(visitorLow != null && !visitorLow.isA(Block.Type.FLOOR))
+                    return true;
+                if(upper != null && !upper.isA(Block.Type.FLOOR))
+                    return true;
+                if(lower != null && !lower.isA(Block.Type.FLOOR))
+                    return true;
+            } else if(b == visitorLow) {
+                if(upper != null && !upper.isA(Block.Type.FLOOR))
+                    return true;
+                if(lower != null && !lower.isA(Block.Type.FLOOR))
+                    return true;
+            } else if(b == upper) {
+                if(lower != null && !lower.isA(Block.Type.FLOOR))
+                    return true;
+            } 
         }
+        return false;
+    }
+
+    public Image getImage() {
+        return getImage(false, 3);
+    }
+    
+    public Image getImage(boolean overlay, int layer) {
+        BlockImageFactory bif = BlockImageFactory.getInstance();
+        switch(layer) {
+            case 3:
+                if(visitorHigh == null)
+                    return getImage(overlay, 2);
+                if(standsOnMoreThanFloor(visitorHigh)) {
+                    Image over = visitorHigh.getImage(true);
+                    return bif.getOverlayed(over, getImage(true, 2));
+                } else {
+                    return visitorHigh.getImage(false);
+                }
+            case 2:
+                if(visitorLow == null)
+                    return getImage(overlay, 1);
+                if(standsOnMoreThanFloor(visitorLow)) {
+                    Image over = visitorLow.getImage(true);
+                    return bif.getOverlayed(over, getImage(true, 1));
+                } else {
+                    return visitorLow.getImage(false);
+                }
+            case 1:
+                if(upper == null)
+                    return getImage(overlay, 0);
+                if(standsOnMoreThanFloor(upper)) {
+                    Image over = upper.getImage(true);
+                    return bif.getOverlayed(over, getImage(true, 0));
+                } else {
+                    return upper.getImage(false);
+                }
+            case 0:
+                if(lower != null) {
+                    if(overlay)
+                        return null;
+                    else
+                        return lower.getImage(false);
+                }
+        }
+        return bif.get(Block.Type.FLOOR, Move.Moves.UP, false);
     }
 
     public boolean canMoveFrom(Block b) {

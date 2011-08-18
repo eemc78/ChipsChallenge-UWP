@@ -2,7 +2,9 @@ package chipschallenge;
 
 import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
+import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -23,6 +25,7 @@ import javax.imageio.ImageIO;
 public class BlockImageFactory {
 
     private Map<Type, Map<Moves, Image>> loadedImages = new HashMap<Type, Map<Moves, Image>>();
+    private Map<Type, Map<Moves, Image>> loadedImagesOverlay = new HashMap<Type, Map<Moves, Image>>();
     private BufferedImage tileset;
     private static BlockImageFactory instance = null;
 
@@ -43,10 +46,18 @@ public class BlockImageFactory {
     }
 
     public Image get(Type type, Moves moves, boolean overlay) {
-        Map<Moves, Image> moveImages = loadedImages.get(type);
+        Map<Type, Map<Moves, Image>> images;
+        Map<Moves, Image> moveImages;
+
+        if(overlay)
+            images = loadedImagesOverlay;
+        else
+            images = loadedImages;
+
+        moveImages = images.get(type);
         if (moveImages == null) {
             moveImages = new HashMap<Moves, Image>();
-            loadedImages.put(type, moveImages);
+            images.put(type, moveImages);
         }
         Image im = moveImages.get(moves);
         if (im == null) {
@@ -347,12 +358,23 @@ public class BlockImageFactory {
 
         // TODO: Handle masks if overlay == true
         BufferedImage img = tileset.getSubimage(x * 32, y * 32, 32, 32);
+        if(overlay) {
+            BufferedImage mask = tileset.getSubimage(maskX * 32, y * 32, 32, 32);
+            mask = (BufferedImage) TransformGrayToTransparency(mask);
+            img = ApplyTransparency(img, mask);
+        }
 
-        Map<Moves, Image> movesMap = loadedImages.get(type);
+        Map<Type, Map<Moves, Image>> images;
+        if(overlay)
+            images = loadedImagesOverlay;
+        else
+            images = loadedImages;
+
+        Map<Moves, Image> movesMap = images.get(type);
         if (movesMap == null) {
             movesMap = new HashMap<Moves, Image>();
             movesMap.put(moves, img);
-            loadedImages.put(type, movesMap);
+            images.put(type, movesMap);
         } else {
             movesMap.put(moves, img);
         }
@@ -371,24 +393,41 @@ public class BlockImageFactory {
 
     }
 
-    private Image makeColorTransparent(BufferedImage im, final Color color) {
+    private BufferedImage TransformGrayToTransparency(BufferedImage image) {
         ImageFilter filter = new RGBImageFilter() {
 
-            // the color we are looking for... Alpha bits are set to opaque
-            public int markerRGB = color.getRGB() | 0xFF000000;
-
             public final int filterRGB(int x, int y, int rgb) {
-                if ((rgb | 0xFF000000) == markerRGB) {
-                    // Mark the alpha bits as zero - transparent
-                    return 0x00FFFFFF & rgb;
-                } else {
-                    // nothing to do
-                    return rgb;
-                }
+                return (rgb << 8) & 0xFF000000;
             }
         };
 
-        ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
-        return Toolkit.getDefaultToolkit().createImage(ip);
+        ImageProducer ip = new FilteredImageSource(image.getSource(), filter);
+        return imageToBufferedImage(Toolkit.getDefaultToolkit().createImage(ip));
+    }
+
+    private BufferedImage ApplyTransparency(BufferedImage image, Image mask) {
+        BufferedImage dest = new BufferedImage(
+                image.getWidth(), image.getHeight(),
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = dest.createGraphics();
+        g2.drawImage(image, 0, 0, null);
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.DST_IN, 1.0F);
+        g2.setComposite(ac);
+        g2.drawImage(mask, 0, 0, null);
+        g2.dispose();
+        return dest;
+    }
+
+    public Image getOverlayed(Image over, Image under) {
+        if(over == null)
+            return under;
+        if(under == null)
+            return over;
+        Image im = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = im.getGraphics();
+        if(under != null)
+            g.drawImage(under, 0, 0, null);
+        g.drawImage(over, 0, 0, null);
+        return im;
     }
 }

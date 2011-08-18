@@ -182,7 +182,7 @@ public class Game {
         }
     }
 
-    public void tick() throws BlockContainerFullException {
+    public void tick() throws BlockContainerFullException {        
         mTickCount++;
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
         if (blocksToAdd != null) {
@@ -196,7 +196,7 @@ public class Game {
                     if (b.isCreature()) {
                         Creatures.addCreature(b);
                     }
-                } 
+                }
                 addBlocks.remove(b);
             }
             blocksToAdd.clear();
@@ -233,7 +233,7 @@ public class Game {
                 b.tick();
             }
         } 
-        Creatures.tick();
+        Creatures.tick();        
         
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away
@@ -341,6 +341,7 @@ public class Game {
 
     public void addBlockDelay(Block b, Point p, int ticks) {
         long addWhen = mTickCount + ticks;
+        System.out.println(addWhen);
         List<Block> blocks = addBlockAtTick.get(addWhen);
         if(blocks == null) {
             blocks = new ArrayList<Block>();
