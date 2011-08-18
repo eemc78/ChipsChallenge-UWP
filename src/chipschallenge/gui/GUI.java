@@ -7,9 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Menu;
-import java.awt.MenuBar;
-import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -27,6 +24,7 @@ public class GUI extends Frame implements NextLevelListener {
     private Image mBackground;
     private PlayField mPlayField;
     private Hud mHud;
+    private GUIMenu mMenu;
 
     private GUI() {
         super("Chip's Challenge");
@@ -55,7 +53,8 @@ public class GUI extends Frame implements NextLevelListener {
         setIconImage(HudImageFactory.getInstance().getIcon());
         setResizable(false);
         Game.getInstance().addNextLevelListener(this);
-        setMenuBar(GUIMenu.getInstance());
+        mMenu = GUIMenu.getInstance();
+        setMenuBar(mMenu);
         setVisible(true);
     }
 
@@ -126,6 +125,7 @@ public class GUI extends Frame implements NextLevelListener {
 
     public void nextLevel(GameLevel level) {
         this.setTitle("Chips's Challenge: " + level.getMapTitle());
+        mMenu.setPreviousPossible(level.getLevelNumber()>1);
     }
 
 }

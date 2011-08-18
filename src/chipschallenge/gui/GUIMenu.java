@@ -1,6 +1,8 @@
 
 package chipschallenge.gui;
 
+import java.awt.CheckboxMenuItem;
+import java.awt.Font;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -32,6 +34,9 @@ public class GUIMenu extends MenuBar implements ActionListener {
     private MenuItem aboutChipsChallenge;
 
     private GUIMenu(){
+        
+        setFont(new Font("Arial", Font.PLAIN, 11));
+
         // Game menu
         game      = new Menu("Game");
         newGame   = new MenuItem("New Game");
@@ -51,9 +56,9 @@ public class GUIMenu extends MenuBar implements ActionListener {
 
         // Options menu
         options         = new Menu("Options");
-        backgroundMusic = new MenuItem("Background Music");
-        soundEffects    = new MenuItem("Sound Effects");
-        color           = new MenuItem("Color");
+        backgroundMusic = new CheckboxMenuItem("Background Music");
+        soundEffects    = new CheckboxMenuItem("Sound Effects");
+        color           = new CheckboxMenuItem("Color");
         backgroundMusic.addActionListener(this);
         soundEffects.addActionListener(this);
         color.addActionListener(this);
@@ -95,7 +100,7 @@ public class GUIMenu extends MenuBar implements ActionListener {
         help.add(howToPlay);
         help.add(commands);
         help.add(howToUseHelp);
-        game.addSeparator();
+        help.addSeparator();
         help.add(aboutChipsChallenge);
         add(help);
     }
@@ -110,21 +115,105 @@ public class GUIMenu extends MenuBar implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         Object src = ae.getSource();
         if(src == newGame) {
+            newGame();
         } else if(src == pause) {
+            pause();
         } else if(src == bestTimes) {
+            bestTimes();
         } else if(src == exit) {
+            exit();
         } else if(src == backgroundMusic) {
+            backgroundMusic();
         } else if(src == soundEffects) {
+            soundEffects();
         } else if(src == color) {
+            color();
         } else if(src == restart) {
+            restart();
         } else if(src == next) {
+            next();
         } else if(src == previous) {
+            previous();
         } else if(src == goTo) {
+            goTo();
         } else if(src == contents) {
+            contents();
         } else if(src == howToPlay) {
+            howToPlay();
         } else if(src == commands) {
+            commands();
         } else if(src == howToUseHelp) {
+            howToUseHelp();
         } else if(src == aboutChipsChallenge) {
+            aboutChipsChallenge();
         }
+    }
+
+    private void newGame() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void pause() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void bestTimes() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void exit() {
+        System.exit(0);
+    }
+
+    private void backgroundMusic() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void soundEffects() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void color() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void restart() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void next() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void previous() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void goTo() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void contents() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void howToPlay() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void commands() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void howToUseHelp() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void aboutChipsChallenge() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void setPreviousPossible(Boolean p) {
+        previous.setEnabled(p);
     }
 }

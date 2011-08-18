@@ -16,6 +16,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class SoundPlayer {
     private Map<sounds, Clip> clips = new HashMap<sounds, Clip>();
     private long canPlayNextTime = 0;
+    private boolean soundOn = true;
 
     public static enum sounds {
         TAKEITEM, BOMB, CHIPHUM, DOOR, EXIT, TELEPORT, WATER, DIE, TAKECHIP,
@@ -76,18 +77,24 @@ public class SoundPlayer {
     }
 
     public void playSound(sounds s) {
-        Clip c = clips.get(s);
-        if (c != null) {
-            long time = System.currentTimeMillis();
-            if (time > canPlayNextTime || (s != sounds.BOMB && s != sounds.BUTTON) && s != sounds.CHIPHUM) {
-                if (c.isRunning()) {
-                    c.stop();
+        if (soundOn) {
+            Clip c = clips.get(s);
+            if (c != null) {
+                long time = System.currentTimeMillis();
+                if (time > canPlayNextTime || (s != sounds.BOMB && s != sounds.BUTTON) && s != sounds.CHIPHUM) {
+                    if (c.isRunning()) {
+                        c.stop();
+                    }
+                    c.setFramePosition(0);
+                    c.start();
+                    canPlayNextTime = time + c.getMicrosecondLength();
                 }
-                c.setFramePosition(0);
-                c.start();
-                canPlayNextTime = time + c.getMicrosecondLength();
             }
         }
+    }
+
+    public void setSound(Boolean s) {
+        soundOn = s;
     }
 
 }

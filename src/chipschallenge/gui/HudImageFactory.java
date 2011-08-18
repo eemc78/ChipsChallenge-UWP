@@ -105,7 +105,7 @@ public class HudImageFactory {
     }
 
     public Image getIcon() {
-        return baseImage.getSubimage(547, 290, 32, 32);
+        return baseImage.getSubimage(547, 289, 32, 32);
     }
 
 }
