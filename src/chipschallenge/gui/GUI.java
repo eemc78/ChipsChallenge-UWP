@@ -2,11 +2,14 @@ package chipschallenge.gui;
 
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
+import chipschallenge.NextLevelListener;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Insets;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
 import java.awt.Point;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -19,7 +22,7 @@ import javax.imageio.ImageIO;
  *
  * @author patrik
  */
-public class GUI extends Frame {
+public class GUI extends Frame implements NextLevelListener {
 
     private Image mBackground;
     private PlayField mPlayField;
@@ -51,6 +54,8 @@ public class GUI extends Frame {
         add(mHud);
         setIconImage(HudImageFactory.getInstance().getIcon());
         setResizable(false);
+        Game.getInstance().addNextLevelListener(this);
+        setMenuBar(GUIMenu.getInstance());
         setVisible(true);
     }
 
@@ -118,4 +123,9 @@ public class GUI extends Frame {
     public boolean repaintIfNecessary(Point from) {
         return mPlayField.repaintIfNecessary(from);
     }
+
+    public void nextLevel(GameLevel level) {
+        this.setTitle("Chips's Challenge: " + level.getMapTitle());
+    }
+
 }

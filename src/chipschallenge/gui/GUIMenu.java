@@ -1,0 +1,130 @@
+
+package chipschallenge.gui;
+
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
+public class GUIMenu extends MenuBar implements ActionListener {
+
+    private Menu game;
+    private Menu options;
+    private Menu level;
+    private Menu help;
+    private MenuItem newGame;
+    private MenuItem pause;
+    private MenuItem bestTimes;
+    private MenuItem exit;
+    private MenuItem backgroundMusic;
+    private MenuItem soundEffects;
+    private MenuItem color;
+    private MenuItem restart;
+    private MenuItem next;
+    private MenuItem previous;
+    private MenuItem goTo;
+    private MenuItem contents;
+    private MenuItem howToPlay;
+    private MenuItem commands;
+    private MenuItem howToUseHelp;
+    private MenuItem aboutChipsChallenge;
+
+    private GUIMenu(){
+        // Game menu
+        game      = new Menu("Game");
+        newGame   = new MenuItem("New Game");
+        pause     = new MenuItem("Pause");
+        bestTimes = new MenuItem("Best Times");
+        exit      = new MenuItem("Exit");
+        newGame.addActionListener(this);
+        pause.addActionListener(this);
+        bestTimes.addActionListener(this);
+        exit.addActionListener(this);
+        game.add(newGame);
+        game.add(pause);
+        game.add(bestTimes);
+        game.addSeparator();
+        game.add(exit);
+        add(game);
+
+        // Options menu
+        options         = new Menu("Options");
+        backgroundMusic = new MenuItem("Background Music");
+        soundEffects    = new MenuItem("Sound Effects");
+        color           = new MenuItem("Color");
+        backgroundMusic.addActionListener(this);
+        soundEffects.addActionListener(this);
+        color.addActionListener(this);
+        options.add(backgroundMusic);
+        options.add(soundEffects);
+        options.add(color);
+        add(options);
+
+        // Level menu
+        level    = new Menu("Level");
+        restart  = new MenuItem("Restart");
+        next     = new MenuItem("Next");
+        previous = new MenuItem("Previous");
+        goTo     = new MenuItem("Go To");
+        restart.addActionListener(this);
+        next.addActionListener(this);
+        previous.addActionListener(this);
+        goTo.addActionListener(this);
+        level.add(restart);
+        level.add(next);
+        level.add(previous);
+        level.add(goTo);
+        add(level);
+
+
+        // Help menu
+        help                = new Menu("Help");
+        contents            = new MenuItem("Contents");
+        howToPlay           = new MenuItem("How to Play");
+        commands            = new MenuItem("Comands");
+        howToUseHelp        = new MenuItem("How to Use Help");
+        aboutChipsChallenge = new MenuItem("About Chip's Challenge...");
+        contents.addActionListener(this);
+        howToPlay.addActionListener(this);
+        commands.addActionListener(this);
+        howToUseHelp.addActionListener(this);
+        aboutChipsChallenge.addActionListener(this);
+        help.add(contents);
+        help.add(howToPlay);
+        help.add(commands);
+        help.add(howToUseHelp);
+        game.addSeparator();
+        help.add(aboutChipsChallenge);
+        add(help);
+    }
+
+    private static GUIMenu mInstance = null;
+    public static synchronized GUIMenu getInstance() {
+        if(mInstance == null)
+            mInstance = new GUIMenu();
+        return mInstance;
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        Object src = ae.getSource();
+        if(src == newGame) {
+        } else if(src == pause) {
+        } else if(src == bestTimes) {
+        } else if(src == exit) {
+        } else if(src == backgroundMusic) {
+        } else if(src == soundEffects) {
+        } else if(src == color) {
+        } else if(src == restart) {
+        } else if(src == next) {
+        } else if(src == previous) {
+        } else if(src == goTo) {
+        } else if(src == contents) {
+        } else if(src == howToPlay) {
+        } else if(src == commands) {
+        } else if(src == howToUseHelp) {
+        } else if(src == aboutChipsChallenge) {
+        }
+    }
+}
