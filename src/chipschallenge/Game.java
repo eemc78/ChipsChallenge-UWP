@@ -24,9 +24,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class Game {
 
-    public static final int MOVE_MS = 250;
-    public static final int SPEED_FRAC = 4;
-    public static final int TIMER_TICK = MOVE_MS / SPEED_FRAC;
+    public static final int TIMER_TICK = 100;
+    public static final int SPEED_FRAC = 2;
     private CopyOnWriteArrayList<Block> movingBlocks = new CopyOnWriteArrayList<Block>();
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
@@ -180,7 +179,7 @@ public class Game {
     }
 
     public void tick() throws BlockContainerFullException {
-        mTickCount++;
+        
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
         if (blocksToAdd != null) {
             for (Block b : blocksToAdd) {
@@ -198,10 +197,11 @@ public class Game {
             }
             blocksToAdd.clear();
         }
+        mTickCount++;
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
         for (Block b : forcedMovesNow.keySet()) {
-            if (b.isCreature() || b.isBlock()) {
+            if (b.isChip() || b.isCreature() || b.isBlock()) {
                 b.setForced(true);
                 Moves m = forcedMovesNow.get(b);
                 if (!mLevel.moveBlock(b, m, true)) {
@@ -213,6 +213,7 @@ public class Game {
         }
 
         for (Block b : movingBlocks) {
+            /*
             if (b.wasForced()) {
                 b.tick();
                 b.setForced(false);
@@ -228,9 +229,10 @@ public class Game {
             } else {
                 b.setForced(false);
                 b.tick();
-            }
-        }
-        Creatures.tick();
+            }*/
+            b.tick();
+        }       
+        Creatures.tick();       
 
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away

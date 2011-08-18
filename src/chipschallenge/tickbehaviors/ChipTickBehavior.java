@@ -34,20 +34,25 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
     private int chipTicks = 0;
 
     public void tick(Block caller) throws BlockContainerFullException {
-        synchronized (proposedMoves) {
-            if (!proposedMoves.isEmpty()) {
-                if (caller.isOnForceFloor()) {
-                    Game.getInstance().removeForcedMove(caller);
-                }
-                if (caller.isOnIce() && !Game.getInstance().getInventory().hasBoots(Boots.ICESKATES)) {
-                    //proposedMoves.poll(); // Ignore proposed move
-                } else if (!caller.move(proposedMoves.poll())) {
+        chipTicks = (chipTicks + 1) % Game.SPEED_FRAC;
+        if (chipTicks == 0 || caller.wasForced()) {
+            synchronized (proposedMoves) {
+                if (!proposedMoves.isEmpty()) {
                     if (caller.isOnForceFloor()) {
-                        Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
+                        Game.getInstance().removeForcedMove(caller);                        
                     }
-                    SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
+                    if (caller.isOnIce() && !Game.getInstance().getInventory().hasBoots(Boots.ICESKATES)) {
+                        proposedMoves.poll(); // Ignore proposed move
+                    } else if (!caller.move(proposedMoves.poll())) {
+                        if (caller.isOnForceFloor()) {//caller.setForced(false);
+                            Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
+                        }
+                        SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
+                    } else {
+                        caller.setForced(false);
+                    }
+                    mTicksBeforeTurn = 12;
                 }
-                mTicksBeforeTurn = 12;
             }
         }
 

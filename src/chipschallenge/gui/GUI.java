@@ -3,8 +3,6 @@ package chipschallenge.gui;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import chipschallenge.NextLevelListener;
-import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -12,17 +10,12 @@ import java.awt.Point;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author patrik
  */
 public class GUI extends Frame implements NextLevelListener {
-
-    private Image mBackground;
     private PlayField mPlayField;
     private Hud mHud;
     private GUIMenu mMenu;
@@ -36,14 +29,7 @@ public class GUI extends Frame implements NextLevelListener {
                 System.exit(0);
             }
         });
-        setSize(520, 400);
-        try {
-            mBackground = ImageIO.read(new File("background.bmp"));
-        } catch (IOException ex) {
-            msgDialog("Couldn't load background.bmp");
-            System.exit(-1);
-        }
-
+        setSize(520, 400);        
         setLayout(null);
         mPlayField = new PlayField(9, 9);
         mPlayField.setBounds(37, 77, 288, 288);
