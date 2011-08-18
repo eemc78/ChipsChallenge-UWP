@@ -65,6 +65,46 @@ public class BlockContainer {
         return null;
     }
 
+    private void push(Block b, int layer) throws BlockContainerFullException {
+        switch(layer) {
+            case 3:
+                if(visitorHigh == null) {
+                    visitorHigh = b;
+                } else {
+                    push(visitorHigh, 2);
+                    visitorHigh = b;
+                }
+                break;
+            case 2:
+                if(visitorLow == null) {
+                    visitorLow = b;
+                } else {
+                    push(visitorLow, 2);
+                    visitorLow = b;
+                }
+                break;
+            case 1:
+                if(upper == null) {
+                    upper = b;
+                } else {
+                    push(upper, 2);
+                    upper = b;
+                }
+                break;
+            case 0:
+                if(lower == null) {
+                    lower = b;
+                } else {
+                    throw new BlockContainerFullException();
+                }
+                break;
+        }
+    }
+
+    public void push(Block b) throws BlockContainerFullException {
+        push(b, 3);
+    }
+
     public void add(Block b) throws BlockContainerFullException {
         if(upper == null)
             upper = b;
@@ -74,6 +114,8 @@ public class BlockContainer {
             visitorLow = b;
         else if(visitorHigh == null)
             visitorHigh = b;
+        else
+            throw new BlockContainerFullException();
     }
 
     public void remove(Block b) {
@@ -88,7 +130,7 @@ public class BlockContainer {
     }
 
     public boolean standsOnMoreThanFloor(Block b) {
-        if((b.isChip() || b.isCreature()) &&
+        if((b.isChip() || b.isCreature() || b.isBlock()) &&
           !(b.isA(Block.Type.SWIMMINGCHIP) || b.isA(Block.Type.BURNEDCHIP))) {
             if(b == visitorHigh) {
                 if(visitorLow != null && !visitorLow.isA(Block.Type.FLOOR))

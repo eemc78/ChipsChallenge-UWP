@@ -58,6 +58,11 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
 
     @Override
     public void paint(Graphics g) {
+        update(g);
+    }
+
+    @Override
+    public void update(Graphics g) {
         if (backgroundNeedsRepaint) {
             g.drawImage(HudImageFactory.getInstance().getHudBackground(), 0, 0, null);
             backgroundNeedsRepaint = false;
@@ -138,11 +143,6 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
             g.drawImage(im, x+3*32, y, null);
         }
         g.dispose();
-    }
-
-    @Override
-    public void update(Graphics g) {
-        paint(g);
     }
 
     public void setChipsLeft(int chipsLeft) {

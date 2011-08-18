@@ -321,7 +321,7 @@ public class BlockImageFactory {
         }
 
         if (overlay) {
-            if (x > 4) {
+            if (x >= 4) {
                 x += 3;
                 maskX = x + 3;
             }
@@ -358,10 +358,14 @@ public class BlockImageFactory {
 
         // TODO: Handle masks if overlay == true
         BufferedImage img = tileset.getSubimage(x * 32, y * 32, 32, 32);
-        if(overlay) {
-            BufferedImage mask = tileset.getSubimage(maskX * 32, y * 32, 32, 32);
-            mask = (BufferedImage) TransformGrayToTransparency(mask);
-            img = ApplyTransparency(img, mask);
+        if (overlay) {
+            try {
+                BufferedImage mask = tileset.getSubimage(maskX * 32, y * 32, 32, 32);
+                mask = (BufferedImage) TransformGrayToTransparency(mask);
+                img = ApplyTransparency(img, mask);
+            } catch (Exception ex) {
+                System.out.println(type + " wasn't drawn");
+            }
         }
 
         Map<Type, Map<Moves, Image>> images;

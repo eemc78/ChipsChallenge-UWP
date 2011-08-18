@@ -142,7 +142,7 @@ public class GameLevel implements ChipListener {
                 //Actual movement
                 mBoard[from.x][from.y].remove(b);
                 blocks.put(b, to);
-                mBoard[to.x][to.y].add(b);
+                mBoard[to.x][to.y].push(b);
 
                 //To reactions
                 mBoard[to.x][to.y].moveTo(b);

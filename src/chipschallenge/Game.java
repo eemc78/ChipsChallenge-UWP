@@ -341,7 +341,6 @@ public class Game {
 
     public void addBlockDelay(Block b, Point p, int ticks) {
         long addWhen = mTickCount + ticks;
-        System.out.println(addWhen);
         List<Block> blocks = addBlockAtTick.get(addWhen);
         if(blocks == null) {
             blocks = new ArrayList<Block>();
