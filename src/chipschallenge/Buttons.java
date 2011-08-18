@@ -1,6 +1,5 @@
 package chipschallenge;
 
-import chipschallenge.gui.HintListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -114,5 +113,4 @@ public class Buttons {
             }
         }
     }
-
 }

@@ -18,6 +18,10 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
     private int levelCount = -1;
 
+    private Map<Integer,Integer> levelOffsets = new HashMap<Integer,Integer>();
+    private Map<String,Integer> passwordToLevel = new HashMap<String,Integer>();
+    private Map<Integer,String> levelToPassword = new HashMap<Integer,String>();
+
     private Block getBlock(int objCode) {
         MicrosoftBlockFactory f = MicrosoftBlockFactory.getInstance();
         switch(objCode) {
@@ -136,35 +140,45 @@ public class MicrosoftLevelFactory extends LevelFactory {
         }
         return null;
     }
-
     private RandomAccessFile chipDat = null;
-    
+
+    public int readUnsignedDWord() throws IOException {
+        return ByteSwapper.swap(chipDat.readInt()) & 0xFFFFFFFF;
+    }
+
+    public int readUnsignedWord() throws IOException {
+        return ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+    }
+
+    public int readUnsignedByte() throws IOException {
+        return chipDat.readByte() & 0xFF;
+    }
+
     private MicrosoftLevelFactory() {
         try {
-            chipDat = new RandomAccessFile("CHIPS.DAT","r");
-            int magicNumber = ByteSwapper.swap(chipDat.readInt()) & 0xFFFFFFFF;
-            if(magicNumber != 0x0002AAAC)
+            chipDat = new RandomAccessFile("CHIPS.DAT", "r");
+            int magicNumber = readUnsignedDWord();
+            if (magicNumber != 0x0002AAAC) {
                 throw new Exception("Couldn't parse file");
-            short numLevels = ByteSwapper.swap(chipDat.readShort());
-            levelCount = (int)numLevels;
+            }
+            levelCount = readUnsignedWord();
+            levelOffsets.put(1, 6);
             //chipDat.close();
         } catch (Exception ex) {
             GUI.getInstance().msgDialog(ex.getMessage());
         } finally {
-            
         }
     }
-    
+
     @Override
-    protected void finalize() throws Throwable {   
+    protected void finalize() throws Throwable {
         try {
             chipDat.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
         } finally {
             super.finalize();
         }
     }
-
     private static MicrosoftLevelFactory mInstance = null;
 
     public static synchronized MicrosoftLevelFactory getInstance() {
@@ -173,117 +187,116 @@ public class MicrosoftLevelFactory extends LevelFactory {
         }
         return mInstance;
     }
-
-    // TODO: Make more efficient by reading everything once instef of doing seek(offset);
+    
     public GameLevel getLevel(int n) {
+        if (n < 1 || n > levelCount)
+                throw new IllegalArgumentException("Level outside of range");
         int width = 32;
         int height = 32;
         GameLevel ret = null;
         try {
-            chipDat.seek(6);
-            if (n > levelCount) {
-                throw new IllegalArgumentException();
-            }
-            int level = 1;
-
-            // Skip over the levels we don't want
-            while(level < n) {
-                int numBytesLevel = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                chipDat.skipBytes(numBytesLevel);
-                level++;
-            }
+            int offset = getLevelOffset(n);
+            chipDat.seek(offset);
+         
             // The level we want
-            int numBytesLevel  = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int levelNumber    = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int numSeconds     = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int numChipsNeeded = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            int mapDetail      = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            ret = new GameLevel(32,32, numChipsNeeded, numSeconds, levelNumber);
-            
-            int numberOfBytesLayer1= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            // Read layer 1
-            readLayer(ret, numberOfBytesLayer1, 1);
-            int numberOfBytesLayer2= ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-            // Read layer 2
-            readLayer(ret, numberOfBytesLayer2, 0);
+            int numBytesLevel  = readUnsignedWord();
 
-            int numBytesOptional = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
+            // So we don't have to skip over the same level again later
+            levelOffsets.put(n+1, offset+numBytesLevel+2);
+
+            int levelNumber    = readUnsignedWord();
+            int numSeconds     = readUnsignedWord();
+            int numChipsNeeded = readUnsignedWord();
+            int mapDetail      = readUnsignedWord();
+
+            ret = new GameLevel(32, 32, numChipsNeeded, numSeconds, levelNumber);
+
+            int numberOfBytesLayer1 = readUnsignedWord();
+            readLayer(ret, numberOfBytesLayer1, 1); // Layer 1, upper
+
+            int numberOfBytesLayer2 = readUnsignedWord();
+            readLayer(ret, numberOfBytesLayer2, 0); // Layer 2, lower
+
+            int numBytesOptional = readUnsignedWord();
             int numOptionalBytesRead = 0;
-            while(numOptionalBytesRead < numBytesOptional) {
-                int fieldType   = chipDat.readByte() & 0xFF;
-                int sizeOfField = chipDat.readByte() & 0xFF;
+
+            while (numOptionalBytesRead < numBytesOptional) {
+
+                int fieldType   = readUnsignedByte();
+                int sizeOfField = readUnsignedByte();
                 numOptionalBytesRead += 2;
-                switch(fieldType) {
-                    case 3: // Map title
-                        byte[] ASCIITitle = new byte[sizeOfField-1];
+                
+                switch (fieldType) {
+
+                    case 0x03: // Map title
+                        byte[] ASCIITitle = new byte[sizeOfField - 1];
                         chipDat.readFully(ASCIITitle);
                         String title = new String(ASCIITitle);
                         ret.setMapTitle(title);
                         chipDat.skipBytes(1);
                         break;
-                    case 4: // Brown buttons to traps
-                        for(int i = 0; i < sizeOfField/10; i++) {
-                            int buttonX = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            int buttonY = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            int trapX   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            int trapY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            Block button = null;
-                            Block trap = null;
+
+                    case 0x04: // Brown buttons to traps
+                        for (int i = 0; i < sizeOfField / 10; i++) {
+                            int buttonX = readUnsignedWord();
+                            int buttonY = readUnsignedWord();
+                            int trapX   = readUnsignedWord();
+                            int trapY   = readUnsignedWord();
+
                             // Locate button
                             BlockContainer bc = ret.getBlockContainer(buttonX, buttonY);
-                            button = bc.find(Type.BROWNBUTTON);
+                            Block button = bc.find(Type.BROWNBUTTON);
 
                             // Locate trap
                             bc = ret.getBlockContainer(trapX, trapY);
-                            trap = bc.find(Type.TRAP);
+                            Block trap = bc.find(Type.TRAP);
 
-                            if(button != null && trap != null) // Perhaps throw an exception otherwise
-                                Buttons.addBrownButtonListener(button, trap);                          
+                            if (button != null && trap != null) // Perhaps throw an exception otherwise                            
+                                Buttons.addBrownButtonListener(button, trap);                           
                             chipDat.skipBytes(2);
                         }
                         break;
-                    case 5:
-                        for(int i = 0; i < sizeOfField/8; i++) {
-                            int buttonX = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            int buttonY = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            int clonerX   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            int clonerY   = ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-                            Block button = null;
-                            Block cloner = null;
-                            BlockContainer bc;
+
+                    case 0x05:
+                        for (int i = 0; i < sizeOfField / 8; i++) {
+                            int buttonX = readUnsignedWord();
+                            int buttonY = readUnsignedWord();
+                            int clonerX = readUnsignedWord();
+                            int clonerY = readUnsignedWord();
 
                             // Locate button
-                            bc = ret.getBlockContainer(buttonX, buttonY);
-                            button = bc.find(Type.REDBUTTON);
+                            BlockContainer bc = ret.getBlockContainer(buttonX, buttonY);
+                            Block button = bc.find(Type.REDBUTTON);
 
                             // Locate cloner
                             bc = ret.getBlockContainer(clonerX, clonerY);
-                            cloner = bc.find(Type.CLONEMACHINE);
-                            if(button != null && cloner != null) // Perhaps throw an exception otherwise
+                            Block cloner = bc.find(Type.CLONEMACHINE);
+
+                            if (button != null && cloner != null) // Perhaps throw an exception otherwise
                                 Buttons.addRedButtonListener(button, cloner);
                         }
                         break;
-                    case 6: // Password
-                        byte[] ASCIIPassword = new byte[sizeOfField-1];
-                        chipDat.readFully(ASCIIPassword);
-                        for(int i = 0; i < ASCIIPassword.length; i++)
-                            ASCIIPassword[i] ^= 0x99;
-                        String password = new String(ASCIIPassword);
-                        System.out.println("Password: " + password);
-                        // TODO: Set password to ret
+
+                    case 0x06: // Password
+                        String password = readPassword(sizeOfField);
+                        ret.setPassword(password);
+                        passwordToLevel.put(password, n);
+                        levelToPassword.put(n, password);
                         chipDat.skipBytes(1);
                         break;
-                    case 7: // Hint
-                        byte[] ASCIIHint = new byte[sizeOfField-1];
+
+                    case 0x07: // Hint
+                        byte[] ASCIIHint = new byte[sizeOfField - 1];
                         chipDat.readFully(ASCIIHint);
                         String hint = new String(ASCIIHint);
                         ret.setHint(hint);
                         chipDat.skipBytes(1);
                         break;
-                    case 10: // Movement
-                        for(int i = 0; i < sizeOfField/2; i++) {
-                            int creatureX = chipDat.readByte() & 0xFF;
-                            int creatureY = chipDat.readByte() & 0xFF;
+
+                    case 0x0A: // Movement
+                        for (int i = 0; i < sizeOfField / 2; i++) {
+                            int creatureX = readUnsignedByte();
+                            int creatureY = readUnsignedByte();
                             Block creature = null;
                             BlockContainer bc;
                             Block upper;
@@ -291,63 +304,142 @@ public class MicrosoftLevelFactory extends LevelFactory {
                             // Locate creature
                             bc = ret.getBlockContainer(creatureX, creatureY);
                             upper = bc.getUpper();
-                            if(upper.isCreature())
+                            if (upper.isCreature()) 
                                 creature = upper;
-                            if(creature != null) // Perhaps throw an exception otherwise
+
+                            if (creature != null) // Perhaps throw an exception otherwise
                                 Creatures.addCreature(creature);
                         }
                         break;
                     default:
-                        chipDat.skipBytes(sizeOfField);                        
+                        chipDat.skipBytes(sizeOfField);
                 }
                 numOptionalBytesRead += sizeOfField;
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             System.out.println("While loading level: " + ex.getMessage());
         } finally {
             return ret;
         }
     }
 
+    private String readPassword(int length) throws IOException {
+        byte[] ASCIIPassword = new byte[length - 1];
+        chipDat.readFully(ASCIIPassword);
+        for (int i = 0; i < ASCIIPassword.length; i++)
+            ASCIIPassword[i] ^= 0x99;
+        String password = new String(ASCIIPassword);
+        return password;
+    }
+
     public void readLayer(GameLevel ret, int numberOfBytes, int layer) throws IOException, BlockContainerFullException {
         int width = ret.getWidth();
-        int height = ret.getHeight();
-
-        // Number of bytes for this layer data        
+        int height = ret.getHeight();    
         int bytesRead = 0;
         int objectsPlaced = 0;
-        while(bytesRead < numberOfBytes) {
+        while (bytesRead < numberOfBytes) {
             int read = chipDat.readByte() & 0xFF;
             bytesRead++;
-            if(read >= 0x00 && read <= 0x6F) {
+            if (read >= 0x00 && read <= 0x6F) {
                 ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read), layer);
                 objectsPlaced++;
-            } else if(read == 0xFF) {
-                int numRepeats = chipDat.readByte() & 0xFF;
-                int data = chipDat.readByte() & 0xFF;
+            } else if (read == 0xFF) {
+                int numRepeats = readUnsignedByte();
+                int data       = readUnsignedByte();
                 bytesRead += 2;
-                while(numRepeats-- > 0) {
+                while (numRepeats-- > 0) {
                     ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(data), layer);
                     objectsPlaced++;
                 }
             } else {
-                System.out.println("Object I couldn't parse");
+                System.out.println("Object I couldn't parse: " + read);
             }
         }
     }
-
 
     @Override
     public int getLastLevelNumber() {
         return levelCount;
     }
 
-    @Override
-    protected int getLevelNumberByPassword(String pass) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getLevelOffset(int n) throws IOException {
+        Integer offset = levelOffsets.get(n);
+        if(offset != null)
+            return offset;
+        int level = n-1;
+        while(level >= 1) {
+            offset = levelOffsets.get(level);
+            if(offset != null)
+                break;
+            level--;
+        }
+        chipDat.seek(offset);
+        while (level < n) {
+            int numBytesInLevel = readUnsignedWord();
+            offset = offset+numBytesInLevel+2;
+            levelOffsets.put(level+1, offset);
+            level++;
+            if(level == n)
+                break;
+            chipDat.skipBytes(numBytesInLevel);            
+        }
+        return offset;
     }
 
+    public String getLevelPassword(int n) throws IOException {
+        String pass = levelToPassword.get(n);
+        if(pass != null)
+            return pass;
+        chipDat.seek(getLevelOffset(n));
 
+        chipDat.skipBytes(10);
+        int numBytesFirstLayer = readUnsignedWord();
+        chipDat.skipBytes(numBytesFirstLayer);
+        int numBytesSecondLayer = readUnsignedWord();
+        chipDat.skipBytes(numBytesSecondLayer);
+        int numBytesOptional = readUnsignedWord();
+        int readOptional = 0;
+        while(readOptional < numBytesOptional) {
+            int fieldType = readUnsignedByte();
+            int fieldLength = readUnsignedByte();
+            readOptional+=2;
+            if(fieldType == 0x06) {
+                String password = readPassword(fieldLength);
+                levelToPassword.put(n, password);
+                passwordToLevel.put(password, n);
+                return password;
+            } else {
+                chipDat.skipBytes(fieldLength);
+            }
+            readOptional+=fieldLength;
+        }
+        return null;
+    }
 
+    @Override
+    protected int getLevelNumberByPassword(String pass) {
+        try {
+            Integer level = null;
 
+            // Check if password has already been seen
+            level = passwordToLevel.get(pass);
+            if (level != null) {
+                return level;
+            }
+
+            // Password has not yet been seen, check all levels we have not yet seen
+            for (int i = 1; i <= levelCount; i++) {
+                String password = getLevelPassword(i);
+                if (password != null && password.equals(pass)) {
+                    System.out.println("Password for level " + i + " is " + password);
+                    return i;
+                }
+            }
+        } catch (IOException ex) {
+            System.out.println("While getting level by password: " + pass);
+        }
+        return -1;
+    }
+   
 }

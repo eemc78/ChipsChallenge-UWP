@@ -19,6 +19,7 @@ public class GameLevel implements ChipListener {
     private int levelNumber;
     private int deaths = 0;
     private String mapTitle = "Untitled";
+    private String password = "ABCD";
     private String hint = "No hint";
 
     public String getHint() {
@@ -42,19 +43,19 @@ public class GameLevel implements ChipListener {
         this(width, height);
         this.numChipsNeeded = numChipsNeeded;
         this.numSeconds = numSeconds;
-        this.levelNumber = levelNumber;       
+        this.levelNumber = levelNumber;
     }
 
     public void addBlock(int x, int y, Block b, int layer) throws BlockContainerFullException {
         BlockContainer bc = getBlockContainer(x, y);
         if (bc != null) {
-            if(b.isChip()) {
+            if (b.isChip()) {
                 chip = b;
             }
-            if(b.isA(Block.Type.TELEPORT)) {
+            if (b.isA(Block.Type.TELEPORT)) {
                 Teleports.addTeleport(x, y);
             }
-            switch(layer) {
+            switch (layer) {
                 case 0:
                     bc.setLower(b);
                     break;
@@ -109,7 +110,7 @@ public class GameLevel implements ChipListener {
     // Should be used for true teleportation ONLY
     public boolean teleport(Block b, Point to) throws BlockContainerFullException {
         Point from = blocks.get(b);
-        if(mBoard[to.x][to.y].canMoveTo(b)) {
+        if (mBoard[to.x][to.y].canMoveTo(b)) {
             mBoard[from.x][from.y].remove(b);
             blocks.put(b, to);
             mBoard[to.x][to.y].add(b);
@@ -135,10 +136,10 @@ public class GameLevel implements ChipListener {
         if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
             // Do not change facing if sliding            
             if (mBoard[to.x][to.y].canMoveTo(b)) {
-               
+
                 //From reactions
                 mBoard[from.x][from.y].moveFrom(b);
-                              
+
                 //Actual movement
                 mBoard[from.x][from.y].remove(b);
                 blocks.put(b, to);
@@ -146,13 +147,13 @@ public class GameLevel implements ChipListener {
 
                 //To reactions
                 mBoard[to.x][to.y].moveTo(b);
-                                                                                    
+
                 return true;
             } else {
                 return false;
             }
         } else {
-            if(!b.isChip()) {
+            if (!b.isChip()) {
                 b.setFacing(facingBefore);
             }
             return false;
@@ -233,12 +234,20 @@ public class GameLevel implements ChipListener {
         return numSeconds;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setChipsLeft(int chipsLeft) {
         numChipsNeeded = chipsLeft;
     }
 
     public void chipTaken() {
-        numChipsNeeded = numChipsNeeded > 0 ? numChipsNeeded-1 : 0;
+        numChipsNeeded = numChipsNeeded > 0 ? numChipsNeeded - 1 : 0;
     }
 
     public void setDeaths(int deaths) {

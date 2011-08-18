@@ -39,13 +39,15 @@ public class Inventory {
     }
 
     public void takeKey(Key type) {
-        if(mKeys.add(type))
-           update();
+        if (mKeys.add(type)) {
+            update();
+        }
     }
 
     public void takeBoots(Boots type) {
-        if(mBoots.add(type))
+        if (mBoots.add(type)) {
             update();
+        }
     }
 
     public boolean useKey(Key type) {
@@ -53,8 +55,9 @@ public class Inventory {
             return mKeys.contains(type);
         }
         boolean ret;
-        if(ret = mKeys.remove(type))
+        if (ret = mKeys.remove(type)) {
             update();
+        }
         return ret;
     }
 
@@ -85,8 +88,8 @@ public class Inventory {
     }
 
     public void update() {
-        for(InventoryListener l : listeners)
+        for (InventoryListener l : listeners) {
             l.inventoryChange(this);
+        }
     }
-
 }

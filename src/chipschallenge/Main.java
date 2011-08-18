@@ -14,10 +14,10 @@ public class Main {
      */
     public static void main(String[] args) {
         int startLevel = 1;
-        if(args.length > 0) {
+        if (args.length > 0) {
             try {
                 startLevel = Integer.parseInt(args[0]);
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 startLevel = 1;
             }
         }
@@ -26,7 +26,6 @@ public class Main {
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());
-        g.nextLevel(startLevel);
+        g.nextLevel(9);
     }
-
 }

@@ -31,6 +31,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
     }
     private final Queue<Moves> proposedMoves = new LinkedList<Moves>();
     private int mTicksBeforeTurn;
+    private int chipTicks = 0;
 
     public void tick(Block caller) throws BlockContainerFullException {
         synchronized (proposedMoves) {
@@ -41,13 +42,15 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
                 if (caller.isOnIce() && !Game.getInstance().getInventory().hasBoots(Boots.ICESKATES)) {
                     //proposedMoves.poll(); // Ignore proposed move
                 } else if (!caller.move(proposedMoves.poll())) {
-                    if(caller.isOnForceFloor())
+                    if (caller.isOnForceFloor()) {
                         Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
+                    }
                     SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
-                } 
+                }
                 mTicksBeforeTurn = 12;
             }
         }
+
         if (!caller.isOnIce() && mTicksBeforeTurn > 0) {
             mTicksBeforeTurn--;
             if (mTicksBeforeTurn == 0) {

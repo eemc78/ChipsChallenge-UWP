@@ -25,7 +25,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Game {
 
     public static final int MOVE_MS = 250;
-    public static final int SPEED_FRAC = 3;
+    public static final int SPEED_FRAC = 4;
     public static final int TIMER_TICK = MOVE_MS / SPEED_FRAC;
     private CopyOnWriteArrayList<Block> movingBlocks = new CopyOnWriteArrayList<Block>();
     private static Game mGame = null;
@@ -86,7 +86,7 @@ public class Game {
         clearStuff();
         mLevelNumber = n;
         mLevel = mLevelFactory.getLevel(mLevelNumber);
-        for(NextLevelListener l : nextLevelListeners) {
+        for (NextLevelListener l : nextLevelListeners) {
             l.nextLevel(mLevel);
         }
         start();
@@ -144,7 +144,7 @@ public class Game {
                     for (TimeListener l : timeListeners) {
                         l.timeLeft(counter);
                     }
-                    if(counter >= 0 && counter <= 10) {
+                    if (counter >= 0 && counter <= 10) {
                         SoundPlayer.getInstance().playSound(sounds.TICK);
                     }
                     if (counter == 0) {
@@ -174,12 +174,12 @@ public class Game {
 
     public void firstTick() throws BlockContainerFullException {
         mTickCount++;
-        for(Block b : Creatures.getCreatures()) {
+        for (Block b : Creatures.getCreatures()) {
             mLevel.getBlockContainer(b).moveTo(b);
         }
     }
 
-    public void tick() throws BlockContainerFullException {        
+    public void tick() throws BlockContainerFullException {
         mTickCount++;
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
         if (blocksToAdd != null) {
@@ -200,8 +200,8 @@ public class Game {
         }
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
-        for(Block b : forcedMovesNow.keySet()) {
-            if(b.isCreature() || b.isBlock()) {
+        for (Block b : forcedMovesNow.keySet()) {
+            if (b.isCreature() || b.isBlock()) {
                 b.setForced(true);
                 Moves m = forcedMovesNow.get(b);
                 if (!mLevel.moveBlock(b, m, true)) {
@@ -214,24 +214,24 @@ public class Game {
 
         for (Block b : movingBlocks) {
             if (b.wasForced()) {
-                    b.tick();
-                    b.setForced(false);
+                b.tick();
+                b.setForced(false);
             }
             if (forcedMovesNow.containsKey(b)) {
-                    b.setForced(true);
-                    Moves m = forcedMovesNow.get(b);
-                    if (!mLevel.moveBlock(b, m, true)) {
-                        // Bounce
-                        b.setFacing(Move.reverse(b.getFacing()));
-                        mLevel.getBlockContainer(b).moveTo(b);
-                    }
+                b.setForced(true);
+                Moves m = forcedMovesNow.get(b);
+                if (!mLevel.moveBlock(b, m, true)) {
+                    // Bounce
+                    b.setFacing(Move.reverse(b.getFacing()));
+                    mLevel.getBlockContainer(b).moveTo(b);
+                }
             } else {
                 b.setForced(false);
                 b.tick();
             }
-        } 
-        Creatures.tick();        
-        
+        }
+        Creatures.tick();
+
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away
         if (mLastTickDrawn != mTickCount) {
@@ -242,10 +242,12 @@ public class Game {
             }
         }
         movesToCheck.clear();
-        if(dead)
+        if (dead) {
             restart();
-        if(levelComplete)
+        }
+        if (levelComplete) {
             levelComplete();
+        }
     }
 
     public void die(String msg, sounds s) {
@@ -303,13 +305,13 @@ public class Game {
     }
 
     public void showHint() {
-        for(HintListener l: hintListeners) {
+        for (HintListener l : hintListeners) {
             l.showHint(mLevel.getHint());
         }
     }
 
     public void hideHint() {
-        for(HintListener l: hintListeners) {
+        for (HintListener l : hintListeners) {
             l.hideHint();
         }
     }
@@ -341,7 +343,7 @@ public class Game {
     public void addBlockDelay(Block b, Point p, int ticks) {
         long addWhen = mTickCount + ticks;
         List<Block> blocks = addBlockAtTick.get(addWhen);
-        if(blocks == null) {
+        if (blocks == null) {
             blocks = new ArrayList<Block>();
             addBlockAtTick.put(addWhen, blocks);
         }
@@ -351,9 +353,8 @@ public class Game {
 
     public void takeChip() {
         mLevel.chipTaken();
-        for(ChipListener l : chipListeners) {
+        for (ChipListener l : chipListeners) {
             l.chipTaken();
         }
     }
-
 }

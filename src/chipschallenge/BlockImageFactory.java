@@ -48,10 +48,11 @@ public class BlockImageFactory {
         Map<Type, Map<Moves, Image>> images;
         Map<Moves, Image> moveImages;
 
-        if(overlay)
+        if (overlay) {
             images = loadedImagesOverlay;
-        else
+        } else {
             images = loadedImages;
+        }
 
         moveImages = images.get(type);
         if (moveImages == null) {
@@ -368,10 +369,11 @@ public class BlockImageFactory {
         }
 
         Map<Type, Map<Moves, Image>> images;
-        if(overlay)
+        if (overlay) {
             images = loadedImagesOverlay;
-        else
+        } else {
             images = loadedImages;
+        }
 
         Map<Moves, Image> movesMap = images.get(type);
         if (movesMap == null) {
@@ -386,8 +388,9 @@ public class BlockImageFactory {
     }
 
     private BufferedImage imageToBufferedImage(Image image) {
-        if(image instanceof BufferedImage)
-            return (BufferedImage)image;
+        if (image instanceof BufferedImage) {
+            return (BufferedImage) image;
+        }
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
         g2.drawImage(image, 0, 0, null);
@@ -423,14 +426,17 @@ public class BlockImageFactory {
     }
 
     public Image getOverlayed(Image over, Image under) {
-        if(over == null)
+        if (over == null) {
             return under;
-        if(under == null)
+        }
+        if (under == null) {
             return over;
+        }
         Image im = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
         Graphics g = im.getGraphics();
-        if(under != null)
+        if (under != null) {
             g.drawImage(under, 0, 0, null);
+        }
         g.drawImage(over, 0, 0, null);
         return im;
     }
