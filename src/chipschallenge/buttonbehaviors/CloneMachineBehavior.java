@@ -42,7 +42,7 @@ public class CloneMachineBehavior implements ButtonBehavior {
                         Point p = b.getPoint();
                         //Move.updatePoint(p, b.getFacing());
                         if (clone.isCreature() && !(clone.isA(Type.TEETH) || clone.isA(Type.BLOB) || clone.isA(Type.FIREBALL))) {
-                            g.addBlockDelay(clone, p, 5);
+                            g.addBlockDelay(clone, p, 3);
                         } else {
                             gl.addBlock(p.x, p.y, clone, 2);
                             gl.moveBlock(clone, clone.getFacing(), true);
