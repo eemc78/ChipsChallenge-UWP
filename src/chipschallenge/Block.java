@@ -92,15 +92,19 @@ public class Block {
     }
 
     public boolean isOnIce() {
-        if (!isChip() && !isBlock() && !isCreature())
-            return false;
+        //if (!isChip() && !isBlock() && !isCreature())
+            //return false;
         return Game.getInstance().getLevel().getBlockContainer(this).getLower().isIce();
     }
 
     public boolean isOnForceFloor() {
-        if (!isChip() && !isBlock() && !isCreature()) 
-            return false;
+        //if (!isChip() && !isBlock() && !isCreature())
+            //return false;
         return Game.getInstance().getLevel().getBlockContainer(this).getLower().isForceFloor();
+    }
+
+    public boolean isOnTrap() {
+        return Game.getInstance().getLevel().getBlockContainer(this).find(Type.TRAP) != null;
     }
 
     public boolean isOnCloner() {

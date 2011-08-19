@@ -212,7 +212,7 @@ public class MicrosoftBlockFactory extends BlockFactory {
                 Buttons.addGreenButtonsListener(ret);
                 break;
             case TRAP:
-                ret = new Block(type, facing, nullTick, cannotMove, canMove, TrapBehavior.getInstance());
+                ret = new Block(type, facing, nullTick, cannotMove, TrapTo.getInstance(), TrapBehavior.getInstance());
                 break;
             case WALKER:
                 ret = new Block(type, facing, WalkerTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);

@@ -21,7 +21,10 @@ public class ChipTo extends BlockReaction {
     // All moving things kill chip
     public void react(Block moving, Block standing) {
         if (!moving.isChip()) {
-            die("Ooops! Look out for creatures!");
+            if(moving.isBlock())
+                die("Ooops! Watch out for moving blocks!");
+            else
+                die("Ooops! Look out for creatures!");
         }
     }
 

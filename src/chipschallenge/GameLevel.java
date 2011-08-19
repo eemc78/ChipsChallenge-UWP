@@ -194,7 +194,7 @@ public class GameLevel implements ChipListener {
         StringBuilder sb = new StringBuilder();
         switch (deaths) {
             case 0:
-                sb.append("Yowser! First try!");
+                sb.append("Yowzer! First try!");
                 break;
             case 1:
             case 2:
