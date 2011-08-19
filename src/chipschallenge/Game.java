@@ -180,7 +180,9 @@ public class Game extends KeyAdapter {
     public void firstTick() throws BlockContainerFullException {
         mTickCount++;
         for (Block b : Creatures.getCreatures()) {
-            mLevel.getBlockContainer(b).moveTo(b);
+            if(b.isOnIce()) {
+                mLevel.getBlockContainer(b).moveTo(b);
+            }
         }
     }
 
