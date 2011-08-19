@@ -81,7 +81,7 @@ public class SoundPlayer {
             Clip c = clips.get(s);
             if (c != null) {
                 long time = System.currentTimeMillis();
-                if (time > canPlayNextTime || (s != sounds.BOMB && s != sounds.BUTTON) && s != sounds.CHIPHUM) {
+                if (time > canPlayNextTime || (s != sounds.BOMB && s != sounds.BUTTON && s != sounds.CHIPHUM)) {
                     if (c.isRunning()) {
                         c.stop();
                     }

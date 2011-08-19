@@ -1,6 +1,7 @@
 
 package chipschallenge.gui;
 
+import chipschallenge.Options;
 import java.awt.CheckboxMenuItem;
 import java.awt.Font;
 import java.awt.Menu;
@@ -8,8 +9,10 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-public class GUIMenu extends MenuBar implements ActionListener {
+public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
 
     private Menu game;
     private Menu options;
@@ -19,9 +22,9 @@ public class GUIMenu extends MenuBar implements ActionListener {
     private MenuItem pause;
     private MenuItem bestTimes;
     private MenuItem exit;
-    private MenuItem backgroundMusic;
-    private MenuItem soundEffects;
-    private MenuItem color;
+    private CheckboxMenuItem backgroundMusic;
+    private CheckboxMenuItem soundEffects;
+    private CheckboxMenuItem color;
     private MenuItem restart;
     private MenuItem next;
     private MenuItem previous;
@@ -58,9 +61,13 @@ public class GUIMenu extends MenuBar implements ActionListener {
         backgroundMusic = new CheckboxMenuItem("Background Music");
         soundEffects    = new CheckboxMenuItem("Sound Effects");
         color           = new CheckboxMenuItem("Color");
-        backgroundMusic.addActionListener(this);
-        soundEffects.addActionListener(this);
-        color.addActionListener(this);
+        Options opts = Options.getInstance();
+        backgroundMusic.setState(opts.isBackgroundMusic());
+        soundEffects.setState(opts.isSoundEffects());
+        color.setState(opts.isColor());
+        backgroundMusic.addItemListener(this);
+        soundEffects.addItemListener(this);
+        color.addItemListener(this);
         options.add(backgroundMusic);
         options.add(soundEffects);
         options.add(color);
@@ -121,12 +128,6 @@ public class GUIMenu extends MenuBar implements ActionListener {
             bestTimes();
         } else if(src == exit) {
             exit();
-        } else if(src == backgroundMusic) {
-            backgroundMusic();
-        } else if(src == soundEffects) {
-            soundEffects();
-        } else if(src == color) {
-            color();
         } else if(src == restart) {
             restart();
         } else if(src == next) {
@@ -214,5 +215,18 @@ public class GUIMenu extends MenuBar implements ActionListener {
 
     public void setPreviousPossible(Boolean p) {
         previous.setEnabled(p);
+    }
+
+    public void itemStateChanged(ItemEvent ie) {
+        Object src = ie.getItem();
+        boolean state = ie.getStateChange() == ItemEvent.SELECTED;
+        Options opts = Options.getInstance();
+        if(src == backgroundMusic) {
+            opts.setBackgroundMusic(state);
+        } else if(src == soundEffects) {
+            opts.setSoundEffects(state);
+        } else if(src == color) {
+            opts.setColor(state);
+        }
     }
 }

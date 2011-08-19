@@ -15,6 +15,7 @@ public class MusicPlayer {
     private List<Sequence> loadedSongs = new ArrayList<Sequence>();
     private Sequencer sequencer = null;
     private int songIndex = 0;
+    private boolean musicOn = true;
 
     private MusicPlayer() {
         try {
@@ -70,19 +71,28 @@ public class MusicPlayer {
     }
 
     public void playNextSong() {
-        if (sequencer != null) {
-            int size = loadedSongs.size();
-            if (size > 0) {
-                try {
-                    songIndex++;
-                    songIndex = songIndex > (size - 1) ? 0 : songIndex;
-                    sequencer.stop();
-                    sequencer.setSequence(loadedSongs.get(songIndex));
-                    sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
-                    sequencer.start();
-                } catch (InvalidMidiDataException ex) {
+        if (musicOn) {
+            if (sequencer != null) {
+                int size = loadedSongs.size();
+                if (size > 0) {
+                    try {
+                        songIndex++;
+                        songIndex = songIndex > (size - 1) ? 0 : songIndex;
+                        sequencer.stop();
+                        sequencer.setSequence(loadedSongs.get(songIndex));
+                        sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+                        sequencer.start();
+                    } catch (InvalidMidiDataException ex) {
+                    }
                 }
             }
         }
     }
+
+    public void setMusic(boolean m) {
+        musicOn = m;
+    }
+
+
+
 }
