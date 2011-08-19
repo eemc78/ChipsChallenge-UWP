@@ -42,7 +42,11 @@ public class BlockTo extends BlockReaction {
             return  //before.canMoveFrom(standing) &&
                     after.canMoveTo(standing);
              */
-            return standing.canMoveTo(moving.getFacing());
+            Moves facingBefore = standing.getFacing();
+            standing.setFacing(moving.getFacing());
+            boolean ret = standing.canMoveTo(moving.getFacing());
+            standing.setFacing(facingBefore);
+            return ret;
         }
         return false;
     }
