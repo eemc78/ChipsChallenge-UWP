@@ -195,7 +195,7 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
     }
 
     public void chipTaken() {
-        setChipsLeft(chipsLeft-1);
+        setChipsLeft(chipsLeft > 0 ? chipsLeft - 1 : 0);
     }
 
     public void nextLevel(GameLevel level) {

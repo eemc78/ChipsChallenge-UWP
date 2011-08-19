@@ -37,6 +37,7 @@ public class WaterTo extends BlockReaction {
             case BUG:
             case TEETH:
             case FIREBALL:
+            case PARAMECIUM:
             case PINKBALL:
             case WALKER:
             case TANK:

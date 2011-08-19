@@ -21,9 +21,11 @@ public class ComputerChipTo extends BlockReaction {
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        game().takeChip();
-        standing.replace(createBlock(Type.FLOOR));
-        sound().playSound(sounds.TAKECHIP);
+        if(moving.isChip()) {
+            game().takeChip();
+            standing.replace(createBlock(Type.FLOOR));
+            sound().playSound(sounds.TAKECHIP);
+        }
     }
 
     @Override
