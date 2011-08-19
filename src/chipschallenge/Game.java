@@ -184,7 +184,7 @@ public class Game {
                     mLevel.moveBlock(b, b.getFacing(), true);
                     if (b.isCreature()) {
                         Creatures.addCreature(b);
-                    }
+                    }                              
                 }
                 addBlocks.remove(b);
             }
