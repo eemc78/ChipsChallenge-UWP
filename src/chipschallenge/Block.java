@@ -93,7 +93,9 @@ public class Block {
     public boolean isOnIce() {
         //if (!isChip() && !isBlock() && !isCreature())
         //return false;
-        return Game.getInstance().getLevel().getBlockContainer(this).getLower().isIce();
+        //return Game.getInstance().getLevel().getBlockContainer(this).getLower().isIce();
+        BlockContainer bc = Game.getInstance().getLevel().getBlockContainer(this);
+        return bc.find(Type.ICE) != null || bc.find(Type.ICECORNER) != null;
     }
 
     public boolean isOnForceFloor() {

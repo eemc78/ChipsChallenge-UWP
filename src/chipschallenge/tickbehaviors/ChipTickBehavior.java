@@ -34,27 +34,22 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
     public void tick(Block caller) throws BlockContainerFullException {
         chipTicks = (chipTicks + 1) % Game.SPEED_FRAC;
         if (chipTicks == 0 || caller.wasForced()) {
+            caller.setForced(false);
             synchronized (proposedMoves) {
                 if (!proposedMoves.isEmpty()) {
-                    if (caller.isOnForceFloor()) {
-                        Game.getInstance().removeForcedMove(caller);                        
-                    }
                     if (caller.isOnIce() && !Game.getInstance().getInventory().hasBoots(Boots.ICESKATES)) {
                         proposedMoves.poll(); // Ignore proposed move
                     } else if (!caller.move(proposedMoves.poll())) {
-                        if (caller.isOnForceFloor()) {//caller.setForced(false);
-                            Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
-                        }
                         proposedMoves.clear();
                         SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
-                    } else {
-                        caller.setForced(false);
+                    }
+                    if (caller.isOnForceFloor()) {
+                        Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
                     }
                     mTicksBeforeTurn = 12;
-                }
+                }               
             }
         }
-
         if (!caller.isOnIce() && mTicksBeforeTurn > 0) {
             mTicksBeforeTurn--;
             if (mTicksBeforeTurn == 0) {

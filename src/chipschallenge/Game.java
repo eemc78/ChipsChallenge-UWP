@@ -221,15 +221,7 @@ public class Game {
         return forcedMovesNow;
     }
 
-    public void tick() throws BlockContainerFullException {        
-        mTickCount++;
-        addClonesQueued();
-        Map<Block, Moves> forcedMovesNow = makeForcedMovesNow();
-        for (Block b : movingBlocks) 
-            b.tick();
-        performForced(forcedMovesNow);
-        Creatures.tick();
-
+    public void checkRepaint() {
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away
         if (mLastTickDrawn != mTickCount) {
@@ -240,6 +232,20 @@ public class Game {
             }
         }
         movesToCheck.clear();
+    }
+
+    public void tick() throws BlockContainerFullException {        
+        mTickCount++;
+        addClonesQueued();
+        Map<Block, Moves> forcedMovesNow = makeForcedMovesNow();
+        performForced(forcedMovesNow);
+        for (Block b : movingBlocks) 
+            b.tick();
+        
+        Creatures.tick();
+        checkRepaint();
+        
+        
         if (dead) 
             restart();
         if (levelComplete)

@@ -98,7 +98,6 @@ class PlayField extends Panel implements NextLevelListener, MouseListener {
 
     public void mousePressed(MouseEvent me) {
         if(me.getButton() == MouseEvent.BUTTON1) {
-            System.out.println("Pressed left");
             GameLevel gl = Game.getInstance().getLevel();
             Point chip = gl.findChip();
             int top = getTop(gl, chip.y);
