@@ -269,4 +269,8 @@ public class GameLevel implements ChipListener {
     public String getMapTitle() {
         return mapTitle;
     }
+
+    public Block getChip() {
+        return chip;
+    }
 }

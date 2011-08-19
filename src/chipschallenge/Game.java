@@ -184,6 +184,7 @@ public class Game extends KeyAdapter {
                 mLevel.getBlockContainer(b).moveTo(b);
             }
         }
+        mLevel.getChip().tick();
     }
 
     private void addClonesQueued() throws BlockContainerFullException {
