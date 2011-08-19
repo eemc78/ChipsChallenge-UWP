@@ -7,10 +7,12 @@ import java.awt.Font;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.MenuShortcut;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 
 public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
 
@@ -36,14 +38,13 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
     private MenuItem aboutChipsChallenge;
 
     private GUIMenu(){
-        
         setFont(new Font("Arial", Font.PLAIN, 11));
 
         // Game menu
         game      = new Menu("Game");
-        newGame   = new MenuItem("New Game");
-        pause     = new MenuItem("Pause");
-        bestTimes = new MenuItem("Best Times");
+        newGame   = new MenuItem("New Game", new MenuShortcut(KeyEvent.VK_F12));
+        pause     = new MenuItem("Pause", new MenuShortcut(KeyEvent.VK_F13));
+        bestTimes = new MenuItem("Best Times...");
         exit      = new MenuItem("Exit");
         newGame.addActionListener(this);
         pause.addActionListener(this);
@@ -75,10 +76,10 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
 
         // Level menu
         level    = new Menu("Level");
-        restart  = new MenuItem("Restart");
-        next     = new MenuItem("Next");
-        previous = new MenuItem("Previous");
-        goTo     = new MenuItem("Go To");
+        restart  = new MenuItem("Restart", new MenuShortcut(KeyEvent.VK_R));
+        next     = new MenuItem("Next", new MenuShortcut(KeyEvent.VK_N));
+        previous = new MenuItem("Previous", new MenuShortcut(KeyEvent.VK_P));
+        goTo     = new MenuItem("Go To...");
         restart.addActionListener(this);
         next.addActionListener(this);
         previous.addActionListener(this);
@@ -92,7 +93,7 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
 
         // Help menu
         help                = new Menu("Help");
-        contents            = new MenuItem("Contents");
+        contents            = new MenuItem("Contents", new MenuShortcut(KeyEvent.VK_F1));
         howToPlay           = new MenuItem("How to Play");
         commands            = new MenuItem("Comands");
         howToUseHelp        = new MenuItem("How to Use Help");
