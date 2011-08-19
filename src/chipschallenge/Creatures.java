@@ -31,7 +31,7 @@ public class Creatures {
             blobMove = !blobMove;
             for (Block b : creatures) {
                 if (blobMove || !(b.isA(Block.Type.BLOB) || b.isA(Block.Type.TEETH))) {
-                        b.tick();
+                    b.tick();
                 }
             }
         }
