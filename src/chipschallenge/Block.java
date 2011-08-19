@@ -152,6 +152,18 @@ public class Block {
         mTickBehavior.tick(this);
     }
 
+    public boolean canMoveFrom() {
+        return Game.getInstance().getLevel().getBlockContainer(this).canMoveFrom(this);
+    }
+
+    public boolean canMoveTo(Moves direction) {
+        return Game.getInstance().getLevel().getBlockContainer(this, direction).canMoveTo(this);
+    }
+
+    public boolean canMove(Moves direction) {
+        return canMoveFrom() && canMoveTo(direction);
+    }
+
     public boolean move(Moves direction) throws BlockContainerFullException {
         //setFacing(direction);
         return Game.getInstance().getLevel().moveBlock(this, direction, false);

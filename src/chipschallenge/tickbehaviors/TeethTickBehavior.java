@@ -41,63 +41,23 @@ public class TeethTickBehavior implements BlockTickBehavior {
         Point me = findMe(caller);
         int dx = chip.x - me.x;
         int dy = chip.y - me.y;
+        int pdx = Math.abs(dx);
+        int pdy = Math.abs(dy);
         Moves xDirection = xDirection = dx > 0 ? Moves.RIGHT : Moves.LEFT;
         Moves yDirection = yDirection = dy > 0 ? Moves.DOWN : Moves.UP;
-        if (Math.abs(dx) > Math.abs(dy)) {
-            if (!caller.move(xDirection)) {
+        if (pdx > pdy) {
+            if (caller.canMove(xDirection)) {
+                caller.move(xDirection);
+            } else if (pdy > 0 && caller.canMove(yDirection)) {
                 caller.move(yDirection);
             }
-        } else if (Math.abs(dy) > Math.abs(dx)) {
-            if (!caller.move(yDirection)) {
+        } else {
+            if (caller.canMove(yDirection)) {
+                caller.move(yDirection);
+            } else if (pdx > 0 && caller.canMove(xDirection)) {
                 caller.move(xDirection);
             }
-        } else {
-            switch (caller.getFacing()) {
-                case UP:
-                    if (dy > 0) {
-                        if (!caller.move(xDirection)) {
-                            caller.move(yDirection);
-                        }
-                    } else {
-                        if (!caller.move(yDirection)) {
-                            caller.move(xDirection);
-                        }
-                    }
-                    break;
-                case DOWN:
-                    if (dy < 0) {
-                        if (!caller.move(xDirection)) {
-                            caller.move(yDirection);
-                        }
-                    } else {
-                        if (!caller.move(yDirection)) {
-                            caller.move(xDirection);
-                        }
-                    }
-                    break;
-                case LEFT:
-                    if (dx > 0) {
-                        if (!caller.move(yDirection)) {
-                            caller.move(xDirection);
-                        }
-                    } else {
-                        if (!caller.move(xDirection)) {
-                            caller.move(yDirection);
-                        }
-                    }
-                    break;
-                case RIGHT:
-                    if (dx < 0) {
-                        if (!caller.move(yDirection)) {
-                            caller.move(xDirection);
-                        }
-                    } else {
-                        if (!caller.move(xDirection)) {
-                            caller.move(yDirection);
-                        }
-                    }
-                    break;
-            }
         }
+
     }
 }
