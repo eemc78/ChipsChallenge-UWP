@@ -170,8 +170,7 @@ public class Game {
         }
     }
 
-    public void tick() throws BlockContainerFullException {
-
+    private void addClonesQueued() throws BlockContainerFullException {
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
         if (blocksToAdd != null) {
             for (Block b : blocksToAdd) {
@@ -189,34 +188,13 @@ public class Game {
             }
             blocksToAdd.clear();
         }
-        mTickCount++;
-        Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
-        forcedMoves.clear();
-
-        for (Block b : movingBlocks) {
-            /*
-            if (b.wasForced()) {
-            b.tick();
-            b.setForced(false);
-            }
-            if (forcedMovesNow.containsKey(b)) {
-            b.setForced(true);
-            Moves m = forcedMovesNow.get(b);
-            if (!mLevel.moveBlock(b, m, true)) {
-            // Bounce
-            b.setFacing(Move.reverse(b.getFacing()));
-            mLevel.getBlockContainer(b).moveTo(b);
-            }
-            } else {
-            b.setForced(false);
-            b.tick();
-            }*/
-            b.tick();
-        }
-        for (Block b : forcedMovesNow.keySet()) {
+    }
+    
+    private void performForced(Map<Block, Moves> forced) throws BlockContainerFullException {
+        for (Block b : forced.keySet()) {
             if (b.isChip() || b.isCreature() || b.isBlock()) {
                 b.setForced(true);
-                Moves m = forcedMovesNow.get(b);
+                Moves m = forced.get(b);
                 if (!mLevel.moveBlock(b, m, true)) {
                     // Bounce
                     b.setFacing(Move.reverse(b.getFacing()));
@@ -224,6 +202,21 @@ public class Game {
                 }
             }
         }
+    }
+
+    private Map<Block, Moves> makeForcedMovesNow() {
+        Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
+        forcedMoves.clear();
+        return forcedMovesNow;
+    }
+
+    public void tick() throws BlockContainerFullException {        
+        mTickCount++;
+        addClonesQueued();
+        Map<Block, Moves> forcedMovesNow = makeForcedMovesNow();
+        for (Block b : movingBlocks) 
+            b.tick();
+        performForced(forcedMovesNow);
         Creatures.tick();
 
         // Check if repaint is necessary
@@ -236,12 +229,10 @@ public class Game {
             }
         }
         movesToCheck.clear();
-        if (dead) {
+        if (dead) 
             restart();
-        }
-        if (levelComplete) {
+        if (levelComplete)
             levelComplete();
-        }
     }
 
     public void die(String msg, sounds s) {
