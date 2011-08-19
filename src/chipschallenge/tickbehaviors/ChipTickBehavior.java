@@ -33,7 +33,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
 
     public void tick(Block caller) throws BlockContainerFullException {
         chipTicks = (chipTicks + 1) % Game.SPEED_FRAC;
-        if (chipTicks == 0 || caller.wasForced()) {
+        if (chipTicks == 0 || caller.isForced()) {
             caller.setForced(false);
             synchronized (proposedMoves) {
                 if (!proposedMoves.isEmpty()) {
@@ -59,7 +59,6 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
         }
     }
 
-    //TODO: Handle mouse clicks
     public void moveTo(Point goal) {
         synchronized (proposedMoves) {
             proposedMoves.clear();

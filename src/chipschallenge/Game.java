@@ -163,6 +163,7 @@ public class Game {
 
     public void removeForcedMove(Block b) {
         forcedMoves.remove(b);
+        forcedMovesNow.remove(b);
     }
 
     public void firstTick() throws BlockContainerFullException {
@@ -208,7 +209,7 @@ public class Game {
 
     // TODO: Consider just doing one loop, and copy whatever isn't a trapped block
     private Map<Block, Moves> makeForcedMovesNow() {
-        Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
+        forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
         Set<Block> setCopy = new HashSet<Block>(forcedMovesNow.keySet());
         for(Block b : setCopy) {
@@ -233,15 +234,14 @@ public class Game {
         }
         movesToCheck.clear();
     }
-
+    private Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>();
     public void tick() throws BlockContainerFullException {        
         mTickCount++;
         addClonesQueued();
-        Map<Block, Moves> forcedMovesNow = makeForcedMovesNow();
-        performForced(forcedMovesNow);
+        forcedMovesNow = makeForcedMovesNow();        
         for (Block b : movingBlocks) 
             b.tick();
-        
+        performForced(forcedMovesNow);
         Creatures.tick();
         checkRepaint();
         

@@ -234,7 +234,7 @@ public class Block {
         this.forced = forced;
     }
 
-    public boolean wasForced() {
+    public boolean isForced() {
         return forced;
     }
 }
