@@ -26,7 +26,6 @@ public class FirebootsTo extends BlockReaction {
         if (moving.isChip()) {
             takeBoots(Boots.FIREBOOTS);
             standing.replace(createBlock(Type.FLOOR));
-            //TODO: Play take-item sound
         }
     }
 

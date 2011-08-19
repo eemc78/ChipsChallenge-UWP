@@ -2,7 +2,6 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.Inventory.Key;
-import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Moving to blue lock

@@ -7,12 +7,10 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Creatures;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
-import chipschallenge.Move;
 import java.awt.Point;
-import java.util.Iterator;
 
 /**
- * If the button was green and the listener is a toggle wall. Toggle it.
+ * If the button was red, clone what's on top of the listener
  */
 public class CloneMachineBehavior implements ButtonBehavior {
 

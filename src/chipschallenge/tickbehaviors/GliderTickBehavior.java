@@ -4,10 +4,6 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 
-/**
- *
- * @author patrik
- */
 public class GliderTickBehavior implements BlockTickBehavior {
 
     private GliderTickBehavior() {

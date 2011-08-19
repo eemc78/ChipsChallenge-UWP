@@ -9,11 +9,12 @@ import chipschallenge.Teleports;
 import java.awt.Point;
 
 /**
- * Moving to a Block
+ * Moving to teleport
  */
 public class TeleportTo extends BlockReaction {
 
-    private TeleportTo() {}
+    private TeleportTo() {
+    }
     private static TeleportTo mInstance = null;
 
     public static synchronized TeleportTo getInstance() {
@@ -22,7 +23,6 @@ public class TeleportTo extends BlockReaction {
         }
         return mInstance;
     }
-
 
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         Point origin = level().getPoint(standing);
@@ -36,13 +36,14 @@ public class TeleportTo extends BlockReaction {
             Move.updatePoint(moveTo, moving.getFacing());
             goal = level().getBlockContainer(moveTo.x, moveTo.y);
             currentStart = remote;
-        } while(!(goal.canMoveTo(moving) && currentStart != origin));
-        if(remote == origin) {
+        } while (!(goal.canMoveTo(moving) && currentStart != origin));
+        if (remote == origin) {
             // Totally blocked
         } else {
             level().teleport(moving, remote);
-            if(moving.isChip())
+            if (moving.isChip()) {
                 sound().playSound(sounds.TELEPORT);
+            }
         }
         game().addForcedMove(moving, moving.getFacing());
     }

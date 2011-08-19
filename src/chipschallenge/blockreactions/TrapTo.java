@@ -1,14 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.Inventory.Boots;
-import chipschallenge.SoundPlayer.sounds;
 
-/**
- *
- * @author patrik
- */
 public class TrapTo extends BlockReaction {
 
     private TrapTo() {

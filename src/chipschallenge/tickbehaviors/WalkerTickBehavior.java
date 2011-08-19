@@ -5,10 +5,6 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 import chipschallenge.Utils;
 
-/**
- *
- * @author patrik
- */
 public class WalkerTickBehavior implements BlockTickBehavior {
 
     private WalkerTickBehavior() {

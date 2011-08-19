@@ -2,10 +2,6 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 
-/**
- *
- * @author patrik
- */
 public class HintTo extends BlockReaction {
 
     private HintTo() {

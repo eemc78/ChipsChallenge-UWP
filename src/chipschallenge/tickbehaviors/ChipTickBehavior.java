@@ -13,10 +13,6 @@ import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 import java.util.Queue;
 
-/**
- *
- * @author patrik
- */
 public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
 
     private ChipTickBehavior() {

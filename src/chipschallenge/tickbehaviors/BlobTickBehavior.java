@@ -5,10 +5,6 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 import chipschallenge.Utils;
 
-/**
- *
- * @author patrik
- */
 public class BlobTickBehavior implements BlockTickBehavior {
 
     private BlobTickBehavior() {

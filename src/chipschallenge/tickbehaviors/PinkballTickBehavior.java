@@ -5,10 +5,6 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move;
 import chipschallenge.Move.Moves;
 
-/**
- *
- * @author patrik
- */
 public class PinkballTickBehavior implements BlockTickBehavior {
 
     private PinkballTickBehavior() {

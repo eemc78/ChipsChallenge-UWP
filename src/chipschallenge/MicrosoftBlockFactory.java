@@ -21,10 +21,6 @@ import chipschallenge.tickbehaviors.TankBehavior;
 import chipschallenge.tickbehaviors.TeethTickBehavior;
 import chipschallenge.tickbehaviors.WalkerTickBehavior;
 
-/**
- *
- * @author patrik
- */
 public class MicrosoftBlockFactory extends BlockFactory {
 
     private MicrosoftBlockFactory() {

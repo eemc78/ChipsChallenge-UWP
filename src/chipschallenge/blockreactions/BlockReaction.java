@@ -14,7 +14,6 @@ import chipschallenge.SoundPlayer.sounds;
 
 /**
  * Defines whether a block can move, and what the side effects are
- * @author patrik
  */
 public abstract class BlockReaction {
 

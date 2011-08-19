@@ -5,10 +5,6 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 
-/**
- *
- * @author patrik
- */
 public class TankBehavior implements ButtonBehavior, BlockTickBehavior {
 
     private boolean isMoving = true;

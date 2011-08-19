@@ -3,10 +3,6 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
 
-/**
- *
- * @author patrik
- */
 public class WaterFrom extends BlockReaction {
 
     private WaterFrom() {

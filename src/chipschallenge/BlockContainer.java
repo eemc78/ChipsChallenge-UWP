@@ -2,10 +2,6 @@ package chipschallenge;
 
 import java.awt.Image;
 
-/**
- *
- * @author patrik
- */
 public class BlockContainer {
 
     private Block upper = null;

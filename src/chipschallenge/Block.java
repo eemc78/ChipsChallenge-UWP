@@ -9,7 +9,6 @@ import chipschallenge.blockreactions.CanMoveBlockReaction;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.Collection;
 
 /**
  *
@@ -93,13 +92,13 @@ public class Block {
 
     public boolean isOnIce() {
         //if (!isChip() && !isBlock() && !isCreature())
-            //return false;
+        //return false;
         return Game.getInstance().getLevel().getBlockContainer(this).getLower().isIce();
     }
 
     public boolean isOnForceFloor() {
         //if (!isChip() && !isBlock() && !isCreature())
-            //return false;
+        //return false;
         return Game.getInstance().getLevel().getBlockContainer(this).getLower().isForceFloor();
     }
 
@@ -215,5 +214,4 @@ public class Block {
     public boolean wasForced() {
         return forced;
     }
-
 }

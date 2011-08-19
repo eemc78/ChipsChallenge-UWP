@@ -3,15 +3,8 @@ package chipschallenge;
 import chipschallenge.gui.GUI;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 
-/**
- *
- * @author patrik
- */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         int startLevel = 1;
         if (args.length > 0) {
@@ -26,6 +19,6 @@ public class Main {
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());
-        g.nextLevel(109);
+        g.nextLevel(startLevel);
     }
 }

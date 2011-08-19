@@ -1,14 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.Game;
 import chipschallenge.Inventory.Key;
-import chipschallenge.SoundPlayer.sounds;
-
-/**
- *
- * @author patrik
- */
 public class YellowLockTo extends BlockReaction {
 
     private YellowLockTo() {

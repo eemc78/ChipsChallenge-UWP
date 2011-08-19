@@ -5,10 +5,6 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- *
- * @author patrik
- */
 public class GameLevel implements ChipListener {
 
     private volatile BlockContainer[][] mBoard;

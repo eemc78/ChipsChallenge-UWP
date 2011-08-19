@@ -26,7 +26,6 @@ public class FlippersTo extends BlockReaction {
         if (moving.isChip()) {
             takeBoots(Boots.FLIPPERS);
             standing.replace(createBlock(Type.FLOOR));
-            //TODO: Play take-item sound
         }
     }
 

@@ -4,10 +4,6 @@ import chipschallenge.Block;
 import chipschallenge.blockreactions.CanMoveBlockReaction;
 import chipschallenge.blockreactions.CannotMoveBlockReaction;
 
-/**
- *
- * @author patrik
- */
 public class TrapBehavior implements ButtonBehavior {
 
     private TrapBehavior() {

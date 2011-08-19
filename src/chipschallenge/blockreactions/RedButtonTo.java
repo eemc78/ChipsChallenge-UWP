@@ -4,10 +4,6 @@ import chipschallenge.Block;
 import chipschallenge.Buttons;
 import chipschallenge.SoundPlayer.sounds;
 
-/**
- *
- * @author patrik
- */
 public class RedButtonTo extends BlockReaction {
 
     private RedButtonTo() {

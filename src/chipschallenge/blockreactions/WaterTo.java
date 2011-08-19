@@ -5,10 +5,6 @@ import chipschallenge.Block.Type;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.SoundPlayer.sounds;
 
-/**
- *
- * @author patrik
- */
 public class WaterTo extends BlockReaction {
 
     private WaterTo() {

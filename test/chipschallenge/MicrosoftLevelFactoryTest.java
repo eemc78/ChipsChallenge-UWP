@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package chipschallenge;
 
 import java.io.IOException;
@@ -13,10 +8,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author patrik
- */
 public class MicrosoftLevelFactoryTest {
 
     MicrosoftLevelFactory instance = MicrosoftLevelFactory.getInstance();

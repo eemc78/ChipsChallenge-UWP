@@ -3,7 +3,6 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
 
 /**
  * Moving to a Block

@@ -6,10 +6,6 @@ import chipschallenge.Game;
 import chipschallenge.Move.Moves;
 import java.awt.Point;
 
-/**
- *
- * @author patrik
- */
 public class TeethTickBehavior implements BlockTickBehavior {
 
     private TeethTickBehavior() {

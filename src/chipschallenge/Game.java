@@ -1,14 +1,11 @@
 package chipschallenge;
 
-import chipschallenge.gamestates.GameState;
 import chipschallenge.Move.Moves;
 import chipschallenge.SoundPlayer.sounds;
-import chipschallenge.gamestates.NullGameState;
 import chipschallenge.gui.GUI;
 import chipschallenge.gui.HintListener;
 import chipschallenge.gui.TimeListener;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,10 +15,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- *
- * @author patrik
- */
 public class Game {
 
     public static final int TIMER_TICK = 100;
@@ -31,7 +24,6 @@ public class Game {
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
     private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
-    private GameState mGameState = NullGameState.getInstance();
     private BlockFactory mBlockFactory = null;
     private LevelFactory mLevelFactory = null;
     private int mLevelNumber = 0;
@@ -179,7 +171,7 @@ public class Game {
     }
 
     public void tick() throws BlockContainerFullException {
-        
+
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
         if (blocksToAdd != null) {
             for (Block b : blocksToAdd) {
@@ -204,23 +196,23 @@ public class Game {
         for (Block b : movingBlocks) {
             /*
             if (b.wasForced()) {
-                b.tick();
-                b.setForced(false);
+            b.tick();
+            b.setForced(false);
             }
             if (forcedMovesNow.containsKey(b)) {
-                b.setForced(true);
-                Moves m = forcedMovesNow.get(b);
-                if (!mLevel.moveBlock(b, m, true)) {
-                    // Bounce
-                    b.setFacing(Move.reverse(b.getFacing()));
-                    mLevel.getBlockContainer(b).moveTo(b);
-                }
+            b.setForced(true);
+            Moves m = forcedMovesNow.get(b);
+            if (!mLevel.moveBlock(b, m, true)) {
+            // Bounce
+            b.setFacing(Move.reverse(b.getFacing()));
+            mLevel.getBlockContainer(b).moveTo(b);
+            }
             } else {
-                b.setForced(false);
-                b.tick();
+            b.setForced(false);
+            b.tick();
             }*/
             b.tick();
-        }   
+        }
         for (Block b : forcedMovesNow.keySet()) {
             if (b.isChip() || b.isCreature() || b.isBlock()) {
                 b.setForced(true);
@@ -231,8 +223,8 @@ public class Game {
                     mLevel.getBlockContainer(b).moveTo(b);
                 }
             }
-        }    
-        Creatures.tick();       
+        }
+        Creatures.tick();
 
         // Check if repaint is necessary
         // TODO: If the moves are many, perhaps repaint right away
@@ -266,10 +258,6 @@ public class Game {
         return mLevel;
     }
 
-    public void keyPressed(KeyEvent ke) {
-        mGameState.keyPressed(this, ke);
-    }
-
     public Inventory getInventory() {
         return mInventory;
     }
@@ -284,10 +272,6 @@ public class Game {
 
     public void setLevel(GameLevel gl) {
         mLevel = gl;
-    }
-
-    public void setGameState(GameState state) {
-        mGameState = state;
     }
 
     public void setLevelFactory(LevelFactory lf) {

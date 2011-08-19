@@ -3,10 +3,6 @@ package chipschallenge;
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- *
- * @author patrik
- */
 public class Creatures {
 
     private static Collection<Block> creatures = new CopyOnWriteArrayList<Block>();

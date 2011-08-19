@@ -9,7 +9,6 @@ import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class GUIMenu extends MenuBar implements ActionListener {
 
     private Menu game;

@@ -4,10 +4,6 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
 
-/**
- *
- * @author patrik
- */
 public class RecessedWallTo extends BlockReaction {
 
     private RecessedWallTo() {

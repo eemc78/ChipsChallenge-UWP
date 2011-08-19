@@ -5,10 +5,6 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.Move.Moves;
 
-/**
- *
- * @author patrik
- */
 public class IceCornerTo extends BlockReaction {
 
     private IceCornerTo() {

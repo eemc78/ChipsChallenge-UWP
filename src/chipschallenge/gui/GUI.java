@@ -11,10 +11,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/**
- *
- * @author patrik
- */
 public class GUI extends Frame implements NextLevelListener {
     private PlayField mPlayField;
     private Hud mHud;

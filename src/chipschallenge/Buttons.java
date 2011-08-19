@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-/**
- *
- * @author patrik
- */
 public class Buttons {
 
     private static Collection<Block> greenButtonsListeners = new CopyOnWriteArrayList<Block>();

@@ -4,10 +4,6 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.Inventory.Key;
 
-/**
- *
- * @author patrik
- */
 public class GreenKeyTo extends BlockReaction {
 
     private GreenKeyTo() {

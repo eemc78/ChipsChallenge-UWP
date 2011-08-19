@@ -1,4 +1,3 @@
-
 package chipschallenge;
 
 import java.io.FileInputStream;
@@ -6,17 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MetaEventListener;
-import javax.sound.midi.MetaMessage;
-import javax.sound.midi.MidiEvent;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
-import javax.sound.midi.Track;
-
 
 public class MusicPlayer {
+
     private List<Sequence> loadedSongs = new ArrayList<Sequence>();
     private Sequencer sequencer = null;
     private int songIndex = 0;
@@ -50,14 +45,13 @@ public class MusicPlayer {
     protected void finalize() throws Throwable {
         try {
             sequencer.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
         } finally {
             super.finalize();
         }
     }
-
-
     private static MusicPlayer mInstance = null;
+
     public static synchronized MusicPlayer getInstance() {
         if (mInstance == null) {
             mInstance = new MusicPlayer();
@@ -79,17 +73,16 @@ public class MusicPlayer {
         if (sequencer != null) {
             int size = loadedSongs.size();
             if (size > 0) {
-                try {                    
+                try {
                     songIndex++;
-                    songIndex = songIndex > (size-1) ? 0 : songIndex;
+                    songIndex = songIndex > (size - 1) ? 0 : songIndex;
                     sequencer.stop();
                     sequencer.setSequence(loadedSongs.get(songIndex));
                     sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
                     sequencer.start();
                 } catch (InvalidMidiDataException ex) {
-                } 
+                }
             }
         }
     }
-
 }

@@ -3,10 +3,6 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Inventory.Key;
 
-/**
- *
- * @author patrik
- */
 public class RedLockTo extends BlockReaction {
 
     private RedLockTo() {

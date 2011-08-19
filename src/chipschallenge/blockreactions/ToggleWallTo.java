@@ -3,10 +3,6 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 
-/**
- *
- * @author patrik
- */
 public class ToggleWallTo extends BlockReaction {
 
     private ToggleWallTo() {

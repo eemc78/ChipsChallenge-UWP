@@ -5,10 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- *
- * @author patrik
- */
 public class Inventory {
 
     public static enum Key {

@@ -10,10 +10,6 @@ import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.Point;
 
-/**
- *
- * @author patrik
- */
 class PlayField extends Panel implements NextLevelListener {
 
     private int mWidth;

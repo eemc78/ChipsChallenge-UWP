@@ -4,10 +4,6 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
-/**
- *
- * @author patrik
- */
 public class IceTo extends BlockReaction {
 
     private IceTo() {

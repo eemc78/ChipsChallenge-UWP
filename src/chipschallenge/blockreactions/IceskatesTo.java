@@ -5,10 +5,6 @@ import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
-/**
- *
- * @author patrik
- */
 public class IceskatesTo extends BlockReaction {
 
     private IceskatesTo() {
@@ -26,7 +22,6 @@ public class IceskatesTo extends BlockReaction {
         if (moving.isChip()) {
             takeBoots(Boots.ICESKATES);
             standing.replace(createBlock(Type.FLOOR));
-            //TODO: Play take-item sound
         }
     }
 

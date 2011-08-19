@@ -5,10 +5,6 @@ import chipschallenge.Move.Moves;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- *
- * @author patrik
- */
 public abstract class BlockFactory {
 
     private Map<Type, Map<Moves, Block>> loadedBlocks = new HashMap<Type, Map<Moves, Block>>();

@@ -2,10 +2,6 @@ package chipschallenge.buttonbehaviors;
 
 import chipschallenge.Block;
 
-/**
- *
- * @author patrik
- */
 public class NullButtonBehavior implements ButtonBehavior {
 
     private NullButtonBehavior() {

@@ -2,10 +2,6 @@ package chipschallenge.tickbehaviors;
 
 import chipschallenge.Block;
 
-/**
- *
- * @author patrik
- */
 public class NullTickBehavior implements BlockTickBehavior {
 
     private NullTickBehavior() {

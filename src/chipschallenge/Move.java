@@ -2,10 +2,6 @@ package chipschallenge;
 
 import java.awt.Point;
 
-/**
- *
- * @author patrik
- */
 public class Move {
 
     public enum Moves {
@@ -35,37 +31,28 @@ public class Move {
         Moves ret = null;
         switch (random) {
             case 0:
-                ret = Moves.UP;
-                break;
+                return Moves.UP;
             case 1:
-                ret = Moves.DOWN;
-                break;
+                return Moves.DOWN;
             case 2:
-                ret = Moves.LEFT;
-                break;
+                return Moves.LEFT;
             case 3:
-                ret = Moves.RIGHT;
-                break;
+                return Moves.RIGHT;
         }
         return ret;
     }
 
     public static Moves reverse(Moves m) {
-        Moves ret = null;
         switch (m) {
             case UP:
-                ret = Moves.DOWN;
-                break;
+                return Moves.DOWN;
             case DOWN:
-                ret = Moves.UP;
-                break;
+                return Moves.UP;
             case LEFT:
-                ret = Moves.RIGHT;
-                break;
+                return Moves.RIGHT;
             case RIGHT:
-                ret = Moves.LEFT;
-                break;
+                return Moves.LEFT;
         }
-        return ret;
+        return null;
     }
 }

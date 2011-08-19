@@ -5,10 +5,6 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.Move;
 
-/**
- *
- * @author patrik
- */
 public class RandomForceFloorTo extends BlockReaction {
 
     private RandomForceFloorTo() {

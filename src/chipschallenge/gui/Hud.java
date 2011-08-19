@@ -15,10 +15,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
 
-/**
- *
- * @author wasd
- */
 class Hud extends Panel implements ChipListener, NextLevelListener, InventoryListener, HintListener, TimeListener {
 
     private int level = 0;

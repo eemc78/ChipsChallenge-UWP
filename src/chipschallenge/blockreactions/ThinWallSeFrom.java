@@ -1,16 +1,9 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
-import chipschallenge.Game;
-import chipschallenge.GameLevel;
 import chipschallenge.Move.Moves;
 
-/**
- *
- * @author patrik
- */
 public class ThinWallSeFrom extends BlockReaction {
 
     private ThinWallSeFrom() {
