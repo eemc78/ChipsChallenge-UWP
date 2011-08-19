@@ -179,12 +179,12 @@ public class Game extends KeyAdapter {
 
     public void firstTick() throws BlockContainerFullException {
         mTickCount++;
+        mLevel.getChip().tick();
         for (Block b : Creatures.getCreatures()) {
             if(b.isOnIce()) {
                 mLevel.getBlockContainer(b).moveTo(b);
             }
-        }
-        mLevel.getChip().tick();
+        }        
     }
 
     private void addClonesQueued() throws BlockContainerFullException {
@@ -206,16 +206,20 @@ public class Game extends KeyAdapter {
             blocksToAdd.clear();
         }
     }
-    
+
+    // TODO: See if this can be optimized
     private void performForced(Map<Block, Moves> forced) throws BlockContainerFullException {
-        for (Block b : forced.keySet()) {
+        Set<Block> forcedCpy = new HashSet<Block>(forced.keySet());
+        for (Block b : forcedCpy) {
             if (b.isChip() || b.isCreature() || b.isBlock()) {
                 b.setForced(true);
                 Moves m = forced.get(b);
-                if (!mLevel.moveBlock(b, m, !b.isOnTrap())) {
-                    // Bounce
-                    b.setFacing(Move.reverse(b.getFacing()));
-                    mLevel.getBlockContainer(b).moveTo(b);
+                if (m != null) {
+                    if (!mLevel.moveBlock(b, m, !b.isOnTrap())) {
+                        // Bounce
+                        b.setFacing(Move.reverse(b.getFacing()));
+                        mLevel.getBlockContainer(b).moveTo(b);
+                    }
                 }
             }
         }
@@ -249,6 +253,8 @@ public class Game extends KeyAdapter {
         movesToCheck.clear();
     }
     private Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>();
+
+    // Main loop
     public void tick() throws BlockContainerFullException {        
         mTickCount++;
         addClonesQueued();
@@ -257,9 +263,7 @@ public class Game extends KeyAdapter {
             b.tick();
         performForced(forcedMovesNow);
         Creatures.tick();
-        checkRepaint();
-        
-        
+        checkRepaint();       
         if (dead) 
             restart();
         if (levelComplete)
