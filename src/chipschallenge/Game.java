@@ -9,8 +9,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -195,7 +197,7 @@ public class Game {
             if (b.isChip() || b.isCreature() || b.isBlock()) {
                 b.setForced(true);
                 Moves m = forced.get(b);
-                if (!mLevel.moveBlock(b, m, true)) {
+                if (!mLevel.moveBlock(b, m, !b.isOnTrap())) {
                     // Bounce
                     b.setFacing(Move.reverse(b.getFacing()));
                     mLevel.getBlockContainer(b).moveTo(b);
@@ -207,6 +209,14 @@ public class Game {
     private Map<Block, Moves> makeForcedMovesNow() {
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();
+        Set<Block> setCopy = new HashSet<Block>(forcedMovesNow.keySet());
+        for(Block b : setCopy) {
+            if(b.isBlock() && b.isTrapped()) {
+                Moves m = forcedMovesNow.get(b);
+                forcedMoves.put(b, m);
+                forcedMovesNow.remove(b);
+            }
+        }
         return forcedMovesNow;
     }
 

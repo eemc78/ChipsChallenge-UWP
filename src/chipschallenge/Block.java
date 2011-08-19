@@ -106,6 +106,15 @@ public class Block {
         return Game.getInstance().getLevel().getBlockContainer(this).find(Type.TRAP) != null;
     }
 
+    public boolean isTrapped() {
+        BlockContainer bc = Game.getInstance().getLevel().getBlockContainer(this);
+        Block trap = bc.find(Type.TRAP);
+        if(trap == null)
+            return false;
+        else
+            return !bc.canMoveFrom(this); // TODO: Check only the trap
+    }
+
     public boolean isOnCloner() {
         return Game.getInstance().getLevel().getBlockContainer(this).getLower().isA(Type.CLONEMACHINE);
     }

@@ -17,7 +17,7 @@ public class TrapTo extends BlockReaction {
 
     public void react(Block moving, Block standing) {
         if(moving.isBlock() && moving.wasForced()) {
-            game().addForcedMove(moving, standing.getFacing());
+            game().addForcedMove(moving, moving.getFacing());
         }
     }
 

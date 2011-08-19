@@ -37,7 +37,7 @@ public class BlockTo extends BlockReaction {
             if (after == null) { // Block being pushed at the edge
                 return false;
             }
-            return  before.canMoveFrom(standing) &&
+            return  //before.canMoveFrom(standing) &&
                     after.canMoveTo(standing);
         }
         return false;
