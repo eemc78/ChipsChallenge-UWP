@@ -254,16 +254,29 @@ public class Game extends KeyAdapter {
     }
     private Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>();
 
-    // Main loop
+    // Main "loop"
     public void tick() throws BlockContainerFullException {        
         mTickCount++;
+
+        // Add cloned blocks from previos ticks
         addClonesQueued();
-        forcedMovesNow = makeForcedMovesNow();        
+
+        // Copy current list of forced moves, minus trapped blocks
+        forcedMovesNow = makeForcedMovesNow();
+
+        // Move chip and possibly other blocks
         for (Block b : movingBlocks) 
             b.tick();
+
+        // Do forced moves
         performForced(forcedMovesNow);
+
+        // Move creatures
         Creatures.tick();
-        checkRepaint();       
+
+        // Repaint if something moved within the viewport
+        checkRepaint();
+        
         if (dead) 
             restart();
         if (levelComplete)
