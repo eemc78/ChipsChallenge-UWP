@@ -171,7 +171,7 @@ public class GameLevel implements ChipListener {
     }
 
     public Point findChip() {
-        return blocks.get(chip);
+        return (Point) blocks.get(chip).clone();
     }
 
     public boolean contains(Block b) {

@@ -3,14 +3,18 @@ package chipschallenge.gui;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
 import chipschallenge.NextLevelListener;
+import chipschallenge.tickbehaviors.ChipTickBehavior;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-class PlayField extends Panel implements NextLevelListener {
+class PlayField extends Panel implements NextLevelListener, MouseListener {
 
     private int mWidth;
     private int mHeight;
@@ -22,6 +26,8 @@ class PlayField extends Panel implements NextLevelListener {
         mHeight = height;
         setPreferredSize(new Dimension(width * 32, height * 32));
         Game.getInstance().addNextLevelListener(this);
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        addMouseListener(this);
         setVisible(true);
     }
 
@@ -89,4 +95,23 @@ class PlayField extends Panel implements NextLevelListener {
         // TODO: Show level name and password in the playfield
         System.out.println(level.getMapTitle());
     }
+
+    public void mousePressed(MouseEvent me) {
+        if(me.getButton() == MouseEvent.BUTTON1) {
+            System.out.println("Pressed left");
+            GameLevel gl = Game.getInstance().getLevel();
+            Point chip = gl.findChip();
+            int top = getTop(gl, chip.y);
+            int left = getLeft(gl, chip.x);
+            int clickedX = me.getX() / 32;
+            int clickedY = me.getY() / 32;
+            Point moveTo = new Point(left+clickedX,top+clickedY);
+            ChipTickBehavior.getInstance().moveTo(moveTo);
+        }
+    }
+
+    public void mouseClicked(MouseEvent me) {}
+    public void mouseReleased(MouseEvent me) {}
+    public void mouseEntered(MouseEvent me) {}
+    public void mouseExited(MouseEvent me) {}
 }

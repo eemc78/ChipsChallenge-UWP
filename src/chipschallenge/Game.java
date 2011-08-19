@@ -206,6 +206,7 @@ public class Game {
         }
     }
 
+    // TODO: Consider just doing one loop, and copy whatever isn't a trapped block
     private Map<Block, Moves> makeForcedMovesNow() {
         Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
         forcedMoves.clear();

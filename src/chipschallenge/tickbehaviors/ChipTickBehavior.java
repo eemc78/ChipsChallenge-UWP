@@ -4,10 +4,12 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Game;
 import chipschallenge.Inventory.Boots;
+import chipschallenge.Move;
 import chipschallenge.Move.Moves;
 import chipschallenge.SoundPlayer;
 import chipschallenge.SoundPlayer.sounds;
 import chipschallenge.gui.GUI;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.LinkedList;
@@ -43,6 +45,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
                         if (caller.isOnForceFloor()) {//caller.setForced(false);
                             Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
                         }
+                        proposedMoves.clear();
                         SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
                     } else {
                         caller.setForced(false);
@@ -62,7 +65,33 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
     }
 
     //TODO: Handle mouse clicks
-    public void moveTo(int x, int y) {
+    public void moveTo(Point goal) {
+        synchronized (proposedMoves) {
+            proposedMoves.clear();
+            Point start = Game.getInstance().getLevel().findChip();
+            while (!start.equals(goal)) {
+                int dx = goal.x - start.x;
+                int dy = goal.y - start.y;
+                int pdx = Math.abs(dx);
+                int pdy = Math.abs(dy);
+                Moves proposedMove = null;
+                if (pdx > pdy) {
+                    if (dx > 0) {
+                        proposedMove = Moves.RIGHT;
+                    } else {
+                        proposedMove = Moves.LEFT;
+                    }
+                } else {
+                    if (dy > 0) {
+                        proposedMove = Moves.DOWN;
+                    } else {
+                        proposedMove = Moves.UP;
+                    }
+                }
+                Move.updatePoint(start, proposedMove);
+                proposedMoves.offer(proposedMove);
+            }
+        }
     }
 
     @Override
