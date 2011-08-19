@@ -36,8 +36,8 @@ public class TeleportTo extends BlockReaction {
             Move.updatePoint(moveTo, moving.getFacing());
             goal = level().getBlockContainer(moveTo.x, moveTo.y);
             currentStart = remote;
-        } while (!(goal.canMoveTo(moving) && currentStart != origin));
-        if (remote == origin) {
+        } while (!goal.canMoveTo(moving) && !currentStart.equals(origin));
+        if (remote.equals(origin)) {
             // Totally blocked
         } else {
             level().teleport(moving, remote);
