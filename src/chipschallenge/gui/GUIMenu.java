@@ -219,7 +219,7 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
     }
 
     public void itemStateChanged(ItemEvent ie) {
-        Object src = ie.getItem();
+        Object src = ie.getSource();
         boolean state = ie.getStateChange() == ItemEvent.SELECTED;
         Options opts = Options.getInstance();
         if(src == backgroundMusic) {

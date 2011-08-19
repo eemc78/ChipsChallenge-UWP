@@ -6,6 +6,8 @@ import chipschallenge.gui.GUI;
 import chipschallenge.gui.HintListener;
 import chipschallenge.gui.TimeListener;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Game {
+public class Game extends KeyAdapter {
 
     public static final int TIMER_TICK = 100;
     public static final int SPEED_FRAC = 2;
@@ -35,6 +37,7 @@ public class Game {
     private long mTickCount = 0;
     private long mLastTickDrawn = 0;
     private boolean levelComplete;
+    private boolean isStarted = false;
     private Collection<Point> movesToCheck = new ArrayList<Point>();
     private volatile boolean dead = false;
     private Collection<ChipListener> chipListeners = new ArrayList<ChipListener>();
@@ -44,8 +47,7 @@ public class Game {
     private Map<Long, List<Block>> addBlockAtTick = new HashMap<Long, List<Block>>();
     private Map<Block, Point> addBlocks = new HashMap<Block, Point>();
 
-    private Game() {
-    }
+    private Game() {}
 
     public static synchronized Game getInstance() {
         if (mGame == null) {
@@ -82,7 +84,17 @@ public class Game {
         for (NextLevelListener l : nextLevelListeners) {
             l.nextLevel(mLevel);
         }
-        start();
+        GUI.getInstance().repaint();
+        MusicPlayer.getInstance().playNextSong();
+        isStarted = false;
+        //start();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(!isStarted) {
+            start();
+        }
     }
 
     public void restart() {
@@ -101,8 +113,7 @@ public class Game {
     }
 
     public void start() {
-        GUI.getInstance().repaint();
-        MusicPlayer.getInstance().playNextSong();
+        isStarted = true;
         if (tickTimer != null) {
             tickTimer.cancel();
         }

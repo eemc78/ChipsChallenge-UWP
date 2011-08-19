@@ -36,6 +36,7 @@ public class GUI extends Frame implements NextLevelListener {
         setIconImage(HudImageFactory.getInstance().getIcon());
         setResizable(false);
         Game.getInstance().addNextLevelListener(this);
+        addKeyListener(Game.getInstance());
         mMenu = GUIMenu.getInstance();
         setMenuBar(mMenu);
         setVisible(true);

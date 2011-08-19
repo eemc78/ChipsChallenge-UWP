@@ -91,6 +91,17 @@ public class MusicPlayer {
 
     public void setMusic(boolean m) {
         musicOn = m;
+        if(sequencer != null) {
+            if(m) {
+                if(sequencer.getSequence() != null)
+                    sequencer.start();
+            } else {
+                if(sequencer.isRunning()) {
+                    sequencer.stop();
+                }
+            }
+
+        }
     }
 
 
