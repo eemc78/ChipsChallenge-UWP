@@ -3,7 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 
-public class ToggleWallTo extends BlockReaction {
+public class ToggleWallTo extends NoSlipReaction {
 
     private ToggleWallTo() {
     }

@@ -7,7 +7,7 @@ import chipschallenge.BlockContainerFullException;
 /**
  * Move to dirt
  */
-public class DirtTo extends BlockReaction {
+public class DirtTo extends NoSlipReaction {
 
     private DirtTo() {
     }

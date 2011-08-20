@@ -6,7 +6,7 @@ import chipschallenge.SoundPlayer.sounds;
 /**
  * Move to bomb
  */
-public class BombTo extends BlockReaction {
+public class BombTo extends NoSlipReaction {
 
     private BombTo() {
     }

@@ -11,10 +11,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -27,7 +25,7 @@ public class Game extends KeyAdapter {
     private static Game mGame = null;
     private Inventory mInventory = new Inventory();
     private GameLevel mLevel = null;
-    private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
+    //private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
     private BlockFactory mBlockFactory = null;
     private LevelFactory mLevelFactory = null;
     private int mLevelNumber = 0;
@@ -46,6 +44,9 @@ public class Game extends KeyAdapter {
     private static Collection<HintListener> hintListeners = new CopyOnWriteArrayList<HintListener>();
     private Map<Long, List<Block>> addBlockAtTick = new HashMap<Long, List<Block>>();
     private Map<Block, Point> addBlocks = new HashMap<Block, Point>();
+    private SlipList slipList = new SlipList();
+    private BlockMove chipForced = null;
+
 
     private Game() {}
 
@@ -61,7 +62,7 @@ public class Game extends KeyAdapter {
         Buttons.clear();
         Creatures.clear();
         Teleports.clear();
-        forcedMoves.clear();
+        slipList.clear();
         mInventory.clear();
         movingBlocks.clear();
         if (tickTimer != null) {
@@ -169,12 +170,17 @@ public class Game extends KeyAdapter {
     }
 
     public void addForcedMove(Block b, Moves m) {
-        forcedMoves.put(b, m);
+        if(b.isChip()) {
+            chipForced = new BlockMove(b,m);
+        } else {
+            if(!slipList.contains(b)) {
+                slipList.add(b, m);
+            }
+        }
     }
 
     public void removeForcedMove(Block b) {
-        forcedMoves.remove(b);
-        forcedMovesNow.remove(b);
+        slipList.remove(b);
     }
 
     public void firstTick() throws BlockContainerFullException {
@@ -196,7 +202,7 @@ public class Game extends KeyAdapter {
                 Move.updatePoint(dp, b.getFacing());
                 if (mLevel.getBlockContainer(dp.x, dp.y).canMoveTo(b)) {
                     mLevel.addBlock(p.x, p.y, b, 2);
-                    mLevel.moveBlock(b, b.getFacing(), true);
+                    mLevel.moveBlock(b, b.getFacing(), true, false);
                     if (b.isCreature()) {
                         Creatures.addCreature(b);
                     }
@@ -207,37 +213,23 @@ public class Game extends KeyAdapter {
         }
     }
 
-    // TODO: See if this can be optimized
-    private void performForced(Map<Block, Moves> forced) throws BlockContainerFullException {
-        Set<Block> forcedCpy = new HashSet<Block>(forced.keySet());
-        for (Block b : forcedCpy) {
-            if (b.isChip() || b.isCreature() || b.isBlock()) {
-                b.setForced(true);
-                Moves m = forced.get(b);
-                if (m != null) {
-                    if (!mLevel.moveBlock(b, m, !b.isOnTrap())) {
-                        // Bounce
-                        b.setFacing(Move.reverse(b.getFacing()));
-                        mLevel.getBlockContainer(b).moveTo(b);
-                    }
-                }
+    private void performForced() throws BlockContainerFullException {
+        for(int i = 0; i < slipList.size(); i++) {
+            BlockMove bm = slipList.get(i);
+            if (bm.block.isChip() || bm.block.isCreature() || bm.block.isBlock()) {
+                bm.block.setForced(true);
+                forceMove(bm.block, bm.move);
             }
         }
     }
 
-    // TODO: Consider just doing one loop, and copy whatever isn't a trapped block
-    private Map<Block, Moves> makeForcedMovesNow() {
-        forcedMovesNow = new HashMap<Block, Moves>(forcedMoves);
-        forcedMoves.clear();
-        Set<Block> setCopy = new HashSet<Block>(forcedMovesNow.keySet());
-        for(Block b : setCopy) {
-            if(b.isBlock() && b.isTrapped()) {
-                Moves m = forcedMovesNow.get(b);
-                forcedMoves.put(b, m);
-                forcedMovesNow.remove(b);
-            }
+    private void forceMove(Block b, Moves m) throws BlockContainerFullException {
+        if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
+            // Bounce
+            removeForcedMove(b);
+            b.setFacing(Move.reverse(b.getFacing()));
+            mLevel.moveBlock(b, null, true, true);
         }
-        return forcedMovesNow;
     }
 
     public void checkRepaint() {
@@ -252,7 +244,6 @@ public class Game extends KeyAdapter {
         }
         movesToCheck.clear();
     }
-    private Map<Block, Moves> forcedMovesNow = new HashMap<Block, Moves>();
 
     // Main "loop"
     public void tick() throws BlockContainerFullException {        
@@ -260,20 +251,26 @@ public class Game extends KeyAdapter {
 
         // Add cloned blocks from previos ticks
         addClonesQueued();
-
-        // Copy current list of forced moves, minus trapped blocks
-        forcedMovesNow = makeForcedMovesNow();
-
+        
         // Move chip and possibly other blocks
         for (Block b : movingBlocks) 
             b.tick();
 
-        // Do forced moves
-        performForced(forcedMovesNow);
+        if(chipForced != null) {
+            BlockMove cm = (BlockMove) chipForced.clone();
+            chipForced = null;
+            forceMove(cm.block, cm.move);
+            mLevel.getChip().setForced(true);
+        }
 
+        // Do forced moves
+        performForced();
+             
         // Move creatures
         Creatures.tick();
 
+        
+      
         // Repaint if something moved within the viewport
         checkRepaint();
         

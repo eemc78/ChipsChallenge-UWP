@@ -4,7 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
-public class IceFrom extends BlockReaction {
+public class IceFrom extends NoSlipReaction {
 
     private IceFrom() {
     }

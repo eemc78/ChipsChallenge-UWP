@@ -43,7 +43,7 @@ public class CloneMachineBehavior implements ButtonBehavior {
                             g.addBlockDelay(clone, p, 3);
                         } else {
                             gl.addBlock(p.x, p.y, clone, 2);
-                            gl.moveBlock(clone, clone.getFacing(), true);
+                            gl.moveBlock(clone, clone.getFacing(), true, false);
                             if (clone.isCreature()) {
                                 Creatures.addCreature(clone);
                             }

@@ -2,7 +2,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 
-public class HintFrom extends BlockReaction {
+public class HintFrom extends NoSlipReaction {
 
     private HintFrom() {
     }

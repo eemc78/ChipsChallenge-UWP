@@ -5,7 +5,7 @@ import chipschallenge.Block.Type;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.SoundPlayer.sounds;
 
-public class WaterTo extends BlockReaction {
+public class WaterTo extends NoSlipReaction {
 
     private WaterTo() {
     }

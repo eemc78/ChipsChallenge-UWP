@@ -3,7 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Inventory.Key;
 
-public class GreenLockTo extends BlockReaction {
+public class GreenLockTo extends NoSlipReaction {
 
     private GreenLockTo() {
     }

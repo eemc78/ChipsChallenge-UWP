@@ -10,7 +10,7 @@ import chipschallenge.SoundPlayer.sounds;
 /**
  * Move to real blue wall
  */
-public class BlueWallRealTo extends BlockReaction {
+public class BlueWallRealTo extends NoSlipReaction {
 
     private BlueWallRealTo() {
     }

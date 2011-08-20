@@ -3,6 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
+import chipschallenge.Move.Moves;
 
 /**
  * Move to force floor
@@ -24,7 +25,7 @@ public class ForceFloorTo extends BlockReaction {
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
-            game().addForcedMove(moving, standing.getFacing());
+            moving.setFacing(standing.getFacing());
         }
     }
 
@@ -32,5 +33,10 @@ public class ForceFloorTo extends BlockReaction {
     @Override
     public boolean canMove(Block moving, Block standing) {
         return true;
+    }
+
+    @Override
+    public boolean causesSlip(Block moving, Block standing) {
+        return !(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS));
     }
 }

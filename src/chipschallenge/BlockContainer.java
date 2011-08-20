@@ -258,6 +258,54 @@ public class BlockContainer {
         return true;
     }
 
+    public boolean causesSlipTo(Block b) {
+        if (lower != null) {
+            if (lower.getToReaction().causesSlip(b, lower)) {
+                return true;
+            }
+        }
+        if (upper != null) {
+            if (upper.getToReaction().causesSlip(b, upper)) {
+                return true;
+            }
+        }
+        if (visitorLow != null) {
+            if (visitorLow.getToReaction().causesSlip(b, visitorLow)) {
+                return true;
+            }
+        }
+        if (visitorHigh != null) {
+            if (visitorHigh.getToReaction().causesSlip(b, visitorHigh)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean causesSlipFrom(Block b) {
+        if (lower != null) {
+            if (lower.getFromReaction().causesSlip(b, lower)) {
+                return true;
+            }
+        }
+        if (upper != null) {
+            if (upper.getFromReaction().causesSlip(b, upper)) {
+                return true;
+            }
+        }
+        if (visitorLow != null) {
+            if (visitorLow.getFromReaction().causesSlip(b, visitorLow)) {
+                return true;
+            }
+        }
+        if (visitorHigh != null) {
+            if (visitorHigh.getFromReaction().causesSlip(b, visitorHigh)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void moveFrom(Block b) throws BlockContainerFullException {
         if (visitorHigh != null) {
             visitorHigh.getFromReaction().react(b, visitorHigh);

@@ -7,7 +7,7 @@ import chipschallenge.BlockContainerFullException;
 /**
  * Move to Blue fake wall
  */
-public class BlueWallFakeTo extends BlockReaction {
+public class BlueWallFakeTo extends NoSlipReaction {
 
     private BlueWallFakeTo() {
     }

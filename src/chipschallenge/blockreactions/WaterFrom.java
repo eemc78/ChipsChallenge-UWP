@@ -3,7 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
 
-public class WaterFrom extends BlockReaction {
+public class WaterFrom extends NoSlipReaction {
 
     private WaterFrom() {
     }

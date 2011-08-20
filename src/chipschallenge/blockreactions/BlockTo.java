@@ -1,14 +1,13 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
-import chipschallenge.BlockContainer;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 
 /**
  * Moving to a Block
  */
-public class BlockTo extends BlockReaction {
+public class BlockTo extends NoSlipReaction {
 
     private BlockTo() {
     }
@@ -26,7 +25,7 @@ public class BlockTo extends BlockReaction {
         if (moving.isChip()) {
             //standing.move(moving.getFacing());
             game().removeForcedMove(standing);
-            level().moveBlock(standing, moving.getFacing(), true);                      
+            level().moveBlock(standing, moving.getFacing(), true, false);
         }
     }
 

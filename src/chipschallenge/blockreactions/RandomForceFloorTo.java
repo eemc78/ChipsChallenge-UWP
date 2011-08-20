@@ -29,4 +29,9 @@ public class RandomForceFloorTo extends BlockReaction {
     public boolean canMove(Block moving, Block standing) {
         return true;
     }
+
+    @Override
+    public boolean causesSlip(Block moving, Block standing) {
+        return !(moving.isChip() && hasBoots(Boots.ICESKATES));
+    }
 }

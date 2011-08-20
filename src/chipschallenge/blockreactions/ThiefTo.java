@@ -3,7 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.SoundPlayer.sounds;
 
-public class ThiefTo extends BlockReaction {
+public class ThiefTo extends NoSlipReaction {
 
     private ThiefTo() {
     }

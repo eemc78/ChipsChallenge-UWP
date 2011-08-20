@@ -5,7 +5,7 @@ import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
-public class IceskatesTo extends BlockReaction {
+public class IceskatesTo extends NoSlipReaction {
 
     private IceskatesTo() {
     }

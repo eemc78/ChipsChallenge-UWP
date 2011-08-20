@@ -4,7 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
 
-public class ThinWallTo extends BlockReaction {
+public class ThinWallTo extends NoSlipReaction {
 
     private ThinWallTo() {
     }

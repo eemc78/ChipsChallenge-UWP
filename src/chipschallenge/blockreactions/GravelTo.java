@@ -5,7 +5,7 @@ import chipschallenge.Block;
 /**
  * Move to gravel
  */
-public class GravelTo extends BlockReaction {
+public class GravelTo extends NoSlipReaction {
 
     private GravelTo() {
     }

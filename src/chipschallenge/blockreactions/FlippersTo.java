@@ -8,7 +8,7 @@ import chipschallenge.Inventory.Boots;
 /**
  * Move to flippers
  */
-public class FlippersTo extends BlockReaction {
+public class FlippersTo extends NoSlipReaction {
 
     private FlippersTo() {
     }

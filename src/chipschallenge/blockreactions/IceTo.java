@@ -19,13 +19,16 @@ public class IceTo extends BlockReaction {
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (!(moving.isChip() && hasBoots(Boots.ICESKATES))) {
-            game().addForcedMove(moving, moving.getFacing());
-        }
+        // Nothing
     }
 
     @Override
     public boolean canMove(Block moving, Block standing) {
         return true;
+    }
+
+    @Override
+    public boolean causesSlip(Block moving, Block standing) {
+        return !(moving.isChip() && hasBoots(Boots.ICESKATES));
     }
 }

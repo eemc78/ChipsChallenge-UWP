@@ -6,7 +6,7 @@ import chipschallenge.Buttons;
 /**
  * Moving from brown button
  */
-public class BrownButtonFrom extends BlockReaction {
+public class BrownButtonFrom extends NoSlipReaction {
 
     private BrownButtonFrom() {
     }

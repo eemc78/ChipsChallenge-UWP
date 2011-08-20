@@ -3,7 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.Inventory.Key;
 
-public class RedLockTo extends BlockReaction {
+public class RedLockTo extends NoSlipReaction {
 
     private RedLockTo() {
     }

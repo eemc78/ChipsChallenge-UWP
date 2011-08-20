@@ -37,7 +37,8 @@ public class IceCornerTo extends BlockReaction {
                     force = m == Moves.LEFT ? Moves.DOWN : Moves.UP;
                     break;
             }
-            game().addForcedMove(moving, force);
+            game().removeForcedMove(moving);
+            moving.setFacing(force);
         }
     }
 
@@ -55,5 +56,10 @@ public class IceCornerTo extends BlockReaction {
                 return m == Moves.LEFT || m == Moves.DOWN;
         }
         return false;
+    }
+
+    @Override
+    public boolean causesSlip(Block moving, Block standing) {
+        return !(moving.isChip() && hasBoots(Boots.ICESKATES));
     }
 }

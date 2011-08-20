@@ -5,7 +5,7 @@ import chipschallenge.Block;
 /**
  * Move to chip
  */
-public class ChipTo extends BlockReaction {
+public class ChipTo extends NoSlipReaction {
 
     private ChipTo() {
     }

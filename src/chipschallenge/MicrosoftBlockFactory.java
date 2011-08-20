@@ -38,8 +38,8 @@ public class MicrosoftBlockFactory extends BlockFactory {
         Block ret = null;
         BlockTickBehavior nullTick = NullTickBehavior.getInstance();
         ButtonBehavior nullButton = NullButtonBehavior.getInstance();
-        BlockReaction canMove = CanMoveBlockReaction.getInstance();
-        BlockReaction cannotMove = CannotMoveBlockReaction.getInstance();
+        BlockReaction canMove = CanMove.getInstance();
+        BlockReaction cannotMove = CannotMove.getInstance();
         switch (type) {
             case BLOB:
                 ret = new Block(type, facing, BlobTickBehavior.getInstance(), canMove, CreatureTo.getInstance(), nullButton);

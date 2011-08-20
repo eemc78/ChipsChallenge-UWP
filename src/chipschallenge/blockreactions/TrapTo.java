@@ -2,7 +2,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 
-public class TrapTo extends BlockReaction {
+public class TrapTo extends NoSlipReaction {
 
     private TrapTo() {
     }

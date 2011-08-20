@@ -7,7 +7,7 @@ import chipschallenge.SoundPlayer.sounds;
 /**
  * Move to exit
  */
-public class ExitTo extends BlockReaction {
+public class ExitTo extends NoSlipReaction {
 
     private ExitTo() {
     }

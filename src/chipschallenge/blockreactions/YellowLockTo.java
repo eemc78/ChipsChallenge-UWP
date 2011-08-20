@@ -2,7 +2,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.Inventory.Key;
-public class YellowLockTo extends BlockReaction {
+public class YellowLockTo extends NoSlipReaction {
 
     private YellowLockTo() {
     }

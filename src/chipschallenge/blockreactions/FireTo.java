@@ -7,7 +7,7 @@ import chipschallenge.Inventory.Boots;
 /**
  * Move to fire
  */
-public class FireTo extends BlockReaction {
+public class FireTo extends NoSlipReaction {
 
     private FireTo() {
     }

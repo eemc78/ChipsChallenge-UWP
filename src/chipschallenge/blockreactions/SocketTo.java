@@ -6,7 +6,7 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.SoundPlayer.sounds;
 
 
-public class SocketTo extends BlockReaction {
+public class SocketTo extends NoSlipReaction {
 
     private SocketTo() {}
     private static SocketTo mInstance = null;

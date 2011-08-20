@@ -5,7 +5,7 @@ import chipschallenge.Block.Type;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 
-public class SuctionbootsTo extends BlockReaction {
+public class SuctionbootsTo extends NoSlipReaction {
 
     private SuctionbootsTo() {
     }

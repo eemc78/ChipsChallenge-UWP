@@ -5,7 +5,7 @@ import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.Move.Moves;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.blockreactions.BlockReaction;
-import chipschallenge.blockreactions.CanMoveBlockReaction;
+import chipschallenge.blockreactions.canMoveNoSlip;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 import java.awt.Image;
 import java.awt.Point;
@@ -19,8 +19,8 @@ public class Block {
     private Type mType;
     private Move.Moves mFacing;
     private BlockTickBehavior mTickBehavior = NullTickBehavior.getInstance();
-    private BlockReaction mFrom = CanMoveBlockReaction.getInstance();
-    private BlockReaction mTo = CanMoveBlockReaction.getInstance();
+    private BlockReaction mFrom = canMoveNoSlip.getInstance();
+    private BlockReaction mTo = canMoveNoSlip.getInstance();
     private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
     private boolean forced = false;
 
@@ -172,12 +172,14 @@ public class Block {
 
     public boolean move(Moves direction) throws BlockContainerFullException {
         //setFacing(direction);
-        return Game.getInstance().getLevel().moveBlock(this, direction, false);
+        return Game.getInstance().getLevel().moveBlock(this, direction, false, false);
     }
 
     public void destroy() {
         clearReactions();
-        Game.getInstance().removeMovingBlock(this);
+        Creatures.removeCreature(this);
+        Game.getInstance().removeForcedMove(this);
+        //Game.getInstance().removeMovingBlock(this);
         Game.getInstance().getLevel().removeBlock(this);
     }
 

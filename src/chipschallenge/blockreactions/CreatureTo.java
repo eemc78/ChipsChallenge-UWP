@@ -5,7 +5,7 @@ import chipschallenge.Block;
 /**
  * Move to creature
  */
-public class CreatureTo extends BlockReaction {
+public class CreatureTo extends NoSlipReaction {
 
     private CreatureTo() {
     }

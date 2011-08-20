@@ -7,7 +7,7 @@ import chipschallenge.Inventory.Key;
 /**
  * Moving to blue key
  */
-public class BlueKeyTo extends BlockReaction {
+public class BlueKeyTo extends NoSlipReaction {
 
     private BlueKeyTo() {
     }

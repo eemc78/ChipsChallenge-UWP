@@ -7,7 +7,7 @@ import chipschallenge.SoundPlayer.sounds;
 /**
  * Moving to a Blue Button
  */
-public class BlueButtonTo extends BlockReaction {
+public class BlueButtonTo extends NoSlipReaction {
 
     private BlueButtonTo() {
     }

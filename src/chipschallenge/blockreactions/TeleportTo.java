@@ -11,7 +11,7 @@ import java.awt.Point;
 /**
  * Moving to teleport
  */
-public class TeleportTo extends BlockReaction {
+public class TeleportTo extends SlipReaction {
 
     private TeleportTo() {
     }
@@ -45,7 +45,6 @@ public class TeleportTo extends BlockReaction {
                 sound().playSound(sounds.TELEPORT);
             }
         }
-        game().addForcedMove(moving, moving.getFacing());
     }
 
     public boolean canMove(Block moving, Block standing) {

@@ -7,7 +7,7 @@ import chipschallenge.SoundPlayer.sounds;
 /**
  * Moving to brown button
  */
-public class BrownButtonTo extends BlockReaction {
+public class BrownButtonTo extends NoSlipReaction {
 
     private BrownButtonTo() {
     }

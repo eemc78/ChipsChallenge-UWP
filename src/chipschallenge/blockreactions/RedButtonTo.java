@@ -4,7 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Buttons;
 import chipschallenge.SoundPlayer.sounds;
 
-public class RedButtonTo extends BlockReaction {
+public class RedButtonTo extends NoSlipReaction {
 
     private RedButtonTo() {
     }

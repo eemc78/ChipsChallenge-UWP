@@ -8,5 +8,6 @@ build.xml
 manifest.mf
 build-before-profiler.xml
 CHIPS.DAT
+slidedelay.dat
 *.MID
 *.WAV

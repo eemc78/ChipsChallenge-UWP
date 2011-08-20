@@ -72,4 +72,7 @@ public abstract class BlockReaction {
     public abstract void react(Block moving, Block standing) throws BlockContainerFullException;
 
     public abstract boolean canMove(Block moving, Block standing);
+
+    public abstract boolean causesSlip(Block moving, Block standing);
+
 }

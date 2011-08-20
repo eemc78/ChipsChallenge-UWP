@@ -6,7 +6,7 @@ import chipschallenge.Inventory.Boots;
 /**
  * Move to boots
  */
-public class BootsTo extends BlockReaction {
+public class BootsTo extends NoSlipReaction {
 
     private BootsTo() {
     }

@@ -7,7 +7,7 @@ import chipschallenge.BlockContainerFullException;
 import chipschallenge.SoundPlayer.sounds;
 
 
-public class ComputerChipTo extends BlockReaction {
+public class ComputerChipTo extends NoSlipReaction {
 
     private ComputerChipTo() {}
     private static ComputerChipTo mInstance = null;

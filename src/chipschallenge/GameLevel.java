@@ -115,23 +115,24 @@ public class GameLevel implements ChipListener {
         return false;
     }
 
-    public boolean moveBlock(Block b, Moves direction, boolean ignoreFrom) throws BlockContainerFullException {
-        Moves facingBefore = b.getFacing();
+    public boolean moveBlock(Block b, Moves direction, boolean ignoreFrom, boolean ignoreTo) throws BlockContainerFullException {
+        Game g = Game.getInstance();
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
-        Move.updatePoint(to, direction);
+        if(direction != null) {
+            Move.updatePoint(to, direction);
+        }
         // Redraw even if move is impossible, because facing might have changed
-        Game.getInstance().moveHappened(from);
-        Game.getInstance().moveHappened(to);
-        if (ignoreFrom || (!b.isOnIce() || b.isChipWithIceSkates()) && !b.isOnCloner()) {
+        g.moveHappened(from);
+        g.moveHappened(to);
+        if (direction != null && (ignoreFrom || (!b.isOnIce() || b.isChipWithIceSkates()) && !b.isOnCloner())) {
             b.setFacing(direction);
         }
         if (to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
         }
-        if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
-            // Do not change facing if sliding            
-            if (mBoard[to.x][to.y].canMoveTo(b)) {
+        if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {         
+            if (ignoreTo || mBoard[to.x][to.y].canMoveTo(b)) {
 
                 //From reactions
                 mBoard[from.x][from.y].moveFrom(b);
@@ -144,14 +145,17 @@ public class GameLevel implements ChipListener {
                 //To reactions
                 mBoard[to.x][to.y].moveTo(b);
 
+                // Add or remove from sliplist
+                if (mBoard[to.x][to.y].causesSlipTo(b)) {
+                    g.addForcedMove(b, b.getFacing());
+                } else {                    
+                    g.removeForcedMove(b);
+                }
                 return true;
             } else {
                 return false;
             }
         } else {
-            if (!b.isChip()) {
-                b.setFacing(facingBefore);
-            }
             return false;
         }
 

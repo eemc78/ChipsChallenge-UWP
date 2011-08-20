@@ -4,7 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.Inventory.Key;
 
-public class YellowKeyTo extends BlockReaction {
+public class YellowKeyTo extends NoSlipReaction {
 
     private YellowKeyTo() {
     }

@@ -8,7 +8,7 @@ import chipschallenge.Inventory.Boots;
 /**
  * Move to fire boots
  */
-public class FirebootsTo extends BlockReaction {
+public class FirebootsTo extends NoSlipReaction {
 
     private FirebootsTo() {
     }
