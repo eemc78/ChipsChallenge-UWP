@@ -104,6 +104,10 @@ public class Block {
         return Game.getInstance().getLevel().getBlockContainer(this).getLower().isForceFloor();
     }
 
+    public boolean isOn(Type type) {
+        return Game.getInstance().getLevel().getBlockContainer(this).find(type) != null;
+    }
+
     public boolean isOnTrap() {
         return Game.getInstance().getLevel().getBlockContainer(this).find(Type.TRAP) != null;
     }

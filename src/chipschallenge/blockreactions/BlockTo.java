@@ -44,7 +44,10 @@ public class BlockTo extends BlockReaction {
              */
             Moves facingBefore = standing.getFacing();
             standing.setFacing(moving.getFacing());
-            boolean ret = standing.canMoveTo(moving.getFacing());
+            // We wanst to exclude ice corners here
+            boolean isOnIce = standing.isOn(Block.Type.ICE);
+            boolean ret = (isOnIce || !isOnIce && standing.canMoveFrom()) &&
+                           standing.canMoveTo(moving.getFacing());
             standing.setFacing(facingBefore);
             return ret;
         }
