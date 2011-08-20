@@ -10,8 +10,8 @@ import java.util.Map;
 
 public class SlipList implements Iterable<BlockMove> {
 
-    private LinkedList<BlockMove> slipList = new LinkedList<BlockMove>();
-    private Map<Block, BlockMove> blocksInSlipList = new HashMap<Block, BlockMove>();
+    private final LinkedList<BlockMove> slipList = new LinkedList<BlockMove>();
+    private final Map<Block, BlockMove> blocksInSlipList = new HashMap<Block, BlockMove>();
     Block last = null;
 
     public void add(Block b, Moves m) {

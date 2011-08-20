@@ -21,7 +21,7 @@ public class RandomForceFloorTo extends BlockReaction {
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
-            game().addForcedMove(moving, Move.getRandom());
+            game().addToSlipList(moving, Move.getRandom());
         }
     }
 

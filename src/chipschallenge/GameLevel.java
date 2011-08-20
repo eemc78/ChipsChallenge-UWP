@@ -146,10 +146,10 @@ public class GameLevel implements ChipListener {
                 
                 // Add or remove from sliplist
                 if (mBoard[to.x][to.y].causesSlipTo(b)) {
-                    g.addForcedMove(b, b.getFacing());
+                    g.addToSlipList(b, b.getFacing());
                 } else {
                     if(b.isForced() && !b.isOnTrap())
-                        g.removeForcedMove(b);
+                        g.removeFromSlipList(b);
                 }
 
                 //To reactions
@@ -158,6 +158,8 @@ public class GameLevel implements ChipListener {
                 return true;
             } else {
                 //System.out.println(mBoard[to.x][to.y]);
+                if(b.isForced() && !b.isOnTrap())
+                        g.removeFromSlipList(b);
                 return false;
             }
         } else {

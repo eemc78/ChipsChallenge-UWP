@@ -44,12 +44,12 @@ public class Game extends KeyAdapter {
     private static Collection<HintListener> hintListeners = new CopyOnWriteArrayList<HintListener>();
     private Map<Long, List<Block>> addBlockAtTick = new HashMap<Long, List<Block>>();
     private Map<Block, Point> addBlocks = new HashMap<Block, Point>();
-    private volatile SlipList slipList = new SlipList();
+    private final SlipList slipList = new SlipList();
     private BlockMove chipForced = null;
     private Block chip = null;
 
-
-    private Game() {}
+    private Game() {
+    }
 
     public static synchronized Game getInstance() {
         if (mGame == null) {
@@ -97,7 +97,7 @@ public class Game extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(!isStarted) {
+        if (!isStarted) {
             start();
         }
     }
@@ -160,22 +160,19 @@ public class Game extends KeyAdapter {
         }
     }
 
-
-
-    public void addForcedMove(Block b, Moves m) {
-        if(b.isChip()) {
-            chipForced = new BlockMove(b,m);
+    public void addToSlipList(Block b, Moves m) {
+        if (b.isChip()) {
+            chipForced = new BlockMove(b, m);
         } else {
-            if(!slipList.contains(b)) {
+            if (!slipList.contains(b)) {
                 slipList.add(b, m);
             }
         }
     }
 
-    public void removeForcedMove(Block b) {
+    public void removeFromSlipList(Block b) {
         slipList.remove(b);
     }
-
 
     private void addClonesQueued() throws BlockContainerFullException {
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
@@ -198,10 +195,9 @@ public class Game extends KeyAdapter {
     }
 
     private void forceCreatures() throws BlockContainerFullException {
-        int oldSize = slipList.size();
-        for(int i = 0; i < slipList.size(); i++) {
+        for (int i = 0; i < slipList.size(); i++) {
             BlockMove bm = slipList.get(i);
-            if (bm.block.isChip() || bm.block.isCreature() || bm.block.isBlock()) {
+            if (bm.block.isCreature() || bm.block.isBlock()) {
                 bm.block.setForced(true);
                 forceMove(bm.block, bm.move);
             }
@@ -210,13 +206,13 @@ public class Game extends KeyAdapter {
 
     private void forceMove(Block b, Moves m) throws BlockContainerFullException {
         if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
-            //System.out.println(b + " @ " + b.getPoint() + " " + m);
+            System.out.println(b + " @ " + b.getPoint() + " " + m);
             //System.exit(-1);
-            // Bounce
-            removeForcedMove(b);
+            //Bounce
+            //removeFromSlipList(b);
+            b.setFacing(Move.reverse(m));
             b.setForced(false);
-            b.setFacing(Move.reverse(b.getFacing()));
-            mLevel.moveBlock(b, b.getFacing(), true, true);
+            mLevel.moveBlock(b, null, true, true);
         }
     }
 
@@ -251,14 +247,16 @@ public class Game extends KeyAdapter {
         mTickCount++;
         chip.tick();
         addClonesQueued();
-        Creatures.tick();        
+        Creatures.tick();
         forceChip();
         forceCreatures();
-        checkRepaint();      
-        if (dead) 
+        checkRepaint();
+        if (dead) {
             restart();
-        if (levelComplete)
+        }
+        if (levelComplete) {
             levelComplete();
+        }
         //System.exit(-1);
     }
 

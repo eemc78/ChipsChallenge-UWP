@@ -37,7 +37,7 @@ public class IceCornerTo extends BlockReaction {
                     force = m == Moves.LEFT ? Moves.DOWN : Moves.UP;
                     break;
             }
-            game().removeForcedMove(moving);
+            //game().removeFromSlipList(moving);
             moving.setFacing(force);
         }
     }

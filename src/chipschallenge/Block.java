@@ -178,7 +178,7 @@ public class Block {
     public void destroy() {
         clearReactions();
         Creatures.removeCreature(this);
-        Game.getInstance().removeForcedMove(this);
+        Game.getInstance().removeFromSlipList(this);
         //Game.getInstance().removeMovingBlock(this);
         Game.getInstance().getLevel().removeBlock(this);
     }

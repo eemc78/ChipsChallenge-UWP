@@ -24,7 +24,7 @@ public class BlockTo extends NoSlipReaction {
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (moving.isChip()) {
             //standing.move(moving.getFacing());
-            game().removeForcedMove(standing);
+            game().removeFromSlipList(standing);
             level().moveBlock(standing, moving.getFacing(), true, false);
         }
     }
