@@ -143,9 +143,7 @@ public class GameLevel implements ChipListener {
                 blocks.put(b, to);
                 mBoard[to.x][to.y].push(b);
 
-                //To reactions
-                mBoard[to.x][to.y].moveTo(b);
-
+                
                 // Add or remove from sliplist
                 if (mBoard[to.x][to.y].causesSlipTo(b)) {
                     g.addForcedMove(b, b.getFacing());
@@ -153,6 +151,10 @@ public class GameLevel implements ChipListener {
                     if(b.isForced() && !b.isOnTrap())
                         g.removeForcedMove(b);
                 }
+
+                //To reactions
+                mBoard[to.x][to.y].moveTo(b);
+
                 return true;
             } else {
                 //System.out.println(mBoard[to.x][to.y]);
