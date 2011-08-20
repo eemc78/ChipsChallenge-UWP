@@ -20,8 +20,9 @@ public class CreatureTo extends NoSlipReaction {
 
     // Kills chip
     public void react(Block moving, Block standing) {
-        if (moving != standing) 
+        if (moving != standing) {
             die("Ooops! Look out for creatures!");
+        }
     }
 
     // Only chip can move

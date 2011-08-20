@@ -9,7 +9,7 @@ public class Creatures {
     private static int creatureTicks = 0;
     private static boolean blobMove = false;
 
-    public static Iterable<Block> getCreatures() {
+    public static List<Block> getCreatures() {
         return creatures;
     }
 

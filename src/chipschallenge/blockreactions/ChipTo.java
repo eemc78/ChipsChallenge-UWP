@@ -21,10 +21,11 @@ public class ChipTo extends NoSlipReaction {
     // All moving things kill chip
     public void react(Block moving, Block standing) {
         if (!moving.isChip()) {
-            if(moving.isBlock())
+            if (moving.isBlock()) {
                 die("Ooops! Watch out for moving blocks!");
-            else
+            } else {
                 die("Ooops! Look out for creatures!");
+            }
         }
     }
 

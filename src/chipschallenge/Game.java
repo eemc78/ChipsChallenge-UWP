@@ -46,6 +46,7 @@ public class Game extends KeyAdapter {
     private Map<Block, Point> addBlocks = new HashMap<Block, Point>();
     private volatile SlipList slipList = new SlipList();
     private BlockMove chipForced = null;
+    private Block chip = null;
 
 
     private Game() {}
@@ -60,6 +61,7 @@ public class Game extends KeyAdapter {
     public void clearStuff() {
         mTickCount = 0;
         chipForced = null;
+        chip = null;
         Buttons.clear();
         Creatures.clear();
         Teleports.clear();
@@ -83,6 +85,7 @@ public class Game extends KeyAdapter {
         clearStuff();
         mLevelNumber = n;
         mLevel = mLevelFactory.getLevel(mLevelNumber);
+        chip = mLevel.getChip();
         for (NextLevelListener l : nextLevelListeners) {
             l.nextLevel(mLevel);
         }
@@ -131,11 +134,6 @@ public class Game extends KeyAdapter {
                 }
             }
         };
-        try {
-            firstTick();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
         tickTimer.schedule(tt, TIMER_TICK, TIMER_TICK);
         final int seconds = mLevel.getNumSeconds();
         if (seconds > 0) {
@@ -162,13 +160,7 @@ public class Game extends KeyAdapter {
         }
     }
 
-    public void addMovingBlock(Block l) {
-        movingBlocks.add(l);
-    }
 
-    public void removeMovingBlock(Block l) {
-        movingBlocks.remove(l);
-    }
 
     public void addForcedMove(Block b, Moves m) {
         if(b.isChip()) {
@@ -184,15 +176,6 @@ public class Game extends KeyAdapter {
         slipList.remove(b);
     }
 
-    public void firstTick() throws BlockContainerFullException {
-        mTickCount++;
-        mLevel.getChip().tick();
-        for (Block b : Creatures.getCreatures()) {
-            System.out.println(b + " " + b.getFacing() + " " + b.getPoint());
-            b.tick();
-        }
-        //System.exit(-1);
-    }
 
     private void addClonesQueued() throws BlockContainerFullException {
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
@@ -214,7 +197,7 @@ public class Game extends KeyAdapter {
         }
     }
 
-    private void performForced() throws BlockContainerFullException {
+    private void forceCreatures() throws BlockContainerFullException {
         int oldSize = slipList.size();
         for(int i = 0; i < slipList.size(); i++) {
             BlockMove bm = slipList.get(i);
@@ -227,12 +210,13 @@ public class Game extends KeyAdapter {
 
     private void forceMove(Block b, Moves m) throws BlockContainerFullException {
         if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
-            System.out.println(b + " @ " + b.getPoint() + " " + m);
-            System.exit(-1);
+            //System.out.println(b + " @ " + b.getPoint() + " " + m);
+            //System.exit(-1);
             // Bounce
             removeForcedMove(b);
+            b.setForced(false);
             b.setFacing(Move.reverse(b.getFacing()));
-            mLevel.moveBlock(b, null, true, true);
+            mLevel.moveBlock(b, b.getFacing(), true, true);
         }
     }
 
@@ -249,33 +233,28 @@ public class Game extends KeyAdapter {
         movesToCheck.clear();
     }
 
-    // Main "loop"
-    public void tick() throws BlockContainerFullException {
-        mTickCount++;
+    public BlockMove getChipForced() {
+        return chipForced;
+    }
 
-        // Add cloned blocks from previos ticks
-        addClonesQueued();
-
-        // Move chip and possibly other blocks
-        for (Block b : movingBlocks)
-            b.tick();
-
-        if(chipForced != null) {
+    public void forceChip() throws BlockContainerFullException {
+        if (chipForced != null) {
             BlockMove cm = (BlockMove) chipForced.clone();
             chipForced = null;
             forceMove(cm.block, cm.move);
             mLevel.getChip().setForced(true);
         }
+    }
 
-        // Do forced moves
-        performForced();
-                                   
-        // Move creatures
-        Creatures.tick();
-                  
-        // Repaint if something moved within the viewport
-        checkRepaint();
-        
+    // Main "loop"
+    public void tick() throws BlockContainerFullException {
+        mTickCount++;
+        chip.tick();
+        addClonesQueued();
+        Creatures.tick();        
+        forceChip();
+        forceCreatures();
+        checkRepaint();      
         if (dead) 
             restart();
         if (levelComplete)
@@ -381,5 +360,9 @@ public class Game extends KeyAdapter {
         for (ChipListener l : chipListeners) {
             l.chipTaken();
         }
+    }
+
+    public void setChip(Block b) {
+        chip = b;
     }
 }
