@@ -38,6 +38,7 @@ public class SlipList implements Iterable<BlockMove>, Iterator<BlockMove> {
     public void clear() {
         slipList.clear();
         blocksInSlipList.clear();
+        iterator = slipList.iterator();
     }
 
     public void remove() {

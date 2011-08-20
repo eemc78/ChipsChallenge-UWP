@@ -148,8 +148,9 @@ public class GameLevel implements ChipListener {
                 // Add or remove from sliplist
                 if (mBoard[to.x][to.y].causesSlipTo(b)) {
                     g.addForcedMove(b, b.getFacing());
-                } else {                    
-                    g.removeForcedMove(b);
+                } else {
+                    if(!b.isOnTrap())
+                        g.removeForcedMove(b);
                 }
                 return true;
             } else {

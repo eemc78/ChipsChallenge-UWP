@@ -59,6 +59,7 @@ public class Game extends KeyAdapter {
 
     public void clearStuff() {
         mTickCount = 0;
+        chipForced = null;
         Buttons.clear();
         Creatures.clear();
         Teleports.clear();
@@ -251,9 +252,9 @@ public class Game extends KeyAdapter {
 
         // Add cloned blocks from previos ticks
         addClonesQueued();
-        
+
         // Move chip and possibly other blocks
-        for (Block b : movingBlocks) 
+        for (Block b : movingBlocks)
             b.tick();
 
         if(chipForced != null) {
@@ -262,7 +263,7 @@ public class Game extends KeyAdapter {
             forceMove(cm.block, cm.move);
             mLevel.getChip().setForced(true);
         }
-
+                
         // Do forced moves
         performForced();
              
