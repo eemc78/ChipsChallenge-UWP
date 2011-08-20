@@ -44,7 +44,7 @@ public class Game extends KeyAdapter {
     private static Collection<HintListener> hintListeners = new CopyOnWriteArrayList<HintListener>();
     private Map<Long, List<Block>> addBlockAtTick = new HashMap<Long, List<Block>>();
     private Map<Block, Point> addBlocks = new HashMap<Block, Point>();
-    private SlipList slipList = new SlipList();
+    private volatile SlipList slipList = new SlipList();
     private BlockMove chipForced = null;
 
 
@@ -188,10 +188,10 @@ public class Game extends KeyAdapter {
         mTickCount++;
         mLevel.getChip().tick();
         for (Block b : Creatures.getCreatures()) {
-            if(b.isOnIce()) {
-                mLevel.getBlockContainer(b).moveTo(b);
-            }
-        }        
+            System.out.println(b + " " + b.getFacing() + " " + b.getPoint());
+            b.tick();
+        }
+        //System.exit(-1);
     }
 
     private void addClonesQueued() throws BlockContainerFullException {
@@ -215,6 +215,7 @@ public class Game extends KeyAdapter {
     }
 
     private void performForced() throws BlockContainerFullException {
+        int oldSize = slipList.size();
         for(int i = 0; i < slipList.size(); i++) {
             BlockMove bm = slipList.get(i);
             if (bm.block.isChip() || bm.block.isCreature() || bm.block.isBlock()) {
@@ -226,6 +227,8 @@ public class Game extends KeyAdapter {
 
     private void forceMove(Block b, Moves m) throws BlockContainerFullException {
         if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
+            System.out.println(b + " @ " + b.getPoint() + " " + m);
+            System.exit(-1);
             // Bounce
             removeForcedMove(b);
             b.setFacing(Move.reverse(b.getFacing()));
@@ -247,7 +250,7 @@ public class Game extends KeyAdapter {
     }
 
     // Main "loop"
-    public void tick() throws BlockContainerFullException {        
+    public void tick() throws BlockContainerFullException {
         mTickCount++;
 
         // Add cloned blocks from previos ticks
@@ -263,15 +266,13 @@ public class Game extends KeyAdapter {
             forceMove(cm.block, cm.move);
             mLevel.getChip().setForced(true);
         }
-                
+
         // Do forced moves
         performForced();
-             
+                                   
         // Move creatures
         Creatures.tick();
-
-        
-      
+                  
         // Repaint if something moved within the viewport
         checkRepaint();
         
@@ -279,6 +280,7 @@ public class Game extends KeyAdapter {
             restart();
         if (levelComplete)
             levelComplete();
+        //System.exit(-1);
     }
 
     public void die(String msg, sounds s) {
@@ -315,7 +317,7 @@ public class Game extends KeyAdapter {
         this.mLevelFactory = lf;
     }
 
-    public void moveHappened(Point from) {
+    public void moveOccured(Point from) {
         movesToCheck.add(from);
     }
 

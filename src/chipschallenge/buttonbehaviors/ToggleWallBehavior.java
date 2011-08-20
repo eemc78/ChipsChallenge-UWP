@@ -22,7 +22,7 @@ public class ToggleWallBehavior implements ButtonBehavior {
 
     public void buttonDown(Block listener, Block button) {
         if (button.isA(Type.GREENBUTTON)) {
-            Game.getInstance().moveHappened(listener.getPoint());
+            Game.getInstance().moveOccured(listener.getPoint());
             if (listener.isA(Block.Type.TOGGLEWALLOPEN)) {
                 listener.replace(Block.create(Type.TOGGLEWALLCLOSED));
             } else if (listener.isA(Type.TOGGLEWALLCLOSED)) {

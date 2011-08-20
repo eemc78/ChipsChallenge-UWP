@@ -24,6 +24,6 @@ public class IceFrom extends NoSlipReaction {
 
     @Override
     public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() && hasBoots(Boots.ICESKATES);
+        return !moving.isForced() || moving.isChip() && hasBoots(Boots.ICESKATES);
     }
 }

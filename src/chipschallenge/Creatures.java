@@ -1,15 +1,15 @@
 package chipschallenge;
 
-import java.util.Collection;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Creatures {
 
-    private static Collection<Block> creatures = new CopyOnWriteArrayList<Block>();
+    private static List<Block> creatures = new ArrayList<Block>();
     private static int creatureTicks = 0;
     private static boolean blobMove = false;
 
-    public static Collection<Block> getCreatures() {
+    public static Iterable<Block> getCreatures() {
         return creatures;
     }
 

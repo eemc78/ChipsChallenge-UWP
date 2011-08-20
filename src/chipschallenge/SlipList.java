@@ -8,11 +8,10 @@ import java.util.LinkedList;
 import java.util.Map;
 
 
-public class SlipList implements Iterable<BlockMove>, Iterator<BlockMove> {
+public class SlipList implements Iterable<BlockMove> {
 
     private LinkedList<BlockMove> slipList = new LinkedList<BlockMove>();
     private Map<Block, BlockMove> blocksInSlipList = new HashMap<Block, BlockMove>();
-    private Iterator<BlockMove> iterator = slipList.iterator();
     Block last = null;
 
     public void add(Block b, Moves m) {
@@ -38,37 +37,15 @@ public class SlipList implements Iterable<BlockMove>, Iterator<BlockMove> {
     public void clear() {
         slipList.clear();
         blocksInSlipList.clear();
-        iterator = slipList.iterator();
-    }
-
-    public void remove() {
-        iterator.remove();
-        if(last != null) {
-            BlockMove bm = blocksInSlipList.get(last);
-            blocksInSlipList.remove(last);
-            last = null;
-        } else {
-            throw new IllegalStateException();
-        }
     }
 
     public Iterator<BlockMove> iterator() {
-        return this;
-    }
-
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
-
-    public BlockMove next() {
-        BlockMove bm = iterator.next();
-        last = bm.block;
-        return bm;
+        return slipList.iterator();
     }
 
     public boolean contains(Block b) {
         return blocksInSlipList.containsKey(b);
     }
-
+    
 }
 

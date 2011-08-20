@@ -123,8 +123,8 @@ public class GameLevel implements ChipListener {
             Move.updatePoint(to, direction);
         }
         // Redraw even if move is impossible, because facing might have changed
-        g.moveHappened(from);
-        g.moveHappened(to);
+        g.moveOccured(from);
+        g.moveOccured(to);
         if (direction != null && (ignoreFrom || (!b.isOnIce() || b.isChipWithIceSkates()) && !b.isOnCloner())) {
             b.setFacing(direction);
         }
@@ -149,11 +149,12 @@ public class GameLevel implements ChipListener {
                 if (mBoard[to.x][to.y].causesSlipTo(b)) {
                     g.addForcedMove(b, b.getFacing());
                 } else {
-                    if(!b.isOnTrap())
+                    if(b.isForced() && !b.isOnTrap())
                         g.removeForcedMove(b);
                 }
                 return true;
             } else {
+                //System.out.println(mBoard[to.x][to.y]);
                 return false;
             }
         } else {
