@@ -164,7 +164,7 @@ public class Game extends KeyAdapter {
         if (b.isChip()) {
             chipForced = new BlockMove(b, m);
         } else {
-            slipList.add(b, m);
+            slipList.put(b, m);
         }
     }
 
@@ -193,8 +193,7 @@ public class Game extends KeyAdapter {
 
 
     private void forceCreatures() throws BlockContainerFullException {
-        for (int i = 0; i < slipList.size(); i++) {
-            BlockMove bm = slipList.get(i);
+        for (BlockMove bm : slipList) {
             if (bm.block.isCreature() || bm.block.isBlock()) {
                 bm.block.setForced(true);
                 forceMove(bm.block, bm.move);
