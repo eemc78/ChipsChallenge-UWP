@@ -164,9 +164,7 @@ public class Game extends KeyAdapter {
         if (b.isChip()) {
             chipForced = new BlockMove(b, m);
         } else {
-            if (!slipList.contains(b)) {
-                slipList.add(b, m);
-            }
+            slipList.add(b, m);
         }
     }
 

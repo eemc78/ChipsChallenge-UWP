@@ -20,7 +20,7 @@ public class IceCornerTo extends BlockReaction {
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        // Nothing
+        // Nothin
     }
 
     @Override
@@ -41,7 +41,9 @@ public class IceCornerTo extends BlockReaction {
 
     @Override
     public Moves causesSlip(Block moving, Block standing) {
-        if (!(moving.isChip() && hasBoots(Boots.ICESKATES))) {
+        if (moving.isChip() && hasBoots(Boots.ICESKATES)) {
+            return null;
+        } else {
             Moves m = standing.getFacing();
             Moves force = null;
             switch (moving.getFacing()) {
@@ -59,8 +61,6 @@ public class IceCornerTo extends BlockReaction {
                     break;
             }
             return force;
-        } else {
-            return null;
-        }
+        } 
     }
 }
