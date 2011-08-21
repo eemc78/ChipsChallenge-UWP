@@ -21,7 +21,6 @@ public class CloneBoss extends CloneBehavior {
         if (boss == null) {
             throw new CloneNotSupportedException("No boss");
         } else {
-            System.out.println(boss + " " + boss.getFacing());
             return cloneTo(original, boss.getFacing());
         }
     }

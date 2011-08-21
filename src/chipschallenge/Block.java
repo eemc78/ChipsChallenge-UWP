@@ -196,8 +196,13 @@ public class Block {
 
     public void destroy() {
         clearReactions();
-        Creatures.removeCreature(this);
-        Game.getInstance().removeFromSlipList(this);
+        boolean creature = isCreature();
+        if (creature) {
+            Creatures.removeCreature(this);
+        }
+        if (creature || isBlock()) {
+            Game.getInstance().removeFromSlipList(this);
+        }
         //Game.getInstance().removeMovingBlock(this);
         Game.getInstance().getLevel().removeBlock(this);
     }

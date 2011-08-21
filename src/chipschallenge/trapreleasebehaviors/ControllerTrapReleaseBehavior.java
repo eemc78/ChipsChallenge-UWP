@@ -2,7 +2,6 @@ package chipschallenge.trapreleasebehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.Creatures;
-import chipschallenge.Move.Moves;
 
 public class ControllerTrapReleaseBehavior implements TrapReleaseBehavior {
 

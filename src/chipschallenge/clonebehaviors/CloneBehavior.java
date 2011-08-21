@@ -33,7 +33,7 @@ public abstract class CloneBehavior {
                     g.getLevel().moveBlock(clone, null, true, true);
                     break;
                 default:
-                    g.addBlockDelay(clone, p, 3);
+                    g.addBlockDelay(clone, p, 2);
                     break;
             }
         } catch(BlockContainerFullException ex) {

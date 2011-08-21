@@ -3,13 +3,9 @@ package chipschallenge.buttonbehaviors;
 import chipschallenge.Block;
 import chipschallenge.Block.Type;
 import chipschallenge.BlockContainer;
-import chipschallenge.BlockContainerFullException;
 import chipschallenge.Creatures;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
-import java.awt.Point;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * If the button was red, clone what's on top of the listener
@@ -34,7 +30,7 @@ public class CloneMachineBehavior implements ButtonBehavior {
             BlockContainer bc = gl.getBlockContainer(listener);
             // Take the first creature and clone it
             Block b = bc.getUpper();
-
+            
                 /*
                 if (b.isCreature() || b.isA(Type.BLOCK)) {
                 BlockContainer moveTo = gl.getBlockContainer(b, b.getFacing());
@@ -60,6 +56,8 @@ public class CloneMachineBehavior implements ButtonBehavior {
                  */
             try {
                 b.clone();
+                if(b.isCreature())
+                    Creatures.setBoss(b);
             } catch (CloneNotSupportedException ex) {
                 //System.out.println("Couldn't clone " + b);
                 // Ignore

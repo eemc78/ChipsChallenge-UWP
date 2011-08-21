@@ -19,7 +19,12 @@ public class Creatures {
     }
 
     public static Block getController(Block b) {
-        return creatures.get(creatures.indexOf(b)+1);
+        int index = creatures.indexOf(b);
+        if (index == 0) {
+            return null;
+        } else {
+            return creatures.get(creatures.indexOf(b) - 1);
+        }
     }
 
     public static void clear() {
@@ -28,6 +33,10 @@ public class Creatures {
 
     public static void addCreature(Block b) {
         creatures.add(b);
+        //boss = b;
+    }
+
+    public static void setBoss(Block b) {
         boss = b;
     }
 

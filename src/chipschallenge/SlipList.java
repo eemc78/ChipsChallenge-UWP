@@ -17,7 +17,7 @@ public class SlipList implements Iterable<BlockMove> {
     public void add(Block b, Moves m) {
             BlockMove bm = new BlockMove(b, m);
             BlockMove already = blocksInSlipList.get(b);
-            if(already != null) {
+            if(already != null) { 
                 blocksInSlipList.put(b, bm);
                 int index = slipList.indexOf(already);
                 slipList.remove(already);

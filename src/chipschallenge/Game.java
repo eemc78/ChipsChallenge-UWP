@@ -204,13 +204,14 @@ public class Game extends KeyAdapter {
 
     private void forceMove(Block b, Moves m) throws BlockContainerFullException {
         if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
-            System.out.println(b + " @ " + b.getPoint() + " " + m);
-            //System.exit(-1);
-            //Bounce
-            //removeFromSlipList(b);
-            b.setFacing(Move.reverse(m));
-            b.setForced(false);
-            mLevel.moveBlock(b, null, true, true);
+            if (!b.isOnTrap()) {
+                //System.exit(-1);
+                //Bounce
+                //removeFromSlipList(b);
+                b.setFacing(Move.reverse(m));
+                b.setForced(false);
+                mLevel.moveBlock(b, null, true, true);
+            }
         }
     }
 
@@ -243,8 +244,8 @@ public class Game extends KeyAdapter {
     // Main "loop"
     public void tick() throws BlockContainerFullException {
         mTickCount++;
-        chip.tick();      
-        Creatures.tick();      
+        Creatures.tick();
+        chip.tick();                  
         forceChip();
         forceCreatures();
         checkRepaint();

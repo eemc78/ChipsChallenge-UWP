@@ -25,7 +25,7 @@ public class ForceFloorTo extends BlockReaction {
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
         if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
-            moving.setFacing(standing.getFacing());
+            //moving.setFacing(standing.getFacing());
         }
     }
 
