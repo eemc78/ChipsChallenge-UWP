@@ -46,7 +46,7 @@ public class GameLevel implements ChipListener {
         //if(b.isChip()) {x = 30; y = 1;}
         BlockContainer bc = getBlockContainer(x, y);
         if (bc != null) {
-            if (b.isChip()) {
+            if (b.isChip()) { System.out.println("Chip was indeed added");
                 chip = b;
             }
             if (b.isA(Block.Type.TELEPORT)) {

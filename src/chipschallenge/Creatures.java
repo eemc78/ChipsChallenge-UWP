@@ -8,9 +8,18 @@ public class Creatures {
     private static List<Block> creatures = new ArrayList<Block>();
     private static int creatureTicks = 0;
     private static boolean blobMove = false;
+    private static Block boss = null;
 
     public static List<Block> getCreatures() {
         return creatures;
+    }
+
+    public static Block getBoss() {
+        return boss;
+    }
+
+    public static Block getController(Block b) {
+        return creatures.get(creatures.indexOf(b)+1);
     }
 
     public static void clear() {
@@ -19,6 +28,7 @@ public class Creatures {
 
     public static void addCreature(Block b) {
         creatures.add(b);
+        boss = b;
     }
 
     public static void removeCreature(Block b) {
@@ -30,7 +40,7 @@ public class Creatures {
         if (creatureTicks == 0) {
             blobMove = !blobMove;
             for (Block b : creatures) {
-                if (blobMove || !(b.isA(Block.Type.BLOB) || b.isA(Block.Type.TEETH))) {
+                if (!b.isTrapped() && (blobMove || !(b.isA(Block.Type.BLOB) || b.isA(Block.Type.TEETH)))) {
                     b.tick();
                 }
             }

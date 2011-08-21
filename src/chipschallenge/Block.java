@@ -9,6 +9,8 @@ import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.blockreactions.BlockReaction;
 import chipschallenge.blockreactions.canMoveNoSlip;
 import chipschallenge.tickbehaviors.NullTickBehavior;
+import chipschallenge.trapreleasebehaviors.DefaultTrapReleaseBehavior;
+import chipschallenge.trapreleasebehaviors.TrapReleaseBehavior;
 import java.awt.Image;
 import java.awt.Point;
 
@@ -25,7 +27,9 @@ public class Block {
     private BlockReaction mTo = canMoveNoSlip.getInstance();
     private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
     private CloneBehavior mCloneBehavior = NullCloneBehavior.getInstance();
+    private TrapReleaseBehavior mTrapReleaseBehavior = DefaultTrapReleaseBehavior.getInstance();
     private boolean forced = false;
+    private boolean trapped = false;
 
     public static enum Type {
 
@@ -48,13 +52,22 @@ public class Block {
         mFacing = m;
     }
 
-    public Block(Type t, Moves m, BlockTickBehavior btb, BlockReaction from, BlockReaction to, ButtonBehavior bb, CloneBehavior cb) {
+    public Block(Type t,
+            Moves m,
+            BlockTickBehavior btb,
+            BlockReaction from,
+            BlockReaction to,
+            ButtonBehavior bb,
+            CloneBehavior cb,
+            TrapReleaseBehavior trb) {
         mType = t;
         mFacing = m;
         mTickBehavior = btb;
         mFrom = from;
         mTo = to;
         mButtonBehavior = bb;
+        mCloneBehavior = cb;
+        mTrapReleaseBehavior = trb;
     }
 
     public static Block create(Type t, Moves d) {
@@ -116,12 +129,11 @@ public class Block {
     }
 
     public boolean isTrapped() {
-        BlockContainer bc = Game.getInstance().getLevel().getBlockContainer(this);
-        Block trap = bc.find(Type.TRAP);
-        if(trap == null)
-            return false;
-        else
-            return !bc.canMoveFrom(this); // TODO: Check only the trap
+        return trapped;
+    }
+
+    public void setTrapped(boolean t) {
+        trapped = t;
     }
 
     public boolean isOnCloner() {
@@ -231,6 +243,10 @@ public class Block {
         return Game.getInstance().getLevel().getPoint(this);
     }
 
+    public BlockContainer getBlockContainer() {
+        return Game.getInstance().getLevel().getBlockContainer(this);
+    }
+
     public void replace(Block b) {
         Game.getInstance().getLevel().replaceBlock(this, b);
     }
@@ -246,5 +262,9 @@ public class Block {
 
     public boolean isForced() {
         return forced;
+    }
+
+    public void releaseFromTrap() {
+        mTrapReleaseBehavior.releaseFromTrap(this);
     }
 }

@@ -4,7 +4,7 @@ package chipschallenge.clonebehaviors;
 import chipschallenge.Block;
 
 
-public class NullCloneBehavior implements CloneBehavior {
+public class NullCloneBehavior extends CloneBehavior {
 
     private NullCloneBehavior() {
     }
