@@ -17,10 +17,9 @@ public class CloneBoss extends CloneBehavior {
     }
 
     public Block cloneIt(Block original) throws CloneNotSupportedException {
-        System.out.println("Clone Irene Boss");
         Block boss = Creatures.getBoss();
         if (boss == null) {
-            throw new CloneNotSupportedException("No controller");
+            throw new CloneNotSupportedException("No boss");
         } else {
             System.out.println(boss + " " + boss.getFacing());
             return cloneTo(original, boss.getFacing());

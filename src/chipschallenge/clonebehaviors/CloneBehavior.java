@@ -25,13 +25,19 @@ public abstract class CloneBehavior {
         Point p = (Point)original.getPoint().clone();
         Move.updatePoint(p, direction);
         try {
-            //g.getLevel().addBlock(p.x, p.y, clone, 2);
-            g.addBlockDelay(clone, p, 5);
-            if(clone.isCreature()) {
-                //Creatures.addCreature(clone);
+            switch(clone.getType()) {
+                case BLOCK:
+                case BLOB:
+                case TEETH:
+                    g.getLevel().addBlock(p.x, p.y, clone, 2);
+                    g.getLevel().moveBlock(clone, null, true, true);
+                    break;
+                default:
+                    g.addBlockDelay(clone, p, 3);
+                    break;
             }
-        } catch (Exception ex) {
-            throw new CloneNotSupportedException(ex.getMessage());
+        } catch(BlockContainerFullException ex) {
+            // Ignore
         }
         return clone;
     }

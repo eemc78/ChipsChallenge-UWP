@@ -172,25 +172,25 @@ public class Game extends KeyAdapter {
         slipList.remove(b);
     }
 
-    private void addClonesQueued() throws BlockContainerFullException {
+    private void addClonesQueued() {
         List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
         if (blocksToAdd != null) {
             for (Block b : blocksToAdd) {
                 Point p = addBlocks.get(b);
-                Point dp = (Point) p.clone();
-                Move.updatePoint(dp, b.getFacing());
-                if (mLevel.getBlockContainer(dp.x, dp.y).canMoveTo(b)) {
+                try {
                     mLevel.addBlock(p.x, p.y, b, 2);
-                    mLevel.moveBlock(b, b.getFacing(), true, false);
                     if (b.isCreature()) {
                         Creatures.addCreature(b);
                     }
+                } catch (BlockContainerFullException ex) {
+                    // Perhaps save cloning for later
                 }
                 addBlocks.remove(b);
             }
-            blocksToAdd.clear();
+            addBlockAtTick.remove(mTickCount);
         }
     }
+
 
     private void forceCreatures() throws BlockContainerFullException {
         for (int i = 0; i < slipList.size(); i++) {
@@ -243,12 +243,12 @@ public class Game extends KeyAdapter {
     // Main "loop"
     public void tick() throws BlockContainerFullException {
         mTickCount++;
-        chip.tick();
-        addClonesQueued();
-        Creatures.tick();
+        chip.tick();      
+        Creatures.tick();      
         forceChip();
         forceCreatures();
         checkRepaint();
+        addClonesQueued();
         if (dead) {
             restart();
         }
