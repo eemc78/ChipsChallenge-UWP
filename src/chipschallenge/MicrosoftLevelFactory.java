@@ -318,7 +318,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
             int numSeconds = readUnsignedWord();
             int numChipsNeeded = readUnsignedWord();
             int mapDetail = readUnsignedWord();
-
+            
             ret = new GameLevel(32, 32, numChipsNeeded, numSeconds, levelNumber);
 
             int numberOfBytesLayer1 = readUnsignedWord();
@@ -326,10 +326,9 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
             int numberOfBytesLayer2 = readUnsignedWord();
             readLayer(ret, numberOfBytesLayer2, 0); // Layer 2, lower
-
             int numBytesOptional = readUnsignedWord();
             int numOptionalBytesRead = 0;
-
+            
             while (numOptionalBytesRead < numBytesOptional) {
 
                 int fieldType = readUnsignedByte();

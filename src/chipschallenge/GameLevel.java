@@ -46,7 +46,7 @@ public class GameLevel implements ChipListener {
         //if(b.isChip()) {x = 30; y = 1;}
         BlockContainer bc = getBlockContainer(x, y);
         if (bc != null) {
-            if (b.isChip()) { System.out.println("Chip was indeed added");
+            if (b.isChip()) {
                 chip = b;
             }
             if (b.isA(Block.Type.TELEPORT)) {
@@ -145,8 +145,9 @@ public class GameLevel implements ChipListener {
 
                 
                 // Add or remove from sliplist
-                if (mBoard[to.x][to.y].causesSlipTo(b)) {
-                    g.addToSlipList(b, b.getFacing());
+                Moves m = null;
+                if ((m = mBoard[to.x][to.y].causesSlipTo(b)) != null) {
+                    g.addToSlipList(b, m);
                 } else {
                     if(b.isForced() && !b.isOnTrap())
                         g.removeFromSlipList(b);

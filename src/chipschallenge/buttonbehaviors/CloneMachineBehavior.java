@@ -61,7 +61,7 @@ public class CloneMachineBehavior implements ButtonBehavior {
             try {
                 b.clone();
             } catch (CloneNotSupportedException ex) {
-                System.out.println("Couldn't clone " + b);
+                //System.out.println("Couldn't clone " + b);
                 // Ignore
             }
         }

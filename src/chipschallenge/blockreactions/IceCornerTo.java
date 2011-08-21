@@ -20,26 +20,7 @@ public class IceCornerTo extends BlockReaction {
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (!(moving.isChip() && hasBoots(Boots.ICESKATES))) {
-            Moves m = standing.getFacing();
-            Moves force = null;
-            switch (moving.getFacing()) {
-                case UP:
-                    force = m == Moves.UP ? Moves.RIGHT : Moves.LEFT;
-                    break;
-                case DOWN:
-                    force = m == Moves.DOWN ? Moves.LEFT : Moves.RIGHT;
-                    break;
-                case LEFT:
-                    force = m == Moves.UP ? Moves.DOWN : Moves.UP;
-                    break;
-                case RIGHT:
-                    force = m == Moves.LEFT ? Moves.DOWN : Moves.UP;
-                    break;
-            }
-            //game().removeFromSlipList(moving);
-            moving.setFacing(force);
-        }
+        // Nothing
     }
 
     @Override
@@ -59,7 +40,27 @@ public class IceCornerTo extends BlockReaction {
     }
 
     @Override
-    public boolean causesSlip(Block moving, Block standing) {
-        return !(moving.isChip() && hasBoots(Boots.ICESKATES));
+    public Moves causesSlip(Block moving, Block standing) {
+        if (!(moving.isChip() && hasBoots(Boots.ICESKATES))) {
+            Moves m = standing.getFacing();
+            Moves force = null;
+            switch (moving.getFacing()) {
+                case UP:
+                    force = m == Moves.UP ? Moves.RIGHT : Moves.LEFT;
+                    break;
+                case DOWN:
+                    force = m == Moves.DOWN ? Moves.LEFT : Moves.RIGHT;
+                    break;
+                case LEFT:
+                    force = m == Moves.UP ? Moves.DOWN : Moves.UP;
+                    break;
+                case RIGHT:
+                    force = m == Moves.LEFT ? Moves.DOWN : Moves.UP;
+                    break;
+            }
+            return force;
+        } else {
+            return null;
+        }
     }
 }

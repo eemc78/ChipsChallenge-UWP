@@ -1,5 +1,6 @@
 package chipschallenge;
 
+import chipschallenge.Move.Moves;
 import java.awt.Image;
 
 public class BlockContainer {
@@ -258,52 +259,54 @@ public class BlockContainer {
         return true;
     }
 
-    public boolean causesSlipTo(Block b) {
+    public Moves causesSlipTo(Block b) {
+        Moves m = null;
         if (lower != null) {
-            if (lower.getToReaction().causesSlip(b, lower)) {
-                return true;
+            if ((m = lower.getToReaction().causesSlip(b, lower)) != null) {
+                return m;
             }
         }
         if (upper != null) {
-            if (upper.getToReaction().causesSlip(b, upper)) {
-                return true;
+            if ((m = upper.getToReaction().causesSlip(b, upper)) != null) {
+                return m;
             }
         }
         if (visitorLow != null) {
-            if (visitorLow.getToReaction().causesSlip(b, visitorLow)) {
-                return true;
+            if ((m = visitorLow.getToReaction().causesSlip(b, visitorLow)) != null) {
+                return m;
             }
         }
         if (visitorHigh != null) {
-            if (visitorHigh.getToReaction().causesSlip(b, visitorHigh)) {
-                return true;
+            if ((m = visitorHigh.getToReaction().causesSlip(b, visitorHigh)) != null) {
+                return m;
             }
         }
-        return false;
+        return m;
     }
 
-    public boolean causesSlipFrom(Block b) {
+    public Moves causesSlipFrom(Block b) {
+        Moves m = null;
         if (lower != null) {
-            if (lower.getFromReaction().causesSlip(b, lower)) {
-                return true;
+            if ((m = lower.getFromReaction().causesSlip(b, lower)) != null) {
+                return m;
             }
         }
         if (upper != null) {
-            if (upper.getFromReaction().causesSlip(b, upper)) {
-                return true;
+            if ((m = upper.getFromReaction().causesSlip(b, upper)) != null) {
+                return m;
             }
         }
         if (visitorLow != null) {
-            if (visitorLow.getFromReaction().causesSlip(b, visitorLow)) {
-                return true;
+            if ((m = visitorLow.getFromReaction().causesSlip(b, visitorLow)) != null) {
+                return m;
             }
         }
         if (visitorHigh != null) {
-            if (visitorHigh.getFromReaction().causesSlip(b, visitorHigh)) {
-                return true;
+            if ((m = visitorHigh.getFromReaction().causesSlip(b, visitorHigh)) != null) {
+                return m;
             }
         }
-        return false;
+        return m;
     }
 
     public void moveFrom(Block b) throws BlockContainerFullException {

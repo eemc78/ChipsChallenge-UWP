@@ -7,6 +7,7 @@ package chipschallenge.clonebehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.Creatures;
 import chipschallenge.Game;
 import chipschallenge.Move;
 import chipschallenge.Move.Moves;
@@ -24,8 +25,12 @@ public abstract class CloneBehavior {
         Point p = (Point)original.getPoint().clone();
         Move.updatePoint(p, direction);
         try {
-            g.getLevel().addBlock(p.x, p.y, clone, 2);
-        } catch (BlockContainerFullException ex) {
+            //g.getLevel().addBlock(p.x, p.y, clone, 2);
+            g.addBlockDelay(clone, p, 5);
+            if(clone.isCreature()) {
+                //Creatures.addCreature(clone);
+            }
+        } catch (Exception ex) {
             throw new CloneNotSupportedException(ex.getMessage());
         }
         return clone;

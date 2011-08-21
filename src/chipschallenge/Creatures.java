@@ -1,11 +1,11 @@
 package chipschallenge;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Creatures {
 
-    private static List<Block> creatures = new ArrayList<Block>();
+    private static List<Block> creatures = new CopyOnWriteArrayList<Block>();
     private static int creatureTicks = 0;
     private static boolean blobMove = false;
     private static Block boss = null;

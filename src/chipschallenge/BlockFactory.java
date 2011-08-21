@@ -20,12 +20,16 @@ public abstract class BlockFactory {
             loadedBlocks.put(type, movesBlocks);
         }
         Block b;
+        /*
         try {
             b = movesBlocks.get(direction).clone();
         } catch (Exception ex) { // b == null or clone not supported
             b = createBlock(type, direction);
             movesBlocks.put(direction, b);
         }
+         */
+        b = createBlock(type, direction);
+        movesBlocks.put(direction, b);
         return b;
     }
 

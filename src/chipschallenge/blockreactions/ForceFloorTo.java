@@ -36,7 +36,11 @@ public class ForceFloorTo extends BlockReaction {
     }
 
     @Override
-    public boolean causesSlip(Block moving, Block standing) {
-        return !(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS));
+    public Moves causesSlip(Block moving, Block standing) {
+        if(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS)) {
+            return null;
+        } else {
+            return standing.getFacing();
+        }
     }
 }

@@ -3,6 +3,7 @@ package chipschallenge.blockreactions;
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
+import chipschallenge.Move.Moves;
 
 public class IceTo extends BlockReaction {
 
@@ -28,7 +29,10 @@ public class IceTo extends BlockReaction {
     }
 
     @Override
-    public boolean causesSlip(Block moving, Block standing) {
-        return !(moving.isChip() && hasBoots(Boots.ICESKATES));
+    public Moves causesSlip(Block moving, Block standing) {
+        if(moving.isChip() && hasBoots(Boots.ICESKATES))
+            return null;
+        else
+            return moving.getFacing();
     }
 }

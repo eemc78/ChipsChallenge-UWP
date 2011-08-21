@@ -1,6 +1,7 @@
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
+import chipschallenge.Move.Moves;
 
 /**
  * Standard behavior for when things can move
@@ -27,7 +28,7 @@ public class canMoveNoSlip extends BlockReaction {
     }
 
     @Override
-    public boolean causesSlip(Block moving, Block standing) {
-        return false;
+    public Moves causesSlip(Block moving, Block standing) {
+        return null;
     }
 }

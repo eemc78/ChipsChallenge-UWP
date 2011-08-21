@@ -4,6 +4,7 @@ import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Inventory.Boots;
 import chipschallenge.Move;
+import chipschallenge.Move.Moves;
 
 public class RandomForceFloorTo extends BlockReaction {
 
@@ -20,9 +21,7 @@ public class RandomForceFloorTo extends BlockReaction {
 
     @Override
     public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
-            game().addToSlipList(moving, Move.getRandom());
-        }
+        // Nothing
     }
 
     @Override
@@ -31,7 +30,10 @@ public class RandomForceFloorTo extends BlockReaction {
     }
 
     @Override
-    public boolean causesSlip(Block moving, Block standing) {
-        return false;
+    public Moves causesSlip(Block moving, Block standing) {
+        if(!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS)))
+            return null;
+        else
+            return Move.getRandom();
     }
 }

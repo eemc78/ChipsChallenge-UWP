@@ -3,6 +3,7 @@ package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
+import chipschallenge.Move.Moves;
 
 
 public abstract class SlipReaction extends BlockReaction {
@@ -14,8 +15,8 @@ public abstract class SlipReaction extends BlockReaction {
     public abstract boolean canMove(Block moving, Block standing);
 
     @Override
-    public final boolean causesSlip(Block moving, Block standing) {
-        return true;
+    public final Moves causesSlip(Block moving, Block standing) {
+        return moving.getFacing();
     }
 
 }
