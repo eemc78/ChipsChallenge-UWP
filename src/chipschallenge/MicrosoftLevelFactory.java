@@ -266,7 +266,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
     private MicrosoftLevelFactory() {
         try {
-            chipDat = new RandomAccessFile("CHIPS.DAT", "r");
+            chipDat = new RandomAccessFile("slidedelay.dat", "r");
             int magicNumber = readUnsignedDWord();
             if (magicNumber != 0x0002AAAC) {
                 throw new Exception("Couldn't parse file");

@@ -1,5 +1,7 @@
 package chipschallenge;
 
+import chipschallenge.clonebehaviors.NullCloneBehavior;
+import chipschallenge.clonebehaviors.CloneBehavior;
 import chipschallenge.tickbehaviors.BlockTickBehavior;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.Move.Moves;
@@ -22,6 +24,7 @@ public class Block {
     private BlockReaction mFrom = canMoveNoSlip.getInstance();
     private BlockReaction mTo = canMoveNoSlip.getInstance();
     private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
+    private CloneBehavior mCloneBehavior = NullCloneBehavior.getInstance();
     private boolean forced = false;
 
     public static enum Type {
@@ -45,7 +48,7 @@ public class Block {
         mFacing = m;
     }
 
-    public Block(Type t, Moves m, BlockTickBehavior btb, BlockReaction from, BlockReaction to, ButtonBehavior bb) {
+    public Block(Type t, Moves m, BlockTickBehavior btb, BlockReaction from, BlockReaction to, ButtonBehavior bb, CloneBehavior cb) {
         mType = t;
         mFacing = m;
         mTickBehavior = btb;
@@ -170,9 +173,13 @@ public class Block {
         return canMoveFrom() && canMoveTo(direction);
     }
 
-    public boolean move(Moves direction) throws BlockContainerFullException {
+    public boolean move(Moves direction, boolean ignoreFrom, boolean ignoreTo) throws BlockContainerFullException {
         //setFacing(direction);
-        return Game.getInstance().getLevel().moveBlock(this, direction, false, false);
+        return Game.getInstance().getLevel().moveBlock(this, direction, ignoreFrom, ignoreTo);
+    }
+
+    public boolean move(Moves direction) throws BlockContainerFullException {
+        return move(direction, false, false);
     }
 
     public void destroy() {
@@ -230,10 +237,7 @@ public class Block {
 
     @Override
     public Block clone() throws CloneNotSupportedException {
-        if (isCreature() || isChip()) {
-            throw new CloneNotSupportedException();
-        }
-        return (Block) super.clone();
+        return mCloneBehavior.cloneIt(this);
     }
 
     public void setForced(boolean forced) {
