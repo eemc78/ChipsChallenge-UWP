@@ -149,8 +149,9 @@ public class GameLevel implements ChipListener {
                 if ((m = mBoard[to.x][to.y].causesSlipTo(b)) != null) {
                     g.addToSlipList(b, m);
                 } else {
-                    if(b.isForced() && !b.isOnTrap())
+                    if(b.isForced() && !b.isOnTrap()) {
                         g.removeFromSlipList(b);
+                    }
                 }
 
                 //To reactions

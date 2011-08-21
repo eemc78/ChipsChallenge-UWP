@@ -193,7 +193,8 @@ public class Game extends KeyAdapter {
 
 
     private void forceCreatures() throws BlockContainerFullException {
-        for (BlockMove bm : slipList) {
+        for (int i = 0; i < slipList.size(); i++) {
+            BlockMove bm = slipList.get(i);
             if (bm.block.isCreature() || bm.block.isBlock()) {
                 bm.block.setForced(true);
                 forceMove(bm.block, bm.move);

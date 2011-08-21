@@ -1,46 +1,39 @@
 package chipschallenge;
 
 import chipschallenge.Move.Moves;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SlipList implements Iterable<BlockMove>, Iterator<BlockMove> {
+public class SlipList {
 
     private Map<Block,Moves> map = new ConcurrentHashMap<Block,Moves>();
-    private Iterator<Block> iterator = null;
-    private Block current = null;
+    private List<Block> order = new ArrayList<Block>();
 
     public void put(Block b, Moves m) {
-        map.put(b,m);
+        if(map.put(b,m) == null)
+            order.add(b);
     }
 
     public void remove(Block b) {
+        order.remove(b);
         map.remove(b);
+    }
+
+    public BlockMove get(int i) {
+        Block b = order.get(i);
+        return new BlockMove(b, map.get(b));
+    }
+
+    public int size() {
+        return order.size();
     }
 
     public void clear() {
         map.clear();
-        iterator = null;
-        current = null;
+        order.clear();
     }
 
-    public Iterator<BlockMove> iterator() {
-        iterator = map.keySet().iterator();
-        return this;
-    }
-
-    public boolean hasNext() {
-        return iterator.hasNext();
-    }
-
-    public BlockMove next() {
-        current = iterator.next();
-        return new BlockMove(current, map.get(current));
-    }
-
-    public void remove() {
-        map.remove(current);
-    }
 }
 
