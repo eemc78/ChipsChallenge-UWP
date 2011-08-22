@@ -15,7 +15,7 @@ public class Main {
             }
         }
         Game g = Game.getInstance();
-        g.setLevelFactory(MicrosoftLevelFactory.getInstance());
+        g.setLevelFactory(new MicrosoftLevelFactory(RandomAccessFileLevelReader.create("CHIPS.DAT")));
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());

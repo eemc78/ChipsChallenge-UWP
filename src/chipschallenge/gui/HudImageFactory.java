@@ -2,7 +2,6 @@ package chipschallenge.gui;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import javax.imageio.ImageIO;
 
 public class HudImageFactory {
@@ -15,7 +14,7 @@ public class HudImageFactory {
 
     private HudImageFactory() {
         try {
-            baseImage = ImageIO.read(new File("window.png"));
+            baseImage = ImageIO.read(getClass().getResource("/window.png"));
         } catch (Exception e) {
             System.out.println("Could not find window.png");
             System.exit(-1);

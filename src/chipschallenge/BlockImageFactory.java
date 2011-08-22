@@ -12,7 +12,6 @@ import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
@@ -26,7 +25,7 @@ public class BlockImageFactory {
 
     private BlockImageFactory() {
         try {
-            tileset = ImageIO.read(new File("tileset.gif"));
+            tileset = ImageIO.read(getClass().getResource("/tileset.gif"));
         } catch (Exception e) {
             System.out.println("Could not find tileset.gif");
             System.exit(-1);

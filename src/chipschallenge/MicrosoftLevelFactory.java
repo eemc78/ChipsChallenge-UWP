@@ -250,28 +250,17 @@ public class MicrosoftLevelFactory extends LevelFactory {
         }
         return null;
     }
-    private RandomAccessFile chipDat = null;
+    private LevelFileReader chipDat = null;
 
-    public int readUnsignedDWord() throws IOException {
-        return ByteSwapper.swap(chipDat.readInt()) & 0xFFFFFFFF;
-    }
 
-    public int readUnsignedWord() throws IOException {
-        return ByteSwapper.swap(chipDat.readShort()) & 0xFFFF;
-    }
-
-    public int readUnsignedByte() throws IOException {
-        return chipDat.readByte() & 0xFF;
-    }
-
-    private MicrosoftLevelFactory() {
+    public MicrosoftLevelFactory(LevelFileReader lfr) {
         try {
-            chipDat = new RandomAccessFile("slidedelay.dat", "r");
-            int magicNumber = readUnsignedDWord();
+            chipDat = lfr;
+            int magicNumber = chipDat.readUnsignedDWord();
             if (magicNumber != 0x0002AAAC) {
                 throw new Exception("Couldn't parse file");
             }
-            levelCount = readUnsignedWord();
+            levelCount = chipDat.readUnsignedWord();
             levelOffsets.put(1, 6);
             //chipDat.close();
         } catch (Exception ex) {
@@ -291,13 +280,6 @@ public class MicrosoftLevelFactory extends LevelFactory {
     }
     private static MicrosoftLevelFactory mInstance = null;
 
-    public static synchronized MicrosoftLevelFactory getInstance() {
-        if (mInstance == null) {
-            mInstance = new MicrosoftLevelFactory();
-        }
-        return mInstance;
-    }
-
     public GameLevel getLevel(int n) {
         if (n < 1 || n > levelCount) {
             throw new IllegalArgumentException("Level outside of range");
@@ -309,30 +291,30 @@ public class MicrosoftLevelFactory extends LevelFactory {
             int offset = getLevelOffset(n);
             chipDat.seek(offset);
 
-            int numBytesLevel = readUnsignedWord();
+            int numBytesLevel = chipDat.readUnsignedWord();
 
             // So we don't have to skip over the same level again later
             levelOffsets.put(n + 1, offset + numBytesLevel + 2);
 
-            int levelNumber = readUnsignedWord();
-            int numSeconds = readUnsignedWord();
-            int numChipsNeeded = readUnsignedWord();
-            int mapDetail = readUnsignedWord();
+            int levelNumber = chipDat.readUnsignedWord();
+            int numSeconds = chipDat.readUnsignedWord();
+            int numChipsNeeded = chipDat.readUnsignedWord();
+            int mapDetail = chipDat.readUnsignedWord();
             
             ret = new GameLevel(32, 32, numChipsNeeded, numSeconds, levelNumber);
 
-            int numberOfBytesLayer1 = readUnsignedWord();
+            int numberOfBytesLayer1 = chipDat.readUnsignedWord();
             readLayer(ret, numberOfBytesLayer1, 1); // Layer 1, upper
 
-            int numberOfBytesLayer2 = readUnsignedWord();
+            int numberOfBytesLayer2 = chipDat.readUnsignedWord();
             readLayer(ret, numberOfBytesLayer2, 0); // Layer 2, lower
-            int numBytesOptional = readUnsignedWord();
+            int numBytesOptional = chipDat.readUnsignedWord();
             int numOptionalBytesRead = 0;
             
             while (numOptionalBytesRead < numBytesOptional) {
 
-                int fieldType = readUnsignedByte();
-                int sizeOfField = readUnsignedByte();
+                int fieldType = chipDat.readUnsignedByte();
+                int sizeOfField = chipDat.readUnsignedByte();
                 numOptionalBytesRead += 2;
 
                 switch (fieldType) {
@@ -347,10 +329,10 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
                     case 0x04: // Brown buttons to traps
                         for (int i = 0; i < sizeOfField / 10; i++) {
-                            int buttonX = readUnsignedWord();
-                            int buttonY = readUnsignedWord();
-                            int trapX = readUnsignedWord();
-                            int trapY = readUnsignedWord();
+                            int buttonX = chipDat.readUnsignedWord();
+                            int buttonY = chipDat.readUnsignedWord();
+                            int trapX = chipDat.readUnsignedWord();
+                            int trapY = chipDat.readUnsignedWord();
 
                             // Locate button
                             BlockContainer bc = ret.getBlockContainer(buttonX, buttonY);
@@ -371,10 +353,10 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
                     case 0x05:
                         for (int i = 0; i < sizeOfField / 8; i++) {
-                            int buttonX = readUnsignedWord();
-                            int buttonY = readUnsignedWord();
-                            int clonerX = readUnsignedWord();
-                            int clonerY = readUnsignedWord();
+                            int buttonX = chipDat.readUnsignedWord();
+                            int buttonY = chipDat.readUnsignedWord();
+                            int clonerX = chipDat.readUnsignedWord();
+                            int clonerY = chipDat.readUnsignedWord();
 
                             // Locate button
                             BlockContainer bc = ret.getBlockContainer(buttonX, buttonY);
@@ -409,8 +391,8 @@ public class MicrosoftLevelFactory extends LevelFactory {
 
                     case 0x0A: // Movement
                         for (int i = 0; i < sizeOfField / 2; i++) {
-                            int creatureX = readUnsignedByte();
-                            int creatureY = readUnsignedByte();
+                            int creatureX = chipDat.readUnsignedByte();
+                            int creatureY = chipDat.readUnsignedByte();
                             Block creature = null;
                             BlockContainer bc;
                             Block upper;
@@ -458,14 +440,14 @@ public class MicrosoftLevelFactory extends LevelFactory {
         int bytesRead = 0;
         int objectsPlaced = 0;
         while (bytesRead < numberOfBytes) {
-            int read = readUnsignedByte();
+            int read = chipDat.readUnsignedByte();
             bytesRead++;
             if (read >= 0x00 && read <= 0x6F) {
                 ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(read), layer);
                 objectsPlaced++;
             } else if (read == 0xFF) {
-                int numRepeats = readUnsignedByte();
-                int data = readUnsignedByte();
+                int numRepeats = chipDat.readUnsignedByte();
+                int data = chipDat.readUnsignedByte();
                 bytesRead += 2;
                 while (numRepeats-- > 0) {
                     ret.addBlock(objectsPlaced % width, objectsPlaced / width, getBlock(data), layer);
@@ -497,7 +479,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
         }
         chipDat.seek(offset);
         while (level < n) {
-            int numBytesInLevel = readUnsignedWord();
+            int numBytesInLevel = chipDat.readUnsignedWord();
             offset = offset + numBytesInLevel + 2;
             levelOffsets.put(level + 1, offset);
             level++;
@@ -517,15 +499,15 @@ public class MicrosoftLevelFactory extends LevelFactory {
         chipDat.seek(getLevelOffset(n));
 
         chipDat.skipBytes(10);
-        int numBytesFirstLayer = readUnsignedWord();
+        int numBytesFirstLayer = chipDat.readUnsignedWord();
         chipDat.skipBytes(numBytesFirstLayer);
-        int numBytesSecondLayer = readUnsignedWord();
+        int numBytesSecondLayer = chipDat.readUnsignedWord();
         chipDat.skipBytes(numBytesSecondLayer);
-        int numBytesOptional = readUnsignedWord();
+        int numBytesOptional = chipDat.readUnsignedWord();
         int readOptional = 0;
         while (readOptional < numBytesOptional) {
-            int fieldType = readUnsignedByte();
-            int fieldLength = readUnsignedByte();
+            int fieldType = chipDat.readUnsignedByte();
+            int fieldLength = chipDat.readUnsignedByte();
             readOptional += 2;
             if (fieldType == 0x06) {
                 String password = readPassword(fieldLength);

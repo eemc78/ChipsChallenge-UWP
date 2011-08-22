@@ -29,8 +29,12 @@ public abstract class CloneBehavior {
                 case BLOCK:
                 case BLOB:
                 case TEETH:
-                    g.getLevel().addBlock(p.x, p.y, clone, 2);
-                    g.getLevel().moveBlock(clone, null, true, true);
+                    if(g.getLevel().getBlockContainer(p.x, p.y).canMoveTo(clone)) {
+                        g.getLevel().addBlock(p.x, p.y, clone, 2);
+                        g.getLevel().moveBlock(clone, null, true, false);
+                    } else {
+                        throw new CloneNotSupportedException();
+                    }
                     break;
                 default:
                     g.addBlockDelay(clone, p, 2);

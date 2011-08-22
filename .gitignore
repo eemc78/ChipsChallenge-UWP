@@ -7,7 +7,7 @@ build.xml
 .project
 manifest.mf
 build-before-profiler.xml
+data
 CHIPS.DAT
 slidedelay.dat
-*.MID
-*.WAV
+applet.policy

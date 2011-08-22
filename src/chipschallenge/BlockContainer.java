@@ -81,7 +81,7 @@ public class BlockContainer {
                 if (visitorLow == null) {
                     visitorLow = b;
                 } else {
-                    push(visitorLow, 2);
+                    push(visitorLow, 1);
                     visitorLow = b;
                 }
                 break;
@@ -89,7 +89,7 @@ public class BlockContainer {
                 if (upper == null) {
                     upper = b;
                 } else {
-                    push(upper, 2);
+                    push(upper, 0);
                     upper = b;
                 }
                 break;
@@ -352,7 +352,6 @@ public class BlockContainer {
         if (lower != null && lower == a) {
             lower = b;
         }
-
         a.destroy();
     }
 

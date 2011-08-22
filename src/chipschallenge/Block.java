@@ -8,6 +8,8 @@ import chipschallenge.Move.Moves;
 import chipschallenge.buttonbehaviors.ButtonBehavior;
 import chipschallenge.blockreactions.BlockReaction;
 import chipschallenge.blockreactions.canMoveNoSlip;
+import chipschallenge.destroybehaviors.DefaultDestroyBehavior;
+import chipschallenge.destroybehaviors.DestroyBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 import chipschallenge.trapreleasebehaviors.DefaultTrapReleaseBehavior;
 import chipschallenge.trapreleasebehaviors.TrapReleaseBehavior;
@@ -28,6 +30,7 @@ public class Block {
     private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
     private CloneBehavior mCloneBehavior = NullCloneBehavior.getInstance();
     private TrapReleaseBehavior mTrapReleaseBehavior = DefaultTrapReleaseBehavior.getInstance();
+    private DestroyBehavior mDestroyBehavior = DefaultDestroyBehavior.getInstance();
     private boolean forced = false;
     private boolean trapped = false;
 
@@ -59,7 +62,8 @@ public class Block {
             BlockReaction to,
             ButtonBehavior bb,
             CloneBehavior cb,
-            TrapReleaseBehavior trb) {
+            TrapReleaseBehavior trb,
+            DestroyBehavior db) {
         mType = t;
         mFacing = m;
         mTickBehavior = btb;
@@ -68,6 +72,7 @@ public class Block {
         mButtonBehavior = bb;
         mCloneBehavior = cb;
         mTrapReleaseBehavior = trb;
+        mDestroyBehavior = db;
     }
 
     public static Block create(Type t, Moves d) {
@@ -195,21 +200,7 @@ public class Block {
     }
 
     public void destroy() {
-        clearReactions();
-        boolean creature = isCreature();
-        if (creature) {
-            Creatures.removeCreature(this);
-        }
-        if (creature || isBlock()) {
-            Game.getInstance().removeFromSlipList(this);
-        }
-        //Game.getInstance().removeMovingBlock(this);
-        Game.getInstance().getLevel().removeBlock(this);
-    }
-
-    public void clearReactions() {
-        mTickBehavior = NullTickBehavior.getInstance();
-        mButtonBehavior = NullButtonBehavior.getInstance();
+        mDestroyBehavior.destroy(this);
     }
 
     public void buttonDown(Block button) {
@@ -234,6 +225,10 @@ public class Block {
 
     public void setBlockTickBehavior(BlockTickBehavior btb) {
         this.mTickBehavior = btb;
+    }
+
+    public void setButtonBehavior(ButtonBehavior bb) {
+        this.mButtonBehavior = bb;
     }
 
     public BlockReaction getFromReaction() {

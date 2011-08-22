@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -178,9 +179,11 @@ public class Game extends KeyAdapter {
             for (Block b : blocksToAdd) {
                 Point p = addBlocks.get(b);
                 try {
-                    mLevel.addBlock(p.x, p.y, b, 2);
-                    if (b.isCreature()) {
-                        Creatures.addCreature(b);
+                    if(mLevel.getBlockContainer(p.x, p.y).canMoveTo(b)) {
+                        mLevel.addBlock(p.x, p.y, b, 2);
+                        if (b.isCreature()) {
+                            Creatures.addCreature(b);
+                        }
                     }
                 } catch (BlockContainerFullException ex) {
                     // Perhaps save cloning for later
@@ -204,14 +207,16 @@ public class Game extends KeyAdapter {
 
     private void forceMove(Block b, Moves m) throws BlockContainerFullException {
         if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
-            if (!b.isOnTrap()) {
+            //if (!b.isOnTrap()) {
                 //System.exit(-1);
                 //Bounce
-                //removeFromSlipList(b);
+                removeFromSlipList(b);
+                if(b.isChip())
                 b.setFacing(Move.reverse(m));
+                b.tick();
                 b.setForced(false);
-                mLevel.moveBlock(b, null, true, true);
-            }
+                
+            //}
         }
     }
 
@@ -221,6 +226,7 @@ public class Game extends KeyAdapter {
         if (mLastTickDrawn != mTickCount) {
             for (Point move : movesToCheck) {
                 if (GUI.getInstance().repaintIfNecessary(move)) {
+                    mLastTickDrawn = mTickCount;
                     break;
                 }
             }
@@ -245,7 +251,8 @@ public class Game extends KeyAdapter {
     public void tick() throws BlockContainerFullException {
         mTickCount++;
         Creatures.tick();
-        chip.tick();                  
+        chip.tick();
+        Buttons.updateGreenandBlueButtons();
         forceChip();
         forceCreatures();
         checkRepaint();
@@ -297,6 +304,10 @@ public class Game extends KeyAdapter {
         movesToCheck.add(from);
     }
 
+    public Collection<Point> getMovesToCheck() {
+        return movesToCheck;
+    }
+    
     public void addHintListener(HintListener l) {
         hintListeners.add(l);
     }

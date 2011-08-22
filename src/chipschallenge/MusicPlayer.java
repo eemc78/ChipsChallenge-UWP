@@ -2,6 +2,7 @@ package chipschallenge;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sound.midi.InvalidMidiDataException;
@@ -24,14 +25,14 @@ public class MusicPlayer {
             Sequence sq = null;
             for (int i = 1; i <= 99; i++) {
                 String num = (i < 10) ? "0" + i : String.valueOf(i);
-                sq = loadMidi("CHIP" + num + ".MID");
+                sq = loadMidi(getClass().getResource("/CHIP" + num + ".MID"));
                 if (sq == null) {
                     break;
                 } else {
                     loadedSongs.add(sq);
                 }
             }
-            sq = loadMidi("CANYON.MID");
+            sq = loadMidi(getClass().getResource("/CANYON.MID"));
             if (sq != null) {
                 loadedSongs.add(sq);
             }
@@ -60,9 +61,11 @@ public class MusicPlayer {
         return mInstance;
     }
 
-    private static Sequence loadMidi(String filename) throws InvalidMidiDataException {
+    private static Sequence loadMidi(URL file) throws InvalidMidiDataException {
         try {
-            Sequence sc = MidiSystem.getSequence(new FileInputStream(filename));
+            Sequence sc = null;
+            if(file != null)
+                sc = MidiSystem.getSequence(file);
             return sc;
         } catch (IOException ex) {
             // File not found

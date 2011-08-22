@@ -1,6 +1,11 @@
 package chipschallenge;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,7 +15,7 @@ import static org.junit.Assert.*;
 
 public class MicrosoftLevelFactoryTest {
 
-    MicrosoftLevelFactory instance = MicrosoftLevelFactory.getInstance();
+    MicrosoftLevelFactory instance = new MicrosoftLevelFactory(RandomAccessFileLevelReader.create("CHIPS.DAT"));
 
     public MicrosoftLevelFactoryTest() {}
 
@@ -23,7 +28,7 @@ public class MicrosoftLevelFactoryTest {
     }
 
     @Before
-    public void setUp() {
+    public void setUp() {            
     }
 
     @After

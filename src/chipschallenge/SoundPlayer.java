@@ -3,6 +3,7 @@ package chipschallenge;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import javax.sound.sampled.AudioInputStream;
@@ -23,9 +24,9 @@ public class SoundPlayer {
         BUTTON, THIEF, TICK, TIMEOVER, SOCKET
     }
 
-    private void loadSoundAs(String filename, sounds s) {
+    private void loadSoundAs(URL file, sounds s) {
         try {
-            AudioInputStream sound = AudioSystem.getAudioInputStream(new File(filename));
+            AudioInputStream sound = AudioSystem.getAudioInputStream(file);
             DataLine.Info info = new DataLine.Info(Clip.class, sound.getFormat());
             Clip clip = (Clip) AudioSystem.getLine(info);
             clip.open(sound);
@@ -40,20 +41,20 @@ public class SoundPlayer {
     }
 
     private SoundPlayer() {
-        loadSoundAs("BLIP2.WAV", sounds.TAKEITEM);
-        loadSoundAs("HIT3.WAV", sounds.BOMB);
-        loadSoundAs("OOF3.WAV", sounds.CHIPHUM);
-        loadSoundAs("DOOR.WAV", sounds.DOOR);
-        loadSoundAs("DITTY1.WAV", sounds.EXIT);
-        loadSoundAs("TELEPORT.WAV", sounds.TELEPORT);
-        loadSoundAs("WATER2.WAV", sounds.WATER);
-        loadSoundAs("BUMMER.WAV", sounds.DIE);
-        loadSoundAs("CLICK3.WAV", sounds.TAKECHIP);
-        loadSoundAs("CLICK1.WAV", sounds.TICK);
-        loadSoundAs("POP2.WAV", sounds.BUTTON);
-        loadSoundAs("STRIKE.WAV", sounds.THIEF);
-        loadSoundAs("BELL.WAV", sounds.TIMEOVER);
-        loadSoundAs("CHIMES.WAV", sounds.SOCKET);
+        loadSoundAs(getClass().getResource("/BLIP2.WAV"), sounds.TAKEITEM);
+        loadSoundAs(getClass().getResource("/HIT3.WAV"), sounds.BOMB);
+        loadSoundAs(getClass().getResource("/OOF3.WAV"), sounds.CHIPHUM);
+        loadSoundAs(getClass().getResource("/DOOR.WAV"), sounds.DOOR);
+        loadSoundAs(getClass().getResource("/DITTY1.WAV"), sounds.EXIT);
+        loadSoundAs(getClass().getResource("/TELEPORT.WAV"), sounds.TELEPORT);
+        loadSoundAs(getClass().getResource("/WATER2.WAV"), sounds.WATER);
+        loadSoundAs(getClass().getResource("/BUMMER.WAV"), sounds.DIE);
+        loadSoundAs(getClass().getResource("/CLICK3.WAV"), sounds.TAKECHIP);
+        loadSoundAs(getClass().getResource("/CLICK1.WAV"), sounds.TICK);
+        loadSoundAs(getClass().getResource("/POP2.WAV"), sounds.BUTTON);
+        loadSoundAs(getClass().getResource("/STRIKE.WAV"), sounds.THIEF);
+        loadSoundAs(getClass().getResource("/BELL.WAV"), sounds.TIMEOVER);
+        loadSoundAs(getClass().getResource("/CHIMES.WAV"), sounds.SOCKET);
     }
 
     @Override

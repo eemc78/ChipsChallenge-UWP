@@ -13,6 +13,7 @@ import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Collection;
 
 class PlayField extends Panel implements NextLevelListener, MouseListener {
 
@@ -41,14 +42,16 @@ class PlayField extends Panel implements NextLevelListener, MouseListener {
         Point chip = gl.findChip();
         int top = getTop(gl, chip.y);
         int left = getLeft(gl, chip.x);
+
         for (int x = 0; x < mWidth; x++) {
             for (int y = 0; y < mHeight; y++) {
                 og.drawImage(gl.getBlockContainer(x + left, y + top).getImage(), x * 32, y * 32, null);
             }
         }
-        super.paint(og);
-        g.drawImage(offscreen, 0, 0, null);
+
         og.dispose();
+        g.drawImage(offscreen, 0, 0, null);
+        g.dispose();
     }
 
     public int getTop(GameLevel gl, int chipY) {
@@ -82,6 +85,10 @@ class PlayField extends Panel implements NextLevelListener, MouseListener {
     public boolean repaintIfNecessary(Point from) {
         GameLevel gl = Game.getInstance().getLevel();
         Point chip = gl.findChip();
+        if (chip.equals(from)) {
+            repaint();
+            return true;
+        }
         int top = getTop(gl, chip.y);
         int left = getLeft(gl, chip.x);
         if (from.y >= top && from.y <= (top + mHeight) && from.x >= left && from.x <= (left + mWidth)) {
@@ -97,20 +104,27 @@ class PlayField extends Panel implements NextLevelListener, MouseListener {
     }
 
     public void mousePressed(MouseEvent me) {
-        if(me.getButton() == MouseEvent.BUTTON1) {
+        if (me.getButton() == MouseEvent.BUTTON1) {
             GameLevel gl = Game.getInstance().getLevel();
             Point chip = gl.findChip();
             int top = getTop(gl, chip.y);
             int left = getLeft(gl, chip.x);
             int clickedX = me.getX() / 32;
             int clickedY = me.getY() / 32;
-            Point moveTo = new Point(left+clickedX,top+clickedY);
+            Point moveTo = new Point(left + clickedX, top + clickedY);
             ChipTickBehavior.getInstance().moveTo(moveTo);
         }
     }
 
-    public void mouseClicked(MouseEvent me) {}
-    public void mouseReleased(MouseEvent me) {}
-    public void mouseEntered(MouseEvent me) {}
-    public void mouseExited(MouseEvent me) {}
+    public void mouseClicked(MouseEvent me) {
+    }
+
+    public void mouseReleased(MouseEvent me) {
+    }
+
+    public void mouseEntered(MouseEvent me) {
+    }
+
+    public void mouseExited(MouseEvent me) {
+    }
 }
