@@ -30,34 +30,35 @@ public class CloneMachineBehavior implements ButtonBehavior {
             BlockContainer bc = gl.getBlockContainer(listener);
             // Take the first creature and clone it
             Block b = bc.getUpper();
-            
-                /*
-                if (b.isCreature() || b.isA(Type.BLOCK)) {
-                BlockContainer moveTo = gl.getBlockContainer(b, b.getFacing());
-                if (moveTo.canMoveTo(b)) {
-                try {
-                Block clone = g.getBlockFactory().get(b.getType(), b.getFacing());
-                Point p = b.getPoint();
-                //Move.updatePoint(p, b.getFacing());
-                if (clone.isCreature() && !(clone.isA(Type.TEETH) || clone.isA(Type.BLOB) || clone.isA(Type.FIREBALL))) {
-                g.addBlockDelay(clone, p, 3);
-                } else {
-                gl.addBlock(p.x, p.y, clone, 2);
-                gl.moveBlock(clone, clone.getFacing(), true, false);
-                if (clone.isCreature()) {
-                Creatures.addCreature(clone);
-                }
-                }
-                } catch (BlockContainerFullException ex) {
-                // Ignore for now. TODO: Fix
-                }
-                }
-                }
-                 */
+
+            /*
+            if (b.isCreature() || b.isA(Type.BLOCK)) {
+            BlockContainer moveTo = gl.getBlockContainer(b, b.getFacing());
+            if (moveTo.canMoveTo(b)) {
+            try {
+            Block clone = g.getBlockFactory().get(b.getType(), b.getFacing());
+            Point p = b.getPoint();
+            //Move.updatePoint(p, b.getFacing());
+            if (clone.isCreature() && !(clone.isA(Type.TEETH) || clone.isA(Type.BLOB) || clone.isA(Type.FIREBALL))) {
+            g.addBlockDelay(clone, p, 3);
+            } else {
+            gl.addBlock(p.x, p.y, clone, 2);
+            gl.moveBlock(clone, clone.getFacing(), true, false);
+            if (clone.isCreature()) {
+            Creatures.addCreature(clone);
+            }
+            }
+            } catch (BlockContainerFullException ex) {
+            // Ignore for now. TODO: Fix
+            }
+            }
+            }
+             */
             try {
                 b.clone();
-                if(b.isCreature())
+                if (b.isCreature()) {
                     Creatures.setBoss(b);
+                }
             } catch (CloneNotSupportedException ex) {
                 //System.out.println("Couldn't clone " + b);
                 // Ignore

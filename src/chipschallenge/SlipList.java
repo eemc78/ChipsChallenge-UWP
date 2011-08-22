@@ -8,12 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SlipList {
 
-    private Map<Block,Moves> map = new ConcurrentHashMap<Block,Moves>();
+    private Map<Block, Moves> map = new ConcurrentHashMap<Block, Moves>();
     private List<Block> order = new ArrayList<Block>();
 
     public void put(Block b, Moves m) {
-        if(map.put(b,m) == null)
+        if (map.put(b, m) == null) {
             order.add(b);
+        }
     }
 
     public void remove(Block b) {
@@ -34,6 +35,5 @@ public class SlipList {
         map.clear();
         order.clear();
     }
-
 }
 

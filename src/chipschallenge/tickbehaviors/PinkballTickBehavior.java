@@ -20,8 +20,9 @@ public class PinkballTickBehavior implements BlockTickBehavior {
 
     @Override
     public void tick(Block caller) throws BlockContainerFullException {
-        if(caller.isOnCloner())
+        if (caller.isOnCloner()) {
             return;
+        }
         Moves m = caller.getFacing();
         if (!caller.move(m)) {
             m = Move.reverse(m);

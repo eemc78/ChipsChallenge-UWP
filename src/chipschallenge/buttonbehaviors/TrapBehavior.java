@@ -2,7 +2,6 @@ package chipschallenge.buttonbehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.blockreactions.CanMove;
-import chipschallenge.blockreactions.canMoveNoSlip;
 import chipschallenge.blockreactions.CannotMove;
 
 public class TrapBehavior implements ButtonBehavior {
@@ -22,14 +21,15 @@ public class TrapBehavior implements ButtonBehavior {
         if (button.getType() == Block.Type.BROWNBUTTON) {
             listener.setFromReaction(CanMove.getInstance());
             Block trapped = listener.getBlockContainer().getUpper();
-            if(trapped != null)
+            if (trapped != null) {
                 trapped.releaseFromTrap();
+            }
         }
     }
 
     public void buttonUp(Block listener, Block button) {
         if (button.getType() == Block.Type.BROWNBUTTON) {
-                listener.setFromReaction(CannotMove.getInstance());
+            listener.setFromReaction(CannotMove.getInstance());
         }
     }
 }

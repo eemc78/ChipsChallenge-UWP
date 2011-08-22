@@ -1,7 +1,5 @@
-
 package chipschallenge;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -13,13 +11,14 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-
 public class SoundPlayer {
+
     private Map<sounds, Clip> clips = new HashMap<sounds, Clip>();
     private long canPlayNextTime = 0;
     private boolean soundOn = true;
 
     public static enum sounds {
+
         TAKEITEM, BOMB, CHIPHUM, DOOR, EXIT, TELEPORT, WATER, DIE, TAKECHIP,
         BUTTON, THIEF, TICK, TIMEOVER, SOCKET
     }
@@ -60,16 +59,16 @@ public class SoundPlayer {
     @Override
     protected void finalize() throws Throwable {
         try {
-            for(Clip c : clips.values())
+            for (Clip c : clips.values()) {
                 c.close();
-        } catch(Exception e) {
+            }
+        } catch (Exception e) {
         } finally {
             super.finalize();
         }
     }
-
-
     private static SoundPlayer mInstance = null;
+
     public static synchronized SoundPlayer getInstance() {
         if (mInstance == null) {
             mInstance = new SoundPlayer();
@@ -97,5 +96,4 @@ public class SoundPlayer {
     public void setSound(Boolean s) {
         soundOn = s;
     }
-
 }

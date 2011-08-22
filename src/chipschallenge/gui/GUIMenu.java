@@ -1,4 +1,3 @@
-
 package chipschallenge.gui;
 
 import chipschallenge.Options;
@@ -37,15 +36,15 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
     private MenuItem howToUseHelp;
     private MenuItem aboutChipsChallenge;
 
-    private GUIMenu(){
+    private GUIMenu() {
         setFont(new Font("Arial", Font.PLAIN, 11));
 
         // Game menu
-        game      = new Menu("Game");
-        newGame   = new MenuItem("New Game", new MenuShortcut(KeyEvent.VK_F12));
-        pause     = new MenuItem("Pause", new MenuShortcut(KeyEvent.VK_F13));
+        game = new Menu("Game");
+        newGame = new MenuItem("New Game", new MenuShortcut(KeyEvent.VK_F12));
+        pause = new MenuItem("Pause", new MenuShortcut(KeyEvent.VK_F13));
         bestTimes = new MenuItem("Best Times...");
-        exit      = new MenuItem("Exit");
+        exit = new MenuItem("Exit");
         newGame.addActionListener(this);
         pause.addActionListener(this);
         bestTimes.addActionListener(this);
@@ -58,10 +57,10 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
         add(game);
 
         // Options menu
-        options         = new Menu("Options");
+        options = new Menu("Options");
         backgroundMusic = new CheckboxMenuItem("Background Music");
-        soundEffects    = new CheckboxMenuItem("Sound Effects");
-        color           = new CheckboxMenuItem("Color");
+        soundEffects = new CheckboxMenuItem("Sound Effects");
+        color = new CheckboxMenuItem("Color");
         Options opts = Options.getInstance();
         backgroundMusic.setState(opts.isBackgroundMusic());
         soundEffects.setState(opts.isSoundEffects());
@@ -75,11 +74,11 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
         add(options);
 
         // Level menu
-        level    = new Menu("Level");
-        restart  = new MenuItem("Restart", new MenuShortcut(KeyEvent.VK_R));
-        next     = new MenuItem("Next", new MenuShortcut(KeyEvent.VK_N));
+        level = new Menu("Level");
+        restart = new MenuItem("Restart", new MenuShortcut(KeyEvent.VK_R));
+        next = new MenuItem("Next", new MenuShortcut(KeyEvent.VK_N));
         previous = new MenuItem("Previous", new MenuShortcut(KeyEvent.VK_P));
-        goTo     = new MenuItem("Go To...");
+        goTo = new MenuItem("Go To...");
         restart.addActionListener(this);
         next.addActionListener(this);
         previous.addActionListener(this);
@@ -92,11 +91,11 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
 
 
         // Help menu
-        help                = new Menu("Help");
-        contents            = new MenuItem("Contents", new MenuShortcut(KeyEvent.VK_F1));
-        howToPlay           = new MenuItem("How to Play");
-        commands            = new MenuItem("Comands");
-        howToUseHelp        = new MenuItem("How to Use Help");
+        help = new Menu("Help");
+        contents = new MenuItem("Contents", new MenuShortcut(KeyEvent.VK_F1));
+        howToPlay = new MenuItem("How to Play");
+        commands = new MenuItem("Comands");
+        howToUseHelp = new MenuItem("How to Use Help");
         aboutChipsChallenge = new MenuItem("About Chip's Challenge...");
         contents.addActionListener(this);
         howToPlay.addActionListener(this);
@@ -111,41 +110,42 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
         help.add(aboutChipsChallenge);
         add(help);
     }
-
     private static GUIMenu mInstance = null;
+
     public static synchronized GUIMenu getInstance() {
-        if(mInstance == null)
+        if (mInstance == null) {
             mInstance = new GUIMenu();
+        }
         return mInstance;
     }
 
     public void actionPerformed(ActionEvent ae) {
         Object src = ae.getSource();
-        if(src == newGame) {
+        if (src == newGame) {
             newGame();
-        } else if(src == pause) {
+        } else if (src == pause) {
             pause();
-        } else if(src == bestTimes) {
+        } else if (src == bestTimes) {
             bestTimes();
-        } else if(src == exit) {
+        } else if (src == exit) {
             exit();
-        } else if(src == restart) {
+        } else if (src == restart) {
             restart();
-        } else if(src == next) {
+        } else if (src == next) {
             next();
-        } else if(src == previous) {
+        } else if (src == previous) {
             previous();
-        } else if(src == goTo) {
+        } else if (src == goTo) {
             goTo();
-        } else if(src == contents) {
+        } else if (src == contents) {
             contents();
-        } else if(src == howToPlay) {
+        } else if (src == howToPlay) {
             howToPlay();
-        } else if(src == commands) {
+        } else if (src == commands) {
             commands();
-        } else if(src == howToUseHelp) {
+        } else if (src == howToUseHelp) {
             howToUseHelp();
-        } else if(src == aboutChipsChallenge) {
+        } else if (src == aboutChipsChallenge) {
             aboutChipsChallenge();
         }
     }
@@ -222,11 +222,11 @@ public class GUIMenu extends MenuBar implements ActionListener, ItemListener {
         Object src = ie.getSource();
         boolean state = ie.getStateChange() == ItemEvent.SELECTED;
         Options opts = Options.getInstance();
-        if(src == backgroundMusic) {
+        if (src == backgroundMusic) {
             opts.setBackgroundMusic(state);
-        } else if(src == soundEffects) {
+        } else if (src == soundEffects) {
             opts.setSoundEffects(state);
-        } else if(src == color) {
+        } else if (src == color) {
             opts.setColor(state);
         }
     }

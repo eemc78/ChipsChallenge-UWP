@@ -1,6 +1,5 @@
 package chipschallenge;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class MusicPlayer {
     private List<Sequence> loadedSongs = new ArrayList<Sequence>();
     private Sequencer sequencer = null;
     private int songIndex = 0;
-    private boolean musicOn = true;
+    private boolean musicOn = false;
 
     private MusicPlayer() {
         try {
@@ -64,8 +63,9 @@ public class MusicPlayer {
     private static Sequence loadMidi(URL file) throws InvalidMidiDataException {
         try {
             Sequence sc = null;
-            if(file != null)
+            if (file != null) {
                 sc = MidiSystem.getSequence(file);
+            }
             return sc;
         } catch (IOException ex) {
             // File not found
@@ -94,19 +94,17 @@ public class MusicPlayer {
 
     public void setMusic(boolean m) {
         musicOn = m;
-        if(sequencer != null) {
-            if(m) {
-                if(sequencer.getSequence() != null)
+        if (sequencer != null) {
+            if (m) {
+                if (sequencer.getSequence() != null) {
                     sequencer.start();
+                }
             } else {
-                if(sequencer.isRunning()) {
+                if (sequencer.isRunning()) {
                     sequencer.stop();
                 }
             }
 
         }
     }
-
-
-
 }

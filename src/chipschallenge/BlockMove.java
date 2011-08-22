@@ -1,8 +1,6 @@
-
 package chipschallenge;
 
 import chipschallenge.Move.Moves;
-
 
 public class BlockMove {
 
@@ -18,5 +16,4 @@ public class BlockMove {
     public BlockMove clone() {
         return new BlockMove(block, move);
     }
-
 }

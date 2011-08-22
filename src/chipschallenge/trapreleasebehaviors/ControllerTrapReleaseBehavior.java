@@ -18,7 +18,7 @@ public class ControllerTrapReleaseBehavior implements TrapReleaseBehavior {
 
     public void releaseFromTrap(Block trapped) {
         Block controller = Creatures.getController(trapped);
-        if(controller != null) {
+        if (controller != null) {
             trapped.setFacing(controller.getFacing());
             trapped.setTrapped(false);
         }

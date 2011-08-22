@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class GUI extends Frame implements NextLevelListener {
+
     private PlayField mPlayField;
     private Hud mHud;
     private GUIMenu mMenu;
@@ -25,7 +26,7 @@ public class GUI extends Frame implements NextLevelListener {
                 System.exit(0);
             }
         });
-        setSize(520, 400);        
+        setSize(520, 400);
         setLayout(null);
         mPlayField = new PlayField(9, 9);
         mPlayField.setBounds(37, 77, 288, 288);
@@ -84,7 +85,7 @@ public class GUI extends Frame implements NextLevelListener {
         MsgBox msgbox = new MsgBox(this, msg, true);
         return msgbox.isOk;
     }
-    
+
     public void setChipsLeft(int n) {
     }
 
@@ -101,7 +102,6 @@ public class GUI extends Frame implements NextLevelListener {
 
     public void nextLevel(GameLevel level) {
         this.setTitle("Chips's Challenge: " + level.getMapTitle());
-        mMenu.setPreviousPossible(level.getLevelNumber()>1);
+        mMenu.setPreviousPossible(level.getLevelNumber() > 1);
     }
-
 }

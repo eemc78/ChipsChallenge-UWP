@@ -1,10 +1,8 @@
-
 package chipschallenge.clonebehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.Move.Moves;
 import chipschallenge.Utils;
-
 
 public class BlobCloneBehavior extends CloneBehavior {
 

@@ -1,28 +1,26 @@
-
 package chipschallenge;
 
 import java.io.IOException;
 
-
 public class Options {
+
     private static Options mInstance = null;
+
     public static synchronized Options getInstance() {
         if (mInstance == null) {
             mInstance = new Options();
         }
         return mInstance;
     }
-
     private boolean backgroundMusic;
     private boolean soundEffects;
     private boolean color;
-
 
     private Options() {
         try {
             // TODO: Load saved options
             throw new IOException("Loading settings from file isn't implemented yet");
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             backgroundMusic = true;
             soundEffects = true;
             color = true;
@@ -54,6 +52,4 @@ public class Options {
         this.soundEffects = soundEffects;
         SoundPlayer.getInstance().setSound(soundEffects);
     }
-
-
 }

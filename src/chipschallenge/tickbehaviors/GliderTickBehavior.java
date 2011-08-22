@@ -20,8 +20,9 @@ public class GliderTickBehavior implements BlockTickBehavior {
     private boolean move(Block caller, Moves m) throws BlockContainerFullException {
         Moves before = caller.getFacing();
         boolean ret = caller.move(m);
-        if(!ret)
+        if (!ret) {
             caller.setFacing(before);
+        }
         return ret;
     }
 

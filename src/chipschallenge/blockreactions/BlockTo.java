@@ -36,17 +36,17 @@ public class BlockTo extends NoSlipReaction {
             BlockContainer before = level().getBlockContainer(standing);
             BlockContainer after = level().getBlockContainer(standing, moving.getFacing());
             if (after == null) { // Block being pushed at the edge
-                return false;
+            return false;
             }
             return  //before.canMoveFrom(standing) &&
-                    after.canMoveTo(standing);
+            after.canMoveTo(standing);
              */
             Moves facingBefore = standing.getFacing();
             standing.setFacing(moving.getFacing());
             // We wanst to exclude ice corners here
             boolean isOnIce = standing.isOn(Block.Type.ICE);
-            boolean ret = (isOnIce || !isOnIce && standing.canMoveFrom()) &&
-                           standing.canMoveTo(moving.getFacing());
+            boolean ret = (isOnIce || !isOnIce && standing.canMoveFrom())
+                    && standing.canMoveTo(moving.getFacing());
             standing.setFacing(facingBefore);
             return ret;
         }

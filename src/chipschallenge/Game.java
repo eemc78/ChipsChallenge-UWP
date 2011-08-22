@@ -11,7 +11,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -179,7 +178,7 @@ public class Game extends KeyAdapter {
             for (Block b : blocksToAdd) {
                 Point p = addBlocks.get(b);
                 try {
-                    if(mLevel.getBlockContainer(p.x, p.y).canMoveTo(b)) {
+                    if (mLevel.getBlockContainer(p.x, p.y).canMoveTo(b)) {
                         mLevel.addBlock(p.x, p.y, b, 2);
                         if (b.isCreature()) {
                             Creatures.addCreature(b);
@@ -194,7 +193,6 @@ public class Game extends KeyAdapter {
         }
     }
 
-
     private void forceCreatures() throws BlockContainerFullException {
         for (int i = 0; i < slipList.size(); i++) {
             BlockMove bm = slipList.get(i);
@@ -208,14 +206,15 @@ public class Game extends KeyAdapter {
     private void forceMove(Block b, Moves m) throws BlockContainerFullException {
         if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
             //if (!b.isOnTrap()) {
-                //System.exit(-1);
-                //Bounce
-                removeFromSlipList(b);
-                if(b.isChip())
+            //System.exit(-1);
+            //Bounce
+            removeFromSlipList(b);
+            if (b.isChip()) {
                 b.setFacing(Move.reverse(m));
-                b.tick();
-                b.setForced(false);
-                
+            }
+            b.tick();
+            b.setForced(false);
+
             //}
         }
     }
@@ -307,7 +306,7 @@ public class Game extends KeyAdapter {
     public Collection<Point> getMovesToCheck() {
         return movesToCheck;
     }
-    
+
     public void addHintListener(HintListener l) {
         hintListeners.add(l);
     }

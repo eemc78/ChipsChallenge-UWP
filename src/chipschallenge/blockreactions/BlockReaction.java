@@ -74,5 +74,4 @@ public abstract class BlockReaction {
     public abstract boolean canMove(Block moving, Block standing);
 
     public abstract Moves causesSlip(Block moving, Block standing);
-
 }

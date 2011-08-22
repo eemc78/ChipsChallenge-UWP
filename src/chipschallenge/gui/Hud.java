@@ -66,40 +66,40 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
 
         if (levelNeedsRepaint) {
             String s = intToPaintableString(level);
-            int x=83;
-            int y=38;
-            for (int i = s.length()-1; i >=0; i--) {
+            int x = 83;
+            int y = 38;
+            for (int i = s.length() - 1; i >= 0; i--) {
                 Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), false);
                 g.drawImage(img, x, y, null);
-                x-=17;
+                x -= 17;
             }
             levelNeedsRepaint = false;
         }
         if (timeNeedsRepaint) {
             String s = timeLimit ? intToPaintableString(time) : "---";
-            int x=83;
+            int x = 83;
             int y = 100;
             boolean yellow = !timeLimit || time <= 15;
-            for (int i = s.length()-1; i >=0; i--) {
+            for (int i = s.length() - 1; i >= 0; i--) {
                 Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), yellow);
                 g.drawImage(img, x, y, null);
-                x-=17;
+                x -= 17;
             }
             timeNeedsRepaint = false;
         }
         if (chipsLeftNeedsRepaint) {
             String s = intToPaintableString(chipsLeft);
-            int x=83;
-            int y=190;
+            int x = 83;
+            int y = 190;
             boolean yellow = chipsLeft == 0;
-            for (int i = s.length()-1; i >=0; i--) {
+            for (int i = s.length() - 1; i >= 0; i--) {
                 Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), yellow);
                 g.drawImage(img, x, y, null);
-                x-=17;
+                x -= 17;
             }
             chipsLeftNeedsRepaint = false;
         }
-        if(inventoryNeedsRepaint) {
+        if (inventoryNeedsRepaint) {
             BlockFactory bf = Game.getInstance().getBlockFactory();
             BlockImageFactory bif = BlockImageFactory.getInstance();
             int x = 13;
@@ -107,38 +107,46 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
             Image im = null;
             Image empty = bif.get(Type.FLOOR, Moves.UP, false);
             im = empty;
-            if(inventory.hasKey(Inventory.Key.RED))
+            if (inventory.hasKey(Inventory.Key.RED)) {
                 im = bif.get(Type.REDKEY, Moves.UP, false);
+            }
             g.drawImage(im, x, y, null);
             im = empty;
-            if(inventory.hasKey(Inventory.Key.BLUE))
+            if (inventory.hasKey(Inventory.Key.BLUE)) {
                 im = bif.get(Type.BLUEKEY, Moves.UP, false);
-            g.drawImage(im, x+32, y, null);
+            }
+            g.drawImage(im, x + 32, y, null);
             im = empty;
-            if(inventory.hasKey(Inventory.Key.YELLOW))
+            if (inventory.hasKey(Inventory.Key.YELLOW)) {
                 im = bif.get(Type.YELLOWKEY, Moves.UP, false);
-            g.drawImage(im, x+2*32, y, null);
+            }
+            g.drawImage(im, x + 2 * 32, y, null);
             im = empty;
-            if(inventory.hasKey(Inventory.Key.GREEN))
+            if (inventory.hasKey(Inventory.Key.GREEN)) {
                 im = bif.get(Type.GREENKEY, Moves.UP, false);
-            g.drawImage(im, x+3*32, y, null);
-            y+=32;
+            }
+            g.drawImage(im, x + 3 * 32, y, null);
+            y += 32;
             im = empty;
-            if(inventory.hasBoots(Inventory.Boots.ICESKATES))
+            if (inventory.hasBoots(Inventory.Boots.ICESKATES)) {
                 im = bif.get(Type.ICESKATES, Moves.UP, false);
+            }
             g.drawImage(im, x, y, null);
             im = empty;
-            if(inventory.hasBoots(Inventory.Boots.SUCTIONBOOTS))
+            if (inventory.hasBoots(Inventory.Boots.SUCTIONBOOTS)) {
                 im = bif.get(Type.SUCTIONBOOTS, Moves.UP, false);
-            g.drawImage(im, x+32, y, null);
+            }
+            g.drawImage(im, x + 32, y, null);
             im = empty;
-            if(inventory.hasBoots(Inventory.Boots.FIREBOOTS))
+            if (inventory.hasBoots(Inventory.Boots.FIREBOOTS)) {
                 im = bif.get(Type.FIREBOOTS, Moves.UP, false);
-            g.drawImage(im, x+2*32, y, null);
+            }
+            g.drawImage(im, x + 2 * 32, y, null);
             im = empty;
-            if(inventory.hasBoots(Inventory.Boots.FLIPPERS))
+            if (inventory.hasBoots(Inventory.Boots.FLIPPERS)) {
                 im = bif.get(Type.FLIPPERS, Moves.UP, false);
-            g.drawImage(im, x+3*32, y, null);
+            }
+            g.drawImage(im, x + 3 * 32, y, null);
         }
         g.dispose();
     }
@@ -175,18 +183,22 @@ class Hud extends Panel implements ChipListener, NextLevelListener, InventoryLis
      * @param s The string to fix
      * @return A string that is 3 characters of length
      */
-    private String intToPaintableString(int n){
+    private String intToPaintableString(int n) {
         String s = String.valueOf(n);
-        switch(s.length()){
-            case 3: return s;
-            case 2: return "x"+s;
-            case 1: return "xx"+s;
-            case 0: return "xxx";
+        switch (s.length()) {
+            case 3:
+                return s;
+            case 2:
+                return "x" + s;
+            case 1:
+                return "xx" + s;
+            case 0:
+                return "xxx";
         }
         return "999";
     }
 
-    public void repaintEverything(){
+    public void repaintEverything() {
         levelNeedsRepaint = true;
         timeNeedsRepaint = true;
         chipsLeftNeedsRepaint = true;

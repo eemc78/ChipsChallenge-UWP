@@ -15,31 +15,31 @@ public class Teleports {
     }
 
     public static void addTeleport(int x, int y) {
-        teleports.add(new Point(x,y));
+        teleports.add(new Point(x, y));
     }
 
     public static Point next(Point o) {
-        int width  = Game.getInstance().getLevel().getWidth();
+        int width = Game.getInstance().getLevel().getWidth();
         int height = Game.getInstance().getLevel().getHeight();
         int minDistance = -1;
         Point minPoint = o;
         for (Point p : teleports) {
-            if (p.x == o.x && p.y == o.y)
+            if (p.x == o.x && p.y == o.y) {
                 continue; // Same place
-
+            }
             int dx = o.x - p.x;
             int dy = (o.y - p.y) * width;
             int distance = dx + dy;
 
-            if (distance < 0) 
+            if (distance < 0) {
                 distance += width * height;
+            }
 
             if (minDistance == -1 || distance < minDistance) {
                 minDistance = distance;
                 minPoint = p;
-            } 
+            }
         }
         return minPoint;
     }
-
 }

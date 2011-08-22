@@ -30,9 +30,10 @@ public class IceTo extends BlockReaction {
 
     @Override
     public Moves causesSlip(Block moving, Block standing) {
-        if(moving.isChip() && hasBoots(Boots.ICESKATES))
+        if (moving.isChip() && hasBoots(Boots.ICESKATES)) {
             return null;
-        else
+        } else {
             return moving.getFacing();
+        }
     }
 }

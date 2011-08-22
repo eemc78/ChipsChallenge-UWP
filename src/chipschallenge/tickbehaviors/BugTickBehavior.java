@@ -26,15 +26,15 @@ public class BugTickBehavior implements BlockTickBehavior {
                 case UP:
                     if (caller.move(Moves.LEFT)) {
                         break outer;
-                    } 
+                    }
                 case RIGHT:
                     if (caller.move(Moves.UP)) {
                         break outer;
-                    } 
+                    }
                 case DOWN:
                     if (caller.move(Moves.RIGHT)) {
                         break outer;
-                    } 
+                    }
                 case LEFT:
                     if (caller.move(Moves.DOWN)) {
                         break outer;

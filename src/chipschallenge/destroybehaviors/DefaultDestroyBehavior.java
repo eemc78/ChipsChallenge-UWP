@@ -1,4 +1,3 @@
-
 package chipschallenge.destroybehaviors;
 
 import chipschallenge.Block;
@@ -7,8 +6,8 @@ import chipschallenge.Game;
 import chipschallenge.buttonbehaviors.NullButtonBehavior;
 import chipschallenge.tickbehaviors.NullTickBehavior;
 
-
 public class DefaultDestroyBehavior implements DestroyBehavior {
+
     private DefaultDestroyBehavior() {
     }
     private static DefaultDestroyBehavior mInstance = null;
@@ -20,7 +19,7 @@ public class DefaultDestroyBehavior implements DestroyBehavior {
         return mInstance;
     }
 
-   public void destroy(Block b) {
+    public void destroy(Block b) {
         clearReactions(b);
         boolean creature = b.isCreature();
         if (creature) {
@@ -37,5 +36,4 @@ public class DefaultDestroyBehavior implements DestroyBehavior {
         b.setBlockTickBehavior(NullTickBehavior.getInstance());
         b.setButtonBehavior(NullButtonBehavior.getInstance());
     }
-
 }

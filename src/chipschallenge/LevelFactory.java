@@ -10,8 +10,9 @@ public abstract class LevelFactory {
 
     public final GameLevel getLevelByPassword(String pass) {
         int n = getLevelNumberByPassword(pass);
-        if (n == -1)
+        if (n == -1) {
             return null;
+        }
         return getLevel(n);
     }
 }

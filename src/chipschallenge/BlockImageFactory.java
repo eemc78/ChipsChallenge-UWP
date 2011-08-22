@@ -382,8 +382,9 @@ public class BlockImageFactory {
     }
 
     private BufferedImage imageToBufferedImage(Image image) {
-        if (image instanceof BufferedImage)
+        if (image instanceof BufferedImage) {
             return (BufferedImage) image;
+        }
         BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = bufferedImage.createGraphics();
         g2.drawImage(image, 0, 0, null);
@@ -419,12 +420,15 @@ public class BlockImageFactory {
     }
 
     public Image getOverlayed(Image over, Image under) {
-        if(over == null && under == null)
+        if (over == null && under == null) {
             throw new IllegalArgumentException("Both over and under cannot be null");
-        if (over == null)
+        }
+        if (over == null) {
             return under;
-        if (under == null)
+        }
+        if (under == null) {
             return over;
+        }
         Image im = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
         Graphics g = im.getGraphics();
         g.drawImage(under, 0, 0, null);

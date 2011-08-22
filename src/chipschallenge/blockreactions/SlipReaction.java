@@ -1,10 +1,8 @@
-
 package chipschallenge.blockreactions;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
 import chipschallenge.Move.Moves;
-
 
 public abstract class SlipReaction extends BlockReaction {
 
@@ -18,5 +16,4 @@ public abstract class SlipReaction extends BlockReaction {
     public final Moves causesSlip(Block moving, Block standing) {
         return moving.getFacing();
     }
-
 }

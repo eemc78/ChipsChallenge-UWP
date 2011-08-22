@@ -120,7 +120,7 @@ public class GameLevel implements ChipListener {
         Game g = Game.getInstance();
         Point from = blocks.get(b);
         Point to = (Point) from.clone();
-        if(direction != null) {
+        if (direction != null) {
             Move.updatePoint(to, direction);
         }
         // Redraw even if move is impossible, because facing might have changed
@@ -132,7 +132,7 @@ public class GameLevel implements ChipListener {
         if (to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
             return false;
         }
-        if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {         
+        if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
             if (ignoreTo || mBoard[to.x][to.y].canMoveTo(b)) {
 
                 //From reactions
@@ -143,13 +143,13 @@ public class GameLevel implements ChipListener {
                 blocks.put(b, to);
                 mBoard[to.x][to.y].push(b);
 
-                
+
                 // Add or remove from sliplist
                 Moves m = null;
                 if ((m = mBoard[to.x][to.y].causesSlipTo(b)) != null) {
                     g.addToSlipList(b, m);
                 } else {
-                    if(b.isForced() && !b.isOnTrap()) {
+                    if (b.isForced() && !b.isOnTrap()) {
                         g.removeFromSlipList(b);
                     }
                 }
@@ -160,8 +160,9 @@ public class GameLevel implements ChipListener {
                 return true;
             } else {
                 //System.out.println(mBoard[to.x][to.y]);
-                if(b.isForced() && !b.isOnTrap())
-                        g.removeFromSlipList(b);
+                if (b.isForced() && !b.isOnTrap()) {
+                    g.removeFromSlipList(b);
+                }
                 return false;
             }
         } else {

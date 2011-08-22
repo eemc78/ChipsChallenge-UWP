@@ -61,6 +61,6 @@ public class IceCornerTo extends BlockReaction {
                     break;
             }
             return force;
-        } 
+        }
     }
 }

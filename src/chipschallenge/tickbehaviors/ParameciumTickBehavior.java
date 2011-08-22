@@ -23,18 +23,18 @@ public class ParameciumTickBehavior implements BlockTickBehavior {
         outer:
         for (int i = 0; i < 2; i++) {
             switch (m) {
-                case UP:                   
+                case UP:
                     if (caller.move(Moves.RIGHT)) {
                         break outer;
-                    } 
+                    }
                 case LEFT:
                     if (caller.move(Moves.UP)) {
                         break outer;
-                    } 
+                    }
                 case DOWN:
                     if (caller.move(Moves.LEFT)) {
                         break outer;
-                    } 
+                    }
                 case RIGHT:
                     if (caller.move(Moves.DOWN)) {
                         break outer;

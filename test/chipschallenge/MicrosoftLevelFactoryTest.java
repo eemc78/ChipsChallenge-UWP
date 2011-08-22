@@ -1,11 +1,6 @@
 package chipschallenge;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,7 +12,8 @@ public class MicrosoftLevelFactoryTest {
 
     MicrosoftLevelFactory instance = new MicrosoftLevelFactory(RandomAccessFileLevelReader.create("CHIPS.DAT"));
 
-    public MicrosoftLevelFactoryTest() {}
+    public MicrosoftLevelFactoryTest() {
+    }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -28,13 +24,12 @@ public class MicrosoftLevelFactoryTest {
     }
 
     @Before
-    public void setUp() {            
+    public void setUp() {
     }
 
     @After
     public void tearDown() {
     }
-
 
     /**
      * Test of getLastLevelNumber method, of class MicrosoftLevelFactory.
@@ -64,5 +59,4 @@ public class MicrosoftLevelFactoryTest {
     public void testGetLevelNumberByPassword() {
         assertEquals(73, instance.getLevelNumberByPassword("QCCR"));
     }
-
 }

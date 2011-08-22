@@ -25,5 +25,4 @@ public class CanMove extends NoSlipReaction {
     public final boolean canMove(Block moving, Block standing) {
         return true;
     }
-
 }

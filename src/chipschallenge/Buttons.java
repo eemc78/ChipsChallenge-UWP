@@ -68,7 +68,7 @@ public class Buttons {
         greenButton = !greenButton;
         /*
         for (Block b : greenButtonsListeners) {
-            b.buttonDown(button);
+        b.buttonDown(button);
         }
          */
     }
@@ -76,7 +76,7 @@ public class Buttons {
     public static void greenButtonUp(Block button) {
         /*
         for (Block b : greenButtonsListeners) {
-            b.buttonUp(button);
+        b.buttonUp(button);
         }
          */
     }
@@ -85,7 +85,7 @@ public class Buttons {
         blueButton = !blueButton;
         /*
         for (Block b : blueButtonsListeners) {
-            b.buttonDown(button);
+        b.buttonDown(button);
         }
          */
     }
@@ -93,18 +93,18 @@ public class Buttons {
     public static void blueButtonUp(Block button) {
         /*
         for (Block b : blueButtonsListeners) {
-            b.buttonUp(button);
+        b.buttonUp(button);
         }
          */
     }
 
     public static void updateGreenandBlueButtons() {
-        if(greenButton) {
+        if (greenButton) {
             for (Block b : greenButtonsListeners) {
                 b.buttonDown(null);
             }
         }
-        if(blueButton) {
+        if (blueButton) {
             for (Block b : blueButtonsListeners) {
                 b.buttonDown(null);
             }

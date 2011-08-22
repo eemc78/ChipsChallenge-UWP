@@ -1,10 +1,8 @@
-
 package chipschallenge;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
 
 public class RandomAccessFileLevelReader implements LevelFileReader {
 
@@ -57,11 +55,10 @@ public class RandomAccessFileLevelReader implements LevelFileReader {
     }
 
     public void close() throws IOException {
-            raf.close();
+        raf.close();
     }
 
     public void readFully(byte[] arr) throws IOException {
         raf.readFully(arr);
     }
-
 }

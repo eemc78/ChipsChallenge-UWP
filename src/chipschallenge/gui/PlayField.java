@@ -13,7 +13,6 @@ import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Collection;
 
 class PlayField extends Panel implements NextLevelListener, MouseListener {
 

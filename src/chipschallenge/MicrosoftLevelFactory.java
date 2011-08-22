@@ -252,7 +252,6 @@ public class MicrosoftLevelFactory extends LevelFactory {
     }
     private LevelFileReader chipDat = null;
 
-
     public MicrosoftLevelFactory(LevelFileReader lfr) {
         try {
             chipDat = lfr;
@@ -300,7 +299,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
             int numSeconds = chipDat.readUnsignedWord();
             int numChipsNeeded = chipDat.readUnsignedWord();
             int mapDetail = chipDat.readUnsignedWord();
-            
+
             ret = new GameLevel(32, 32, numChipsNeeded, numSeconds, levelNumber);
 
             int numberOfBytesLayer1 = chipDat.readUnsignedWord();
@@ -310,7 +309,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
             readLayer(ret, numberOfBytesLayer2, 0); // Layer 2, lower
             int numBytesOptional = chipDat.readUnsignedWord();
             int numOptionalBytesRead = 0;
-            
+
             while (numOptionalBytesRead < numBytesOptional) {
 
                 int fieldType = chipDat.readUnsignedByte();

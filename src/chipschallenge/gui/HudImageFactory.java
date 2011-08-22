@@ -66,7 +66,7 @@ public class HudImageFactory {
         return img;
     }
 
-    public Image getNumber(char number, boolean yellow){
+    public Image getNumber(char number, boolean yellow) {
         return getNumber(charToInt(number), yellow);
     }
 
@@ -75,14 +75,17 @@ public class HudImageFactory {
      * @param c 0-9 or "-" for - and "x" for blank
      * @return
      */
-    private int charToInt(char c){
-        if(c=='-')
+    private int charToInt(char c) {
+        if (c == '-') {
             return -2;
-        if(c=='x')
+        }
+        if (c == 'x') {
             return -1;
-        if(c<'0' || c>'9')
+        }
+        if (c < '0' || c > '9') {
             throw new IllegalArgumentException("char must be 0 to 9");
-        return (int)(c-'0');
+        }
+        return (int) (c - '0');
     }
 
     public Image getHudBackground() {

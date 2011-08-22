@@ -2,12 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chipschallenge.clonebehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.BlockContainerFullException;
-import chipschallenge.Creatures;
 import chipschallenge.Game;
 import chipschallenge.Move;
 import chipschallenge.Move.Moves;
@@ -22,14 +20,14 @@ public abstract class CloneBehavior {
     protected final Block cloneTo(Block original, Moves direction) throws CloneNotSupportedException {
         Game g = Game.getInstance();
         Block clone = g.getBlockFactory().get(original.getType(), direction);
-        Point p = (Point)original.getPoint().clone();
+        Point p = (Point) original.getPoint().clone();
         Move.updatePoint(p, direction);
         try {
-            switch(clone.getType()) {
+            switch (clone.getType()) {
                 case BLOCK:
                 case BLOB:
                 case TEETH:
-                    if(g.getLevel().getBlockContainer(p.x, p.y).canMoveTo(clone)) {
+                    if (g.getLevel().getBlockContainer(p.x, p.y).canMoveTo(clone)) {
                         g.getLevel().addBlock(p.x, p.y, clone, 2);
                         g.getLevel().moveBlock(clone, null, true, false);
                     } else {
@@ -40,7 +38,7 @@ public abstract class CloneBehavior {
                     g.addBlockDelay(clone, p, 2);
                     break;
             }
-        } catch(BlockContainerFullException ex) {
+        } catch (BlockContainerFullException ex) {
             // Ignore
         }
         return clone;

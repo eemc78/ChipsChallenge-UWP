@@ -16,7 +16,7 @@ public class TrapTo extends NoSlipReaction {
     }
 
     public void react(Block moving, Block standing) {
-        if(moving.isBlock() && moving.isForced()) {
+        if (moving.isBlock() && moving.isForced()) {
             game().addToSlipList(moving, moving.getFacing());
         }
     }

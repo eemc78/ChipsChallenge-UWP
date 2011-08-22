@@ -1,11 +1,10 @@
-
 package chipschallenge.destroybehaviors;
 
 import chipschallenge.Block;
 import chipschallenge.Buttons;
 
-
 public class ToggleWallDestroyBehavior implements DestroyBehavior {
+
     private ToggleWallDestroyBehavior() {
     }
     private static ToggleWallDestroyBehavior mInstance = null;

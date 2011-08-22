@@ -1,8 +1,6 @@
-
 package chipschallenge.clonebehaviors;
 
 import chipschallenge.Block;
-
 
 public class CloneSameDirection extends CloneBehavior {
 
