@@ -15,7 +15,7 @@ public class MusicPlayer {
     private List<Sequence> loadedSongs = new ArrayList<Sequence>();
     private Sequencer sequencer = null;
     private int songIndex = 0;
-    private boolean musicOn = false;
+    private boolean musicOn = true;
 
     private MusicPlayer() {
         try {

@@ -15,10 +15,11 @@ public class Main {
             }
         }
         Game g = Game.getInstance();
-        g.setLevelFactory(new MicrosoftLevelFactory(RandomAccessFileLevelReader.create("CHIPS.DAT")));
+        //g.setLevelFactory(new MicrosoftLevelFactory(RandomAccessFileLevelReader.create("CHIPS.DAT")));
+        g.setLevelFactory(new MicrosoftLevelFactory(RandomAccessFileLevelReader.create("slidedelay.dat")));
         g.setBlockFactory(MicrosoftBlockFactory.getInstance());
         GUI Gui = GUI.getInstance();
         Gui.addKeyListener(ChipTickBehavior.getInstance());
-        g.nextLevel(1);
+        g.nextLevel(2);
     }
 }

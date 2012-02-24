@@ -33,10 +33,9 @@ public class Game extends KeyAdapter {
     private Timer tickTimer = null;
     private Timer secondsTimer = null;
     private long mTickCount = 0;
-    private long mLastTickDrawn = 0;
     private boolean levelComplete;
     private boolean isStarted = false;
-    private Collection<Point> movesToCheck = new ArrayList<Point>();
+    private Collection<Point> movesToCheck = new CopyOnWriteArrayList<Point>();
     private volatile boolean dead = false;
     private Collection<ChipListener> chipListeners = new ArrayList<ChipListener>();
     private Collection<TimeListener> timeListeners = new CopyOnWriteArrayList<TimeListener>();
@@ -47,6 +46,7 @@ public class Game extends KeyAdapter {
     private final SlipList slipList = new SlipList();
     private BlockMove chipForced = null;
     private Block chip = null;
+    private boolean chipMoved = false;
 
     private Game() {
     }
@@ -89,6 +89,7 @@ public class Game extends KeyAdapter {
         for (NextLevelListener l : nextLevelListeners) {
             l.nextLevel(mLevel);
         }
+        chipMoved = true; // This is for repaint
         GUI.getInstance().repaint();
         MusicPlayer.getInstance().playNextSong();
         isStarted = false;
@@ -197,7 +198,6 @@ public class Game extends KeyAdapter {
         for (int i = 0; i < slipList.size(); i++) {
             BlockMove bm = slipList.get(i);
             if (bm.block.isCreature() || bm.block.isBlock()) {
-                bm.block.setForced(true);
                 forceMove(bm.block, bm.move);
             }
         }
@@ -205,63 +205,60 @@ public class Game extends KeyAdapter {
 
     private void forceMove(Block b, Moves m) throws BlockContainerFullException {
         if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
-            //if (!b.isOnTrap()) {
-            //System.exit(-1);
-            //Bounce
-            removeFromSlipList(b);
-            if (b.isChip()) {
+            if (!b.isOnTrap()) {
+                System.out.println(b);
+                //System.exit(-1);
+                //Bounce
                 b.setFacing(Move.reverse(m));
+                if(!b.isChip())
+                removeFromSlipList(b);
+                //addToSlipList(b, b.getFacing());
+                b.setForced(false);
+                mLevel.moveBlock(b, null, true, true);
             }
-            b.tick();
-            b.setForced(false);
-
-            //}
         }
     }
 
     public void checkRepaint() {
-        // Check if repaint is necessary
-        // TODO: If the moves are many, perhaps repaint right away
-        if (mLastTickDrawn != mTickCount) {
-            for (Point move : movesToCheck) {
-                if (GUI.getInstance().repaintIfNecessary(move)) {
-                    mLastTickDrawn = mTickCount;
-                    break;
-                }
-            }
+        if (chipMoved || movesToCheck.size() > 0) {
+            GUI.getInstance().repaintPlayField();
         }
-        movesToCheck.clear();
     }
 
     public BlockMove getChipForced() {
         return chipForced;
     }
 
-    public void forceChip() throws BlockContainerFullException {
+    public boolean forceChip() throws BlockContainerFullException {
         if (chipForced != null) {
             BlockMove cm = (BlockMove) chipForced.clone();
             chipForced = null;
             forceMove(cm.block, cm.move);
             mLevel.getChip().setForced(true);
+            return true;
         }
+        return false;
     }
 
     // Main "loop"
     public void tick() throws BlockContainerFullException {
         mTickCount++;
         Creatures.tick();
-        chip.tick();
-        Buttons.updateGreenandBlueButtons();
-        forceChip();
-        forceCreatures();
         checkRepaint();
-        addClonesQueued();
+        chip.tick();     
+        Buttons.updateGreenandBlueButtons();
+        if(forceChip()) {
+            chip.tick();
+        }
+        forceCreatures();
+        addClonesQueued();       
         if (dead) {
             restart();
         }
         if (levelComplete) {
             levelComplete();
         }
+        checkRepaint();
         //System.exit(-1);
     }
 
@@ -371,5 +368,13 @@ public class Game extends KeyAdapter {
 
     public void setChip(Block b) {
         chip = b;
+    }
+
+    public boolean chipMoved() {
+        return chipMoved;
+    }
+
+    public void setChipMoved(boolean chipMoved) {
+        this.chipMoved = chipMoved;
     }
 }

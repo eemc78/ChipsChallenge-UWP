@@ -49,8 +49,10 @@ public class Creatures {
         if (creatureTicks == 0) {
             blobMove = !blobMove;
             for (Block b : creatures) {
+                if(!b.isForced()) {
                 if (!b.isTrapped() && (blobMove || !(b.isA(Block.Type.BLOB) || b.isA(Block.Type.TEETH)))) {
                     b.tick();
+                }
                 }
             }
         }

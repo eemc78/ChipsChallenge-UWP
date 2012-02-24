@@ -31,7 +31,7 @@ public class RandomForceFloorTo extends BlockReaction {
 
     @Override
     public Moves causesSlip(Block moving, Block standing) {
-        if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
+        if ((moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
             return null;
         } else {
             return Move.getRandom();

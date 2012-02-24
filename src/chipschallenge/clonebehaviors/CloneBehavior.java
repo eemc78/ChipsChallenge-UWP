@@ -29,7 +29,7 @@ public abstract class CloneBehavior {
                 case TEETH:
                     if (g.getLevel().getBlockContainer(p.x, p.y).canMoveTo(clone)) {
                         g.getLevel().addBlock(p.x, p.y, clone, 2);
-                        g.getLevel().moveBlock(clone, null, true, false);
+                        g.getLevel().moveBlock(clone, null, true, true);
                     } else {
                         throw new CloneNotSupportedException();
                     }

@@ -4,7 +4,6 @@ import chipschallenge.Block.Type;
 import chipschallenge.Move.Moves;
 import chipschallenge.gui.GUI;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -321,7 +320,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
                     case 0x03: // Map title
                         byte[] ASCIITitle = new byte[sizeOfField - 1];
                         chipDat.readFully(ASCIITitle);
-                        String title = new String(ASCIITitle);
+                        String title = new String(ASCIITitle, "ASCII");
                         ret.setMapTitle(title);
                         chipDat.skipBytes(1);
                         break;
@@ -383,7 +382,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
                     case 0x07: // Hint
                         byte[] ASCIIHint = new byte[sizeOfField - 1];
                         chipDat.readFully(ASCIIHint);
-                        String hint = new String(ASCIIHint);
+                        String hint = new String(ASCIIHint, "ASCII");
                         ret.setHint(hint);
                         chipDat.skipBytes(1);
                         break;
@@ -429,7 +428,7 @@ public class MicrosoftLevelFactory extends LevelFactory {
         for (int i = 0; i < ASCIIPassword.length; i++) {
             ASCIIPassword[i] ^= 0x99;
         }
-        String password = new String(ASCIIPassword);
+        String password = new String(ASCIIPassword, "ASCII");
         return password;
     }
 

@@ -39,10 +39,13 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
                 if (!proposedMoves.isEmpty()) {
                     if (caller.isOnIce() && !Game.getInstance().getInventory().hasBoots(Boots.ICESKATES)) {
                         proposedMoves.poll(); // Ignore proposed move
-                    } else if (!caller.move(proposedMoves.poll())) {
+                    } else if (caller.move(proposedMoves.poll())) {
+                        
+                    } else {
                         proposedMoves.clear();
                         SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
                     }
+                    // TODO: Handle force floors properly ...
                     if (caller.isOnForceFloor()) {
                         Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
                     }
@@ -62,7 +65,7 @@ public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
     public void moveTo(Point goal) {
         synchronized (proposedMoves) {
             proposedMoves.clear();
-            Point start = Game.getInstance().getLevel().findChip();
+            Point start = (Point) Game.getInstance().getLevel().findChip().clone();
             while (!start.equals(goal)) {
                 int dx = goal.x - start.x;
                 int dy = goal.y - start.y;

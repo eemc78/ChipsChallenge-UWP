@@ -10,6 +10,8 @@ public class BlockContainer {
     private Block visitorLow = null;
     private Block visitorHigh = null;
 
+    private Image lastImage = null;
+
     public BlockContainer() {
     }
 
@@ -104,10 +106,12 @@ public class BlockContainer {
     }
 
     public void push(Block b) throws BlockContainerFullException {
+        lastImage = null;
         push(b, 3);
     }
 
     public void add(Block b) throws BlockContainerFullException {
+        lastImage = null;
         if (upper == null) {
             upper = b;
         } else if (lower == null) {
@@ -122,6 +126,7 @@ public class BlockContainer {
     }
 
     public void remove(Block b) {
+        lastImage = null;
         if (visitorHigh == b) {
             visitorHigh = null;
         } else if (visitorLow == b) {
@@ -161,9 +166,14 @@ public class BlockContainer {
         }
         return false;
     }
-
+  
     public Image getImage() {
-        return getImage(false, 3);
+        lastImage = getImage(false, 3);
+        return lastImage;
+    }
+
+    public Image getLastImage() {
+        return lastImage;
     }
 
     public Image getImage(boolean overlay, int layer) {
@@ -310,6 +320,7 @@ public class BlockContainer {
     }
 
     public void moveFrom(Block b) throws BlockContainerFullException {
+        lastImage = null;
         if (visitorHigh != null) {
             visitorHigh.getFromReaction().react(b, visitorHigh);
         }
@@ -325,6 +336,7 @@ public class BlockContainer {
     }
 
     public void moveTo(Block b) throws BlockContainerFullException {
+        lastImage = null;
         if (visitorHigh != null) {
             visitorHigh.getToReaction().react(b, visitorHigh);
         }
@@ -340,6 +352,7 @@ public class BlockContainer {
     }
 
     public void replaceBlock(Block a, Block b) {
+        lastImage = null;
         if (visitorHigh != null && visitorHigh == a) {
             visitorHigh = b;
         }
@@ -372,6 +385,7 @@ public class BlockContainer {
     }
 
     public void clear() {
+        lastImage = null;
         upper = null;
         lower = null;
         visitorLow = null;

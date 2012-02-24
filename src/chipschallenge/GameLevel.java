@@ -122,10 +122,13 @@ public class GameLevel implements ChipListener {
         Point to = (Point) from.clone();
         if (direction != null) {
             Move.updatePoint(to, direction);
+        }        
+        if(b.isChip()) {
+            g.setChipMoved(true);
+        } else {
+            g.moveOccured(from);
+            g.moveOccured(to);
         }
-        // Redraw even if move is impossible, because facing might have changed
-        g.moveOccured(from);
-        g.moveOccured(to);
         if (direction != null && (ignoreFrom || (!b.isOnIce() || b.isChipWithIceSkates()) && !b.isOnCloner())) {
             b.setFacing(direction);
         }
@@ -134,7 +137,7 @@ public class GameLevel implements ChipListener {
         }
         if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
             if (ignoreTo || mBoard[to.x][to.y].canMoveTo(b)) {
-
+                  
                 //From reactions
                 mBoard[from.x][from.y].moveFrom(b);
 
@@ -148,9 +151,11 @@ public class GameLevel implements ChipListener {
                 Moves m = null;
                 if ((m = mBoard[to.x][to.y].causesSlipTo(b)) != null) {
                     g.addToSlipList(b, m);
+                    b.setForced(true);
                 } else {
                     if (b.isForced() && !b.isOnTrap()) {
                         g.removeFromSlipList(b);
+                        b.setForced(false);
                     }
                 }
 
@@ -159,10 +164,6 @@ public class GameLevel implements ChipListener {
 
                 return true;
             } else {
-                //System.out.println(mBoard[to.x][to.y]);
-                if (b.isForced() && !b.isOnTrap()) {
-                    g.removeFromSlipList(b);
-                }
                 return false;
             }
         } else {
@@ -204,7 +205,7 @@ public class GameLevel implements ChipListener {
         StringBuilder sb = new StringBuilder();
         switch (deaths) {
             case 0:
-                sb.append("Yowzer! First try!");
+                sb.append("Yowser! First try!");
                 break;
             case 1:
             case 2:

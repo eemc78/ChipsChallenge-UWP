@@ -25,6 +25,11 @@ public class GUI extends Frame implements NextLevelListener {
             public void windowClosing(WindowEvent we) {
                 System.exit(0);
             }
+            
+            @Override
+            public void windowStateChanged(WindowEvent e) {
+                repaintPlayField();
+            }
         });
         setSize(520, 400);
         setLayout(null);
@@ -96,8 +101,8 @@ public class GUI extends Frame implements NextLevelListener {
         msgDialog(mLevel.getScore());
     }
 
-    public boolean repaintIfNecessary(Point from) {
-        return mPlayField.repaintIfNecessary(from);
+    public void repaintPlayField() {
+        mPlayField.repaint();
     }
 
     public void nextLevel(GameLevel level) {

@@ -1,7 +1,9 @@
 package chipschallenge.gui;
 
+import chipschallenge.BlockContainer;
 import chipschallenge.Game;
 import chipschallenge.GameLevel;
+import chipschallenge.Move.Moves;
 import chipschallenge.NextLevelListener;
 import chipschallenge.tickbehaviors.ChipTickBehavior;
 import java.awt.Cursor;
@@ -13,6 +15,7 @@ import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Collection;
 
 class PlayField extends Panel implements NextLevelListener, MouseListener {
 
@@ -33,24 +36,39 @@ class PlayField extends Panel implements NextLevelListener, MouseListener {
 
     @Override
     public void update(Graphics g) {
-        if (offscreen == null) {
-            offscreen = createImage(getSize().width, getSize().height);
-        }
-        Graphics og = offscreen.getGraphics();
-        GameLevel gl = Game.getInstance().getLevel();
+        Game ga = Game.getInstance();
+        GameLevel gl = ga.getLevel();
+        Collection<Point> moves = ga.getMovesToCheck();
         Point chip = gl.findChip();
         int top = getTop(gl, chip.y);
         int left = getLeft(gl, chip.x);
-
-        for (int x = 0; x < mWidth; x++) {
-            for (int y = 0; y < mHeight; y++) {
-                og.drawImage(gl.getBlockContainer(x + left, y + top).getImage(), x * 32, y * 32, null);
+        if (ga.chipMoved()) {
+            if (offscreen == null) {
+                offscreen = createImage(getSize().width, getSize().height);
             }
+            Graphics og = offscreen.getGraphics();
+            for (int x = 0; x < mWidth; x++) {
+                for (int y = 0; y < mHeight; y++) {
+                    og.drawImage(gl.getBlockContainer(x + left, y + top).getImage(), x * 32, y * 32, null);
+                }
+            }
+            og.dispose();
+            ga.setChipMoved(false);
+            g.drawImage(offscreen, 0, 0, null);
+            g.dispose();
+        } else {
+            for (Point p : moves) {
+                if (p.x >= left && p.x <= (left + mWidth) && p.y >= top && p.y <= (top + mWidth)) {
+                    BlockContainer bc = gl.getBlockContainer(p.x, p.y);
+                    Image before = bc.getLastImage();
+                    if (before == null) {
+                        g.drawImage(bc.getImage(), (p.x - left) * 32, (p.y - top) * 32, null);
+                    }
+                }
+            }
+            g.dispose();
+            moves.clear();
         }
-
-        og.dispose();
-        g.drawImage(offscreen, 0, 0, null);
-        g.dispose();
     }
 
     public int getTop(GameLevel gl, int chipY) {
@@ -78,23 +96,6 @@ class PlayField extends Panel implements NextLevelListener, MouseListener {
     @Override
     public void paint(Graphics g) {
         update(g);
-    }
-
-    // Determine whether repaint is needed
-    public boolean repaintIfNecessary(Point from) {
-        GameLevel gl = Game.getInstance().getLevel();
-        Point chip = gl.findChip();
-        if (chip.equals(from)) {
-            repaint();
-            return true;
-        }
-        int top = getTop(gl, chip.y);
-        int left = getLeft(gl, chip.x);
-        if (from.y >= top && from.y <= (top + mHeight) && from.x >= left && from.x <= (left + mWidth)) {
-            repaint();
-            return true;
-        }
-        return false;
     }
 
     public void nextLevel(GameLevel level) {
