@@ -1,35 +1,38 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Key = Inventory.Key;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.Inventory.Key;
-
-/**
- * Moving to blue key
- */
-public class BlueKeyTo extends NoSlipReaction {
-
-    private BlueKeyTo() {
-    }
-    private static BlueKeyTo mInstance = null;
-
-    public static synchronized BlueKeyTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BlueKeyTo();
+    public class BlueKeyTo : NoSlipReaction
+    {
+        private BlueKeyTo()
+        {
         }
-        return mInstance;
-    }
 
-    // Take key
-    public void react(Block moving, Block standing) {
-        if (moving.isChip()) {
-            takeKey(Key.BLUE);
-            standing.replace(createBlock(Type.FLOOR));
+        private static BlueKeyTo instance;
+
+        public static BlueKeyTo Instance
+        {
+            get
+            {
+                lock (typeof(BlueKeyTo))
+                {
+                    return instance ?? (instance = new BlueKeyTo());
+                }
+            }
         }
-    }
 
-    // Everyone can move here
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                TakeKey(Key.BLUE);
+                standing.Replace(CreateBlock(Block.Type.FLOOR));
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

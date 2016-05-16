@@ -1,33 +1,40 @@
-package chipschallenge.tickbehaviors;
+﻿namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move;
-import chipschallenge.Move.Moves;
+    public class PinkballTickBehavior : IBlockTickBehavior
+    {
 
-public class PinkballTickBehavior implements BlockTickBehavior {
-
-    private PinkballTickBehavior() {
-    }
-    private static PinkballTickBehavior mInstance = null;
-
-    public static synchronized PinkballTickBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new PinkballTickBehavior();
+        private PinkballTickBehavior()
+        {
         }
-        return mInstance;
-    }
+        private static PinkballTickBehavior instance;
 
-    @Override
-    public void tick(Block caller) throws BlockContainerFullException {
-        if (caller.isOnCloner()) {
-            return;
+        public static PinkballTickBehavior Instance
+        {
+            get
+            {
+                lock (typeof(PinkballTickBehavior))
+                {
+                    return instance ?? (instance = new PinkballTickBehavior());
+                }
+            }
         }
-        Moves m = caller.getFacing();
-        if (!caller.move(m)) {
-            m = Move.reverse(m);
-            caller.setFacing(m);
-            caller.move(m);
+
+        public virtual void Tick(Block caller)
+        {
+            if (caller.OnCloner)
+            {
+                return;
+            }
+
+            Moves moves = caller.Facing;
+            if (!caller.Move(moves))
+            {
+                moves = Move.Reverse(moves);
+                caller.Facing = moves;
+                caller.Move(moves);
+            }
         }
     }
 }

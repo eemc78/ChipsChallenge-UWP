@@ -1,18 +1,21 @@
-package chipschallenge;
+﻿namespace ChipsChallenge.Shared
+{
+    public abstract class LevelFactory
+    {
+        public abstract GameLevel GetLevel(int n);
 
-public abstract class LevelFactory {
+        public abstract int LastLevelNumber {get;}
 
-    public abstract GameLevel getLevel(int n);
+        protected internal abstract int GetLevelNumberByPassword(string pass);
 
-    public abstract int getLastLevelNumber();
-
-    protected abstract int getLevelNumberByPassword(String pass);
-
-    public final GameLevel getLevelByPassword(String pass) {
-        int n = getLevelNumberByPassword(pass);
-        if (n == -1) {
-            return null;
+        public GameLevel GetLevelByPassword(string password)
+        {
+            int n = GetLevelNumberByPassword(password);
+            if (n == -1)
+            {
+                return null;
+            }
+            return GetLevel(n);
         }
-        return getLevel(n);
     }
 }

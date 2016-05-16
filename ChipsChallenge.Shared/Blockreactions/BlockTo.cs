@@ -1,55 +1,53 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
-
-/**
- * Moving to a Block
- */
-public class BlockTo extends NoSlipReaction {
-
-    private BlockTo() {
-    }
-    private static BlockTo mInstance = null;
-
-    public static synchronized BlockTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BlockTo();
+    /// <summary>
+    /// Moving to a Block
+    /// </summary>
+    public class BlockTo : NoSlipReaction
+    {
+        private BlockTo()
+        {
         }
-        return mInstance;
-    }
+        private static BlockTo instance;
 
-    // When moving onto a block, the block moves in the same direction
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (moving.isChip()) {
-            //standing.move(moving.getFacing());
-            game().removeFromSlipList(standing);
-            level().moveBlock(standing, moving.getFacing(), true, false);
-        }
-    }
-
-    // Chip can move a block if the block in turn can move in the same direction
-    public boolean canMove(Block moving, Block standing) {
-        if (moving.isChip()) {
-            /*
-            BlockContainer before = level().getBlockContainer(standing);
-            BlockContainer after = level().getBlockContainer(standing, moving.getFacing());
-            if (after == null) { // Block being pushed at the edge
-            return false;
+        public static BlockTo Instance
+        {
+            get
+            {
+                lock (typeof(BlockTo))
+                {
+                    return instance ?? (instance = new BlockTo());
+                }
             }
-            return  //before.canMoveFrom(standing) &&
-            after.canMoveTo(standing);
-             */
-            Moves facingBefore = standing.getFacing();
-            standing.setFacing(moving.getFacing());
-            // We wanst to exclude ice corners here
-            boolean isOnIce = standing.isOn(Block.Type.ICE);
-            boolean ret = (isOnIce || !isOnIce && standing.canMoveFrom())
-                    && standing.canMoveTo(moving.getFacing());
-            standing.setFacing(facingBefore);
-            return ret;
         }
-        return false;
+
+
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                Game().RemoveFromSlipList(standing);
+                Level().MoveBlock(standing, moving.Facing, true, false);
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                Moves facingBefore = standing.Facing;
+                standing.Facing = moving.Facing;
+
+                // We want to exclude ice corners here
+                bool isOnIce = standing.IsOn(Block.Type.ICE);
+                bool ret = (isOnIce || !isOnIce && standing.CanMoveFrom()) && standing.CanMoveTo(moving.Facing);
+                standing.Facing = facingBefore;
+                return ret;
+            }
+
+            return false;
+        }
     }
 }

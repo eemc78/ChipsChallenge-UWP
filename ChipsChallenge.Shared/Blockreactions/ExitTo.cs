@@ -1,37 +1,39 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.SoundPlayer.sounds;
-
-/**
- * Move to exit
- */
-public class ExitTo extends NoSlipReaction {
-
-    private ExitTo() {
-    }
-    private static ExitTo mInstance = null;
-
-    public static synchronized ExitTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ExitTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class ExitTo : NoSlipReaction
+    {
+        private ExitTo()
+        {
         }
-        return mInstance;
-    }
+        private static ExitTo instance;
 
-    // Completes level
-    @Override
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (moving.isChip()) {
-            sound().playSound(sounds.EXIT);
-            game().setLevelComplete();
+        public static ExitTo Instance
+        {
+            get
+            {
+                lock (typeof(ExitTo))
+                {
+                    if (instance == null)
+                    {
+                        instance = new ExitTo();
+                    }
+                    return instance;
+                }
+            }
         }
-    }
 
-    // Only chip and blocks can move
-    @Override
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() || moving.isBlock();
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                Sound().Play(Shared.Sound.Exit);
+                Game().SetLevelComplete();
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip || moving.IsBlock();
+        }
     }
 }

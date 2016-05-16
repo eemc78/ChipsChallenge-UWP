@@ -1,34 +1,33 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Move.Moves;
-
-/**
- * Standard behavior for when things can move
- */
-public class canMoveNoSlip extends BlockReaction {
-
-    private canMoveNoSlip() {
-    }
-    private static canMoveNoSlip mInstance = null;
-
-    public static synchronized canMoveNoSlip getInstance() {
-        if (mInstance == null) {
-            mInstance = new canMoveNoSlip();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    /// <summary>
+    /// Standard behavior for when things can move
+    /// </summary>
+    public class CanMoveNoSlip : NoSlipReaction
+    {
+        private CanMoveNoSlip()
+        {
         }
-        return mInstance;
-    }
+        private static CanMoveNoSlip instance;
 
-    public void react(Block moving, Block standing) {
-        // No reaction
-    }
+        public static CanMoveNoSlip Instance
+        {
+            get
+            {
+                lock (typeof(CanMoveNoSlip))
+                {
+                    return instance ?? (instance = new CanMoveNoSlip());
+                }
+            }
+        }
 
-    public final boolean canMove(Block moving, Block standing) {
-        return true;
-    }
+        public override void React(Block moving, Block standing)
+        {
+        }
 
-    @Override
-    public Moves causesSlip(Block moving, Block standing) {
-        return null;
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

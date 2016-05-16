@@ -1,438 +1,374 @@
-package chipschallenge;
+﻿namespace ChipsChallenge.Shared
+{
+    using System.Collections.Generic;
 
-import chipschallenge.Block.Type;
-import chipschallenge.Move.Moves;
-import java.awt.AlphaComposite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
-import java.awt.image.ImageProducer;
-import java.awt.image.RGBImageFilter;
-import java.util.HashMap;
-import java.util.Map;
-import javax.imageio.ImageIO;
+    using Microsoft.Graphics.Canvas;
 
-public class BlockImageFactory {
+    using Moves = Move.Moves;
+    using Type = Block.Type;
 
-    private Map<Type, Map<Moves, Image>> loadedImages = new HashMap<Type, Map<Moves, Image>>();
-    private Map<Type, Map<Moves, Image>> loadedImagesOverlay = new HashMap<Type, Map<Moves, Image>>();
-    private BufferedImage tileset;
-    private static BlockImageFactory instance = null;
+    public class BlockImageFactory
+    {
+        private static BlockImageFactory instance;
+        private readonly IDictionary<Type, IDictionary<Moves, CanvasBitmap>> loadedImages = new Dictionary<Type, IDictionary<Moves, CanvasBitmap>>();
+        private readonly IDictionary<Type, IDictionary<Moves, CanvasBitmap>> loadedImagesOverlay = new Dictionary<Type, IDictionary<Moves, CanvasBitmap>>();
+        private CanvasBitmap blockSprites;
 
-    private BlockImageFactory() {
-        try {
-            tileset = ImageIO.read(getClass().getResource("/tileset.gif"));
-        } catch (Exception e) {
-            System.out.println("Could not find tileset.gif");
-            System.exit(-1);
-        }
-    }
-
-    public static BlockImageFactory getInstance() {
-        if (instance == null) {
-            instance = new BlockImageFactory();
-        }
-        return instance;
-    }
-
-    public Image get(Type type, Moves moves, boolean overlay) {
-        Map<Type, Map<Moves, Image>> images;
-        Map<Moves, Image> moveImages;
-
-        if (overlay) {
-            images = loadedImagesOverlay;
-        } else {
-            images = loadedImages;
+        private BlockImageFactory()
+        {
         }
 
-        moveImages = images.get(type);
-        if (moveImages == null) {
-            moveImages = new HashMap<Moves, Image>();
-            images.put(type, moveImages);
-        }
-        Image im = moveImages.get(moves);
-        if (im == null) {
-            im = loadImage(type, moves, overlay);
-            moveImages.put(moves, im);
-        }
-        return im;
-    }
+        public static BlockImageFactory Instance => instance ?? (instance = new BlockImageFactory());
 
-    private Image loadImage(Type type, Moves moves, boolean overlay) {
-        // If overlay, x and y are the overlay coordinates.
-        int x = 0;
-        int y = 0;
-        int maskX = -1;
-        int maskY = -1;
-
-        switch (type) {
-            case BLOB:
-                y = 12;
-                x = 5;
-                break;
-            case BLOCK:
-                y = 10;
-                x = 0;
-                break;
-            case BLUEBUTTON:
-                y = 8;
-                x = 2;
-                break;
-            case BLUEKEY:
-                y = 4;
-                x = 6;
-                break;
-            case BLUELOCK:
-                y = 6;
-                x = 1;
-                break;
-            case BLUEWALLREAL:
-            case BLUEWALLFAKE:
-                y = 14;
-                x = 1;
-                break;
-            case BOMB:
-                y = 10;
-                x = 2;
-                break;
-            case BROWNBUTTON:
-                y = 7;
-                x = 2;
-                break;
-            case BUG:
-                y = 0;
-                x = 4;
-                break;
-            case BURNEDCHIP:
-                y = 4;
-                x = 3;
-                break;
-            case CHIP:
-                y = 12;
-                x = 6;
-                break;
-            case CLONEBLOCK:
-                y = 0;
-                x = 1;
-                break;
-            case CLONEMACHINE:
-                y = 1;
-                x = 3;
-                break;
-            case COMPUTERCHIP:
-                y = 2;
-                x = 0;
-                break;
-            case DIRT:
-                y = 11;
-                x = 0;
-                break;
-            case DROWNEDCHIP:
-                y = 3;
-                x = 3;
-                break;
-            case EXIT:
-                y = 5;
-                x = 1;
-                break;
-            case FAKEEXIT:
-                y = 5;
-                x = 1;
-                break;
-            case FIRE:
-                y = 4;
-                x = 0;
-                break;
-            case FIREBOOTS:
-                y = 9;
-                x = 6;
-                break;
-            case FIREBALL:
-                y = 4;
-                x = 4;
-                break;
-            case FLIPPERS:
-                y = 8;
-                x = 6;
-                break;
-            case FLOOR:
-                y = 0;
-                x = 0;
-                break;
-            case FORCEFLOOR:
-                y = 2;
-                x = 1;
-                break;
-            case RANDOMFORCEFLOOR:
-                y = 2;
-                x = 3;
-                break;
-            case GLIDER:
-                y = 0;
-                x = 5;
-                break;
-            case GRAVEL:
-                y = 13;
-                x = 2;
-                break;
-            case GREENBUTTON:
-                y = 3;
-                x = 2;
-                break;
-            case GREENKEY:
-                y = 6;
-                x = 6;
-                break;
-            case GREENLOCK:
-                y = 8;
-                x = 1;
-                break;
-            case HIDDENWALL:
-                y = 0;
-                x = 0;
-                break;
-            case HINT:
-                y = 15;
-                x = 2;
-                break;
-            case ICE:
-                y = 12;
-                x = 0;
-                break;
-            case ICECORNER:
-                y = 10;
-                x = 1;
-                break;
-            case ICEBLOCK:
-                y = 10;
-                x = 1;
-                break;
-            case ICESKATES:
-                y = 10;
-                x = 6;
-                break;
-            case INVISIBLEWALL:
-                y = 0;
-                x = 0;
-                break;
-            case LOCK: // ?
-                break;
-            case PARAMECIUM:
-                y = 0;
-                x = 6;
-                break;
-            case PINKBALL:
-                y = 8;
-                x = 4;
-                break;
-            case RECESSEDWALL:
-                y = 14;
-                x = 2;
-                break;
-            case REDBUTTON:
-                y = 4;
-                x = 2;
-                break;
-            case REDKEY:
-                y = 5;
-                x = 6;
-                break;
-            case REDLOCK:
-                y = 7;
-                x = 1;
-                break;
-            case SOCKET:
-                y = 2;
-                x = 2;
-                break;
-            case SUCTIONBOOTS:
-                y = 11;
-                x = 6;
-                break;
-            case SWIMMINGCHIP:
-                y = 12;
-                x = 3;
-                break;
-            case TANK:
-                y = 12;
-                x = 4;
-                break;
-            case TEETH:
-                y = 4;
-                x = 5;
-                break;
-            case TELEPORT:
-                y = 9;
-                x = 2;
-                break;
-            case THIEF:
-                y = 1;
-                x = 2;
-                break;
-            case THINWALL:
-                y = 6;
-                x = 0;
-                break;
-            case THINWALLSE:
-                y = 0;
-                x = 3;
-                break;
-            case TOGGLEWALLCLOSED:
-                y = 5;
-                x = 2;
-                break;
-            case TOGGLEWALLOPEN:
-                y = 6;
-                x = 2;
-                break;
-            case TRAP:
-                y = 11;
-                x = 2;
-                break;
-            case WALKER:
-                y = 8;
-                x = 5;
-                break;
-            case WALL:
-                y = 1;
-                x = 0;
-                break;
-            case WATER:
-                y = 3;
-                x = 0;
-                break;
-            case YELLOWKEY:
-                y = 7;
-                x = 6;
-                break;
-            case YELLOWLOCK:
-                y = 9;
-                x = 1;
-                break;
+        public void Initialize(CanvasBitmap sprites)
+        {
+            blockSprites = sprites;
         }
 
-        if (overlay) {
-            if (x >= 4) {
-                x += 3;
-                maskX = x + 3;
+        public virtual CanvasBitmap GetImage(Type type, Moves moves, bool overlay)
+        {
+            var images = overlay ? loadedImagesOverlay : loadedImages;
+
+            IDictionary<Moves, CanvasBitmap> moveImages;
+            images.TryGetValue(type, out moveImages);
+            if (moveImages == null)
+            {
+                moveImages = new Dictionary<Moves, CanvasBitmap>();
+                images[type] = moveImages;
             }
-        }
 
-        if ((x >= 4 && !(x == 6 && y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.ICECORNER) {
-            switch (moves) {
-                case DOWN:
-                    y += 2;
-                    break;
-                case LEFT:
-                    y += 1;
-                    break;
-                case RIGHT:
-                    y += 3;
-                    break;
+            CanvasBitmap im;
+            moveImages.TryGetValue(moves, out im);
+            if (im == null)
+            {
+                im = LoadImage(type, moves, overlay);
+                moveImages[moves] = im;
             }
+
+            return im;
         }
 
-        if (type == Type.FORCEFLOOR) {
-            switch (moves) {
-                case DOWN:
+        private CanvasBitmap LoadImage(Type type, Moves moves, bool overlay)
+        {
+            // If overlay, x and y are the overlay coordinates.
+            int x = 0;
+            int y = 0;
+
+            switch (type)
+            {
+                case Type.BLOB:
+                    y = 12;
+                    x = 5;
+                    break;
+                case Type.BLOCK:
+                    y = 10;
                     x = 0;
+                    break;
+                case Type.BLUEBUTTON:
+                    y = 8;
+                    x = 2;
+                    break;
+                case Type.BLUEKEY:
+                    y = 4;
+                    x = 6;
+                    break;
+                case Type.BLUELOCK:
+                    y = 6;
+                    x = 1;
+                    break;
+                case Type.BLUEWALLREAL:
+                case Type.BLUEWALLFAKE:
+                    y = 14;
+                    x = 1;
+                    break;
+                case Type.BOMB:
+                    y = 10;
+                    x = 2;
+                    break;
+                case Type.BROWNBUTTON:
+                    y = 7;
+                    x = 2;
+                    break;
+                case Type.BUG:
+                    y = 0;
+                    x = 4;
+                    break;
+                case Type.BURNEDCHIP:
+                    y = 4;
+                    x = 3;
+                    break;
+                case Type.CHIP:
+                    y = 12;
+                    x = 6;
+                    break;
+                case Type.CLONEBLOCK:
+                    y = 0;
+                    x = 1;
+                    break;
+                case Type.CLONEMACHINE:
+                    y = 1;
+                    x = 3;
+                    break;
+                case Type.COMPUTERCHIP:
+                    y = 2;
+                    x = 0;
+                    break;
+                case Type.DIRT:
+                    y = 11;
+                    x = 0;
+                    break;
+                case Type.DROWNEDCHIP:
+                    y = 3;
+                    x = 3;
+                    break;
+                case Type.EXIT:
+                    y = 5;
+                    x = 1;
+                    break;
+                case Type.FAKEEXIT:
+                    y = 5;
+                    x = 1;
+                    break;
+                case Type.FIRE:
+                    y = 4;
+                    x = 0;
+                    break;
+                case Type.FIREBOOTS:
+                    y = 9;
+                    x = 6;
+                    break;
+                case Type.FIREBALL:
+                    y = 4;
+                    x = 4;
+                    break;
+                case Type.FLIPPERS:
+                    y = 8;
+                    x = 6;
+                    break;
+                case Type.FLOOR:
+                    y = 0;
+                    x = 0;
+                    break;
+                case Type.FORCEFLOOR:
+                    y = 2;
+                    x = 1;
+                    break;
+                case Type.RANDOMFORCEFLOOR:
+                    y = 2;
+                    x = 3;
+                    break;
+                case Type.GLIDER:
+                    y = 0;
+                    x = 5;
+                    break;
+                case Type.GRAVEL:
                     y = 13;
+                    x = 2;
                     break;
-                case LEFT:
-                    y += 2;
+                case Type.GREENBUTTON:
+                    y = 3;
+                    x = 2;
                     break;
-                case RIGHT:
-                    y += 1;
+                case Type.GREENKEY:
+                    y = 6;
+                    x = 6;
+                    break;
+                case Type.GREENLOCK:
+                    y = 8;
+                    x = 1;
+                    break;
+                case Type.HIDDENWALL:
+                    y = 0;
+                    x = 0;
+                    break;
+                case Type.HINT:
+                    y = 15;
+                    x = 2;
+                    break;
+                case Type.ICE:
+                    y = 12;
+                    x = 0;
+                    break;
+                case Type.ICECORNER:
+                    y = 10;
+                    x = 1;
+                    break;
+                case Type.ICEBLOCK:
+                    y = 10;
+                    x = 1;
+                    break;
+                case Type.ICESKATES:
+                    y = 10;
+                    x = 6;
+                    break;
+                case Type.INVISIBLEWALL:
+                    y = 0;
+                    x = 0;
+                    break;
+                case Type.LOCK: // ?
+                    break;
+                case Type.PARAMECIUM:
+                    y = 0;
+                    x = 6;
+                    break;
+                case Type.PINKBALL:
+                    y = 8;
+                    x = 4;
+                    break;
+                case Type.RECESSEDWALL:
+                    y = 14;
+                    x = 2;
+                    break;
+                case Type.REDBUTTON:
+                    y = 4;
+                    x = 2;
+                    break;
+                case Type.REDKEY:
+                    y = 5;
+                    x = 6;
+                    break;
+                case Type.REDLOCK:
+                    y = 7;
+                    x = 1;
+                    break;
+                case Type.SOCKET:
+                    y = 2;
+                    x = 2;
+                    break;
+                case Type.SUCTIONBOOTS:
+                    y = 11;
+                    x = 6;
+                    break;
+                case Type.SWIMMINGCHIP:
+                    y = 12;
+                    x = 3;
+                    break;
+                case Type.TANK:
+                    y = 12;
+                    x = 4;
+                    break;
+                case Type.TEETH:
+                    y = 4;
+                    x = 5;
+                    break;
+                case Type.TELEPORT:
+                    y = 9;
+                    x = 2;
+                    break;
+                case Type.THIEF:
+                    y = 1;
+                    x = 2;
+                    break;
+                case Type.THINWALL:
+                    y = 6;
+                    x = 0;
+                    break;
+                case Type.THINWALLSE:
+                    y = 0;
+                    x = 3;
+                    break;
+                case Type.TOGGLEWALLCLOSED:
+                    y = 5;
+                    x = 2;
+                    break;
+                case Type.TOGGLEWALLOPEN:
+                    y = 6;
+                    x = 2;
+                    break;
+                case Type.TRAP:
+                    y = 11;
+                    x = 2;
+                    break;
+                case Type.WALKER:
+                    y = 8;
+                    x = 5;
+                    break;
+                case Type.WALL:
+                    y = 1;
+                    x = 0;
+                    break;
+                case Type.WATER:
+                    y = 3;
+                    x = 0;
+                    break;
+                case Type.YELLOWKEY:
+                    y = 7;
+                    x = 6;
+                    break;
+                case Type.YELLOWLOCK:
+                    y = 9;
+                    x = 1;
                     break;
             }
-        }
 
-        BufferedImage img = tileset.getSubimage(x * 32, y * 32, 32, 32);
-        if (overlay) {
-            try {
-                BufferedImage mask = tileset.getSubimage(maskX * 32, y * 32, 32, 32);
-                mask = (BufferedImage) TransformGrayToTransparency(mask);
-                img = ApplyTransparency(img, mask);
-            } catch (Exception ex) {
-                System.out.println(type + " mask wasn't created");
+            if (overlay)
+            {
+                if (x >= 4)
+                {
+                    x += 3;
+                }
             }
-        }
 
-        Map<Type, Map<Moves, Image>> images;
-        if (overlay) {
-            images = loadedImagesOverlay;
-        } else {
-            images = loadedImages;
-        }
-
-        Map<Moves, Image> movesMap = images.get(type);
-        if (movesMap == null) {
-            movesMap = new HashMap<Moves, Image>();
-            movesMap.put(moves, img);
-            images.put(type, movesMap);
-        } else {
-            movesMap.put(moves, img);
-        }
-
-        return img;
-    }
-
-    private BufferedImage imageToBufferedImage(Image image) {
-        if (image instanceof BufferedImage) {
-            return (BufferedImage) image;
-        }
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = bufferedImage.createGraphics();
-        g2.drawImage(image, 0, 0, null);
-        g2.dispose();
-
-        return bufferedImage;
-
-    }
-
-    private BufferedImage TransformGrayToTransparency(BufferedImage image) {
-        ImageFilter filter = new RGBImageFilter() {
-
-            public final int filterRGB(int x, int y, int rgb) {
-                return (rgb << 8) & 0xFF000000;
+            if ((x >= 4 && !(x == 6 && y >= 4 && y <= 11)) || type == Type.SWIMMINGCHIP || type == Type.ICEBLOCK || type == Type.THINWALL || type == Type.ICECORNER)
+            {
+                switch (moves)
+                {
+                    case Moves.DOWN:
+                        y += 2;
+                        break;
+                    case Moves.LEFT:
+                        y += 1;
+                        break;
+                    case Moves.RIGHT:
+                        y += 3;
+                        break;
+                }
             }
-        };
 
-        ImageProducer ip = new FilteredImageSource(image.getSource(), filter);
-        return imageToBufferedImage(Toolkit.getDefaultToolkit().createImage(ip));
-    }
+            if (type == Type.FORCEFLOOR)
+            {
+                switch (moves)
+                {
+                    case Moves.DOWN:
+                        x = 0;
+                        y = 13;
+                        break;
+                    case Moves.LEFT:
+                        y += 2;
+                        break;
+                    case Moves.RIGHT:
+                        y += 1;
+                        break;
+                }
+            }
 
-    private BufferedImage ApplyTransparency(BufferedImage image, Image mask) {
-        BufferedImage dest = new BufferedImage(
-                image.getWidth(), image.getHeight(),
-                BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = dest.createGraphics();
-        g2.drawImage(image, 0, 0, null);
-        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.DST_IN, 1.0F);
-        g2.setComposite(ac);
-        g2.drawImage(mask, 0, 0, null);
-        g2.dispose();
-        return dest;
-    }
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            CanvasRenderTarget image = new CanvasRenderTarget(device, 32, 32, 96);
+            image.CopyPixelsFromBitmap(blockSprites, 0, 0, x * 32, y * 32, 32, 32);
 
-    public Image getOverlayed(Image over, Image under) {
-        if (over == null && under == null) {
-            throw new IllegalArgumentException("Both over and under cannot be null");
+            IDictionary<Type, IDictionary<Moves, CanvasBitmap>> images;
+            if (overlay)
+            {
+                images = loadedImagesOverlay;
+            }
+            else
+            {
+                images = loadedImages;
+            }
+
+            IDictionary<Moves, CanvasBitmap> movesMap = images[type];
+            if (movesMap == null)
+            {
+                movesMap = new Dictionary<Moves, CanvasBitmap>();
+                movesMap[moves] = image;
+                images[type] = movesMap;
+            }
+            else
+            {
+                movesMap[moves] = image;
+            }
+
+            return image;
         }
-        if (over == null) {
-            return under;
-        }
-        if (under == null) {
-            return over;
-        }
-        Image im = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = im.getGraphics();
-        g.drawImage(under, 0, 0, null);
-        g.drawImage(over, 0, 0, null);
-        return im;
     }
 }

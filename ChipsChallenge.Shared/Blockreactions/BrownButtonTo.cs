@@ -1,31 +1,32 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Buttons;
-import chipschallenge.SoundPlayer.sounds;
-
-/**
- * Moving to brown button
- */
-public class BrownButtonTo extends NoSlipReaction {
-
-    private BrownButtonTo() {
-    }
-    private static BrownButtonTo mInstance = null;
-
-    public static synchronized BrownButtonTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BrownButtonTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class BrownButtonTo : NoSlipReaction
+    {
+        private BrownButtonTo()
+        {
         }
-        return mInstance;
-    }
+        private static BrownButtonTo instance;
 
-    public void react(Block moving, Block standing) {
-        Buttons.brownButtonDown(standing);
-        sound().playSound(sounds.BUTTON);
-    }
+        public static BrownButtonTo Instance
+        {
+            get
+            {
+                lock (typeof(BrownButtonTo))
+                {
+                    return instance ?? (instance = new BrownButtonTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            Buttons.BrownButtonDown(standing);
+            Sound().Play(Shared.Sound.Button);
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

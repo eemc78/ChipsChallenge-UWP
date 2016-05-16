@@ -1,39 +1,49 @@
-package chipschallenge.destroybehaviors;
+﻿namespace ChipsChallenge.Shared.Destroybehaviors
+{
+    using NullButtonBehavior = Buttonbehaviors.NullButtonBehavior;
+    using NullTickBehavior = Tickbehaviors.NullTickBehavior;
 
-import chipschallenge.Block;
-import chipschallenge.Creatures;
-import chipschallenge.Game;
-import chipschallenge.buttonbehaviors.NullButtonBehavior;
-import chipschallenge.tickbehaviors.NullTickBehavior;
-
-public class DefaultDestroyBehavior implements DestroyBehavior {
-
-    private DefaultDestroyBehavior() {
-    }
-    private static DefaultDestroyBehavior mInstance = null;
-
-    public static synchronized DefaultDestroyBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new DefaultDestroyBehavior();
+    public class DefaultDestroyBehavior : IDestroyBehavior
+    {
+        private DefaultDestroyBehavior()
+        {
         }
-        return mInstance;
-    }
+        
+        private static DefaultDestroyBehavior instance;
 
-    public void destroy(Block b) {
-        clearReactions(b);
-        boolean creature = b.isCreature();
-        if (creature) {
-            Creatures.removeCreature(b);
+        public static DefaultDestroyBehavior Instance
+        {
+            get
+            {
+                lock (typeof(DefaultDestroyBehavior))
+                {
+                    return instance ?? (instance = new DefaultDestroyBehavior());
+                }
+            }
         }
-        if (creature || b.isBlock()) {
-            Game.getInstance().removeFromSlipList(b);
-        }
-        //Game.getInstance().removeMovingBlock(this);
-        Game.getInstance().getLevel().removeBlock(b);
-    }
 
-    private void clearReactions(Block b) {
-        b.setBlockTickBehavior(NullTickBehavior.getInstance());
-        b.setButtonBehavior(NullButtonBehavior.getInstance());
+        public virtual void Destroy(Block block)
+        {
+            ClearReactions(block);
+            bool creature = block.Creature;
+
+            if (creature)
+            {
+                Creatures.RemoveCreature(block);
+            }
+
+            if (creature || block.IsBlock())
+            {
+                Game.Instance.RemoveFromSlipList(block);
+            }
+            
+            Game.Instance.Level.RemoveBlock(block);
+        }
+
+        private void ClearReactions(Block block)
+        {
+            block.BlockTickBehavior = NullTickBehavior.Instance;
+            block.ButtonBehavior = NullButtonBehavior.Instance;
+        }
     }
 }

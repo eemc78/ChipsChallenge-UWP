@@ -1,26 +1,31 @@
-package chipschallenge.trapreleasebehaviors;
-
-import chipschallenge.Block;
-import chipschallenge.Creatures;
-
-public class ControllerTrapReleaseBehavior implements TrapReleaseBehavior {
-
-    private ControllerTrapReleaseBehavior() {
-    }
-    private static ControllerTrapReleaseBehavior mInstance = null;
-
-    public static synchronized ControllerTrapReleaseBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new ControllerTrapReleaseBehavior();
+﻿namespace ChipsChallenge.Shared.Trapreleasebehaviors
+{
+    public class ControllerTrapReleaseBehavior : ITrapReleaseBehavior
+    {
+        private ControllerTrapReleaseBehavior()
+        {
         }
-        return mInstance;
-    }
+        private static ControllerTrapReleaseBehavior instance;
 
-    public void releaseFromTrap(Block trapped) {
-        Block controller = Creatures.getController(trapped);
-        if (controller != null) {
-            trapped.setFacing(controller.getFacing());
-            trapped.setTrapped(false);
+        public static ControllerTrapReleaseBehavior Instance
+        {
+            get
+            {
+                lock (typeof(ControllerTrapReleaseBehavior))
+                {
+                    return instance ?? (instance = new ControllerTrapReleaseBehavior());
+                }
+            }
+        }
+
+        public virtual void ReleaseFromTrap(Block trapped)
+        {
+            Block controller = Creatures.GetController(trapped);
+            if (controller != null)
+            {
+                trapped.Facing = controller.Facing;
+                trapped.Trapped = false;
+            }
         }
     }
 }

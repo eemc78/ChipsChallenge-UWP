@@ -1,291 +1,342 @@
-package chipschallenge;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-import chipschallenge.Move.Moves;
-import java.awt.Point;
-import java.util.HashMap;
-import java.util.Map;
+namespace ChipsChallenge.Shared
+{
+    using Moves = Move.Moves;
 
-public class GameLevel implements ChipListener {
+    public class GameLevel
+    {
+        private volatile BlockContainer[][] mBoard;
+        private volatile IDictionary<Block, Point> blocks = new Dictionary<Block, Point>();
+        private volatile Block chip;
+        private int numChipsNeeded;
+        private int numSeconds;
+        private int timeLeft;
+        private int levelNumber;
+        private int deaths;
 
-    private volatile BlockContainer[][] mBoard;
-    private volatile Map<Block, Point> blocks = new HashMap<Block, Point>();
-    private volatile Block chip;
-    private int numChipsNeeded;
-    private int numSeconds;
-    private int levelNumber;
-    private int deaths = 0;
-    private String mapTitle = "Untitled";
-    private String password = "ABCD";
-    private String hint = "No hint";
+        public virtual string Hint { get; set; } = "No hint";
 
-    public String getHint() {
-        return hint;
-    }
-
-    public void setHint(String hint) {
-        this.hint = hint;
-    }
-
-    public GameLevel(int width, int height) {
-        mBoard = new BlockContainer[width][height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                mBoard[i][j] = new BlockContainer();
+        public GameLevel(int width, int height)
+        {
+            mBoard = RectangularArrays.ReturnRectangularBlockContainerArray(width, height);
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    mBoard[i][j] = new BlockContainer();
+                }
             }
         }
-    }
 
-    public GameLevel(int width, int height, int numChipsNeeded, int numSeconds, int levelNumber) {
-        this(width, height);
-        this.numChipsNeeded = numChipsNeeded;
-        this.numSeconds = numSeconds;
-        this.levelNumber = levelNumber;
-    }
-
-    public void addBlock(int x, int y, Block b, int layer) throws BlockContainerFullException {
-        //if(b.isChip()) {x = 30; y = 1;}
-        BlockContainer bc = getBlockContainer(x, y);
-        if (bc != null) {
-            if (b.isChip()) {
-                chip = b;
-            }
-            if (b.isA(Block.Type.TELEPORT)) {
-                Teleports.addTeleport(x, y);
-            }
-            switch (layer) {
-                case 0:
-                    bc.setLower(b);
-                    break;
-                case 1:
-                    bc.setUpper(b);
-                    break;
-                default:
-                    bc.add(b);
-                    break;
-            }
-            blocks.put(b, new Point(x, y));
+        public GameLevel(int width, int height, int numChipsNeeded, int numSeconds, int levelNumber) : this(width, height)
+        {
+            this.numChipsNeeded = numChipsNeeded;
+            this.numSeconds = numSeconds;
+            TimeLeft = NumSeconds;
+            this.levelNumber = levelNumber;
         }
-    }
 
-    public Point getPoint(Block b) {
-        Point p = (Point) blocks.get(b).clone();
-        return p;
-    }
-
-    public BlockContainer getBlockContainer(int x, int y) {
-        if (x < 0 || x >= getWidth() || y < 0 || y >= getHeight()) {
-            return null;
-        }
-        return mBoard[x][y];
-    }
-
-    public BlockContainer getBlockContainer(Block b) {
-        Point p = getPoint(b);
-        if (p == null) {
-            return null;
-        }
-        return getBlockContainer(p.x, p.y);
-    }
-
-    public BlockContainer getBlockContainer(Block b, Moves direction) {
-        Point p = (Point) blocks.get(b).clone();
-        if (p == null) {
-            return null;
-        }
-        Move.updatePoint(p, direction);
-        return getBlockContainer(p.x, p.y);
-    }
-
-    public int getWidth() {
-        return mBoard.length;
-    }
-
-    public int getHeight() {
-        return mBoard[0].length;
-    }
-
-    // Should be used for true teleportation ONLY
-    public boolean teleport(Block b, Point to) throws BlockContainerFullException {
-        Point from = blocks.get(b);
-        if (mBoard[to.x][to.y].canMoveTo(b)) {
-            mBoard[from.x][from.y].remove(b);
-            blocks.put(b, to);
-            mBoard[to.x][to.y].add(b);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean moveBlock(Block b, Moves direction, boolean ignoreFrom, boolean ignoreTo) throws BlockContainerFullException {
-        Game g = Game.getInstance();
-        Point from = blocks.get(b);
-        Point to = (Point) from.clone();
-        if (direction != null) {
-            Move.updatePoint(to, direction);
-        }        
-        if(b.isChip()) {
-            g.setChipMoved(true);
-        } else {
-            g.moveOccured(from);
-            g.moveOccured(to);
-        }
-        if (direction != null && (ignoreFrom || (!b.isOnIce() || b.isChipWithIceSkates()) && !b.isOnCloner())) {
-            b.setFacing(direction);
-        }
-        if (to.x < 0 || to.x >= getWidth() || to.y < 0 || to.y >= getHeight()) {
-            return false;
-        }
-        if (ignoreFrom || mBoard[from.x][from.y].canMoveFrom(b)) {
-            if (ignoreTo || mBoard[to.x][to.y].canMoveTo(b)) {
-                  
-                //From reactions
-                mBoard[from.x][from.y].moveFrom(b);
-
-                //Actual movement
-                mBoard[from.x][from.y].remove(b);
-                blocks.put(b, to);
-                mBoard[to.x][to.y].push(b);
-
-
-                // Add or remove from sliplist
-                Moves m = null;
-                if ((m = mBoard[to.x][to.y].causesSlipTo(b)) != null) {
-                    g.addToSlipList(b, m);
-                    b.setForced(true);
-                } else {
-                    if (b.isForced() && !b.isOnTrap()) {
-                        g.removeFromSlipList(b);
-                        b.setForced(false);
-                    }
+        public virtual void AddBlock(int x, int y, Block b, int layer)
+        {
+            BlockContainer bc = GetBlockContainer(x, y);
+            if (bc != null)
+            {
+                if (b.Chip)
+                {
+                    chip = b;
                 }
 
-                //To reactions
-                mBoard[to.x][to.y].moveTo(b);
+                if (b.IsA(Block.Type.TELEPORT))
+                {
+                    Teleports.AddTeleport(x, y);
+                }
 
-                return true;
-            } else {
-                return false;
+                switch (layer)
+                {
+                    case 0:
+                        bc.Lower = b;
+                        break;
+                    case 1:
+                        bc.Upper = b;
+                        break;
+                    default:
+                        bc.Add(b);
+                        break;
+                }
+
+                blocks[b] = new Point(x, y);
             }
-        } else {
+        }
+
+        public virtual Point GetPoint(Block b)
+        {
+            var point = new Point(blocks[b].X, blocks[b].Y);
+            return point;
+        }
+
+        public virtual BlockContainer GetBlockContainer(int x, int y)
+        {
+            if (x < 0 || x >= Width || y < 0 || y >= Height)
+            {
+                return null;
+            }
+
+            return mBoard[x][y];
+        }
+
+        public virtual BlockContainer GetBlockContainer(Block b)
+        {
+            var point = GetPoint(b);
+
+            return GetBlockContainer(point.X, point.Y);
+        }
+
+        public virtual BlockContainer GetBlockContainer(Block b, Moves direction)
+        {
+            var point = new Point(blocks[b].X, blocks[b].Y);
+            Move.UpdatePoint(ref point, direction);
+            return GetBlockContainer(point.X, point.Y);
+        }
+
+        public virtual int Width => mBoard.Length;
+
+        public virtual int Height => mBoard[0].Length;
+
+        // Should be used for true teleportation ONLY
+        public virtual bool Teleport(Block b, Point to)
+        {
+            Point from = blocks[b];
+            if (mBoard[to.X][to.Y].CanMoveTo(b))
+            {
+                mBoard[from.X][from.Y].Remove(b);
+                blocks[b] = to;
+                mBoard[to.X][to.Y].Add(b);
+                return true;
+            }
+
             return false;
         }
 
-    }
+        public virtual bool MoveBlock(Block b, Moves? direction, bool ignoreFrom, bool ignoreTo)
+        {
+            Game g = Game.Instance;
+            Point from = blocks[b];
+            Point to = new Point(from.X, from.Y);
+            if (direction != null)
+            {
+                Move.UpdatePoint(ref to, (Moves)direction);
+            }
 
-    public void removeBlock(Block b) {
-        getBlockContainer(b).remove(b);
-        if (b.getType() != Block.Type.CHIP) {
-            blocks.remove(b);
+            if (!b.Chip)
+            {
+                g.MoveOccured(from);
+                g.MoveOccured(to);
+            }
+
+            if (direction != null && (ignoreFrom || (!b.OnIce || b.ChipWithIceSkates) && !b.OnCloner))
+            {
+                b.Facing = (Moves)direction;
+            }
+
+            if (to.X < 0 || to.X >= Width || to.Y < 0 || to.Y >= Height)
+            {
+                return false;
+            }
+
+            if (ignoreFrom || mBoard[from.X][from.Y].CanMoveFrom(b))
+            {
+                if (ignoreTo || mBoard[to.X][to.Y].CanMoveTo(b))
+                {
+                    // From reactions
+                    mBoard[from.X][from.Y].MoveFrom(b);
+
+                    // Actual movement
+                    mBoard[from.X][from.Y].Remove(b);
+                    blocks[b] = to;
+                    mBoard[to.X][to.Y].Push(b);
+
+                    // Add or remove from sliplist
+                    Moves? m;
+                    if ((m = mBoard[to.X][to.Y].CausesSlipTo(b)) != null)
+                    {
+                        g.AddToSlipList(b, (Moves)m);
+                        b.Forced = true;
+                    }
+                    else
+                    {
+                        if (b.Forced && !b.OnTrap)
+                        {
+                            g.RemoveFromSlipList(b);
+                            b.Forced = false;
+                        }
+                    }
+
+                    // To reactions
+                    mBoard[to.X][to.Y].MoveTo(b);
+
+                    return true;
+                }
+            }
+
+            return false;
         }
-    }
 
-    public void replaceBlock(Block a, Block b) {
-        Point p = (Point) blocks.get(a).clone();
-        getBlockContainer(p.x, p.y).replaceBlock(a, b);
-        blocks.put(b, p);
-    }
-
-    public Point findChip() {
-        return blocks.get(chip);
-    }
-
-    public boolean contains(Block b) {
-        return blocks.containsKey(b);
-    }
-
-    public void die() {
-        deaths++;
-    }
-
-    public int getNumDeaths() {
-        return deaths;
-    }
-
-    public String getScore() {
-        StringBuilder sb = new StringBuilder();
-        switch (deaths) {
-            case 0:
-                sb.append("Yowser! First try!");
-                break;
-            case 1:
-            case 2:
-                sb.append("Go Bit Buster!");
-                break;
-            case 3:
-            case 4:
-                sb.append("Finnished! Good Work!");
-                break;
-            default:
-                sb.append("At last! You did it!");
-                break;
+        public virtual void RemoveBlock(Block b)
+        {
+            GetBlockContainer(b).Remove(b);
+            if (b.getType() != Block.Type.CHIP)
+            {
+                blocks.Remove(b);
+            }
         }
-        sb.append("\n\n");
-        double timeBonus = numSeconds * 10;
-        sb.append("Time Bonus: " + timeBonus);
-        sb.append("\n\n");
-        double levelBonus = Math.floor(levelNumber * 500 * Math.pow(0.8, deaths));
-        levelBonus = Math.max(500, levelBonus);
-        sb.append("Level Bonus: " + levelBonus);
-        sb.append("\n\n");
-        double levelScore = timeBonus + levelBonus;
-        sb.append("Level Score: " + levelScore);
+
+        public virtual void ReplaceBlock(Block a, Block b)
+        {
+            var point = new Point(blocks[a].X, blocks[a].Y);
+            GetBlockContainer(point.X, point.Y).ReplaceBlock(a, b);
+            blocks[b] = point;
+        }
+
+        public virtual Point FindChip()
+        {
+            return blocks[chip];
+        }
+
+        public virtual bool Contains(Block b)
+        {
+            return blocks.ContainsKey(b);
+        }
+
+        public virtual void Die()
+        {
+            deaths++;
+            timeLeft = NumSeconds;
+        }
+
+        public virtual int NumDeaths => deaths;
+
         //TODO: Store totalscore and best time, and output message.
-        return sb.toString();
-    }
+        public virtual string Score
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                switch (deaths)
+                {
+                    case 0:
+                        sb.Append("Yowser! First try!");
+                        break;
+                    case 1:
+                    case 2:
+                        sb.Append("Go Bit Buster!");
+                        break;
+                    case 3:
+                    case 4:
+                        sb.Append("Finished! Good Work!");
+                        break;
+                    default:
+                        sb.Append("At last! You did it!");
+                        break;
+                }
+                sb.Append("\n\n");
+                double timeBonus = numSeconds * 10;
+                sb.Append("Time Bonus: " + timeBonus);
+                sb.Append("\n\n");
+                double levelBonus = Math.Floor(levelNumber * 500 * Math.Pow(0.8, deaths));
+                levelBonus = Math.Max(500, levelBonus);
+                sb.Append("Level Bonus: " + levelBonus);
+                sb.Append("\n\n");
+                double levelScore = timeBonus + levelBonus;
+                sb.Append("Level Score: " + levelScore);
+                return sb.ToString();
+            }
+        }
 
-    public int getLevelNumber() {
-        return levelNumber;
-    }
+        public virtual int LevelNumber
+        {
+            get
+            {
+                return levelNumber;
+            }
 
-    public int getNumChipsNeeded() {
-        return numChipsNeeded;
-    }
+            set
+            {
+                levelNumber = value;
+            }
+        }
 
-    public int getNumSeconds() {
-        return numSeconds;
-    }
+        public virtual int NumChipsNeeded
+        {
+            get
+            {
+                return numChipsNeeded;
+            }
 
-    public String getPassword() {
-        return password;
-    }
+            set
+            {
+                numChipsNeeded = value;
+            }
+        }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public virtual int NumSeconds
+        {
+            get
+            {
+                return numSeconds;
+            }
 
-    public void setChipsLeft(int chipsLeft) {
-        numChipsNeeded = chipsLeft;
-    }
+            set
+            {
+                numSeconds = value;
+            }
+        }
 
-    public void chipTaken() {
-        numChipsNeeded = numChipsNeeded > 0 ? numChipsNeeded - 1 : 0;
-    }
+        public virtual string Password { get; set; } = "ABCD";
 
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
+        public virtual int ChipsLeft
+        {
+            get
+            {
+                return numChipsNeeded;
+            }
 
-    public void setLevelNumber(int levelNumber) {
-        this.levelNumber = levelNumber;
-    }
+            set
+            {
+                numChipsNeeded = value;
+            }
+        }
+        
+        public virtual int TimeLeft
+        {
+            get
+            {
+                return timeLeft;
+            }
 
-    public void setNumChipsNeeded(int numChipsNeeded) {
-        this.numChipsNeeded = numChipsNeeded;
-    }
+            set
+            {
+                timeLeft = value;
+            }
+        }
 
-    public void setNumSeconds(int numSeconds) {
-        this.numSeconds = numSeconds;
-    }
+        public virtual void ChipTaken()
+        {
+            numChipsNeeded = numChipsNeeded > 0 ? numChipsNeeded - 1 : 0;
+        }
 
-    public void setMapTitle(String title) {
-        mapTitle = title;
-    }
+        public virtual int Deaths
+        {
+            set
+            {
+                deaths = value;
+            }
+        }
 
-    public String getMapTitle() {
-        return mapTitle;
-    }
+        public virtual string MapTitle { set; get; } = "Untitled";
 
-    public Block getChip() {
-        return chip;
+        public virtual Block Chip => chip;
     }
 }

@@ -1,64 +1,62 @@
-package chipschallenge;
+﻿using System.IO;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+namespace ChipsChallenge.Shared
+{
+    public class RandomAccessFileLevelReader : ILevelFileReader
+    {
+        private readonly BinaryReader binaryReader;
 
-public class RandomAccessFileLevelReader implements LevelFileReader {
-
-    private final RandomAccessFile raf;
-
-    private RandomAccessFileLevelReader() {
-        raf = null;
-    }
-
-    private RandomAccessFileLevelReader(String filename) throws FileNotFoundException {
-        raf = new RandomAccessFile(filename, "r");
-    }
-
-    public static RandomAccessFileLevelReader create(String filename) {
-        try {
-            return new RandomAccessFileLevelReader(filename);
-        } catch (FileNotFoundException ex) {
-            return null;
+        private RandomAccessFileLevelReader(Stream levelFileStream)
+        {
+            binaryReader = new BinaryReader(levelFileStream);
         }
-    }
 
-    @Override
-    protected void finalize() throws Throwable {
-        try {
-            raf.close();
-        } catch (Exception e) {
-        } finally {
-            super.finalize();
+        public static RandomAccessFileLevelReader Create(Stream levelFileStream)
+        {
+            try
+            {
+                return new RandomAccessFileLevelReader(levelFileStream);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
         }
-    }
 
-    public int readUnsignedDWord() throws IOException {
-        return ByteSwapper.swap(raf.readInt()) & 0xFFFFFFFF;
-    }
+        public virtual int ReadUnsignedDWord()
+        {
+            return binaryReader.ReadInt32();
+        }
 
-    public int readUnsignedWord() throws IOException {
-        return ByteSwapper.swap(raf.readShort()) & 0xFFFF;
-    }
+        public virtual int ReadUnsignedWord()
+        {
+            return binaryReader.ReadInt16();
+        }
 
-    public int readUnsignedByte() throws IOException {
-        return raf.readByte() & 0xFF;
-    }
+        public virtual int ReadUnsignedByte()
+        {
+            return binaryReader.ReadByte();
+        }
 
-    public void seek(long offset) throws IOException {
-        raf.seek(offset);
-    }
+        public virtual void Seek(long offset)
+        {
+            binaryReader.BaseStream.Seek(offset, SeekOrigin.Begin);
+        }
 
-    public void skipBytes(int bytes) throws IOException {
-        raf.skipBytes(bytes);
-    }
+        public virtual void SkipBytes(int bytes)
+        {
+            for (int i = 0; i < bytes; i++)
+            {
+                binaryReader.ReadByte();
+            }
+        }
 
-    public void close() throws IOException {
-        raf.close();
-    }
-
-    public void readFully(byte[] arr) throws IOException {
-        raf.readFully(arr);
+        public virtual void ReadFully(sbyte[] arr)
+        {
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = binaryReader.ReadSByte();
+            }
+        }
     }
 }

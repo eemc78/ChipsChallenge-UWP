@@ -1,31 +1,32 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Buttons;
-import chipschallenge.SoundPlayer.sounds;
-
-/**
- * Moving to a Blue Button
- */
-public class BlueButtonTo extends NoSlipReaction {
-
-    private BlueButtonTo() {
-    }
-    private static BlueButtonTo mInstance = null;
-
-    public static synchronized BlueButtonTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BlueButtonTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class BlueButtonTo : NoSlipReaction
+    {
+        private BlueButtonTo()
+        {
         }
-        return mInstance;
-    }
+        private static BlueButtonTo instance;
 
-    public void react(Block moving, Block standing) {
-        Buttons.blueButtonDown(standing);
-        sound().playSound(sounds.BUTTON);
-    }
+        public static BlueButtonTo Instance
+        {
+            get
+            {
+                lock (typeof(BlueButtonTo))
+                {
+                    return instance ?? (instance = new BlueButtonTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            Buttons.BlueButtonDown(standing);
+            Sound().Play(Shared.Sound.Button);
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

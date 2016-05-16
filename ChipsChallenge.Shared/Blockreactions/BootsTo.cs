@@ -1,45 +1,49 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
+    using Type = Block.Type;
 
-import chipschallenge.Block;
-import chipschallenge.Inventory.Boots;
-
-/**
- * Move to boots
- */
-public class BootsTo extends NoSlipReaction {
-
-    private BootsTo() {
-    }
-    private static BootsTo mInstance = null;
-
-    public static synchronized BootsTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BootsTo();
+    public class BootsTo : NoSlipReaction
+    {
+        private BootsTo()
+        {
         }
-        return mInstance;
-    }
+        private static BootsTo instance;
 
-    // Pick up boots
-    public void react(Block moving, Block standing) {
-        switch (standing.getType()) {
-            case FLIPPERS:
-                takeBoots(Boots.FLIPPERS);
-                break;
-            case FIREBOOTS:
-                takeBoots(Boots.FIREBOOTS);
-                break;
-            case ICESKATES:
-                takeBoots(Boots.ICESKATES);
-                break;
-            case SUCTIONBOOTS:
-                takeBoots(Boots.SUCTIONBOOTS);
-                break;
+        public static BootsTo Instance
+        {
+            get
+            {
+                lock (typeof(BootsTo))
+                {
+                    return instance ?? (instance = new BootsTo());
+                }
+            }
         }
-        standing.destroy();
-    }
 
-    // Chip and blocks can move here
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() || moving.isBlock();
+        public override void React(Block moving, Block standing)
+        {
+            switch (standing.getType())
+            {
+                case Type.FLIPPERS:
+                    TakeBoots(Boots.FLIPPERS);
+                    break;
+                case Type.FIREBOOTS:
+                    TakeBoots(Boots.FIREBOOTS);
+                    break;
+                case Type.ICESKATES:
+                    TakeBoots(Boots.ICESKATES);
+                    break;
+                case Type.SUCTIONBOOTS:
+                    TakeBoots(Boots.SUCTIONBOOTS);
+                    break;
+            }
+            standing.Destroy();
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip || moving.IsBlock();
+        }
     }
 }

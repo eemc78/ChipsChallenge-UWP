@@ -1,22 +1,27 @@
-package chipschallenge.destroybehaviors;
-
-import chipschallenge.Block;
-import chipschallenge.Buttons;
-
-public class ToggleWallDestroyBehavior implements DestroyBehavior {
-
-    private ToggleWallDestroyBehavior() {
-    }
-    private static ToggleWallDestroyBehavior mInstance = null;
-
-    public static synchronized ToggleWallDestroyBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new ToggleWallDestroyBehavior();
+﻿namespace ChipsChallenge.Shared.Destroybehaviors
+{
+    public class ToggleWallDestroyBehavior : IDestroyBehavior
+    {
+        private ToggleWallDestroyBehavior()
+        {
         }
-        return mInstance;
-    }
+        
+        private static ToggleWallDestroyBehavior instance;
 
-    public void destroy(Block b) {
-        Buttons.removeGreenButtonsListener(b);
+        public static ToggleWallDestroyBehavior Instance
+        {
+            get
+            {
+                lock (typeof(ToggleWallDestroyBehavior))
+                {
+                    return instance ?? (instance = new ToggleWallDestroyBehavior());
+                }
+            }
+        }
+
+        public virtual void Destroy(Block block)
+        {
+            Buttons.RemoveGreenButtonsListener(block);
+        }
     }
 }

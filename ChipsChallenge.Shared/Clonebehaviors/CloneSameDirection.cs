@@ -1,21 +1,26 @@
-package chipschallenge.clonebehaviors;
-
-import chipschallenge.Block;
-
-public class CloneSameDirection extends CloneBehavior {
-
-    private CloneSameDirection() {
-    }
-    private static CloneSameDirection mInstance = null;
-
-    public static synchronized CloneSameDirection getInstance() {
-        if (mInstance == null) {
-            mInstance = new CloneSameDirection();
+﻿namespace ChipsChallenge.Shared.Clonebehaviors
+{
+    public class CloneSameDirection : CloneBehavior
+    {
+        private CloneSameDirection()
+        {
         }
-        return mInstance;
-    }
+        private static CloneSameDirection instance;
 
-    public Block cloneIt(Block original) throws CloneNotSupportedException {
-        return cloneTo(original, original.getFacing());
+        public static CloneSameDirection Instance
+        {
+            get
+            {
+                lock (typeof(CloneSameDirection))
+                {
+                    return instance ?? (instance = new CloneSameDirection());
+                }
+            }
+        }
+
+        public override Block CloneIt(Block original)
+        {
+            return CloneTo(original, original.Facing);
+        }
     }
 }

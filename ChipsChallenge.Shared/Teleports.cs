@@ -1,45 +1,49 @@
-package chipschallenge;
+﻿using System.Collections.Generic;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collection;
+namespace ChipsChallenge.Shared
+{
+    public class Teleports
+    {
+        private static readonly ICollection<Point> TeleportCollection = new List<Point>();
 
-public class Teleports {
-
-    private static Collection<Point> teleports = new ArrayList<Point>();
-    private static int creatureTicks = 0;
-    private static boolean blobMove = false;
-
-    public static void clear() {
-        teleports.clear();
-    }
-
-    public static void addTeleport(int x, int y) {
-        teleports.add(new Point(x, y));
-    }
-
-    public static Point next(Point o) {
-        int width = Game.getInstance().getLevel().getWidth();
-        int height = Game.getInstance().getLevel().getHeight();
-        int minDistance = -1;
-        Point minPoint = o;
-        for (Point p : teleports) {
-            if (p.x == o.x && p.y == o.y) {
-                continue; // Same place
-            }
-            int dx = o.x - p.x;
-            int dy = (o.y - p.y) * width;
-            int distance = dx + dy;
-
-            if (distance < 0) {
-                distance += width * height;
-            }
-
-            if (minDistance == -1 || distance < minDistance) {
-                minDistance = distance;
-                minPoint = p;
-            }
+        public static void Clear()
+        {
+            TeleportCollection.Clear();
         }
-        return minPoint;
+
+        public static void AddTeleport(int x, int y)
+        {
+            TeleportCollection.Add(new Point(x, y));
+        }
+
+        public static Point Next(Point o)
+        {
+            int width = Game.Instance.Level.Width;
+            int height = Game.Instance.Level.Height;
+            int minDistance = -1;
+            Point minPoint = o;
+            foreach (Point p in TeleportCollection)
+            {
+                if (p.X == o.X && p.Y == o.Y)
+                {
+                    continue; // Same place
+                }
+                int dx = o.X - p.X;
+                int dy = (o.Y - p.Y) * width;
+                int distance = dx + dy;
+
+                if (distance < 0)
+                {
+                    distance += width * height;
+                }
+
+                if (minDistance == -1 || distance < minDistance)
+                {
+                    minDistance = distance;
+                    minPoint = p;
+                }
+            }
+            return minPoint;
+        }
     }
 }

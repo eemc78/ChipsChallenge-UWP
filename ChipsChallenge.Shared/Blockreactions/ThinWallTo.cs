@@ -1,37 +1,44 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
+    public class ThinWallTo : NoSlipReaction
+    {
 
-public class ThinWallTo extends NoSlipReaction {
-
-    private ThinWallTo() {
-    }
-    private static ThinWallTo mInstance = null;
-
-    public static synchronized ThinWallTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ThinWallTo();
+        private ThinWallTo()
+        {
         }
-        return mInstance;
-    }
+        private static ThinWallTo instance;
 
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        // No reaction;
-    }
-
-    public boolean canMove(Block moving, Block standing) {
-        switch (moving.getFacing()) {
-            case UP:
-                return standing.getFacing() != Moves.DOWN;
-            case DOWN:
-                return standing.getFacing() != Moves.UP;
-            case LEFT:
-                return standing.getFacing() != Moves.RIGHT;
-            case RIGHT:
-                return standing.getFacing() != Moves.LEFT;
+        public static ThinWallTo Instance
+        {
+            get
+            {
+                lock (typeof(ThinWallTo))
+                {
+                    return instance ?? (instance = new ThinWallTo());
+                }
+            }
         }
-        return false;
+
+        public override void React(Block moving, Block standing)
+        {
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            switch (moving.Facing)
+            {
+                case Moves.UP:
+                    return standing.Facing != Moves.DOWN;
+                case Moves.DOWN:
+                    return standing.Facing != Moves.UP;
+                case Moves.LEFT:
+                    return standing.Facing != Moves.RIGHT;
+                case Moves.RIGHT:
+                    return standing.Facing != Moves.LEFT;
+            }
+            return false;
+        }
     }
 }

@@ -1,25 +1,31 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-
-public class HintTo extends NoSlipReaction {
-
-    private HintTo() {
-    }
-    private static HintTo mInstance = null;
-
-    public static synchronized HintTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new HintTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class HintTo : NoSlipReaction
+    {
+        private HintTo()
+        {
         }
-        return mInstance;
-    }
+        private static HintTo mInstance;
 
-    public void react(Block moving, Block standing) {
-        game().showHint();
-    }
+        public static HintTo Instance
+        {
+            get
+            {
+                lock (typeof(HintTo))
+                {
+                    return mInstance ?? (mInstance = new HintTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            Game().IsChipOnHintField = true;
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

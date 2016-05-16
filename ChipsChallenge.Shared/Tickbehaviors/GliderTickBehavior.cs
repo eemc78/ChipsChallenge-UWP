@@ -1,52 +1,62 @@
-package chipschallenge.tickbehaviors;
+﻿namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
-
-public class GliderTickBehavior implements BlockTickBehavior {
-
-    private GliderTickBehavior() {
-    }
-    private static GliderTickBehavior mInstance = null;
-
-    public static synchronized GliderTickBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new GliderTickBehavior();
+    public class GliderTickBehavior : IBlockTickBehavior
+    {
+        private GliderTickBehavior()
+        {
         }
-        return mInstance;
-    }
+        private static GliderTickBehavior instance;
 
-    private boolean move(Block caller, Moves m) throws BlockContainerFullException {
-        Moves before = caller.getFacing();
-        boolean ret = caller.move(m);
-        if (!ret) {
-            caller.setFacing(before);
-        }
-        return ret;
-    }
-
-    @Override
-    public void tick(Block caller) throws BlockContainerFullException {
-        Moves m = caller.getFacing();
-        switch (m) {
-            case UP:
-                if (move(caller, Moves.UP) || move(caller, Moves.LEFT) || move(caller, Moves.RIGHT) || move(caller, Moves.DOWN)) {
-                    return;
+        public static GliderTickBehavior Instance
+        {
+            get
+            {
+                lock (typeof(GliderTickBehavior))
+                {
+                    return instance ?? (instance = new GliderTickBehavior());
                 }
-            case RIGHT:
-                if (move(caller, Moves.RIGHT) || move(caller, Moves.UP) || move(caller, Moves.DOWN) || move(caller, Moves.LEFT)) {
-                    return;
-                }
-            case LEFT:
-                if (move(caller, Moves.LEFT) || move(caller, Moves.DOWN) || move(caller, Moves.UP) || move(caller, Moves.RIGHT)) {
-                    return;
-                }
-            case DOWN:
-                if (move(caller, Moves.DOWN) || move(caller, Moves.RIGHT) || move(caller, Moves.LEFT) || move(caller, Moves.UP)) {
-                    return;
-                }
+            }
         }
 
+        private bool move(Block caller, Moves m)
+        {
+            Moves before = caller.Facing;
+            bool ret = caller.Move(m);
+            if (!ret)
+            {
+                caller.Facing = before;
+            }
+            return ret;
+        }
+
+        public virtual void Tick(Block caller)
+        {
+            Moves m = caller.Facing;
+            switch (m)
+            {
+                case Moves.UP:
+                    if (move(caller, Moves.UP) || move(caller, Moves.LEFT) || move(caller, Moves.RIGHT) || move(caller, Moves.DOWN))
+                    {
+                    }
+                    break;
+                case Moves.RIGHT:
+                    if (move(caller, Moves.RIGHT) || move(caller, Moves.UP) || move(caller, Moves.DOWN) || move(caller, Moves.LEFT))
+                    {
+                    }
+                    break;
+                case Moves.LEFT:
+                    if (move(caller, Moves.LEFT) || move(caller, Moves.DOWN) || move(caller, Moves.UP) || move(caller, Moves.RIGHT))
+                    {
+                    }
+                    break;
+                case Moves.DOWN:
+                    if (move(caller, Moves.DOWN) || move(caller, Moves.RIGHT) || move(caller, Moves.LEFT) || move(caller, Moves.UP))
+                    {
+                    }
+                    break;
+            }
+        }
     }
 }

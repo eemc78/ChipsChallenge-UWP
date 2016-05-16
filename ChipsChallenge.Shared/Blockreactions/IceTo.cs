@@ -1,39 +1,43 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Inventory.Boots;
-import chipschallenge.Move.Moves;
-
-public class IceTo extends BlockReaction {
-
-    private IceTo() {
-    }
-    private static IceTo mInstance = null;
-
-    public static synchronized IceTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new IceTo();
+    public class IceTo : BlockReaction
+    {
+        private IceTo()
+        {
         }
-        return mInstance;
-    }
+        private static IceTo instance;
 
-    @Override
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        // Nothing
-    }
+        public static IceTo Instance
+        {
+            get
+            {
+                lock (typeof(IceTo))
+                {
+                    return instance ?? (instance = new IceTo());
+                }
+            }
+        }
 
-    @Override
-    public boolean canMove(Block moving, Block standing) {
-        return true;
-    }
+        public override void React(Block moving, Block standing)
+        {
+        }
 
-    @Override
-    public Moves causesSlip(Block moving, Block standing) {
-        if (moving.isChip() && hasBoots(Boots.ICESKATES)) {
-            return null;
-        } else {
-            return moving.getFacing();
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
+
+        public override Moves? CausesSlip(Block moving, Block standing)
+        {
+            if (moving.Chip && HasBoots(Boots.ICESKATES))
+            {
+                return null;
+            }
+
+            return moving.Facing;
         }
     }
 }

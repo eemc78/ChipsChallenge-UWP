@@ -1,4 +1,8 @@
-package chipschallenge;
+﻿using System;
 
-public class BlockContainerFullException extends Exception {
+namespace ChipsChallenge.Shared
+{
+    public class BlockContainerFullException : Exception
+    {
+    }
 }

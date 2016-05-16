@@ -1,380 +1,388 @@
-package chipschallenge;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 
-import chipschallenge.Move.Moves;
-import chipschallenge.SoundPlayer.sounds;
-import chipschallenge.gui.GUI;
-import chipschallenge.gui.HintListener;
-import chipschallenge.gui.TimeListener;
-import java.awt.Point;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CopyOnWriteArrayList;
+namespace ChipsChallenge.Shared
+{
+    using Moves = Move.Moves;
 
-public class Game extends KeyAdapter {
+    public class Game
+    {
+        public const int SecondsTickInterval = 1;
+        public const int SpeedFrac = 2;
+        private readonly ICollection<Block> movingBlocks = new List<Block>();
+        private static Game game;
+        private readonly Inventory inventory = new Inventory();
+        private GameLevel level;
+        private LevelFactory mLevelFactory;
+        private readonly Timer secondsTimer;
+        private long tickCount;
+        private bool levelCompleteRenamed;
+        public bool IsStarted;
+        public bool IsPaused;
+        private readonly ICollection<Point> movesToCheck = new List<Point>();
+        private volatile bool dead;
+        private readonly IDictionary<long?, IList<Block>> addBlockAtTick = new Dictionary<long?, IList<Block>>();
+        private readonly IDictionary<Block, Point> addBlocks = new Dictionary<Block, Point>();
+        private readonly SlipList slipList = new SlipList();
+        private BlockMove chipForced;
+        private Block chip;
+        public bool ShowLevelPassword;
 
-    public static final int TIMER_TICK = 100;
-    public static final int SPEED_FRAC = 2;
-    private CopyOnWriteArrayList<Block> movingBlocks = new CopyOnWriteArrayList<Block>();
-    private static Game mGame = null;
-    private Inventory mInventory = new Inventory();
-    private GameLevel mLevel = null;
-    //private Map<Block, Moves> forcedMoves = new HashMap<Block, Moves>();
-    private BlockFactory mBlockFactory = null;
-    private LevelFactory mLevelFactory = null;
-    private int mLevelNumber = 0;
-    private int enemyTick = 0;
-    private Timer tickTimer = null;
-    private Timer secondsTimer = null;
-    private long mTickCount = 0;
-    private boolean levelComplete;
-    private boolean isStarted = false;
-    private Collection<Point> movesToCheck = new CopyOnWriteArrayList<Point>();
-    private volatile boolean dead = false;
-    private Collection<ChipListener> chipListeners = new ArrayList<ChipListener>();
-    private Collection<TimeListener> timeListeners = new CopyOnWriteArrayList<TimeListener>();
-    private Collection<NextLevelListener> nextLevelListeners = new ArrayList<NextLevelListener>();
-    private static Collection<HintListener> hintListeners = new CopyOnWriteArrayList<HintListener>();
-    private Map<Long, List<Block>> addBlockAtTick = new HashMap<Long, List<Block>>();
-    private Map<Block, Point> addBlocks = new HashMap<Block, Point>();
-    private final SlipList slipList = new SlipList();
-    private BlockMove chipForced = null;
-    private Block chip = null;
-    private boolean chipMoved = false;
-
-    private Game() {
-    }
-
-    public static synchronized Game getInstance() {
-        if (mGame == null) {
-            mGame = new Game();
+        private Game()
+        {
+            secondsTimer = new Timer(UpdateTime, null, Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         }
-        return mGame;
-    }
 
-    public void clearStuff() {
-        mTickCount = 0;
-        chipForced = null;
-        chip = null;
-        Buttons.clear();
-        Creatures.clear();
-        Teleports.clear();
-        slipList.clear();
-        mInventory.clear();
-        movingBlocks.clear();
-        if (tickTimer != null) {
-            tickTimer.cancel();
-        }
-        if (secondsTimer != null) {
-            secondsTimer.cancel();
-        }
-    }
-
-    public void nextLevel() {
-        mLevelNumber++;
-        nextLevel(mLevelNumber);
-    }
-
-    public void nextLevel(int n) {
-        clearStuff();
-        mLevelNumber = n;
-        mLevel = mLevelFactory.getLevel(mLevelNumber);
-        chip = mLevel.getChip();
-        for (NextLevelListener l : nextLevelListeners) {
-            l.nextLevel(mLevel);
-        }
-        chipMoved = true; // This is for repaint
-        GUI.getInstance().repaint();
-        MusicPlayer.getInstance().playNextSong();
-        isStarted = false;
-        //start();
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (!isStarted) {
-            start();
-        }
-    }
-
-    public void restart() {
-        dead = false;
-        nextLevel(mLevelNumber);
-    }
-
-    public void setLevelComplete() {
-        levelComplete = true;
-    }
-
-    private void levelComplete() {
-        levelComplete = false;
-        GUI.getInstance().scoreDialog(mLevel);
-        nextLevel();
-    }
-
-    public void start() {
-        isStarted = true;
-        if (tickTimer != null) {
-            tickTimer.cancel();
-        }
-        tickTimer = new Timer();
-        TimerTask tt = new TimerTask() {
-
-            @Override
-            public void run() {
-                try {
-                    tick();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+        public static Game Instance
+        {
+            get
+            {
+                lock (typeof(Game))
+                {
+                    return game ?? (game = new Game());
                 }
             }
-        };
-        tickTimer.schedule(tt, TIMER_TICK, TIMER_TICK);
-        final int seconds = mLevel.getNumSeconds();
-        if (seconds > 0) {
-            secondsTimer = new Timer();
-            TimerTask counter = new TimerTask() {
-
-                int counter = seconds;
-
-                @Override
-                public void run() {
-                    counter--;
-                    for (TimeListener l : timeListeners) {
-                        l.timeLeft(counter);
-                    }
-                    if (counter >= 0 && counter <= 10) {
-                        SoundPlayer.getInstance().playSound(sounds.TICK);
-                    }
-                    if (counter == 0) {
-                        die("Ooops! Out of time!", sounds.TIMEOVER);
-                    }
-                }
-            };
-            secondsTimer.schedule(counter, 1000, 1000);
         }
-    }
 
-    public void addToSlipList(Block b, Moves m) {
-        if (b.isChip()) {
-            chipForced = new BlockMove(b, m);
-        } else {
-            slipList.put(b, m);
+        public event EventHandler<MessageEventArgs> ChipsDied;
+
+        public int TotalLevelCount => mLevelFactory.LastLevelNumber;
+
+        public int CurrentLevelNumber => level.LevelNumber;
+
+        public virtual void ClearStuff()
+        {
+            tickCount = 0;
+            chipForced = null;
+            chip = null;
+            dead = false;
+            Buttons.Clear();
+            Creatures.Clear();
+            Teleports.Clear();
+            slipList.Clear();
+            inventory.Clear();
+            movingBlocks.Clear();
+
+            IsChipOnHintField = false;
+            secondsTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
-    }
 
-    public void removeFromSlipList(Block b) {
-        slipList.remove(b);
-    }
+        public virtual void NextLevel()
+        {
+            if (CurrentLevelNumber < mLevelFactory.LastLevelNumber)
+            {
+                GoToLevel(CurrentLevelNumber + 1);
+            }
+        }
 
-    private void addClonesQueued() {
-        List<Block> blocksToAdd = addBlockAtTick.get(mTickCount);
-        if (blocksToAdd != null) {
-            for (Block b : blocksToAdd) {
-                Point p = addBlocks.get(b);
-                try {
-                    if (mLevel.getBlockContainer(p.x, p.y).canMoveTo(b)) {
-                        mLevel.addBlock(p.x, p.y, b, 2);
-                        if (b.isCreature()) {
-                            Creatures.addCreature(b);
+        public virtual void PreviousLevel()
+        {
+            if (CurrentLevelNumber > 1)
+            {
+                GoToLevel(CurrentLevelNumber - 1);
+            }
+        }
+
+        public virtual void GoToLevel(int levelNumber)
+        {
+            if (levelNumber > 0 && levelNumber <= mLevelFactory.LastLevelNumber)
+            {
+                ClearStuff();
+
+                level = mLevelFactory.GetLevel(levelNumber);
+                chip = level.Chip;
+
+                ShowLevelPassword = true;
+                PlayBackgroundMusic();
+
+                IsStarted = false;
+                IsPaused = false;
+            }
+        }
+
+        public void PlayBackgroundMusic()
+        {
+            if (IsEvenNumber(CurrentLevelNumber))
+            {
+                SoundPlayer.Instance.Play(Sound.BackgroundMusic1);
+            }
+            else
+            {
+                SoundPlayer.Instance.Play(Sound.BackgroundMusic2);
+            }
+        }
+
+        private bool IsEvenNumber(int value)
+        {
+            return value % 2 == 0;
+        }
+
+        public virtual void Restart()
+        {
+            dead = false;
+            GoToLevel(CurrentLevelNumber);
+        }
+
+        public virtual void SetLevelComplete()
+        {
+            levelCompleteRenamed = true;
+        }
+
+        private void LevelComplete()
+        {
+            levelCompleteRenamed = false;
+            NextLevel();
+        }
+
+        public virtual void StartOrResumeGame()
+        {
+            ShowLevelPassword = false;
+            IsStarted = true;
+            IsPaused = false;
+
+            if (Level.NumSeconds > 0)
+            {
+                secondsTimer.Change(TimeSpan.Zero, new TimeSpan(0, 0, SecondsTickInterval));
+            }
+        }
+
+        public virtual void Stop()
+        {
+            IsStarted = false;
+            secondsTimer.Change(Timeout.Infinite, Timeout.Infinite);
+        }
+
+        public virtual void Pause()
+        {
+            if (IsStarted)
+            {
+                Stop();
+                IsPaused = true;
+            }
+        }
+
+        private void UpdateTime(object o)
+        {
+            Level.TimeLeft--;
+
+            if (Level.TimeLeft >= 0 && Level.TimeLeft <= 15)
+            {
+                SoundPlayer.Instance.Play(Sound.Tick);
+            }
+
+            if (Level.TimeLeft == 0)
+            {
+                Die("Ooops! Out of time!", Sound.TimeOver);
+            }
+        }
+
+        public virtual void AddToSlipList(Block b, Moves m)
+        {
+            if (b.Chip)
+            {
+                chipForced = new BlockMove(b, m);
+            }
+            else
+            {
+                slipList.Put(b, m);
+            }
+        }
+
+        public virtual void RemoveFromSlipList(Block b)
+        {
+            slipList.Remove(b);
+        }
+
+        private void AddClonesQueued()
+        {
+            IList<Block> blocksToAdd;
+            addBlockAtTick.TryGetValue(tickCount, out blocksToAdd);
+            if (blocksToAdd != null)
+            {
+                foreach (Block b in blocksToAdd)
+                {
+                    Point p = addBlocks[b];
+                    try
+                    {
+                        if (level.GetBlockContainer(p.X, p.Y).CanMoveTo(b))
+                        {
+                            level.AddBlock(p.X, p.Y, b, 2);
+                            if (b.Creature)
+                            {
+                                Creatures.AddCreature(b);
+                            }
                         }
                     }
-                } catch (BlockContainerFullException ex) {
-                    // Perhaps save cloning for later
+                    catch (BlockContainerFullException)
+                    {
+                        // Perhaps save cloning for later
+                    }
+
+                    addBlocks.Remove(b);
                 }
-                addBlocks.remove(b);
-            }
-            addBlockAtTick.remove(mTickCount);
-        }
-    }
 
-    private void forceCreatures() throws BlockContainerFullException {
-        for (int i = 0; i < slipList.size(); i++) {
-            BlockMove bm = slipList.get(i);
-            if (bm.block.isCreature() || bm.block.isBlock()) {
-                forceMove(bm.block, bm.move);
+                addBlockAtTick.Remove(tickCount);
             }
         }
-    }
 
-    private void forceMove(Block b, Moves m) throws BlockContainerFullException {
-        if (!mLevel.moveBlock(b, m, !b.isOnTrap(), false)) {
-            if (!b.isOnTrap()) {
-                System.out.println(b);
-                //System.exit(-1);
-                //Bounce
-                b.setFacing(Move.reverse(m));
-                if(!b.isChip())
-                removeFromSlipList(b);
-                //addToSlipList(b, b.getFacing());
-                b.setForced(false);
-                mLevel.moveBlock(b, null, true, true);
+        private void ForceCreatures()
+        {
+            for (int i = 0; i < slipList.Size(); i++)
+            {
+                BlockMove bm = slipList.Get(i);
+                if (bm.Block.Creature || bm.Block.IsBlock())
+                {
+                    ForceMove(bm.Block, bm.Move);
+                }
             }
         }
-    }
 
-    public void checkRepaint() {
-        if (chipMoved || movesToCheck.size() > 0) {
-            GUI.getInstance().repaintPlayField();
+        private void ForceMove(Block b, Moves m)
+        {
+            if (!level.MoveBlock(b, m, !b.OnTrap, false))
+            {
+                if (!b.OnTrap)
+                {
+                    // Bounce
+                    b.Facing = Move.Reverse(m);
+                    if (!b.Chip)
+                    {
+                        RemoveFromSlipList(b);
+                    }
+
+                    b.Forced = false;
+                    level.MoveBlock(b, null, true, true);
+                }
+            }
         }
-    }
 
-    public BlockMove getChipForced() {
-        return chipForced;
-    }
+        public virtual bool ForceChip()
+        {
+            if (chipForced != null)
+            {
+                BlockMove cm = chipForced.Clone();
+                chipForced = null;
+                ForceMove(cm.Block, cm.Move);
+                level.Chip.Forced = true;
+                return true;
+            }
 
-    public boolean forceChip() throws BlockContainerFullException {
-        if (chipForced != null) {
-            BlockMove cm = (BlockMove) chipForced.clone();
-            chipForced = null;
-            forceMove(cm.block, cm.move);
-            mLevel.getChip().setForced(true);
-            return true;
+            return false;
         }
-        return false;
-    }
 
-    // Main "loop"
-    public void tick() throws BlockContainerFullException {
-        mTickCount++;
-        Creatures.tick();
-        checkRepaint();
-        chip.tick();     
-        Buttons.updateGreenandBlueButtons();
-        if(forceChip()) {
-            chip.tick();
+        // Main "loop"
+        public virtual void Tick()
+        {
+            if (dead || !IsStarted)
+            {
+                return;
+            }
+
+            var didTick = false;
+            if (ForceChip())
+            {
+                chip.Tick();
+                didTick = true;
+            }
+
+            tickCount++;
+
+            if (!didTick)
+            {
+                chip.Tick();
+                if (dead)
+                {
+                    return;
+                }
+            }
+
+            Creatures.Tick();
+
+            Buttons.UpdateGreenandBlueButtons();
+
+            ForceCreatures();
+            AddClonesQueued();
+
+            if (levelCompleteRenamed)
+            {
+                LevelComplete();
+            }
         }
-        forceCreatures();
-        addClonesQueued();       
-        if (dead) {
-            restart();
+
+        public virtual void Die(string message, Sound sound)
+        {
+            if (!dead)
+            {
+                dead = true;
+                secondsTimer?.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+
+                EventHandler<MessageEventArgs> handler = ChipsDied;
+                handler?.Invoke(this, new MessageEventArgs(message));
+
+                SoundPlayer.Instance.Play(sound);
+            }
         }
-        if (levelComplete) {
-            levelComplete();
+
+        public virtual GameLevel Level
+        {
+            get
+            {
+                return level;
+            }
+
+            set
+            {
+                level = value;
+            }
         }
-        checkRepaint();
-        //System.exit(-1);
-    }
 
-    public void die(String msg, sounds s) {
-        dead = true;
-        if (secondsTimer != null) {
-            secondsTimer.cancel();
+        public virtual Inventory Inventory => inventory;
+
+        public virtual BlockFactory BlockFactory { get; set; }
+
+        public virtual LevelFactory LevelFactory
+        {
+            set
+            {
+                mLevelFactory = value;
+            }
         }
-        SoundPlayer.getInstance().playSound(s);
-        GUI.getInstance().msgDialog(msg);
 
-    }
-
-    public GameLevel getLevel() {
-        return mLevel;
-    }
-
-    public Inventory getInventory() {
-        return mInventory;
-    }
-
-    public BlockFactory getBlockFactory() {
-        return mBlockFactory;
-    }
-
-    public void setBlockFactory(BlockFactory bf) {
-        mBlockFactory = bf;
-    }
-
-    public void setLevel(GameLevel gl) {
-        mLevel = gl;
-    }
-
-    public void setLevelFactory(LevelFactory lf) {
-        this.mLevelFactory = lf;
-    }
-
-    public void moveOccured(Point from) {
-        movesToCheck.add(from);
-    }
-
-    public Collection<Point> getMovesToCheck() {
-        return movesToCheck;
-    }
-
-    public void addHintListener(HintListener l) {
-        hintListeners.add(l);
-    }
-
-    public void removeHintListener(HintListener l) {
-        hintListeners.remove(l);
-    }
-
-    public void showHint() {
-        for (HintListener l : hintListeners) {
-            l.showHint(mLevel.getHint());
+        public virtual void MoveOccured(Point from)
+        {
+            movesToCheck.Add(from);
         }
-    }
 
-    public void hideHint() {
-        for (HintListener l : hintListeners) {
-            l.hideHint();
+        public bool IsChipOnHintField { get; set; }
+
+        public virtual void AddBlockDelay(Block b, Point p, int ticks)
+        {
+            long addWhen = tickCount + ticks;
+
+            IList<Block> blocks;
+            addBlockAtTick.TryGetValue(addWhen, out blocks);
+            if (blocks == null)
+            {
+                blocks = new List<Block>();
+                addBlockAtTick[addWhen] = blocks;
+            }
+
+            blocks.Add(b);
+            addBlocks[b] = p;
         }
-    }
 
-    public void addChipListener(ChipListener l) {
-        chipListeners.add(l);
-    }
-
-    public void removeChipListener(ChipListener l) {
-        chipListeners.remove(l);
-    }
-
-    public void addNextLevelListener(NextLevelListener l) {
-        nextLevelListeners.add(l);
-    }
-
-    public void removeNextLevelListener(NextLevelListener l) {
-        nextLevelListeners.remove(l);
-    }
-
-    public void addTimeListener(TimeListener l) {
-        timeListeners.add(l);
-    }
-
-    public void removeTimeListener(TimeListener l) {
-        timeListeners.remove(l);
-    }
-
-    public void addBlockDelay(Block b, Point p, int ticks) {
-        long addWhen = mTickCount + ticks;
-        List<Block> blocks = addBlockAtTick.get(addWhen);
-        if (blocks == null) {
-            blocks = new ArrayList<Block>();
-            addBlockAtTick.put(addWhen, blocks);
+        public virtual void TakeChip()
+        {
+            level.ChipTaken();
         }
-        blocks.add(b);
-        addBlocks.put(b, p);
-    }
 
-    public void takeChip() {
-        mLevel.chipTaken();
-        for (ChipListener l : chipListeners) {
-            l.chipTaken();
+        public virtual Block Chip
+        {
+            set
+            {
+                chip = value;
+            }
         }
-    }
-
-    public void setChip(Block b) {
-        chip = b;
-    }
-
-    public boolean chipMoved() {
-        return chipMoved;
-    }
-
-    public void setChipMoved(boolean chipMoved) {
-        this.chipMoved = chipMoved;
     }
 }

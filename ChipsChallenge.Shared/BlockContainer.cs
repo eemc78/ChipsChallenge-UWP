@@ -1,394 +1,444 @@
-package chipschallenge;
+﻿namespace ChipsChallenge.Shared
+{
+    using Microsoft.Graphics.Canvas;
 
-import chipschallenge.Move.Moves;
-import java.awt.Image;
+    using Moves = Move.Moves;
 
-public class BlockContainer {
+    public class BlockContainer
+    {
+        private Block upper;
+        private Block lower;
+        private Block visitorLow;
+        private Block visitorHigh;
 
-    private Block upper = null;
-    private Block lower = null;
-    private Block visitorLow = null;
-    private Block visitorHigh = null;
-
-    private Image lastImage = null;
-
-    public BlockContainer() {
-    }
-
-    public Block getLower() {
-        return lower;
-    }
-
-    public void setLower(Block lower) {
-        this.lower = lower;
-    }
-
-    public Block getUpper() {
-        return upper;
-    }
-
-    public void setUpper(Block upper) {
-        this.upper = upper;
-    }
-
-    public Block getVisitorHigh() {
-        return visitorHigh;
-    }
-
-    public void setVisitorHigh(Block visitorHigh) {
-        this.visitorHigh = visitorHigh;
-    }
-
-    public Block getVisitorLow() {
-        return visitorLow;
-    }
-
-    public void setVisitorLow(Block visitorLow) {
-        this.visitorLow = visitorLow;
-    }
-
-    // For debugging
-    @Override
-    public String toString() {
-        return "[" + upper + "," + lower + "," + visitorLow + "," + visitorHigh + "]";
-    }
-
-    public Block find(Block.Type type) {
-        if (lower != null && lower.isA(type)) {
-            return lower;
-        }
-        if (upper != null && upper.isA(type)) {
-            return upper;
-        }
-        if (visitorLow != null && visitorLow.isA(type)) {
-            return visitorLow;
-        }
-        if (visitorHigh != null && visitorHigh.isA(type)) {
-            return visitorHigh;
-        }
-        return null;
-    }
-
-    private void push(Block b, int layer) throws BlockContainerFullException {
-        switch (layer) {
-            case 3:
-                if (visitorHigh == null) {
-                    visitorHigh = b;
-                } else {
-                    push(visitorHigh, 2);
-                    visitorHigh = b;
-                }
-                break;
-            case 2:
-                if (visitorLow == null) {
-                    visitorLow = b;
-                } else {
-                    push(visitorLow, 1);
-                    visitorLow = b;
-                }
-                break;
-            case 1:
-                if (upper == null) {
-                    upper = b;
-                } else {
-                    push(upper, 0);
-                    upper = b;
-                }
-                break;
-            case 0:
-                if (lower == null) {
-                    lower = b;
-                } else {
-                    throw new BlockContainerFullException();
-                }
-                break;
-        }
-    }
-
-    public void push(Block b) throws BlockContainerFullException {
-        lastImage = null;
-        push(b, 3);
-    }
-
-    public void add(Block b) throws BlockContainerFullException {
-        lastImage = null;
-        if (upper == null) {
-            upper = b;
-        } else if (lower == null) {
-            lower = b;
-        } else if (visitorLow == null) {
-            visitorLow = b;
-        } else if (visitorHigh == null) {
-            visitorHigh = b;
-        } else {
-            throw new BlockContainerFullException();
-        }
-    }
-
-    public void remove(Block b) {
-        lastImage = null;
-        if (visitorHigh == b) {
-            visitorHigh = null;
-        } else if (visitorLow == b) {
-            visitorLow = null;
-        } else if (upper == b) {
-            upper = null;
-        } else if (lower == b) {
-            lower = null;
-        }
-    }
-
-    public boolean standsOnMoreThanFloor(Block b) {
-        if ((b.isChip() || b.isCreature() || b.isBlock())
-                && !(b.isA(Block.Type.SWIMMINGCHIP) || b.isA(Block.Type.BURNEDCHIP))) {
-            if (b == visitorHigh) {
-                if (visitorLow != null && !visitorLow.isA(Block.Type.FLOOR)) {
-                    return true;
-                }
-                if (upper != null && !upper.isA(Block.Type.FLOOR)) {
-                    return true;
-                }
-                if (lower != null && !lower.isA(Block.Type.FLOOR)) {
-                    return true;
-                }
-            } else if (b == visitorLow) {
-                if (upper != null && !upper.isA(Block.Type.FLOOR)) {
-                    return true;
-                }
-                if (lower != null && !lower.isA(Block.Type.FLOOR)) {
-                    return true;
-                }
-            } else if (b == upper) {
-                if (lower != null && !lower.isA(Block.Type.FLOOR)) {
-                    return true;
-                }
+        public virtual Block Lower
+        {
+            get
+            {
+                return lower;
+            }
+            set
+            {
+                lower = value;
             }
         }
-        return false;
-    }
-  
-    public Image getImage() {
-        lastImage = getImage(false, 3);
-        return lastImage;
-    }
 
-    public Image getLastImage() {
-        return lastImage;
-    }
+        public virtual Block Upper
+        {
+            get
+            {
+                return upper;
+            }
+            set
+            {
+                upper = value;
+            }
+        }
 
-    public Image getImage(boolean overlay, int layer) {
-        BlockImageFactory bif = BlockImageFactory.getInstance();
-        switch (layer) {
-            case 3:
-                if (visitorHigh == null) {
-                    return getImage(overlay, 2);
-                }
-                if (standsOnMoreThanFloor(visitorHigh)) {
-                    Image over = visitorHigh.getImage(true);
-                    return bif.getOverlayed(over, getImage(true, 2));
-                } else {
-                    return visitorHigh.getImage(false);
-                }
-            case 2:
-                if (visitorLow == null) {
-                    return getImage(overlay, 1);
-                }
-                if (standsOnMoreThanFloor(visitorLow)) {
-                    Image over = visitorLow.getImage(true);
-                    return bif.getOverlayed(over, getImage(true, 1));
-                } else {
-                    return visitorLow.getImage(false);
-                }
-            case 1:
-                if (upper == null) {
-                    return getImage(overlay, 0);
-                }
-                if (standsOnMoreThanFloor(upper)) {
-                    Image over = upper.getImage(true);
-                    return bif.getOverlayed(over, getImage(true, 0));
-                } else {
-                    return upper.getImage(false);
-                }
-            case 0:
-                if (lower != null) {
-                    if (overlay) {
-                        return null;
-                    } else {
-                        return lower.getImage(false);
+        public virtual Block VisitorHigh
+        {
+            get
+            {
+                return visitorHigh;
+            }
+            set
+            {
+                visitorHigh = value;
+            }
+        }
+
+
+        public virtual Block VisitorLow
+        {
+            get
+            {
+                return visitorLow;
+            }
+
+            set
+            {
+                visitorLow = value;
+            }
+        }
+
+        public override string ToString()
+        {
+            return "[" + upper + "," + lower + "," + visitorLow + "," + visitorHigh + "]";
+        }
+
+        public virtual Block Find(Block.Type type)
+        {
+            if (lower != null && lower.IsA(type))
+            {
+                return lower;
+            }
+            if (upper != null && upper.IsA(type))
+            {
+                return upper;
+            }
+            if (visitorLow != null && visitorLow.IsA(type))
+            {
+                return visitorLow;
+            }
+            if (visitorHigh != null && visitorHigh.IsA(type))
+            {
+                return visitorHigh;
+            }
+            return null;
+        }
+
+        private void Push(Block b, int layer)
+        {
+            switch (layer)
+            {
+                case 3:
+                    if (visitorHigh == null)
+                    {
+                        visitorHigh = b;
+                    }
+                    else
+                    {
+                        Push(visitorHigh, 2);
+                        visitorHigh = b;
+                    }
+                    break;
+                case 2:
+                    if (visitorLow == null)
+                    {
+                        visitorLow = b;
+                    }
+                    else
+                    {
+                        Push(visitorLow, 1);
+                        visitorLow = b;
+                    }
+                    break;
+                case 1:
+                    if (upper == null)
+                    {
+                        upper = b;
+                    }
+                    else
+                    {
+                        Push(upper, 0);
+                        upper = b;
+                    }
+                    break;
+                case 0:
+                    if (lower == null)
+                    {
+                        lower = b;
+                    }
+                    else
+                    {
+                        throw new BlockContainerFullException();
+                    }
+                    break;
+            }
+        }
+
+        public virtual void Push(Block b)
+        {
+            Push(b, 3);
+        }
+
+        public virtual void Add(Block b)
+        {
+            if (upper == null)
+            {
+                upper = b;
+            }
+            else if (lower == null)
+            {
+                lower = b;
+            }
+            else if (visitorLow == null)
+            {
+                visitorLow = b;
+            }
+            else if (visitorHigh == null)
+            {
+                visitorHigh = b;
+            }
+            else
+            {
+                throw new BlockContainerFullException();
+            }
+        }
+
+        public virtual void Remove(Block b)
+        {
+            if (visitorHigh == b)
+            {
+                visitorHigh = null;
+            }
+            else if (visitorLow == b)
+            {
+                visitorLow = null;
+            }
+            else if (upper == b)
+            {
+                upper = null;
+            }
+            else if (lower == b)
+            {
+                lower = null;
+            }
+        }
+
+        public virtual bool StandsOnMoreThanFloor(Block b)
+        {
+            if ((b.Chip || b.Creature || b.IsBlock()) && !(b.IsA(Block.Type.SWIMMINGCHIP) || b.IsA(Block.Type.BURNEDCHIP)))
+            {
+                if (b == visitorHigh)
+                {
+                    if (visitorLow != null && !visitorLow.IsA(Block.Type.FLOOR))
+                    {
+                        return true;
+                    }
+
+                    if (upper != null && !upper.IsA(Block.Type.FLOOR))
+                    {
+                        return true;
+                    }
+                    if (lower != null && !lower.IsA(Block.Type.FLOOR))
+                    {
+                        return true;
                     }
                 }
-        }
-        return bif.get(Block.Type.FLOOR, Move.Moves.UP, false);
-    }
+                else if (b == visitorLow)
+                {
+                    if (upper != null && !upper.IsA(Block.Type.FLOOR))
+                    {
+                        return true;
+                    }
 
-    public boolean canMoveFrom(Block b) {
-        if (lower != null) {
-            if (!lower.getFromReaction().canMove(b, lower)) {
-                return false;
+                    if (lower != null && !lower.IsA(Block.Type.FLOOR))
+                    {
+                        return true;
+                    }
+                }
+                else if (b == upper)
+                {
+                    if (lower != null && !lower.IsA(Block.Type.FLOOR))
+                    {
+                        return true;
+                    }
+                }
             }
-        }
-        if (upper != null) {
-            if (!upper.getFromReaction().canMove(b, upper)) {
-                return false;
-            }
-        }
-        if (visitorLow != null) {
-            if (!visitorLow.getFromReaction().canMove(b, visitorLow)) {
-                return false;
-            }
-        }
-        if (visitorHigh != null) {
-            if (!visitorHigh.getFromReaction().canMove(b, visitorHigh)) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    public boolean canMoveTo(Block b) {
-        if (lower != null) {
-            if (!lower.getToReaction().canMove(b, lower)) {
-                return false;
-            }
+            return false;
         }
-        if (upper != null) {
-            if (!upper.getToReaction().canMove(b, upper)) {
-                return false;
-            }
-        }
-        if (visitorLow != null) {
-            if (!visitorLow.getToReaction().canMove(b, visitorLow)) {
-                return false;
-            }
-        }
-        if (visitorHigh != null) {
-            if (!visitorHigh.getToReaction().canMove(b, visitorHigh)) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    public Moves causesSlipTo(Block b) {
-        Moves m = null;
-        if (lower != null) {
-            if ((m = lower.getToReaction().causesSlip(b, lower)) != null) {
-                return m;
-            }
-        }
-        if (upper != null) {
-            if ((m = upper.getToReaction().causesSlip(b, upper)) != null) {
-                return m;
-            }
-        }
-        if (visitorLow != null) {
-            if ((m = visitorLow.getToReaction().causesSlip(b, visitorLow)) != null) {
-                return m;
-            }
-        }
-        if (visitorHigh != null) {
-            if ((m = visitorHigh.getToReaction().causesSlip(b, visitorHigh)) != null) {
-                return m;
-            }
-        }
-        return m;
-    }
+        public virtual CanvasBitmap Image => GetImage(false, 3);
 
-    public Moves causesSlipFrom(Block b) {
-        Moves m = null;
-        if (lower != null) {
-            if ((m = lower.getFromReaction().causesSlip(b, lower)) != null) {
-                return m;
+        public virtual CanvasBitmap GetImage(bool overlay, int layer)
+        {
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            CanvasRenderTarget offscreen = new CanvasRenderTarget(device, 32, 32, 96);
+
+            using (CanvasDrawingSession ds = offscreen.CreateDrawingSession())
+            {
+                if (lower != null)
+                {
+                    ds.DrawImage(lower.GetImage(false));
+                }
+
+                if (upper != null)
+                {
+                    if (lower.getType() == Block.Type.CLONEMACHINE)
+                    {
+                        ds.DrawImage(upper.GetImage(true));
+                    }
+                    else
+                    {
+                        ds.DrawImage(upper.GetImage(false));
+                    }
+                }
+
+                if (visitorLow != null)
+                {
+                    ds.DrawImage(visitorLow.GetImage(true));
+                }
+
+                if (visitorHigh != null)
+                {
+                    ds.DrawImage(visitorHigh.GetImage(true));
+                }
             }
+
+            return offscreen;
         }
-        if (upper != null) {
-            if ((m = upper.getFromReaction().causesSlip(b, upper)) != null) {
-                return m;
+
+        public virtual bool CanMoveFrom(Block b)
+        {
+            if (lower != null)
+            {
+                if (!lower.FromReaction.canMove(b, lower))
+                {
+                    return false;
+                }
             }
-        }
-        if (visitorLow != null) {
-            if ((m = visitorLow.getFromReaction().causesSlip(b, visitorLow)) != null) {
-                return m;
+            if (upper != null)
+            {
+                if (!upper.FromReaction.canMove(b, upper))
+                {
+                    return false;
+                }
             }
-        }
-        if (visitorHigh != null) {
-            if ((m = visitorHigh.getFromReaction().causesSlip(b, visitorHigh)) != null) {
-                return m;
+            if (visitorLow != null)
+            {
+                if (!visitorLow.FromReaction.canMove(b, visitorLow))
+                {
+                    return false;
+                }
             }
+            if (visitorHigh != null)
+            {
+                if (!visitorHigh.FromReaction.canMove(b, visitorHigh))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
-        return m;
-    }
 
-    public void moveFrom(Block b) throws BlockContainerFullException {
-        lastImage = null;
-        if (visitorHigh != null) {
-            visitorHigh.getFromReaction().react(b, visitorHigh);
+        public virtual bool CanMoveTo(Block b)
+        {
+            if (lower != null)
+            {
+                if (!lower.ToReaction.canMove(b, lower))
+                {
+                    return false;
+                }
+            }
+            if (upper != null)
+            {
+                if (!upper.ToReaction.canMove(b, upper))
+                {
+                    return false;
+                }
+            }
+            if (visitorLow != null)
+            {
+                if (!visitorLow.ToReaction.canMove(b, visitorLow))
+                {
+                    return false;
+                }
+            }
+            if (visitorHigh != null)
+            {
+                if (!visitorHigh.ToReaction.canMove(b, visitorHigh))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
-        if (visitorLow != null) {
-            visitorLow.getFromReaction().react(b, visitorLow);
-        }
-        if (upper != null) {
-            upper.getFromReaction().react(b, upper);
-        }
-        if (lower != null) {
-            lower.getFromReaction().react(b, lower);
-        }
-    }
 
-    public void moveTo(Block b) throws BlockContainerFullException {
-        lastImage = null;
-        if (visitorHigh != null) {
-            visitorHigh.getToReaction().react(b, visitorHigh);
+        public virtual Moves? CausesSlipTo(Block b)
+        {
+            Moves? m = null;
+            if (lower != null)
+            {
+                if ((m = lower.ToReaction.CausesSlip(b, lower)) != null)
+                {
+                    return m;
+                }
+            }
+            if (upper != null)
+            {
+                if ((m = upper.ToReaction.CausesSlip(b, upper)) != null)
+                {
+                    return m;
+                }
+            }
+            if (visitorLow != null)
+            {
+                if ((m = visitorLow.ToReaction.CausesSlip(b, visitorLow)) != null)
+                {
+                    return m;
+                }
+            }
+            if (visitorHigh != null)
+            {
+                if ((m = visitorHigh.ToReaction.CausesSlip(b, visitorHigh)) != null)
+                {
+                    return m;
+                }
+            }
+            return m;
         }
-        if (visitorLow != null) {
-            visitorLow.getToReaction().react(b, visitorLow);
-        }
-        if (upper != null) {
-            upper.getToReaction().react(b, upper);
-        }
-        if (lower != null) {
-            lower.getToReaction().react(b, lower);
-        }
-    }
 
-    public void replaceBlock(Block a, Block b) {
-        lastImage = null;
-        if (visitorHigh != null && visitorHigh == a) {
-            visitorHigh = b;
+        public virtual Moves? CausesSlipFrom(Block b)
+        {
+            Moves? m = null;
+            if (lower != null)
+            {
+                if ((m = lower.FromReaction.CausesSlip(b, lower)) != null)
+                {
+                    return m;
+                }
+            }
+            if (upper != null)
+            {
+                if ((m = upper.FromReaction.CausesSlip(b, upper)) != null)
+                {
+                    return m;
+                }
+            }
+            if (visitorLow != null)
+            {
+                if ((m = visitorLow.FromReaction.CausesSlip(b, visitorLow)) != null)
+                {
+                    return m;
+                }
+            }
+            if (visitorHigh != null)
+            {
+                if ((m = visitorHigh.FromReaction.CausesSlip(b, visitorHigh)) != null)
+                {
+                    return m;
+                }
+            }
+            return m;
         }
-        if (visitorLow != null && visitorLow == a) {
-            visitorLow = b;
-        }
-        if (upper != null && upper == a) {
-            upper = b;
-        }
-        if (lower != null && lower == a) {
-            lower = b;
-        }
-        a.destroy();
-    }
 
-    public int getLayer(Block b) {
-        if (lower == b) {
-            return 0;
+        public virtual void MoveFrom(Block b)
+        {
+            visitorHigh?.FromReaction.React(b, visitorHigh);
+            visitorLow?.FromReaction.React(b, visitorLow);
+            upper?.FromReaction.React(b, upper);
+            lower?.FromReaction.React(b, lower);
         }
-        if (upper == b) {
-            return 1;
-        }
-        if (visitorLow == b) {
-            return 2;
-        }
-        if (visitorHigh == b) {
-            return 3;
-        }
-        return 0;
-    }
 
-    public void clear() {
-        lastImage = null;
-        upper = null;
-        lower = null;
-        visitorLow = null;
-        visitorHigh = null;
+        public virtual void MoveTo(Block b)
+        {
+            visitorHigh?.ToReaction.React(b, visitorHigh);
+            visitorLow?.ToReaction.React(b, visitorLow);
+            upper?.ToReaction.React(b, upper);
+            lower?.ToReaction.React(b, lower);
+        }
+
+        public virtual void ReplaceBlock(Block a, Block b)
+        {
+            if (visitorHigh != null && visitorHigh == a)
+            {
+                visitorHigh = b;
+            }
+            if (visitorLow != null && visitorLow == a)
+            {
+                visitorLow = b;
+            }
+            if (upper != null && upper == a)
+            {
+                upper = b;
+            }
+            if (lower != null && lower == a)
+            {
+                lower = b;
+            }
+            a.Destroy();
+        }
     }
 }

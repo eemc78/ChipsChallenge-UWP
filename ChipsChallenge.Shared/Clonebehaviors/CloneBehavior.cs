@@ -1,48 +1,46 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package chipschallenge.clonebehaviors;
+﻿namespace ChipsChallenge.Shared.Clonebehaviors
+{
+    using Moves = Move.Moves;
+    using Type = Block.Type;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Game;
-import chipschallenge.Move;
-import chipschallenge.Move.Moves;
-import java.awt.Point;
+    public abstract class CloneBehavior
+    {
+        protected internal Block CloneTo(Block original, Moves direction)
+        {
+            Game gameInstance = Game.Instance;
+            Block clone = gameInstance.BlockFactory.Get(original.getType(), direction);
+            Point point = new Point(original.Point.X, original.Point.Y);
 
-/**
- *
- * @author patrik
- */
-public abstract class CloneBehavior {
-
-    protected final Block cloneTo(Block original, Moves direction) throws CloneNotSupportedException {
-        Game g = Game.getInstance();
-        Block clone = g.getBlockFactory().get(original.getType(), direction);
-        Point p = (Point) original.getPoint().clone();
-        Move.updatePoint(p, direction);
-        try {
-            switch (clone.getType()) {
-                case BLOCK:
-                case BLOB:
-                case TEETH:
-                    if (g.getLevel().getBlockContainer(p.x, p.y).canMoveTo(clone)) {
-                        g.getLevel().addBlock(p.x, p.y, clone, 2);
-                        g.getLevel().moveBlock(clone, null, true, true);
-                    } else {
-                        throw new CloneNotSupportedException();
-                    }
-                    break;
-                default:
-                    g.addBlockDelay(clone, p, 2);
-                    break;
+            Move.UpdatePoint(ref point, direction);
+            try
+            {
+                switch (clone.getType())
+                {
+                    case Type.BLOCK:
+                    case Type.BLOB:
+                    case Type.TEETH:
+                        if (gameInstance.Level.GetBlockContainer(point.X, point.Y).CanMoveTo(clone))
+                        {
+                            gameInstance.Level.AddBlock(point.X, point.Y, clone, 2);
+                            gameInstance.Level.MoveBlock(clone, null, true, true);
+                        }
+                        else
+                        {
+                            throw new CloneNotSupportedException();
+                        }
+                        break;
+                    default:
+                        gameInstance.AddBlockDelay(clone, point, 2);
+                        break;
+                }
             }
-        } catch (BlockContainerFullException ex) {
-            // Ignore
-        }
-        return clone;
-    }
+            catch (BlockContainerFullException)
+            {
+            }
 
-    public abstract Block cloneIt(Block original) throws CloneNotSupportedException;
+            return clone;
+        }
+
+        public abstract Block CloneIt(Block original);
+    }
 }

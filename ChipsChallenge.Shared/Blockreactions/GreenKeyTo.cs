@@ -1,30 +1,42 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Type = Block.Type;
+    using Key = Inventory.Key;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.Inventory.Key;
-
-public class GreenKeyTo extends NoSlipReaction {
-
-    private GreenKeyTo() {
-    }
-    private static GreenKeyTo mInstance = null;
-
-    public static synchronized GreenKeyTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new GreenKeyTo();
+    public class GreenKeyTo : NoSlipReaction
+    {
+        private GreenKeyTo()
+        {
         }
-        return mInstance;
-    }
+        private static GreenKeyTo instance;
 
-    public void react(Block moving, Block standing) {
-        if (moving.isChip()) {
-            takeKey(Key.GREEN);
-            standing.replace(createBlock(Type.FLOOR));
+        public static GreenKeyTo Instance
+        {
+            get
+            {
+                lock (typeof(GreenKeyTo))
+                {
+                    if (instance == null)
+                    {
+                        instance = new GreenKeyTo();
+                    }
+                    return instance;
+                }
+            }
         }
-    }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                TakeKey(Key.GREEN);
+                standing.Replace(CreateBlock(Type.FLOOR));
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

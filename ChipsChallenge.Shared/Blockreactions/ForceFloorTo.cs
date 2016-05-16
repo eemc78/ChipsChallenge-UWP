@@ -1,46 +1,48 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Inventory.Boots;
-import chipschallenge.Move.Moves;
-
-/**
- * Move to force floor
- */
-public class ForceFloorTo extends BlockReaction {
-
-    private ForceFloorTo() {
-    }
-    private static ForceFloorTo mInstance = null;
-
-    public static synchronized ForceFloorTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ForceFloorTo();
+    public class ForceFloorTo : BlockReaction
+    {
+        private ForceFloorTo()
+        {
         }
-        return mInstance;
-    }
 
-    // Force moves, except on chip with suction boots.
-    @Override
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (!(moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
-            //moving.setFacing(standing.getFacing());
+        private static ForceFloorTo instance;
+
+        public static ForceFloorTo Instance
+        {
+            get
+            {
+                lock (typeof(ForceFloorTo))
+                {
+                    return instance ?? (instance = new ForceFloorTo());
+                }
+            }
         }
-    }
 
-    // Everything can move here
-    @Override
-    public boolean canMove(Block moving, Block standing) {
-        return true;
-    }
+        public override void React(Block moving, Block standing)
+        {
+            if (!(moving.Chip && HasBoots(Boots.SUCTIONBOOTS)))
+            {
+                moving.Facing = standing.Facing;
+            }
+        }
 
-    @Override
-    public Moves causesSlip(Block moving, Block standing) {
-        if (moving.isChip() && hasBoots(Boots.SUCTIONBOOTS)) {
-            return null;
-        } else {
-            return standing.getFacing();
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
+
+        public override Moves? CausesSlip(Block moving, Block standing)
+        {
+            if (moving.Chip && HasBoots(Boots.SUCTIONBOOTS))
+            {
+                return null;
+            }
+
+            return standing.Facing;
         }
     }
 }

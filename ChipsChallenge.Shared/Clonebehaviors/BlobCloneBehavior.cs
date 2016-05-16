@@ -1,48 +1,66 @@
-package chipschallenge.clonebehaviors;
+﻿namespace ChipsChallenge.Shared.Clonebehaviors
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.Move.Moves;
-import chipschallenge.Utils;
-
-public class BlobCloneBehavior extends CloneBehavior {
-
-    private BlobCloneBehavior() {
-    }
-    private static BlobCloneBehavior mInstance = null;
-
-    public static synchronized BlobCloneBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new BlobCloneBehavior();
+    public class BlobCloneBehavior : CloneBehavior
+    {
+        private BlobCloneBehavior()
+        {
         }
-        return mInstance;
-    }
 
-    public Block cloneIt(Block original) throws CloneNotSupportedException {
-        int dir = Utils.r.nextInt(4);
-        Block clone = null;
-        outer:
-        for (int i = 0; i < 2; i++) {
-            switch (dir) {
-                case 0:
-                    if ((clone = cloneTo(original, Moves.UP)) != null) {
-                        break outer;
-                    }
-                case 1:
-                    if ((clone = cloneTo(original, Moves.DOWN)) != null) {
-                        break outer;
-                    }
-                case 2:
-                    if ((clone = cloneTo(original, Moves.LEFT)) != null) {
-                        break outer;
-                    }
-                case 3:
-                    if ((clone = cloneTo(original, Moves.RIGHT)) != null) {
-                        break outer;
-                    } else {
-                        dir = 0;
-                    }
+        private static BlobCloneBehavior instance;
+
+        public static BlobCloneBehavior Instance
+        {
+            get
+            {
+                lock (typeof(BlobCloneBehavior))
+                {
+                    return instance ?? (instance = new BlobCloneBehavior());
+                }
             }
         }
-        return clone;
+
+        public override Block CloneIt(Block original)
+        {
+            int dir = Utils.Random.Next(4);
+            Block clone = null;
+            for (int i = 0; i < 2; i++)
+            {
+                switch (dir)
+                {
+                    case 0:
+                        if ((clone = CloneTo(original, Moves.UP)) != null)
+                        {
+                            goto outerBreak;
+                        }
+                        break;
+                    case 1:
+                        if ((clone = CloneTo(original, Moves.DOWN)) != null)
+                        {
+                            goto outerBreak;
+                        }
+                        break;
+                    case 2:
+                        if ((clone = CloneTo(original, Moves.LEFT)) != null)
+                        {
+                            goto outerBreak;
+                        }
+                        break;
+                    case 3:
+                        if ((clone = CloneTo(original, Moves.RIGHT)) != null)
+                        {
+                            goto outerBreak;
+                        }
+                        else
+                        {
+                            dir = 0;
+                        }
+                    break;
+                }
+            }
+            outerBreak:
+            return clone;
+        }
     }
 }

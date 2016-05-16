@@ -1,34 +1,36 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.SoundPlayer.sounds;
-
-public class ComputerChipTo extends NoSlipReaction {
-
-    private ComputerChipTo() {
-    }
-    private static ComputerChipTo mInstance = null;
-
-    public static synchronized ComputerChipTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ComputerChipTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class ComputerChipTo : NoSlipReaction
+    {
+        private ComputerChipTo()
+        {
         }
-        return mInstance;
-    }
+        private static ComputerChipTo instance;
 
-    @Override
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (moving.isChip()) {
-            game().takeChip();
-            standing.replace(createBlock(Type.FLOOR));
-            sound().playSound(sounds.TAKECHIP);
+        public static ComputerChipTo Instance
+        {
+            get
+            {
+                lock (typeof(ComputerChipTo))
+                {
+                    return instance ?? (instance = new ComputerChipTo());
+                }
+            }
         }
-    }
 
-    @Override
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                Game().TakeChip();
+                standing.Replace(CreateBlock(Block.Type.FLOOR));
+                Sound().Play(Shared.Sound.TakeChip);
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
     }
 }

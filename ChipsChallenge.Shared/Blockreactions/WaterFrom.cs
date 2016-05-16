@@ -1,28 +1,36 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Type = Block.Type;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-
-public class WaterFrom extends NoSlipReaction {
-
-    private WaterFrom() {
-    }
-    private static WaterFrom mInstance = null;
-
-    public static synchronized WaterFrom getInstance() {
-        if (mInstance == null) {
-            mInstance = new WaterFrom();
+    public class WaterFrom : NoSlipReaction
+    {
+        private WaterFrom()
+        {
         }
-        return mInstance;
-    }
+        private static WaterFrom instance;
 
-    public void react(Block moving, Block standing) {
-        if (moving.isChip()) {
-            moving.setType(Type.CHIP);
+        public static WaterFrom Instance
+        {
+            get
+            {
+                lock (typeof(WaterFrom))
+                {
+                    return instance ?? (instance = new WaterFrom());
+                }
+            }
         }
-    }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                moving.SetType(Type.CHIP);
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

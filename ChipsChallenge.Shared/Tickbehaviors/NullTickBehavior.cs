@@ -1,21 +1,27 @@
-package chipschallenge.tickbehaviors;
-
-import chipschallenge.Block;
-
-public class NullTickBehavior implements BlockTickBehavior {
-
-    private NullTickBehavior() {
-    }
-    private static NullTickBehavior mInstance = null;
-
-    public static synchronized NullTickBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new NullTickBehavior();
+﻿namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    public class NullTickBehavior : IBlockTickBehavior
+    {
+        private NullTickBehavior()
+        {
         }
-        return mInstance;
-    }
 
-    public void tick(Block caller) {
-        // Ignore
+        private static NullTickBehavior _mInstance;
+
+        public static NullTickBehavior Instance
+        {
+            get
+            {
+                lock (typeof(NullTickBehavior))
+                {
+                    return _mInstance ?? (_mInstance = new NullTickBehavior());
+                }
+            }
+        }
+
+        public virtual void Tick(Block caller)
+        {
+            // Ignore
+        }
     }
 }

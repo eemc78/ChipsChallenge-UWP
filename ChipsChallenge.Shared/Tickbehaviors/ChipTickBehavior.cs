@@ -1,116 +1,160 @@
-package chipschallenge.tickbehaviors;
+﻿namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    using System;
+    using System.Collections.Generic;
+    using Boots = Inventory.Boots;
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Game;
-import chipschallenge.Inventory.Boots;
-import chipschallenge.Move;
-import chipschallenge.Move.Moves;
-import chipschallenge.SoundPlayer;
-import chipschallenge.SoundPlayer.sounds;
-import chipschallenge.gui.GUI;
-import java.awt.Point;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.util.LinkedList;
-import java.util.Queue;
+    public class ChipTickBehavior : IBlockTickBehavior
+    {
+        private static ChipTickBehavior instance;
+        private readonly LinkedList<Moves> proposedMoves = new LinkedList<Moves>();
+        private int ticksBeforeTurn;
+        private int chipTicks;
 
-public class ChipTickBehavior extends KeyAdapter implements BlockTickBehavior {
-
-    private ChipTickBehavior() {
-    }
-    private static ChipTickBehavior mInstance = null;
-
-    public static synchronized ChipTickBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new ChipTickBehavior();
+        private ChipTickBehavior()
+        {
         }
-        return mInstance;
-    }
-    private final Queue<Moves> proposedMoves = new LinkedList<Moves>();
-    private int mTicksBeforeTurn;
-    private int chipTicks = 0;
 
-    public void tick(Block caller) throws BlockContainerFullException {
-        chipTicks = (chipTicks + 1) % Game.SPEED_FRAC;
-        if (chipTicks == 0 || caller.isForced()) {
-            caller.setForced(false);
-            synchronized (proposedMoves) {
-                if (!proposedMoves.isEmpty()) {
-                    if (caller.isOnIce() && !Game.getInstance().getInventory().hasBoots(Boots.ICESKATES)) {
-                        proposedMoves.poll(); // Ignore proposed move
-                    } else if (caller.move(proposedMoves.poll())) {
-                        
-                    } else {
-                        proposedMoves.clear();
-                        SoundPlayer.getInstance().playSound(sounds.CHIPHUM);
-                    }
-                    // TODO: Handle force floors properly ...
-                    if (caller.isOnForceFloor()) {
-                        Game.getInstance().getLevel().getBlockContainer(caller).moveTo(caller);
-                    }
-                    mTicksBeforeTurn = 12;
+        public static ChipTickBehavior Instance
+        {
+            get
+            {
+                lock (typeof(ChipTickBehavior))
+                {
+                    return instance ?? (instance = new ChipTickBehavior());
                 }
             }
         }
-        if (!caller.isOnIce() && mTicksBeforeTurn > 0) {
-            mTicksBeforeTurn--;
-            if (mTicksBeforeTurn == 0) {
-                caller.setFacing(Moves.DOWN);
-                GUI.getInstance().repaint();
-            }
-        }
-    }
 
-    public void moveTo(Point goal) {
-        synchronized (proposedMoves) {
-            proposedMoves.clear();
-            Point start = (Point) Game.getInstance().getLevel().findChip().clone();
-            while (!start.equals(goal)) {
-                int dx = goal.x - start.x;
-                int dy = goal.y - start.y;
-                int pdx = Math.abs(dx);
-                int pdy = Math.abs(dy);
-                Moves proposedMove = null;
-                if (pdx > pdy) {
-                    if (dx > 0) {
-                        proposedMove = Moves.RIGHT;
-                    } else {
-                        proposedMove = Moves.LEFT;
-                    }
-                } else {
-                    if (dy > 0) {
-                        proposedMove = Moves.DOWN;
-                    } else {
-                        proposedMove = Moves.UP;
+        public virtual void Tick(Block caller)
+        {
+            chipTicks = (chipTicks + 1) % Game.SpeedFrac;
+            if (chipTicks == 0 || caller.Forced)
+            {
+                caller.Forced = false;
+                lock (proposedMoves)
+                {
+                    if (proposedMoves.Count > 0)
+                    {
+                        if (caller.OnIce && !Game.Instance.Inventory.HasBoots(Boots.ICESKATES))
+                        {
+                            proposedMoves.RemoveFirst(); // Ignore proposed move
+                        }
+                        else if (proposedMoves.Count > 0)
+                        {
+                            var move = proposedMoves.First.Value;
+                            var couldMove = caller.Move(move);
+
+                            if (!couldMove)
+                            {
+                                SoundPlayer.Instance.Play(Sound.ChipHum); 
+                            }
+
+                            proposedMoves.RemoveFirst();
+                        }
+                        else
+                        {
+                            proposedMoves.Clear();
+                            SoundPlayer.Instance.Play(Sound.ChipHum);
+                        }
+
+                        if (caller.OnForceFloor)
+                        {
+                            Game.Instance.Level.GetBlockContainer(caller).MoveTo(caller);
+                        }
+
+                        ticksBeforeTurn = 12;
                     }
                 }
-                Move.updatePoint(start, proposedMove);
-                proposedMoves.offer(proposedMove);
+            }
+
+            if (!caller.OnIce && ticksBeforeTurn > 0)
+            {
+                ticksBeforeTurn--;
+                if (ticksBeforeTurn == 0)
+                {
+                    caller.Facing = Moves.DOWN;
+                }
             }
         }
-    }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        synchronized (proposedMoves) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    proposedMoves.clear();
-                    proposedMoves.offer(Moves.UP);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    proposedMoves.clear();
-                    proposedMoves.offer(Moves.DOWN);
-                    break;
-                case KeyEvent.VK_LEFT:
-                    proposedMoves.clear();
-                    proposedMoves.offer(Moves.LEFT);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    proposedMoves.clear();
-                    proposedMoves.offer(Moves.RIGHT);
-                    break;
+        public virtual void MoveTo(Point goal)
+        {
+            lock (proposedMoves)
+            {
+                proposedMoves.Clear();
+                var chip = Game.Instance.Level.FindChip();
+                var startPoint = new Point(chip.X, chip.Y);
+                while (!startPoint.Equals(goal))
+                {
+                    int dx = goal.X - startPoint.X;
+                    int dy = goal.Y - startPoint.Y;
+                    int pdx = Math.Abs(dx);
+                    int pdy = Math.Abs(dy);
+                    Moves proposedMove;
+                    if (pdx > pdy)
+                    {
+                        if (dx > 0)
+                        {
+                            proposedMove = Moves.RIGHT;
+                        }
+                        else
+                        {
+                            proposedMove = Moves.LEFT;
+                        }
+                    }
+                    else
+                    {
+                        if (dy > 0)
+                        {
+                            proposedMove = Moves.DOWN;
+                        }
+                        else
+                        {
+                            proposedMove = Moves.UP;
+                        }
+                    }
+
+                    Move.UpdatePoint(ref startPoint, proposedMove);
+                    proposedMoves.AddLast(proposedMove);
+                }
+            }
+        }
+
+        public void MoveUp()
+        {
+            lock (proposedMoves)
+            {
+                proposedMoves.Clear();
+                proposedMoves.AddLast(Moves.UP);
+            }
+        }
+
+        public void MoveDown()
+        {
+            lock (proposedMoves)
+            {
+                proposedMoves.Clear();
+                proposedMoves.AddLast(Moves.DOWN);
+            }
+        }
+
+        public void MoveLeft()
+        {
+            lock (proposedMoves)
+            {
+                proposedMoves.Clear();
+                proposedMoves.AddLast(Moves.LEFT);
+            }
+        }
+
+        public void MoveRight()
+        {
+            lock (proposedMoves)
+            {
+                proposedMoves.Clear();
+                proposedMoves.AddLast(Moves.RIGHT);
             }
         }
     }

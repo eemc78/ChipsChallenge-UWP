@@ -1,19 +1,21 @@
-package chipschallenge;
+﻿namespace ChipsChallenge.Shared
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Move.Moves;
+    public class BlockMove
+    {
+        public readonly Block Block;
+        public readonly Moves Move;
 
-public class BlockMove {
+        public BlockMove(Block b, Moves m)
+        {
+            Block = b;
+            Move = m;
+        }
 
-    public final Block block;
-    public final Moves move;
-
-    public BlockMove(Block b, Moves m) {
-        block = b;
-        move = m;
-    }
-
-    @Override
-    public BlockMove clone() {
-        return new BlockMove(block, move);
+        public BlockMove Clone()
+        {
+            return new BlockMove(Block, Move);
+        }
     }
 }

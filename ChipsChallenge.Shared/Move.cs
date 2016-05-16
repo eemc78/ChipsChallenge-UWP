@@ -1,58 +1,72 @@
-package chipschallenge;
-
-import java.awt.Point;
-
-public class Move {
-
-    public enum Moves {
-
-        UP, DOWN, LEFT, RIGHT
-    };
-
-    public static void updatePoint(Point p, Moves m) {
-        switch (m) {
-            case UP:
-                p.y--;
-                break;
-            case DOWN:
-                p.y++;
-                break;
-            case LEFT:
-                p.x--;
-                break;
-            case RIGHT:
-                p.x++;
-                break;
+﻿// ReSharper disable InconsistentNaming
+namespace ChipsChallenge.Shared
+{
+    public class Move
+    {
+        public enum Moves
+        {
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT
         }
-    }
 
-    public static Moves getRandom() {
-        int random = Utils.r.nextInt(4);
-        Moves ret = null;
-        switch (random) {
-            case 0:
-                return Moves.UP;
-            case 1:
-                return Moves.DOWN;
-            case 2:
-                return Moves.LEFT;
-            case 3:
-                return Moves.RIGHT;
+        public static void UpdatePoint(ref Point p, Moves m)
+        {
+            switch (m)
+            {
+                case Moves.UP:
+                    p.Y--;
+                    break;
+                case Moves.DOWN:
+                    p.Y++;
+                    break;
+                case Moves.LEFT:
+                    p.X--;
+                    break;
+                case Moves.RIGHT:
+                    p.X++;
+                    break;
+            }
         }
-        return ret;
-    }
 
-    public static Moves reverse(Moves m) {
-        switch (m) {
-            case UP:
-                return Moves.DOWN;
-            case DOWN:
-                return Moves.UP;
-            case LEFT:
-                return Moves.RIGHT;
-            case RIGHT:
-                return Moves.LEFT;
+        public static Moves Random
+        {
+            get
+            {
+                int random = Utils.Random.Next(4);
+
+                switch (random)
+                {
+                    case 0:
+                        return Moves.UP;
+                    case 1:
+                        return Moves.DOWN;
+                    case 2:
+                        return Moves.LEFT;
+                    case 3:
+                        return Moves.RIGHT;
+                    default:
+                        return Moves.UP;
+                }
+            }
         }
-        return null;
+
+        public static Moves Reverse(Moves m)
+        {
+            switch (m)
+            {
+                case Moves.UP:
+                    return Moves.DOWN;
+                case Moves.DOWN:
+                    return Moves.UP;
+                case Moves.LEFT:
+                    return Moves.RIGHT;
+                case Moves.RIGHT:
+                    return Moves.LEFT;
+                default:
+                    return Moves.UP;
+            }
+        }
     }
 }

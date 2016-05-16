@@ -1,28 +1,33 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Buttons;
-import chipschallenge.SoundPlayer.sounds;
-
-public class RedButtonTo extends NoSlipReaction {
-
-    private RedButtonTo() {
-    }
-    private static RedButtonTo mInstance = null;
-
-    public static synchronized RedButtonTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new RedButtonTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class RedButtonTo : NoSlipReaction
+    {
+        private RedButtonTo()
+        {
         }
-        return mInstance;
-    }
+        
+        private static RedButtonTo instance;
 
-    public void react(Block moving, Block standing) {
-        Buttons.redButtonDown(standing);
-        sound().playSound(sounds.BUTTON);
-    }
+        public static RedButtonTo Instance
+        {
+            get
+            {
+                lock (typeof(RedButtonTo))
+                {
+                    return instance ?? (instance = new RedButtonTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            Buttons.RedButtonDown(standing);
+            Sound().Play(Shared.Sound.Button);
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

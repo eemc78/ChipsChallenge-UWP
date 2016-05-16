@@ -1,77 +1,74 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.Game;
-import chipschallenge.GameLevel;
-import chipschallenge.Inventory;
-import chipschallenge.Inventory.Boots;
-import chipschallenge.Inventory.Key;
-import chipschallenge.Move.Moves;
-import chipschallenge.SoundPlayer;
-import chipschallenge.SoundPlayer.sounds;
+    /// <summary>
+    /// Defines whether a block can move, and what the side effects are.
+    /// </summary>
+    public abstract class BlockReaction
+    {
+        public Block CreateBlock(Block.Type blockType)
+        {
+            return Shared.Game.Instance.BlockFactory.Get(blockType);
+        }
 
-/**
- * Defines whether a block can move, and what the side effects are
- */
-public abstract class BlockReaction {
+        public void TakeKey(Inventory.Key key)
+        {
+            Shared.Game.Instance.Inventory.TakeKey(key);
+            Sound().Play(Shared.Sound.TakeItem);
+        }
 
-    public final Block createBlock(Type t, Moves d) {
-        return Game.getInstance().getBlockFactory().get(t, d);
+        public bool HasKey(Inventory.Key key)
+        {
+            return Shared.Game.Instance.Inventory.HasKey(key);
+        }
+
+        public void UseKey(Inventory.Key key)
+        {
+            Shared.Game.Instance.Inventory.UseKey(key);
+            Sound().Play(Shared.Sound.Door);
+        }
+
+        public void TakeBoots(Inventory.Boots b)
+        {
+            Shared.Game.Instance.Inventory.TakeBoots(b);
+            Sound().Play(Shared.Sound.TakeItem);
+        }
+
+        public bool HasBoots(Inventory.Boots b)
+        {
+            return Shared.Game.Instance.Inventory.HasBoots(b);
+        }
+
+        public void Die(string message)
+        {
+            Shared.Game.Instance.Die(message, Shared.Sound.Die);
+        }
+
+        public Game Game()
+        {
+            return Shared.Game.Instance;
+        }
+
+        public SoundPlayer Sound()
+        {
+            return SoundPlayer.Instance;
+        }
+
+        public GameLevel Level()
+        {
+            return Shared.Game.Instance.Level;
+        }
+
+        public Inventory Inventory()
+        {
+            return Shared.Game.Instance.Inventory;
+        }
+
+        public abstract void React(Block moving, Block standing);
+
+        public abstract bool canMove(Block moving, Block standing);
+
+        public abstract Moves? CausesSlip(Block moving, Block standing);
     }
-
-    public final Block createBlock(Type t) {
-        return Game.getInstance().getBlockFactory().get(t);
-    }
-
-    public final void takeKey(Key k) {
-        Game.getInstance().getInventory().takeKey(k);
-        sound().playSound(sounds.TAKEITEM);
-    }
-
-    public final boolean hasKey(Key k) {
-        return Game.getInstance().getInventory().hasKey(k);
-    }
-
-    public final boolean useKey(Key k) {
-        boolean ret = Game.getInstance().getInventory().useKey(k);
-        sound().playSound(sounds.DOOR);
-        return ret;
-    }
-
-    public final void takeBoots(Boots b) {
-        Game.getInstance().getInventory().takeBoots(b);
-        sound().playSound(sounds.TAKEITEM);
-    }
-
-    public final boolean hasBoots(Boots b) {
-        return Game.getInstance().getInventory().hasBoots(b);
-    }
-
-    public final void die(String msg) {
-        Game.getInstance().die(msg, sounds.DIE);
-    }
-
-    public final Game game() {
-        return Game.getInstance();
-    }
-
-    public final SoundPlayer sound() {
-        return SoundPlayer.getInstance();
-    }
-
-    public final GameLevel level() {
-        return Game.getInstance().getLevel();
-    }
-
-    public final Inventory inventory() {
-        return Game.getInstance().getInventory();
-    }
-
-    public abstract void react(Block moving, Block standing) throws BlockContainerFullException;
-
-    public abstract boolean canMove(Block moving, Block standing);
-
-    public abstract Moves causesSlip(Block moving, Block standing);
 }

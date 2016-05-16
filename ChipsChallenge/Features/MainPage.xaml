@@ -1,0 +1,78 @@
+﻿<Page
+    x:Class="ChipsChallenge.Features.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:features="using:ChipsChallenge.Features"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WideMode">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavigationSplitView.DisplayMode" Value="CompactInline"/>
+                        <!--<Setter Target="NavigationSplitView.IsPaneOpen" Value="True"/>-->
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="TabletMode">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="600"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavigationSplitView.DisplayMode" Value="CompactOverlay"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="PhoneMode">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="ContentMenuMinimal.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <SplitView x:Name="NavigationSplitView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" DisplayMode="Overlay">
+            <SplitView.Pane>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel.DataContext>
+                        <features:Menu />
+                    </StackPanel.DataContext>
+                    <StackPanel Orientation="Horizontal" Background="Black">
+                        <Button x:Name="NavButton" Content="&#xE700;" FontFamily="Segoe MDL2 Assets" FontWeight="Bold" Width="48" Height="44" Click="MenuButtonClick" Background="Transparent" HorizontalAlignment="Left" FontSize="20" Padding="0" />
+                        <TextBlock Text="Chip's Challenge" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <ListBox x:Name="Menu" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="MenuSelectionChanged" ItemsSource="{Binding MenuItems}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <SymbolIcon Symbol="{Binding Symbol}" Margin="3,0,28,0" />
+                                    <TextBlock Text="{Binding Title}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Background="Black" Height="44" x:Name="ContentMenuMinimal" Visibility="Collapsed">
+                        <Button Content="&#xE700;" FontFamily="Segoe MDL2 Assets" Width="48" Height="44" Click="MenuButtonClick" Background="Transparent" HorizontalAlignment="Left" FontSize="20" Padding="0" />
+                        <!--<TextBlock Text="Chip's Challenge - LESSON TODO" Margin="16,8,0,0" />-->
+                    </StackPanel>
+                    <Frame Grid.Row="1" x:Name="ContentFrame"></Frame>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+
+    </Grid>
+</Page>

@@ -1,47 +1,57 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
+    using Type = Block.Type;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.Inventory.Boots;
-
-/**
- * Move to fire
- */
-public class FireTo extends NoSlipReaction {
-
-    private FireTo() {
-    }
-    private static FireTo mInstance = null;
-
-    public static synchronized FireTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new FireTo();
+    public class FireTo : NoSlipReaction
+    {
+        private FireTo()
+        {
         }
-        return mInstance;
-    }
+        private static FireTo instance;
 
-    // Kills all enemies except fireball
-    public void react(Block moving, Block standing) {
-        switch (moving.getType()) {
-            case CHIP:
-                if (!hasBoots(Boots.FIREBOOTS)) {
-                    moving.destroy();
-                    standing.replace(createBlock(Type.BURNEDCHIP));
-                    die("Ooops! Don't step in the fire without fire boots!");
+        public static FireTo Instance
+        {
+            get
+            {
+                lock (typeof(FireTo))
+                {
+                    if (instance == null)
+                    {
+                        instance = new FireTo();
+                    }
+                    return instance;
                 }
-                break;
-            case BUG:
-            case TEETH:
-            case PINKBALL:
-            case TANK:
-            case BLOB:
-                moving.destroy();
-                break;
+            }
         }
-    }
 
-    // Everyone can move here except bugs or walkers
-    public boolean canMove(Block moving, Block standing) {
-        return !(moving.isA(Type.BUG) || moving.isA(Type.WALKER));
+        // Kills all enemies except fireball
+        public override void React(Block moving, Block standing)
+        {
+            switch (moving.getType())
+            {
+                case Type.CHIP:
+                    if (!HasBoots(Boots.FIREBOOTS))
+                    {
+                        moving.Destroy();
+                        standing.Replace(CreateBlock(Type.BURNEDCHIP));
+                        Die("Ooops! Don't step in the fire without fire boots!");
+                    }
+                    break;
+                case Type.BUG:
+                case Type.TEETH:
+                case Type.PINKBALL:
+                case Type.TANK:
+                case Type.BLOB:
+                    moving.Destroy();
+                    break;
+            }
+        }
+
+        // Everyone can move here except bugs or walkers
+        public override bool canMove(Block moving, Block standing)
+        {
+            return !(moving.IsA(Type.BUG) || moving.IsA(Type.WALKER));
+        }
     }
 }

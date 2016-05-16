@@ -1,39 +1,44 @@
-package chipschallenge;
+﻿using System.Collections.Generic;
+using System.Collections.Concurrent;
 
-import chipschallenge.Move.Moves;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+namespace ChipsChallenge.Shared
+{
+    using Moves = Move.Moves;
 
-public class SlipList {
+    public class SlipList
+    {
+        private readonly IDictionary<Block, Moves> map = new ConcurrentDictionary<Block, Moves>();
+        private readonly IList<Block> order = new List<Block>();
 
-    private Map<Block, Moves> map = new ConcurrentHashMap<Block, Moves>();
-    private List<Block> order = new ArrayList<Block>();
+        public virtual void Put(Block b, Moves m)
+        {
+            map[b] = m;
+            if(!order.Contains(b)){
+                order.Add(b);
+            };
+        }
 
-    public void put(Block b, Moves m) {
-        if (map.put(b, m) == null) {
-            order.add(b);
+        public virtual void Remove(Block b)
+        {
+            order.Remove(b);
+            map.Remove(b);
+        }
+
+        public virtual BlockMove Get(int i)
+        {
+            Block b = order[i];
+            return new BlockMove(b, map[b]);
+        }
+
+        public virtual int Size()
+        {
+            return order.Count;
+        }
+
+        public virtual void Clear()
+        {
+            map.Clear();
+            order.Clear();
         }
     }
-
-    public void remove(Block b) {
-        order.remove(b);
-        map.remove(b);
-    }
-
-    public BlockMove get(int i) {
-        Block b = order.get(i);
-        return new BlockMove(b, map.get(b));
-    }
-
-    public int size() {
-        return order.size();
-    }
-
-    public void clear() {
-        map.clear();
-        order.clear();
-    }
 }
-

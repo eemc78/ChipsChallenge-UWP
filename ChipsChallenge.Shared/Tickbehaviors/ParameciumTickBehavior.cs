@@ -1,46 +1,84 @@
-package chipschallenge.tickbehaviors;
+﻿namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
-
-public class ParameciumTickBehavior implements BlockTickBehavior {
-
-    private ParameciumTickBehavior() {
-    }
-    private static ParameciumTickBehavior mInstance = null;
-
-    public static synchronized ParameciumTickBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new ParameciumTickBehavior();
+    public class ParameciumTickBehavior : IBlockTickBehavior
+    {
+        private ParameciumTickBehavior()
+        {
         }
-        return mInstance;
-    }
 
-    @Override
-    public void tick(Block caller) throws BlockContainerFullException {
-        Moves m = caller.getFacing();
-        outer:
-        for (int i = 0; i < 2; i++) {
-            switch (m) {
-                case UP:
-                    if (caller.move(Moves.RIGHT)) {
-                        break outer;
+        private static ParameciumTickBehavior instance;
+
+        public static ParameciumTickBehavior Instance
+        {
+            get
+            {
+                lock (typeof(ParameciumTickBehavior))
+                {
+                    return instance ?? (instance = new ParameciumTickBehavior());
+                }
+            }
+        }
+
+        public virtual void Tick(Block caller)
+        {
+            Moves m = caller.Facing;
+
+            switch (m)
+            {
+                case Moves.UP:
+                    if (!caller.Move(Moves.RIGHT))
+                    {
+                        if (!caller.Move(Moves.UP))
+                        {
+                            if (!caller.Move(Moves.LEFT))
+                            {
+                                caller.Move(Moves.DOWN);
+                            }
+                        }
                     }
-                case LEFT:
-                    if (caller.move(Moves.UP)) {
-                        break outer;
+
+                    break;
+                case Moves.LEFT:
+                    if (!caller.Move(Moves.UP))
+                    {
+                        if (!caller.Move(Moves.LEFT))
+                        {
+                            if (!caller.Move(Moves.DOWN))
+                            {
+                                caller.Move(Moves.RIGHT);
+                            }
+                        }
                     }
-                case DOWN:
-                    if (caller.move(Moves.LEFT)) {
-                        break outer;
+
+                    break;
+                case Moves.DOWN:
+                    if (!caller.Move(Moves.LEFT))
+                    {
+                        if (!caller.Move(Moves.DOWN))
+                        {
+                            if (!caller.Move(Moves.RIGHT))
+                            {
+                                caller.Move(Moves.UP);
+                            }
+                        }
                     }
-                case RIGHT:
-                    if (caller.move(Moves.DOWN)) {
-                        break outer;
-                    } else {
-                        m = Moves.UP;
+
+                    break;
+                case Moves.RIGHT:
+                    if (!caller.Move(Moves.DOWN))
+                    {
+                        if (!caller.Move(Moves.RIGHT))
+                        {
+                            if (!caller.Move(Moves.UP))
+                            {
+                                caller.Move(Moves.LEFT);
+                            }
+                        }
                     }
+
+                    break;
             }
         }
     }

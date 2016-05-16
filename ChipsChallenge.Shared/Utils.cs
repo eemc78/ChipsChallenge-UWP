@@ -1,8 +1,9 @@
-package chipschallenge;
+﻿using System;
 
-import java.util.Random;
-
-public class Utils {
-
-    public static final Random r = new Random();
+namespace ChipsChallenge.Shared
+{
+    public class Utils
+    {
+        public static readonly Random Random = new Random();
+    }
 }

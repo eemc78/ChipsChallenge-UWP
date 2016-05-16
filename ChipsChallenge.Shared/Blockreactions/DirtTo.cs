@@ -1,34 +1,32 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.BlockContainerFullException;
-
-/**
- * Move to dirt
- */
-public class DirtTo extends NoSlipReaction {
-
-    private DirtTo() {
-    }
-    private static DirtTo mInstance = null;
-
-    public static synchronized DirtTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new DirtTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class DirtTo : NoSlipReaction
+    {
+        private DirtTo()
+        {
         }
-        return mInstance;
-    }
+        private static DirtTo instance;
 
-    // Convert to floor
-    @Override
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        standing.replace(createBlock(Type.FLOOR));
-    }
+        public static DirtTo Instance
+        {
+            get
+            {
+                lock (typeof(DirtTo))
+                {
+                    return instance ?? (instance = new DirtTo());
+                }
+            }
+        }
 
-    // Only chip can move
-    @Override
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+            standing.Replace(CreateBlock(Block.Type.FLOOR));
+        }
+
+        // Only chip can move
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
     }
 }

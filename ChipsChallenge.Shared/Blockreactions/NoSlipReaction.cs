@@ -1,19 +1,16 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+	using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
+	public abstract class NoSlipReaction : BlockReaction
+	{
+		public abstract override void React(Block moving, Block standing);
 
-public abstract class NoSlipReaction extends BlockReaction {
+		public abstract override bool canMove(Block moving, Block standing);
 
-    @Override
-    public abstract void react(Block moving, Block standing) throws BlockContainerFullException;
-
-    @Override
-    public abstract boolean canMove(Block moving, Block standing);
-
-    @Override
-    public final Moves causesSlip(Block moving, Block standing) {
-        return null;
-    }
+		public sealed override Moves? CausesSlip(Block moving, Block standing)
+		{
+			return null;
+		}
+	}
 }

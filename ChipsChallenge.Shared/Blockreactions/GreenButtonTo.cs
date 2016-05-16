@@ -1,30 +1,31 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Buttons;
-
-/**
- * Move to green button
- */
-public class GreenButtonTo extends NoSlipReaction {
-
-    private GreenButtonTo() {
-    }
-    private static GreenButtonTo mInstance = null;
-
-    public static synchronized GreenButtonTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new GreenButtonTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class GreenButtonTo : NoSlipReaction
+    {
+        private GreenButtonTo()
+        {
         }
-        return mInstance;
-    }
+        private static GreenButtonTo instance;
 
-    public void react(Block moving, Block standing) {
-        Buttons.greenButtonDown(standing);
-    }
+        public static GreenButtonTo Instance
+        {
+            get
+            {
+                lock (typeof(GreenButtonTo))
+                {
+                    return instance ?? (instance = new GreenButtonTo());
+                }
+            }
+        }
 
-    // Everything can move
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            Buttons.GreenButtonDown(standing);
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

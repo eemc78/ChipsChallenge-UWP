@@ -1,0 +1,18 @@
+﻿<Page
+    x:Class="ChipsChallenge.Features.Settings.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:settings="using:ChipsChallenge.Features.Settings"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <settings:SettingsViewModel/>
+    </Page.DataContext>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <StackPanel Orientation="Vertical" Margin="10">
+            <ToggleSwitch Header="Background Music" IsOn="{Binding BackgroundMusic, Mode=TwoWay}" IsEnabled="{Binding GameViewModel.IsGameInitialized}" />
+            <ToggleSwitch Header="Sound Effects" IsOn="{Binding SoundEffects, Mode=TwoWay}" IsEnabled="{Binding GameViewModel.IsGameInitialized}" />
+        </StackPanel>
+    </Grid>
+</Page>

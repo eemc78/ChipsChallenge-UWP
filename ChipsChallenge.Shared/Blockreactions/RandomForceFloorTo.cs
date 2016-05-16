@@ -1,40 +1,43 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Inventory.Boots;
-import chipschallenge.Move;
-import chipschallenge.Move.Moves;
-
-public class RandomForceFloorTo extends BlockReaction {
-
-    private RandomForceFloorTo() {
-    }
-    private static RandomForceFloorTo mInstance = null;
-
-    public static synchronized RandomForceFloorTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new RandomForceFloorTo();
+    public class RandomForceFloorTo : BlockReaction
+    {
+        private RandomForceFloorTo()
+        {
         }
-        return mInstance;
-    }
+        private static RandomForceFloorTo instance;
 
-    @Override
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        // Nothing
-    }
+        public static RandomForceFloorTo Instance
+        {
+            get
+            {
+                lock (typeof(RandomForceFloorTo))
+                {
+                    return instance ?? (instance = new RandomForceFloorTo());
+                }
+            }
+        }
 
-    @Override
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
-    }
+        public override void React(Block moving, Block standing)
+        {
+        }
 
-    @Override
-    public Moves causesSlip(Block moving, Block standing) {
-        if ((moving.isChip() && hasBoots(Boots.SUCTIONBOOTS))) {
-            return null;
-        } else {
-            return Move.getRandom();
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
+
+        public override Moves? CausesSlip(Block moving, Block standing)
+        {
+            if ((moving.Chip && HasBoots(Boots.SUCTIONBOOTS)))
+            {
+                return null;
+            }
+
+            return Move.Random;
         }
     }
 }

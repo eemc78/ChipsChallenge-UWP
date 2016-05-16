@@ -1,51 +1,66 @@
-package chipschallenge.tickbehaviors;
+﻿namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
-import chipschallenge.Utils;
-
-public class BlobTickBehavior implements BlockTickBehavior {
-
-    private BlobTickBehavior() {
-    }
-    private static BlobTickBehavior mInstance = null;
-
-    public static synchronized BlobTickBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new BlobTickBehavior();
+    public class BlobTickBehavior : IBlockTickBehavior
+    {
+        private BlobTickBehavior()
+        {
         }
-        return mInstance;
-    }
+        
+        private static BlobTickBehavior instance;
 
-    @Override
-    public void tick(Block caller) throws BlockContainerFullException {
-        int dir = Utils.r.nextInt(4);
-        outer:
-        for (int i = 0; i < 2; i++) {
-            switch (dir) {
-                case 0:
-                    caller.setFacing(Moves.UP);
-                    if (caller.move(Moves.UP)) {
-                        break outer;
-                    }
-                case 1:
-                    caller.setFacing(Moves.DOWN);
-                    if (caller.move(Moves.DOWN)) {
-                        break outer;
-                    }
-                case 2:
-                    caller.setFacing(Moves.LEFT);
-                    if (caller.move(Moves.LEFT)) {
-                        break outer;
-                    }
-                case 3:
-                    caller.setFacing(Moves.RIGHT);
-                    if (caller.move(Moves.RIGHT)) {
-                        break outer;
-                    } else {
-                        dir = 0;
-                    }
+        public static BlobTickBehavior Instance
+        {
+            get
+            {
+                lock (typeof(BlobTickBehavior))
+                {
+                    return instance ?? (instance = new BlobTickBehavior());
+                }
+            }
+        }
+
+        public virtual void Tick(Block caller)
+        {
+            var couldUpdate = false;
+            var initialDirection = Utils.Random.Next(4);
+
+            for (var i = 0; i < 4; i++)
+            {
+                switch (initialDirection)
+                {
+                    case 0:
+                        caller.Facing = Moves.UP;
+                        couldUpdate = caller.Move(Moves.UP);
+                        break;
+                    case 1:
+                        caller.Facing = Moves.DOWN;
+                        couldUpdate = caller.Move(Moves.DOWN);
+                        break;
+                    case 2:
+                        caller.Facing = Moves.LEFT;
+                        couldUpdate = caller.Move(Moves.LEFT);
+                        break;
+                    case 3:
+                        caller.Facing = Moves.RIGHT;
+                        couldUpdate = caller.Move(Moves.RIGHT);
+                        break;
+                }
+
+                if (initialDirection == 3)
+                {
+                    initialDirection = 0;
+                }
+                else
+                {
+                    initialDirection++;
+                }
+
+                if (couldUpdate)
+                {
+                    break;
+                }
             }
         }
     }

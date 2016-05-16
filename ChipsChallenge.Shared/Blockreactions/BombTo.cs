@@ -1,37 +1,42 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.SoundPlayer.sounds;
-
-/**
- * Move to bomb
- */
-public class BombTo extends NoSlipReaction {
-
-    private BombTo() {
-    }
-    private static BombTo mInstance = null;
-
-    public static synchronized BombTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BombTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class BombTo : NoSlipReaction
+    {
+        private BombTo()
+        {
         }
-        return mInstance;
-    }
+        private static BombTo instance;
 
-    // If collision, both bomb and other block is removed
-    public void react(Block moving, Block standing) {
-        if (moving.isChip()) {
-            die("Ooops! Don't touch the bombs!");
-        } else {
-            moving.destroy();
-            standing.destroy();
-            sound().playSound(sounds.BOMB);
+        public static BombTo Instance
+        {
+            get
+            {
+                lock (typeof(BombTo))
+                {
+                    return instance ?? (instance = new BombTo());
+                }
+            }
         }
-    }
 
-    // All can move here
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                Die("Ooops! Don't touch the bombs!");
+            }
+            else
+            {
+                // If collision, both bomb and other block is removed
+                moving.Destroy();
+                standing.Destroy();
+                Sound().Play(Shared.Sound.Bomb);
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

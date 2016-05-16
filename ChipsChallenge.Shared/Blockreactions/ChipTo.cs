@@ -1,36 +1,53 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-
-/**
- * Move to chip
- */
-public class ChipTo extends NoSlipReaction {
-
-    private ChipTo() {
-    }
-    private static ChipTo mInstance = null;
-
-    public static synchronized ChipTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ChipTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class ChipTo : NoSlipReaction
+    {
+        private ChipTo()
+        {
         }
-        return mInstance;
-    }
+        private static ChipTo instance;
 
-    // All moving things kill chip
-    public void react(Block moving, Block standing) {
-        if (!moving.isChip()) {
-            if (moving.isBlock()) {
-                die("Ooops! Watch out for moving blocks!");
-            } else {
-                die("Ooops! Look out for creatures!");
+        public static ChipTo Instance
+        {
+            get
+            {
+                lock (typeof(ChipTo))
+                {
+                    return instance ?? (instance = new ChipTo());
+                }
             }
         }
-    }
 
-    // All things can move
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            if (!moving.Chip)
+            {
+                if (moving.IsBlock())
+                {
+                    Die("Ooops! Watch out for moving blocks!");
+                }
+                else
+                {
+                    Die("Ooops! Look out for creatures!");
+                }
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            if (standing.Chip)
+            {
+                if (moving.IsBlock())
+                {
+                    Die("Ooops! Watch out for moving blocks!");
+                }
+                else
+                {
+                    Die("Ooops! Look out for creatures!");
+                }
+            }
+
+            return true;
+        }
     }
 }

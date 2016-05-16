@@ -1,32 +1,35 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-
-/**
- * Move to creature
- */
-public class CreatureTo extends NoSlipReaction {
-
-    private CreatureTo() {
-    }
-    private static CreatureTo mInstance = null;
-
-    public static synchronized CreatureTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new CreatureTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class CreatureTo : NoSlipReaction
+    {
+        private CreatureTo()
+        {
         }
-        return mInstance;
-    }
 
-    // Kills chip
-    public void react(Block moving, Block standing) {
-        if (moving != standing) {
-            die("Ooops! Look out for creatures!");
+        private static CreatureTo instance;
+
+        public static CreatureTo Instance
+        {
+            get
+            {
+                lock (typeof(CreatureTo))
+                {
+                    return instance ?? (instance = new CreatureTo());
+                }
+            }
         }
-    }
 
-    // Only chip can move
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+            if (moving != standing)
+            {
+                Die("Ooops! Look out for creatures!");
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
     }
 }

@@ -1,53 +1,63 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
+    using Type = Block.Type;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.Inventory.Boots;
-import chipschallenge.SoundPlayer.sounds;
-
-public class WaterTo extends NoSlipReaction {
-
-    private WaterTo() {
-    }
-    private static WaterTo mInstance = null;
-
-    public static synchronized WaterTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new WaterTo();
+    public class WaterTo : NoSlipReaction
+    {
+        private WaterTo()
+        {
         }
-        return mInstance;
-    }
+        private static WaterTo instance;
 
-    public void react(Block moving, Block standing) {
-        switch (moving.getType()) {
-            case CHIP:
-                if (hasBoots(Boots.FLIPPERS)) {
-                    moving.setType(Type.SWIMMINGCHIP);
-                } else {
-                    moving.destroy();
-                    standing.replace(createBlock(Type.DROWNEDCHIP));
-                    game().die("Ooops! Chip can't swim without flippers!", sounds.DIE);
+        public static WaterTo Instance
+        {
+            get
+            {
+                lock (typeof(WaterTo))
+                {
+                    return instance ?? (instance = new WaterTo());
                 }
-                break;
-            case BLOCK:
-                moving.destroy();
-                standing.replace(createBlock(Type.DIRT));
-                sound().playSound(sounds.WATER);
-                break;
-            case BUG:
-            case TEETH:
-            case FIREBALL:
-            case PARAMECIUM:
-            case PINKBALL:
-            case WALKER:
-            case TANK:
-            case BLOB:
-                moving.destroy();
-                break;
+            }
         }
-    }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            switch (moving.getType())
+            {
+                case Type.CHIP:
+                    if (HasBoots(Boots.FLIPPERS))
+                    {
+                        moving.SetType(Type.SWIMMINGCHIP);
+                    }
+                    else
+                    {
+                        moving.Destroy();
+                        standing.Replace(CreateBlock(Type.DROWNEDCHIP));
+                        Game().Die("Ooops! Chip can't swim without flippers!", Shared.Sound.Die);
+                    }
+                    break;
+                case Type.BLOCK:
+                    moving.Destroy();
+                    standing.Replace(CreateBlock(Type.DIRT));
+                    Sound().Play(Shared.Sound.Water);
+                    break;
+                case Type.BUG:
+                case Type.TEETH:
+                case Type.FIREBALL:
+                case Type.PARAMECIUM:
+                case Type.PINKBALL:
+                case Type.WALKER:
+                case Type.TANK:
+                case Type.BLOB:
+                    moving.Destroy();
+                    break;
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

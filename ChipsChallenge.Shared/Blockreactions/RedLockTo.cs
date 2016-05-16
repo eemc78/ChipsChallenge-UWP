@@ -1,27 +1,34 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Key = Inventory.Key;
 
-import chipschallenge.Block;
-import chipschallenge.Inventory.Key;
-
-public class RedLockTo extends NoSlipReaction {
-
-    private RedLockTo() {
-    }
-    private static RedLockTo mInstance = null;
-
-    public static synchronized RedLockTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new RedLockTo();
+    public class RedLockTo : NoSlipReaction
+    {
+        private RedLockTo()
+        {
         }
-        return mInstance;
-    }
+        private static RedLockTo instance;
 
-    public void react(Block moving, Block standing) {
-        useKey(Key.RED);
-        standing.destroy();
-    }
+        public static RedLockTo Instance
+        {
+            get
+            {
+                lock (typeof(RedLockTo))
+                {
+                    return instance ?? (instance = new RedLockTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() && hasKey(Key.RED);
+        public override void React(Block moving, Block standing)
+        {
+            UseKey(Key.RED);
+            standing.Destroy();
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip && HasKey(Key.RED);
+        }
     }
 }

@@ -1,27 +1,33 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Moves = Move.Moves;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move.Moves;
+    public class ThinWallSeTo : NoSlipReaction
+    {
 
-public class ThinWallSeTo extends NoSlipReaction {
-
-    private ThinWallSeTo() {
-    }
-    private static ThinWallSeTo mInstance = null;
-
-    public static synchronized ThinWallSeTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ThinWallSeTo();
+        private ThinWallSeTo()
+        {
         }
-        return mInstance;
-    }
+        private static ThinWallSeTo instance;
 
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        // No reaction;
-    }
+        public static ThinWallSeTo Instance
+        {
+            get
+            {
+                lock (typeof(ThinWallSeTo))
+                {
+                    return instance ?? (instance = new ThinWallSeTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return moving.getFacing() == Moves.RIGHT || moving.getFacing() == Moves.DOWN;
+        public override void React(Block moving, Block standing)
+        {
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Facing == Moves.RIGHT || moving.Facing == Moves.DOWN;
+        }
     }
 }

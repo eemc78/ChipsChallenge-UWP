@@ -1,27 +1,36 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.SoundPlayer.sounds;
-
-public class ThiefTo extends NoSlipReaction {
-
-    private ThiefTo() {
-    }
-    private static ThiefTo mInstance = null;
-
-    public static synchronized ThiefTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ThiefTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class ThiefTo : NoSlipReaction
+    {
+        private ThiefTo()
+        {
         }
-        return mInstance;
-    }
+        private static ThiefTo instance;
 
-    public void react(Block moving, Block standing) {
-        inventory().clearBoots();
-        sound().playSound(sounds.THIEF);
-    }
+        public static ThiefTo Instance
+        {
+            get
+            {
+                lock (typeof(ThiefTo))
+                {
+                    if (instance == null)
+                    {
+                        instance = new ThiefTo();
+                    }
+                    return instance;
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+            Inventory().ClearBoots();
+            Sound().Play(Shared.Sound.Thief);
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
     }
 }

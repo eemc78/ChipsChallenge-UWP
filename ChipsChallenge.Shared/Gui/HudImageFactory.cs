@@ -1,112 +1,125 @@
-package chipschallenge.gui;
+﻿namespace ChipsChallenge.Shared.Gui
+{
+    using System;
 
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+    using Windows.Foundation;
 
-public class HudImageFactory {
+    using Microsoft.Graphics.Canvas;
 
-    private BufferedImage baseImage;
-    private Image[] loadedNumbers = new Image[24];
-    private Image hudBg = null;
-    private Image itemSlot = null;
-    private static HudImageFactory instance = null;
+    public class HudImageFactory
+    {
+        private CanvasBitmap windowSprites;
+        private readonly CanvasBitmap[] loadedNumbers = new CanvasBitmap[24];
+        private static HudImageFactory instance;
 
-    private HudImageFactory() {
-        try {
-            baseImage = ImageIO.read(getClass().getResource("/window.png"));
-        } catch (Exception e) {
-            System.out.println("Could not find window.png");
-            System.exit(-1);
-        }
-    }
-
-    public static synchronized HudImageFactory getInstance() {
-        if (instance == null) {
-            instance = new HudImageFactory();
-        }
-        return instance;
-    }
-
-    /**
-     * Returns a digital number for Hud
-     *
-     * @param number The number to get. -1 for blank. -2 for - (minus sign)
-     * @param yellow false = green. true = yellow
-     * @return The number as an image
-     */
-    public Image getNumber(int number, boolean yellow) {
-        if (number > 9 || number < -2) {
-            throw new IllegalArgumentException("number must be between -2 and 9");
+        private HudImageFactory()
+        {
         }
 
-        int code = number + 2;
-        if (yellow) {
-            code += 12;
+        public static HudImageFactory Instance
+        {
+            get
+            {
+                lock (typeof(HudImageFactory))
+                {
+                    return instance ?? (instance = new HudImageFactory());
+                }
+            }
         }
 
-        if (loadedNumbers[code] != null) {
-            return loadedNumbers[code];
+        public void Initialize(CanvasBitmap sprites)
+        {
+            windowSprites = sprites;
         }
 
-        int x = 0;
-        int y = yellow ? 375 : 353;
+        public virtual CanvasBitmap HudBackgroundLandscape => Clone(windowSprites, new Rect(339, 26, 154, 300));
+        public virtual CanvasBitmap HudBackgroundPortrait => Clone(windowSprites, new Rect(951, 0, 299, 116));
+        public virtual CanvasBitmap PauseScreen => Clone(windowSprites, new Rect(0, 398, 175, 33));
+        public virtual CanvasBitmap PasswordBackground => Clone(windowSprites, new Rect(176, 425, 190, 56));
+        public virtual CanvasBitmap HintFieldLandscape => Clone(windowSprites, new Rect(812, 301, 128, 146));
+        public virtual CanvasBitmap HintFieldPortrait => Clone(windowSprites, new Rect(951, 118, 196, 87));
 
-        if (number >= 0) {
-            x = 15 + number * 14;
-        } else if (number == -1) {
-            x = 1;
-        } else {
-            //number == -2
-            x = 155;
+        /// <summary>
+        /// Returns a digital number for Hud
+        /// </summary>
+        /// <param name="number"> The number to get. -1 for blank. -2 for - (minus sign) </param>
+        /// <param name="yellow"> false = green. true = yellow </param>
+        /// <returns> The number as an image </returns>
+        public virtual CanvasBitmap GetNumber(int number, bool yellow)
+        {
+            if (number > 9 || number < -2)
+            {
+                throw new ArgumentException("number must be between -2 and 9");
+            }
+
+            int code = number + 2;
+            if (yellow)
+            {
+                code += 12;
+            }
+
+            if (loadedNumbers[code] != null)
+            {
+                return loadedNumbers[code];
+            }
+
+            int x;
+            int y = yellow ? 375 : 353;
+
+            if (number >= 0)
+            {
+                x = 15 + number * 14;
+            }
+            else if (number == -1)
+            {
+                x = 1;
+            }
+            else
+            {
+                x = 155;
+            }
+
+            var img = Clone(windowSprites, new Rect(x, y, 13, 21));
+            loadedNumbers[code] = img;
+            return img;
         }
 
-        BufferedImage img = baseImage.getSubimage(x, y, 13, 21);
-        loadedNumbers[code] = img;
-        return img;
-    }
-
-    public Image getNumber(char number, boolean yellow) {
-        return getNumber(charToInt(number), yellow);
-    }
-
-    /**
-     * Used by getNumber only
-     * @param c 0-9 or "-" for - and "x" for blank
-     * @return
-     */
-    private int charToInt(char c) {
-        if (c == '-') {
-            return -2;
+        public virtual CanvasBitmap GetNumber(char number, bool yellow)
+        {
+            return GetNumber(CharToInt(number), yellow);
         }
-        if (c == 'x') {
-            return -1;
-        }
-        if (c < '0' || c > '9') {
-            throw new IllegalArgumentException("char must be 0 to 9");
-        }
-        return (int) (c - '0');
-    }
 
-    public Image getHudBackground() {
-        if (hudBg == null) {
-            hudBg = baseImage.getSubimage(339, 26, 154, 300);
+        /// <summary>
+        /// Used by getNumber only </summary>
+        /// <param name="c"> 0-9 or "-" for - and "x" for blank
+        /// @return </param>
+        private static int CharToInt(char c)
+        {
+            if (c == '-')
+            {
+                return -2;
+            }
+            if (c == 'x')
+            {
+                return -1;
+            }
+            if (c < '0' || c > '9')
+            {
+                throw new ArgumentException("char must be 0 to 9");
+            }
+            return c - '0';
         }
-        return hudBg;
-    }
 
-    public Image getItemSlot() {
-        if (itemSlot == null) {
-            itemSlot = baseImage.getSubimage(352, 248, 32, 32);
+        private CanvasBitmap Clone(CanvasBitmap bitmapSource, Rect sourceArea)
+        {
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            CanvasRenderTarget offscreen = new CanvasRenderTarget(device, (float)sourceArea.Width, (float)sourceArea.Height, 96);
+            using (CanvasDrawingSession ds = offscreen.CreateDrawingSession())
+            {
+                ds.DrawImage(bitmapSource, new Rect(0,0, sourceArea.Width, sourceArea.Height), sourceArea);
+            }
+
+            return offscreen;
         }
-        return itemSlot;
-    }
-
-    public Image getIcon() {
-        return baseImage.getSubimage(547, 289, 32, 32);
-    }
-
-    public Image getWindowBackground() {
-        return baseImage.getSubimage(0, 0, 512, 352);
     }
 }

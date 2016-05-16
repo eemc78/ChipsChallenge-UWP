@@ -1,30 +1,37 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.SoundPlayer.sounds;
-
-public class SocketTo extends NoSlipReaction {
-
-    private SocketTo() {
-    }
-    private static SocketTo mInstance = null;
-
-    public static synchronized SocketTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new SocketTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class SocketTo : NoSlipReaction
+    {
+        private SocketTo()
+        {
         }
-        return mInstance;
-    }
 
-    @Override
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        standing.destroy();
-        sound().playSound(sounds.SOCKET);
-    }
+        private static SocketTo instance;
 
-    @Override
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() && level().getNumChipsNeeded() <= 0;
+        public static SocketTo Instance
+        {
+            get
+            {
+                lock (typeof(SocketTo))
+                {
+                    if (instance == null)
+                    {
+                        instance = new SocketTo();
+                    }
+                    return instance;
+                }
+            }
+        }
+
+        public override void React(Block moving, Block standing)
+        {
+            standing.Destroy();
+            Sound().Play(Shared.Sound.Socket);
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip && Level().NumChipsNeeded <= 0;
+        }
     }
 }

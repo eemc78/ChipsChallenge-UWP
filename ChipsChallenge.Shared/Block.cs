@@ -1,270 +1,333 @@
-package chipschallenge;
+﻿// ReSharper disable InconsistentNaming
+namespace ChipsChallenge.Shared
+{
+    using Buttonbehaviors;
+    using Blockreactions;
 
-import chipschallenge.clonebehaviors.NullCloneBehavior;
-import chipschallenge.clonebehaviors.CloneBehavior;
-import chipschallenge.tickbehaviors.BlockTickBehavior;
-import chipschallenge.buttonbehaviors.NullButtonBehavior;
-import chipschallenge.Move.Moves;
-import chipschallenge.buttonbehaviors.ButtonBehavior;
-import chipschallenge.blockreactions.BlockReaction;
-import chipschallenge.blockreactions.canMoveNoSlip;
-import chipschallenge.destroybehaviors.DefaultDestroyBehavior;
-import chipschallenge.destroybehaviors.DestroyBehavior;
-import chipschallenge.tickbehaviors.NullTickBehavior;
-import chipschallenge.trapreleasebehaviors.DefaultTrapReleaseBehavior;
-import chipschallenge.trapreleasebehaviors.TrapReleaseBehavior;
-import java.awt.Image;
-import java.awt.Point;
+    using ChipsChallenge.Shared.Tickbehaviors;
+    using ChipsChallenge.Shared.Trapreleasebehaviors;
 
-/**
- *
- * @author patrik
- */
-public class Block {
+    using Destroybehaviors;
 
-    private Type mType;
-    private Move.Moves mFacing;
-    private BlockTickBehavior mTickBehavior = NullTickBehavior.getInstance();
-    private BlockReaction mFrom = canMoveNoSlip.getInstance();
-    private BlockReaction mTo = canMoveNoSlip.getInstance();
-    private ButtonBehavior mButtonBehavior = NullButtonBehavior.getInstance();
-    private CloneBehavior mCloneBehavior = NullCloneBehavior.getInstance();
-    private TrapReleaseBehavior mTrapReleaseBehavior = DefaultTrapReleaseBehavior.getInstance();
-    private DestroyBehavior mDestroyBehavior = DefaultDestroyBehavior.getInstance();
-    private boolean forced = false;
-    private boolean trapped = false;
+    using Microsoft.Graphics.Canvas;
 
-    public static enum Type {
+    using NullCloneBehavior = Clonebehaviors.NullCloneBehavior;
+    using CloneBehavior = Clonebehaviors.CloneBehavior;
+    using NullButtonBehavior = Buttonbehaviors.NullButtonBehavior;
+    using Moves = Move.Moves;
+    using BlockReaction = Blockreactions.BlockReaction;
+    using DefaultDestroyBehavior = Destroybehaviors.DefaultDestroyBehavior;
+    using NullTickBehavior = Tickbehaviors.NullTickBehavior;
+    using DefaultTrapReleaseBehavior = Trapreleasebehaviors.DefaultTrapReleaseBehavior;
 
-        BLOB, BLOCK, BLUEBUTTON, BLUEKEY, BLUELOCK, BLUEWALLREAL, BLUEWALLFAKE, BOMB,
-        BROWNBUTTON, BUG, BURNEDCHIP, CHIP, CLONEBLOCK, CLONEMACHINE,
-        COMPUTERCHIP, DIRT, DROWNEDCHIP, EXIT, FAKEEXIT, FIRE, FIREBOOTS,
-        FIREBALL, FLIPPERS, FLOOR, FORCEFLOOR, RANDOMFORCEFLOOR, GLIDER, GRAVEL, GREENBUTTON,
-        GREENKEY, GREENLOCK, HIDDENWALL, HINT, ICE, ICECORNER, ICEBLOCK, ICESKATES,
-        INVISIBLEWALL, LOCK, PARAMECIUM, PINKBALL, RECESSEDWALL, REDBUTTON,
-        REDKEY, REDLOCK, SOCKET, SUCTIONBOOTS, SWIMMINGCHIP, TANK, TEETH,
-        TELEPORT, THIEF, THINWALL, THINWALLSE, TOGGLEWALLCLOSED, TOGGLEWALLOPEN, TRAP, WALKER, WALL, WATER,
-        YELLOWKEY, YELLOWLOCK
-    }
+    public class Block
+    {
+        private Type type;
+        private Moves facing;
+        private IBlockTickBehavior tickBehavior = NullTickBehavior.Instance;
+        private BlockReaction @from = CanMoveNoSlip.Instance;
+        private BlockReaction to = CanMoveNoSlip.Instance;
+        private IButtonBehavior buttonBehavior = NullButtonBehavior.Instance;
+        private readonly CloneBehavior cloneBehavior = NullCloneBehavior.Instance;
+        private readonly ITrapReleaseBehavior trapReleaseBehavior = DefaultTrapReleaseBehavior.Instance;
+        private readonly IDestroyBehavior destroyBehavior = DefaultDestroyBehavior.Instance;
 
-    public Block() {
-    }
+        public enum Type
+        {
+            BLOB,
+            BLOCK,
+            BLUEBUTTON,
+            BLUEKEY,
+            BLUELOCK,
+            BLUEWALLREAL,
+            BLUEWALLFAKE,
+            BOMB,
+            BROWNBUTTON,
+            BUG,
+            BURNEDCHIP,
+            CHIP,
+            CLONEBLOCK,
+            CLONEMACHINE,
+            COMPUTERCHIP,
+            DIRT,
+            DROWNEDCHIP,
+            EXIT,
+            FAKEEXIT,
+            FIRE,
+            FIREBOOTS,
+            FIREBALL,
+            FLIPPERS,
+            FLOOR,
+            FORCEFLOOR,
+            RANDOMFORCEFLOOR,
+            GLIDER,
+            GRAVEL,
+            GREENBUTTON,
+            GREENKEY,
+            GREENLOCK,
+            HIDDENWALL,
+            HINT,
+            ICE,
+            ICECORNER,
+            ICEBLOCK,
+            ICESKATES,
+            INVISIBLEWALL,
+            LOCK,
+            PARAMECIUM,
+            PINKBALL,
+            RECESSEDWALL,
+            REDBUTTON,
+            REDKEY,
+            REDLOCK,
+            SOCKET,
+            SUCTIONBOOTS,
+            SWIMMINGCHIP,
+            TANK,
+            TEETH,
+            TELEPORT,
+            THIEF,
+            THINWALL,
+            THINWALLSE,
+            TOGGLEWALLCLOSED,
+            TOGGLEWALLOPEN,
+            TRAP,
+            WALKER,
+            WALL,
+            WATER,
+            YELLOWKEY,
+            YELLOWLOCK
+        }
 
-    public Block(Type t, Moves m) {
-        mType = t;
-        mFacing = m;
-    }
+        public Block()
+        {
+            Trapped = false;
+        }
 
-    public Block(Type t,
-            Moves m,
-            BlockTickBehavior btb,
-            BlockReaction from,
-            BlockReaction to,
-            ButtonBehavior bb,
-            CloneBehavior cb,
-            TrapReleaseBehavior trb,
-            DestroyBehavior db) {
-        mType = t;
-        mFacing = m;
-        mTickBehavior = btb;
-        mFrom = from;
-        mTo = to;
-        mButtonBehavior = bb;
-        mCloneBehavior = cb;
-        mTrapReleaseBehavior = trb;
-        mDestroyBehavior = db;
-    }
+        public Block(Type t, Moves m)
+        {
+            Trapped = false;
+            type = t;
+            facing = m;
+        }
 
-    public static Block create(Type t, Moves d) {
-        return Game.getInstance().getBlockFactory().get(t, d);
-    }
+        public Block(Type t, Moves m, IBlockTickBehavior btb, BlockReaction from, BlockReaction to, IButtonBehavior bb, CloneBehavior cb, ITrapReleaseBehavior trb, IDestroyBehavior db)
+        {
+            Trapped = false;
+            type = t;
+            facing = m;
+            tickBehavior = btb;
+            this.@from = from;
+            this.to = to;
+            buttonBehavior = bb;
+            cloneBehavior = cb;
+            trapReleaseBehavior = trb;
+            destroyBehavior = db;
+        }
 
-    public static Block create(Type t) {
-        return Game.getInstance().getBlockFactory().get(t);
-    }
+        public static Block Create(Type t)
+        {
+            return Game.Instance.BlockFactory.Get(t);
+        }
 
-    public Type getType() {
-        return mType;
-    }
+        public virtual Type getType()
+        {
+            return type;
+        }
 
-    public boolean isA(Type t) {
-        return mType == t;
-    }
+        public virtual bool IsA(Type t)
+        {
+            return type == t;
+        }
 
-    public boolean isChip() {
-        return mType == Type.CHIP || mType == Type.SWIMMINGCHIP;
-    }
+        public virtual bool Chip => type == Type.CHIP || type == Type.SWIMMINGCHIP;
 
-    public boolean isChipWithIceSkates() {
-        return isChip() && Game.getInstance().getInventory().hasBoots(Inventory.Boots.ICESKATES);
-    }
+        public virtual bool ChipWithIceSkates => Chip && Game.Instance.Inventory.HasBoots(Inventory.Boots.ICESKATES);
 
-    public boolean isBlock() {
-        return mType == Type.BLOCK;
-    }
+        public virtual bool IsBlock()
+        {
+            return type == Type.BLOCK;
+        }
 
-    public boolean isIce() {
-        return mType == Type.ICE || mType == Type.ICECORNER;
-    }
+        public virtual bool Ice => type == Type.ICE || type == Type.ICECORNER;
 
-    public boolean isForceFloor() {
-        return mType == Type.FORCEFLOOR || mType == Type.RANDOMFORCEFLOOR;
-    }
+        public virtual bool ForceFloor => type == Type.FORCEFLOOR || type == Type.RANDOMFORCEFLOOR;
 
-    public boolean isOnIce() {
-        //if (!isChip() && !isBlock() && !isCreature())
-        //return false;
-        //return Game.getInstance().getLevel().getBlockContainer(this).getLower().isIce();
-        BlockContainer bc = Game.getInstance().getLevel().getBlockContainer(this);
-        return bc.find(Type.ICE) != null || bc.find(Type.ICECORNER) != null;
-    }
+        public virtual bool OnIce
+        {
+            get
+            {
+                BlockContainer bc = Game.Instance.Level.GetBlockContainer(this);
+                return bc.Find(Type.ICE) != null || bc.Find(Type.ICECORNER) != null;
+            }
+        }
 
-    public boolean isOnForceFloor() {
-        //if (!isChip() && !isBlock() && !isCreature())
-        //return false;
-        return Game.getInstance().getLevel().getBlockContainer(this).getLower().isForceFloor();
-    }
+        public virtual bool OnForceFloor
+        {
+            get
+            {
+                if (Chip)
+                {
+                    var block = Game.Instance.Level.GetBlockContainer(this);
+                    if (block.Upper != null && block.Upper.ForceFloor)
+                    {
+                        return true;
+                    }
+                }
 
-    public boolean isOn(Type type) {
-        return Game.getInstance().getLevel().getBlockContainer(this).find(type) != null;
-    }
+                return false;
+            }
+        }
 
-    public boolean isOnTrap() {
-        return Game.getInstance().getLevel().getBlockContainer(this).find(Type.TRAP) != null;
-    }
+        public virtual bool IsOn(Type blockType)
+        {
+            return Game.Instance.Level.GetBlockContainer(this).Find(blockType) != null;
+        }
 
-    public boolean isTrapped() {
-        return trapped;
-    }
+        public virtual bool OnTrap => Game.Instance.Level.GetBlockContainer(this).Find(Type.TRAP) != null;
 
-    public void setTrapped(boolean t) {
-        trapped = t;
-    }
+        public virtual bool Trapped { get; set; }
 
-    public boolean isOnCloner() {
-        return Game.getInstance().getLevel().getBlockContainer(this).getLower().isA(Type.CLONEMACHINE);
-    }
+        public virtual bool OnCloner => Game.Instance.Level.GetBlockContainer(this).Lower.IsA(Type.CLONEMACHINE);
 
-    public boolean isCreature() {
-        return getType() == Block.Type.BLOB
-                || getType() == Block.Type.BUG
-                || getType() == Block.Type.FIREBALL
-                || getType() == Block.Type.GLIDER
-                || getType() == Block.Type.PARAMECIUM
-                || getType() == Block.Type.PINKBALL
-                || getType() == Block.Type.TANK
-                || getType() == Block.Type.TEETH
-                || getType() == Block.Type.WALKER;
-    }
+        public virtual bool Creature
+        {
+            get
+            {
+                return getType() == Type.BLOB || getType() == Type.BUG || getType() == Type.FIREBALL || getType() == Type.GLIDER || getType() == Type.PARAMECIUM || getType() == Type.PINKBALL || getType() == Type.TANK || getType() == Type.TEETH || getType() == Type.WALKER;
+            }
+        }
 
-    @Override
-    public String toString() {
-        return getType().toString();
-    }
+        public override string ToString()
+        {
+            return getType().ToString();
+        }
 
-    public void setType(Type type) {
-        mType = type;
-    }
+        public virtual void SetType(Type blockType)
+        {
+            type = blockType;
+        }
 
-    public Move.Moves getFacing() {
-        return mFacing;
-    }
+        public virtual Moves Facing
+        {
+            get
+            {
+                return facing;
+            }
+            set
+            {
+                facing = value;
+            }
+        }
 
-    public void setFacing(Moves m) {
-        mFacing = m;
-    }
+        public virtual void Tick()
+        {
+            tickBehavior.Tick(this);
+        }
 
-    public void tick() throws BlockContainerFullException {
-        mTickBehavior.tick(this);
-    }
+        public virtual bool CanMoveFrom()
+        {
+            return Game.Instance.Level.GetBlockContainer(this).CanMoveFrom(this);
+        }
 
-    public boolean canMoveFrom() {
-        return Game.getInstance().getLevel().getBlockContainer(this).canMoveFrom(this);
-    }
+        public virtual bool CanMoveTo(Moves direction)
+        {
+            return Game.Instance.Level.GetBlockContainer(this, direction).CanMoveTo(this);
+        }
 
-    public boolean canMoveTo(Moves direction) {
-        return Game.getInstance().getLevel().getBlockContainer(this, direction).canMoveTo(this);
-    }
+        public virtual bool CanMove(Moves direction)
+        {
+            return CanMoveFrom() && CanMoveTo(direction);
+        }
 
-    public boolean canMove(Moves direction) {
-        return canMoveFrom() && canMoveTo(direction);
-    }
+        public virtual bool Move(Moves direction, bool ignoreFrom, bool ignoreTo)
+        {
+            return Game.Instance.Level.MoveBlock(this, direction, ignoreFrom, ignoreTo);
+        }
 
-    public boolean move(Moves direction, boolean ignoreFrom, boolean ignoreTo) throws BlockContainerFullException {
-        //setFacing(direction);
-        return Game.getInstance().getLevel().moveBlock(this, direction, ignoreFrom, ignoreTo);
-    }
+        public virtual bool Move(Moves direction)
+        {
+            return Move(direction, false, false);
+        }
 
-    public boolean move(Moves direction) throws BlockContainerFullException {
-        return move(direction, false, false);
-    }
+        public virtual void Destroy()
+        {
+            destroyBehavior.Destroy(this);
+        }
 
-    public void destroy() {
-        mDestroyBehavior.destroy(this);
-    }
+        public virtual void ButtonDown(Block button)
+        {
+            buttonBehavior.ButtonDown(this, button);
+        }
 
-    public void buttonDown(Block button) {
-        mButtonBehavior.buttonDown(this, button);
-    }
+        public virtual void ButtonUp(Block button)
+        {
+            buttonBehavior.ButtonUp(this, button);
+        }
 
-    public void buttonUp(Block button) {
-        mButtonBehavior.buttonUp(this, button);
-    }
+        public virtual CanvasBitmap GetImage(bool overlay)
+        {
+            return BlockImageFactory.Instance.GetImage(type, facing, overlay);
+        }
 
-    public Image getImage(boolean overlay) {
-        return BlockImageFactory.getInstance().get(mType, mFacing, overlay);
-    }
+        public virtual BlockReaction FromReaction
+        {
+            set
+            {
+                @from = value;
+            }
+            get
+            {
+                return @from;
+            }
+        }
 
-    public void setFromReaction(BlockReaction from) {
-        this.mFrom = from;
-    }
+        public virtual BlockReaction ToReaction
+        {
+            set
+            {
+                to = value;
+            }
+            get
+            {
+                return to;
+            }
+        }
 
-    public void setToReaction(BlockReaction to) {
-        this.mTo = to;
-    }
+        public virtual IBlockTickBehavior BlockTickBehavior
+        {
+            set
+            {
+                tickBehavior = value;
+            }
+        }
 
-    public void setBlockTickBehavior(BlockTickBehavior btb) {
-        this.mTickBehavior = btb;
-    }
+        public virtual IButtonBehavior ButtonBehavior
+        {
+            set
+            {
+                buttonBehavior = value;
+            }
+        }
 
-    public void setButtonBehavior(ButtonBehavior bb) {
-        this.mButtonBehavior = bb;
-    }
+        public virtual Point Point => Game.Instance.Level.GetPoint(this);
 
-    public BlockReaction getFromReaction() {
-        return mFrom;
-    }
+        public virtual BlockContainer BlockContainer => Game.Instance.Level.GetBlockContainer(this);
 
-    public BlockReaction getToReaction() {
-        return mTo;
-    }
+        public virtual void Replace(Block b)
+        {
+            Game.Instance.Level.ReplaceBlock(this, b);
+        }
 
-    public Point getPoint() {
-        return Game.getInstance().getLevel().getPoint(this);
-    }
+        public Block Clone()
+        {
+            return cloneBehavior.CloneIt(this);
+        }
 
-    public BlockContainer getBlockContainer() {
-        return Game.getInstance().getLevel().getBlockContainer(this);
-    }
+        public virtual bool Forced { set; get; }
 
-    public void replace(Block b) {
-        Game.getInstance().getLevel().replaceBlock(this, b);
-    }
-
-    @Override
-    public Block clone() throws CloneNotSupportedException {
-        return mCloneBehavior.cloneIt(this);
-    }
-
-    public void setForced(boolean forced) {
-        this.forced = forced;
-    }
-
-    public boolean isForced() {
-        return forced;
-    }
-
-    public void releaseFromTrap() {
-        mTrapReleaseBehavior.releaseFromTrap(this);
+        public virtual void ReleaseFromTrap()
+        {
+            trapReleaseBehavior.ReleaseFromTrap(this);
+        }
     }
 }

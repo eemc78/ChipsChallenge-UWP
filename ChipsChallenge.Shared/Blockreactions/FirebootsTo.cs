@@ -1,36 +1,37 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Inventory.Boots;
-
-/**
- * Move to fire boots
- */
-public class FirebootsTo extends NoSlipReaction {
-
-    private FirebootsTo() {
-    }
-    private static FirebootsTo mInstance = null;
-
-    public static synchronized FirebootsTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new FirebootsTo();
+    public class FirebootsTo : NoSlipReaction
+    {
+        private FirebootsTo()
+        {
         }
-        return mInstance;
-    }
+        private static FirebootsTo instance;
 
-    // Chip can pick fireboots
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (moving.isChip()) {
-            takeBoots(Boots.FIREBOOTS);
-            standing.replace(createBlock(Type.FLOOR));
+        public static FirebootsTo Instance
+        {
+            get
+            {
+                lock (typeof(FirebootsTo))
+                {
+                    return instance ?? (instance = new FirebootsTo());
+                }
+            }
         }
-    }
 
-    // Only chip and blocks
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() || moving.isBlock();
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                TakeBoots(Boots.FIREBOOTS);
+                standing.Replace(CreateBlock(Block.Type.FLOOR));
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip || moving.IsBlock();
+        }
     }
 }

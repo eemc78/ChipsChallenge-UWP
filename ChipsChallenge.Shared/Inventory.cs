@@ -1,91 +1,85 @@
-package chipschallenge;
+﻿namespace ChipsChallenge.Shared
+{
+    using System;
+    using System.Collections.Generic;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-public class Inventory {
-
-    public static enum Key {
-
-        BLUE, GREEN, RED, YELLOW
-    }
-
-    public static enum Boots {
-
-        FIREBOOTS, FLIPPERS, ICESKATES, SUCTIONBOOTS
-    }
-    private Set<Boots> mBoots = new HashSet<Boots>();
-    private Collection<Key> mKeys = new ArrayList<Key>();
-    private Collection<InventoryListener> listeners = new ArrayList<InventoryListener>();
-
-    public void clear() {
-        mBoots.clear();
-        mKeys.clear();
-        update();
-    }
-
-    public Set<Boots> getBoots() {
-        return mBoots;
-    }
-
-    public Collection<Key> getKeys() {
-        return mKeys;
-    }
-
-    public void takeKey(Key type) {
-        if (mKeys.add(type)) {
-            update();
+    public class Inventory
+    {
+        public enum Key
+        {
+            BLUE,
+            GREEN,
+            RED,
+            YELLOW
         }
-    }
 
-    public void takeBoots(Boots type) {
-        if (mBoots.add(type)) {
-            update();
+        public enum Boots
+        {
+            FIREBOOTS,
+            FLIPPERS,
+            ICESKATES,
+            SUCTIONBOOTS
         }
-    }
+        
+        private readonly HashSet<Boots> boots = new HashSet<Boots>();
+        private readonly ICollection<Key> keys = new List<Key>();
 
-    public boolean useKey(Key type) {
-        if (type == Key.GREEN) {
-            return mKeys.contains(type);
+        public virtual void Clear()
+        {
+            boots.Clear();
+            keys.Clear();
         }
-        boolean ret;
-        if (ret = mKeys.remove(type)) {
-            update();
+
+        public virtual HashSet<Boots> GetBoots()
+        {
+            return boots;
         }
-        return ret;
-    }
 
-    public boolean hasKey(Key type) {
-        return mKeys.contains(type);
-    }
+        public virtual ICollection<Key> Keys => keys;
 
-    public boolean hasBoots(Boots type) {
-        return mBoots.contains(type);
-    }
+        public virtual void TakeKey(Key type)
+        {
+            keys.Add(type);
+        }
 
-    public void clearKeys() {
-        mKeys.clear();
-        update();
-    }
+        public virtual void TakeBoots(Boots type)
+        {
+            boots.Add(type);
+        }
 
-    public void clearBoots() {
-        mBoots.clear();
-        update();
-    }
+        public virtual void UseKey(Key type)
+        {
+            if (type == Key.GREEN)
+            {
+                if (!keys.Contains(type))
+                {
+                    throw new Exception("Cannot use green key: no green key in invetory");
+                }
+            }
+            else
+            {
+                keys.Remove(type);
+            }
+        }
 
-    public void addInventoryListener(InventoryListener l) {
-        listeners.add(l);
-    }
+        public virtual bool HasKey(Key type)
+        {
+            return keys.Contains(type);
+        }
 
-    public void removeInventoryListener(InventoryListener l) {
-        listeners.remove(l);
-    }
+        public virtual bool HasBoots(Boots type)
+        {
+            return boots.Contains(type);
+        }
 
-    public void update() {
-        for (InventoryListener l : listeners) {
-            l.inventoryChange(this);
+        public virtual void ClearKeys()
+        {
+            keys.Clear();
+        }
+
+        public virtual void ClearBoots()
+        {
+            boots.Clear();
         }
     }
 }

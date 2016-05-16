@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>f4ef325b-96ba-40f8-b833-3cc3319a5d37</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ChipsChallenge.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlockContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlockContainerFullException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlockFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlockImageFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BlockMove.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BlockReaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BlockTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BlueButtonTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BlueKeyTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BlueLockTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BlueWallFakeTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BlueWallRealTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BombTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BootsTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BrownButtonFrom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BrownButtonTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\CanMove.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\canMoveNoSlip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\CannotMove.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ChipTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ComputerChipTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\CreatureTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\DirtTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ExitTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\FirebootsTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\FireTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\FlippersTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ForceFloorTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\GravelTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\GreenButtonTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\GreenKeyTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\GreenLockTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\HintFrom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\HintTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\IceCornerTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\IceFrom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\IceskatesTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\IceTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\NoSlipReaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\RandomForceFloorTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\RecessedWallTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\RedButtonTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\RedKeyTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\RedLockTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\SlipReaction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\SocketTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\SuctionbootsTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\TeleportTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ThiefTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ThinWallFrom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ThinWallSeFrom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ThinWallSeTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ThinWallTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ToggleWallTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\TrapTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\WaterFrom.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\WaterTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\YellowKeyTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\YellowLockTo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Buttonbehaviors\IButtonBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Buttonbehaviors\CloneMachineBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Buttonbehaviors\NullButtonBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Buttonbehaviors\ToggleWallBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Buttonbehaviors\TrapBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Buttons.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Clonebehaviors\BlobCloneBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Clonebehaviors\CloneBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Clonebehaviors\CloneBoss.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Clonebehaviors\CloneSameDirection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Clonebehaviors\NullCloneBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CloneNotSupportedException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Creatures.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Destroybehaviors\DefaultDestroyBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Destroybehaviors\IDestroyBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Destroybehaviors\ToggleWallDestroyBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Game.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GameLevel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gui\Hud.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gui\HudImageFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gui\PlayField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gui\UserInput.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Inventory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LevelFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ILevelFileReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MicrosoftBlockFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MicrosoftLevelFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Move.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Point.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RandomAccessFileLevelReader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RectangularArrays.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SlipList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SoundPlayer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sound.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MessageEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)StringHelperClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Teleports.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\BlobTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\IBlockTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\BugTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\ChipTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\FireballTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\GliderTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\NullTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\ParameciumTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\PinkballTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\TankBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\TeethTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Tickbehaviors\WalkerTickBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Trapreleasebehaviors\ControllerTrapReleaseBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Trapreleasebehaviors\DefaultTrapReleaseBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Trapreleasebehaviors\ITrapReleaseBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils.cs" />
+  </ItemGroup>
+</Project>

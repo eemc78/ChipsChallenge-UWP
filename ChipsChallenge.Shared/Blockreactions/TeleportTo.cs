@@ -1,53 +1,57 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class TeleportTo : SlipReaction
+    {
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainer;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move;
-import chipschallenge.SoundPlayer.sounds;
-import chipschallenge.Teleports;
-import java.awt.Point;
-
-/**
- * Moving to teleport
- */
-public class TeleportTo extends SlipReaction {
-
-    private TeleportTo() {
-    }
-    private static TeleportTo mInstance = null;
-
-    public static synchronized TeleportTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new TeleportTo();
+        private TeleportTo()
+        {
         }
-        return mInstance;
-    }
 
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        Point origin = level().getPoint(standing);
-        Point currentStart = origin;
-        BlockContainer goal = null;
-        Point remote = null;
-        Point moveTo = null;
-        do {
-            remote = Teleports.next(currentStart);
-            moveTo = (Point) remote.clone();
-            Move.updatePoint(moveTo, moving.getFacing());
-            goal = level().getBlockContainer(moveTo.x, moveTo.y);
-            currentStart = remote;
-        } while (!goal.canMoveTo(moving) && !currentStart.equals(origin));
-        if (remote.equals(origin)) {
-            // Totally blocked
-        } else {
-            level().teleport(moving, remote);
-            if (moving.isChip()) {
-                sound().playSound(sounds.TELEPORT);
+        private static TeleportTo instance;
+
+        public static TeleportTo Instance
+        {
+            get
+            {
+                lock (typeof(TeleportTo))
+                {
+                    return instance ?? (instance = new TeleportTo());
+                }
             }
         }
-    }
 
-    public boolean canMove(Block moving, Block standing) {
-        return true;
+        public override void React(Block moving, Block standing)
+        {
+            Point origin = Level().GetPoint(standing);
+            Point currentStart = origin;
+            BlockContainer goal;
+            Point remote;
+            Point moveTo;
+            do
+            {
+                remote = Teleports.Next(currentStart);
+                moveTo = new Point(remote.X, remote.Y);
+                Move.UpdatePoint(ref moveTo, moving.Facing);
+                goal = Level().GetBlockContainer(moveTo.X, moveTo.Y);
+                currentStart = remote;
+            } while (!goal.CanMoveTo(moving) && !currentStart.Equals(origin));
+            if (remote.Equals(origin))
+            {
+                // Totally blocked
+            }
+            else
+            {
+                Level().Teleport(moving, remote);
+                if (moving.Chip)
+                {
+                    Sound().Play(Shared.Sound.Teleport);
+                }
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return true;
+        }
     }
 }

@@ -1,35 +1,43 @@
-package chipschallenge.buttonbehaviors;
+﻿namespace ChipsChallenge.Shared.Buttonbehaviors
+{
+    using CanMove = Blockreactions.CanMove;
+    using CannotMove = Blockreactions.CannotMove;
 
-import chipschallenge.Block;
-import chipschallenge.blockreactions.CanMove;
-import chipschallenge.blockreactions.CannotMove;
-
-public class TrapBehavior implements ButtonBehavior {
-
-    private TrapBehavior() {
-    }
-    private static TrapBehavior mInstance = null;
-
-    public static synchronized TrapBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new TrapBehavior();
+    public class TrapBehavior : IButtonBehavior
+    {
+        private TrapBehavior()
+        {
         }
-        return mInstance;
-    }
 
-    public void buttonDown(Block listener, Block button) {
-        if (button.getType() == Block.Type.BROWNBUTTON) {
-            listener.setFromReaction(CanMove.getInstance());
-            Block trapped = listener.getBlockContainer().getUpper();
-            if (trapped != null) {
-                trapped.releaseFromTrap();
+        private static TrapBehavior instance;
+
+        public static TrapBehavior Instance
+        {
+            get
+            {
+                lock (typeof(TrapBehavior))
+                {
+                    return instance ?? (instance = new TrapBehavior());
+                }
             }
         }
-    }
 
-    public void buttonUp(Block listener, Block button) {
-        if (button.getType() == Block.Type.BROWNBUTTON) {
-            listener.setFromReaction(CannotMove.getInstance());
+        public virtual void ButtonDown(Block listener, Block button)
+        {
+            if (button.getType() == Block.Type.BROWNBUTTON)
+            {
+                listener.FromReaction = CanMove.Instance;
+                Block trapped = listener.BlockContainer.Upper;
+                trapped?.ReleaseFromTrap();
+            }
+        }
+
+        public virtual void ButtonUp(Block listener, Block button)
+        {
+            if (button.getType() == Block.Type.BROWNBUTTON)
+            {
+                listener.FromReaction = CannotMove.Instance;
+            }
         }
     }
 }

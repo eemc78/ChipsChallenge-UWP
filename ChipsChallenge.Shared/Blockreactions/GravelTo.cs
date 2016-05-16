@@ -1,29 +1,30 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-
-/**
- * Move to gravel
- */
-public class GravelTo extends NoSlipReaction {
-
-    private GravelTo() {
-    }
-    private static GravelTo mInstance = null;
-
-    public static synchronized GravelTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new GravelTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class GravelTo : NoSlipReaction
+    {
+        private GravelTo()
+        {
         }
-        return mInstance;
-    }
+        private static GravelTo instance;
 
-    public void react(Block moving, Block standing) {
-        // No reaction
-    }
+        public static GravelTo Instance
+        {
+            get
+            {
+                lock (typeof(GravelTo))
+                {
+                    return instance ?? (instance = new GravelTo());
+                }
+            }
+        }
 
-    // Only chip can move
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
     }
 }

@@ -1,26 +1,30 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-
-public class ToggleWallTo extends NoSlipReaction {
-
-    private ToggleWallTo() {
-    }
-    private static ToggleWallTo mInstance = null;
-
-    public static synchronized ToggleWallTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new ToggleWallTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class ToggleWallTo : NoSlipReaction
+    {
+        private ToggleWallTo()
+        {
         }
-        return mInstance;
-    }
+        private static ToggleWallTo instance;
 
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        // No reaction
-    }
+        public static ToggleWallTo Instance
+        {
+            get
+            {
+                lock (typeof(ToggleWallTo))
+                {
+                    return instance ?? (instance = new ToggleWallTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return standing.isA(Block.Type.TOGGLEWALLOPEN);
+        public override void React(Block moving, Block standing)
+        {
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return standing.IsA(Block.Type.TOGGLEWALLOPEN);
+        }
     }
 }

@@ -1,27 +1,33 @@
-package chipschallenge.clonebehaviors;
-
-import chipschallenge.Block;
-import chipschallenge.Creatures;
-
-public class CloneBoss extends CloneBehavior {
-
-    private CloneBoss() {
-    }
-    private static CloneBoss mInstance = null;
-
-    public static synchronized CloneBoss getInstance() {
-        if (mInstance == null) {
-            mInstance = new CloneBoss();
+﻿namespace ChipsChallenge.Shared.Clonebehaviors
+{
+    public class CloneBoss : CloneBehavior
+    {
+        private CloneBoss()
+        {
         }
-        return mInstance;
-    }
+        
+        private static CloneBoss instance;
 
-    public Block cloneIt(Block original) throws CloneNotSupportedException {
-        Block boss = Creatures.getBoss();
-        if (boss == null) {
-            throw new CloneNotSupportedException("No boss");
-        } else {
-            return cloneTo(original, boss.getFacing());
+        public static CloneBoss Instance
+        {
+            get
+            {
+                lock (typeof(CloneBoss))
+                {
+                    return instance ?? (instance = new CloneBoss());
+                }
+            }
+        }
+
+        public override Block CloneIt(Block original)
+        {
+            Block boss = Creatures.Boss;
+            if (boss == null)
+            {
+                throw new CloneNotSupportedException("No boss");
+            }
+
+            return CloneTo(original, boss.Facing);
         }
     }
 }

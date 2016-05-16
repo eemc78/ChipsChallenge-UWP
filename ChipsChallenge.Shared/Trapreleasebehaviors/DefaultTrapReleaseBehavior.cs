@@ -1,21 +1,26 @@
-package chipschallenge.trapreleasebehaviors;
-
-import chipschallenge.Block;
-
-public class DefaultTrapReleaseBehavior implements TrapReleaseBehavior {
-
-    private DefaultTrapReleaseBehavior() {
-    }
-    private static DefaultTrapReleaseBehavior mInstance = null;
-
-    public static synchronized DefaultTrapReleaseBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new DefaultTrapReleaseBehavior();
+﻿namespace ChipsChallenge.Shared.Trapreleasebehaviors
+{
+    public class DefaultTrapReleaseBehavior : ITrapReleaseBehavior
+    {
+        private DefaultTrapReleaseBehavior()
+        {
         }
-        return mInstance;
-    }
+        private static DefaultTrapReleaseBehavior instance;
 
-    public void releaseFromTrap(Block trapped) {
-        trapped.setTrapped(false);
+        public static DefaultTrapReleaseBehavior Instance
+        {
+            get
+            {
+                lock (typeof(DefaultTrapReleaseBehavior))
+                {
+                    return instance ?? (instance = new DefaultTrapReleaseBehavior());
+                }
+            }
+        }
+
+        public virtual void ReleaseFromTrap(Block trapped)
+        {
+            trapped.Trapped = false;
+        }
     }
 }

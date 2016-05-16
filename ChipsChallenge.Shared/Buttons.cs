@@ -1,150 +1,137 @@
-package chipschallenge;
+﻿using System.Collections.Generic;
+using System.Linq;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
+namespace ChipsChallenge.Shared
+{
+    public class Buttons
+    {
+        private static readonly ICollection<Block> GreenButtonsListeners = new List<Block>();
+        private static readonly ICollection<Block> BlueButtonsListeners = new List<Block>();
+        private static readonly IDictionary<Block, ICollection<Block>> RedButtonListeners = new Dictionary<Block, ICollection<Block>>();
+        private static readonly IDictionary<Block, ICollection<Block>> BrownButtonListeners = new Dictionary<Block, ICollection<Block>>();
+        private static bool greenButton;
+        private static bool blueButton;
 
-public class Buttons {
-
-    private static Collection<Block> greenButtonsListeners = new CopyOnWriteArrayList<Block>();
-    private static Collection<Block> blueButtonsListeners = new CopyOnWriteArrayList<Block>();
-    private static Collection<Block> hintButtonsListeners = new CopyOnWriteArrayList<Block>();
-    private static Map<Block, Collection<Block>> redButtonListeners = new HashMap<Block, Collection<Block>>();
-    private static Map<Block, Collection<Block>> brownButtonListeners = new HashMap<Block, Collection<Block>>();
-    private static boolean greenButton = false;
-    private static boolean blueButton = false;
-
-    public static void clear() {
-        greenButtonsListeners.clear();
-        blueButtonsListeners.clear();
-        redButtonListeners.clear();
-        brownButtonListeners.clear();
-    }
-
-    public static void addGreenButtonsListener(Block listener) {
-        greenButtonsListeners.add(listener);
-    }
-
-    public static void addBlueButtonsListener(Block listener) {
-        blueButtonsListeners.add(listener);
-    }
-
-    public static void addHintButtonListener(Block b) {
-        hintButtonsListeners.add(b);
-    }
-
-    public static void removeGreenButtonsListener(Block listener) {
-        greenButtonsListeners.remove(listener);
-    }
-
-    public static void removeBlueButtonsListener(Block listener) {
-        blueButtonsListeners.remove(listener);
-    }
-
-    public static void removeHintButtonListener(Block b) {
-        hintButtonsListeners.remove(b);
-    }
-
-    public static void addRedButtonListener(Block button, Block listener) {
-        Collection<Block> listeners = redButtonListeners.get(button);
-        if (listeners == null) {
-            listeners = new CopyOnWriteArrayList<Block>();
-            redButtonListeners.put(button, listeners);
+        public static void Clear()
+        {
+            GreenButtonsListeners.Clear();
+            BlueButtonsListeners.Clear();
+            RedButtonListeners.Clear();
+            BrownButtonListeners.Clear();
         }
-        listeners.add(listener);
-    }
 
-    public static void addBrownButtonListener(Block button, Block listener) {
-        Collection<Block> listeners = brownButtonListeners.get(button);
-        if (listeners == null) {
-            listeners = new CopyOnWriteArrayList<Block>();
-            brownButtonListeners.put(button, listeners);
+        public static void AddGreenButtonsListener(Block listener)
+        {
+            GreenButtonsListeners.Add(listener);
         }
-        listeners.add(listener);
-    }
 
-    public static void greenButtonDown(Block button) {
-        greenButton = !greenButton;
-        /*
-        for (Block b : greenButtonsListeners) {
-        b.buttonDown(button);
+        public static void AddBlueButtonsListener(Block listener)
+        {
+            BlueButtonsListeners.Add(listener);
         }
-         */
-    }
 
-    public static void greenButtonUp(Block button) {
-        /*
-        for (Block b : greenButtonsListeners) {
-        b.buttonUp(button);
+        public static void RemoveGreenButtonsListener(Block listener)
+        {
+            GreenButtonsListeners.Remove(listener);
         }
-         */
-    }
 
-    public static void blueButtonDown(Block button) {
-        blueButton = !blueButton;
-        /*
-        for (Block b : blueButtonsListeners) {
-        b.buttonDown(button);
+        public static void RemoveBlueButtonsListener(Block listener)
+        {
+            BlueButtonsListeners.Remove(listener);
         }
-         */
-    }
 
-    public static void blueButtonUp(Block button) {
-        /*
-        for (Block b : blueButtonsListeners) {
-        b.buttonUp(button);
+        public static void AddRedButtonListener(Block button, Block listener)
+        {
+            ICollection<Block> listeners;
+            RedButtonListeners.TryGetValue(button, out listeners);
+            if (listeners == null)
+            {
+                listeners = new List<Block>();
+                RedButtonListeners[button] = listeners;
+            }
+            
+            listeners.Add(listener);
         }
-         */
-    }
 
-    public static void updateGreenandBlueButtons() {
-        if (greenButton) {
-            for (Block b : greenButtonsListeners) {
-                b.buttonDown(null);
+        public static void AddBrownButtonListener(Block button, Block listener)
+        {
+            ICollection<Block> listeners;
+            BrownButtonListeners.TryGetValue(button, out listeners);
+            if (listeners == null)
+            {
+                listeners = new List<Block>();
+                BrownButtonListeners[button] = listeners;
+            }
+            
+            listeners.Add(listener);
+        }
+
+        public static void GreenButtonDown(Block button)
+        {
+            greenButton = !greenButton;
+        }
+
+        public static void BlueButtonDown(Block button)
+        {
+            blueButton = !blueButton;
+        }
+
+        public static void UpdateGreenandBlueButtons()
+        {
+            if (greenButton)
+            {
+                foreach (Block b in GreenButtonsListeners.ToList())
+                {
+                    b.ButtonDown(null);
+                }
+            }
+            if (blueButton)
+            {
+                foreach (Block b in BlueButtonsListeners.ToList())
+                {
+                    b.ButtonDown(null);
+                }
+            }
+            greenButton = false;
+            blueButton = false;
+        }
+
+        public static void RedButtonDown(Block button)
+        {
+            ICollection<Block> listeners;
+            RedButtonListeners.TryGetValue(button, out listeners);
+            if (listeners != null)
+            {
+                foreach (Block b in listeners)
+                {
+                    b.ButtonDown(button);
+                }
             }
         }
-        if (blueButton) {
-            for (Block b : blueButtonsListeners) {
-                b.buttonDown(null);
+
+        public static void BrownButtonDown(Block button)
+        {
+            ICollection<Block> listeners;
+            BrownButtonListeners.TryGetValue(button, out listeners);
+            if (listeners != null)
+            {
+                foreach (Block b in listeners)
+                {
+                    b.ButtonDown(button);
+                }
             }
         }
-        greenButton = false;
-        blueButton = false;
-    }
 
-    public static void redButtonDown(Block button) {
-        Collection<Block> listeners = redButtonListeners.get(button);
-        if (listeners != null) {
-            for (Block b : listeners) {
-                b.buttonDown(button);
-            }
-        }
-    }
-
-    public static void redButtonUp(Block button) {
-        Collection<Block> listeners = redButtonListeners.get(button);
-        if (listeners != null) {
-            for (Block b : listeners) {
-                b.buttonUp(button);
-            }
-        }
-    }
-
-    public static void brownButtonDown(Block button) {
-        Collection<Block> listeners = brownButtonListeners.get(button);
-        if (listeners != null) {
-            for (Block b : listeners) {
-                b.buttonDown(button);
-            }
-        }
-    }
-
-    public static void brownButtonUp(Block button) {
-        Collection<Block> listeners = brownButtonListeners.get(button);
-        if (listeners != null) {
-            for (Block b : listeners) {
-                b.buttonUp(button);
+        public static void BrownButtonUp(Block button)
+        {
+            ICollection<Block> listeners;
+            BrownButtonListeners.TryGetValue(button, out listeners);
+            if (listeners != null)
+            {
+                foreach (Block b in listeners)
+                {
+                    b.ButtonUp(button);
+                }
             }
         }
     }

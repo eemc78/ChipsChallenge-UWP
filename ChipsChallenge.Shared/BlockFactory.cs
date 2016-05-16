@@ -1,37 +1,37 @@
-package chipschallenge;
+﻿using System.Collections.Generic;
 
-import chipschallenge.Block.Type;
-import chipschallenge.Move.Moves;
-import java.util.HashMap;
-import java.util.Map;
+namespace ChipsChallenge.Shared
+{
+    using Type = Block.Type;
+    using Moves = Move.Moves;
 
-public abstract class BlockFactory {
+    public abstract class BlockFactory
+    {
+        private readonly IDictionary<Type, IDictionary<Moves, Block>> loadedBlocks = new Dictionary<Type, IDictionary<Moves, Block>>();
 
-    private Map<Type, Map<Moves, Block>> loadedBlocks = new HashMap<Type, Map<Moves, Block>>();
-
-    public final Block get(Type type) {
-        return get(type, Moves.DOWN);
-    }
-
-    public final Block get(Type type, Moves direction) {
-        Map<Moves, Block> movesBlocks = loadedBlocks.get(type);
-        if (movesBlocks == null) {
-            movesBlocks = new HashMap<Moves, Block>();
-            loadedBlocks.put(type, movesBlocks);
+        public Block Get(Type type)
+        {
+            return Get(type, Moves.DOWN);
         }
-        Block b;
-        /*
-        try {
-        b = movesBlocks.get(direction).clone();
-        } catch (Exception ex) { // b == null or clone not supported
-        b = createBlock(type, direction);
-        movesBlocks.put(direction, b);
-        }
-         */
-        b = createBlock(type, direction);
-        movesBlocks.put(direction, b);
-        return b;
-    }
 
-    protected abstract Block createBlock(Type type, Moves direction);
+        public Block Get(Type type, Moves direction)
+        {
+            IDictionary<Moves, Block> movesBlocks;
+            loadedBlocks.TryGetValue(type, out movesBlocks);
+
+            if (movesBlocks == null)
+            {
+                movesBlocks = new Dictionary<Moves, Block>();
+                loadedBlocks[type] = movesBlocks;
+            }
+
+            BlockImageFactory.Instance.GetImage(type, direction, false);
+
+            Block b = CreateBlock(type, direction);
+            movesBlocks[direction] = b;
+            return b;
+        }
+
+        public abstract Block CreateBlock(Type type, Moves direction);
+    }
 }

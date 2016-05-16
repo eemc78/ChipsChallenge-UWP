@@ -1,27 +1,33 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Type = Block.Type;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.BlockContainerFullException;
-
-public class RecessedWallTo extends NoSlipReaction {
-
-    private RecessedWallTo() {
-    }
-    private static RecessedWallTo mInstance = null;
-
-    public static synchronized RecessedWallTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new RecessedWallTo();
+    public class RecessedWallTo : NoSlipReaction
+    {
+        private RecessedWallTo()
+        {
         }
-        return mInstance;
-    }
+        private static RecessedWallTo instance;
 
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        standing.replace(createBlock(Type.WALL));
-    }
+        public static RecessedWallTo Instance
+        {
+            get
+            {
+                lock (typeof(RecessedWallTo))
+                {
+                    return instance ?? (instance = new RecessedWallTo());
+                }
+            }
+        }
 
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+            standing.Replace(CreateBlock(Type.WALL));
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
     }
 }

@@ -1,21 +1,26 @@
-package chipschallenge.clonebehaviors;
-
-import chipschallenge.Block;
-
-public class NullCloneBehavior extends CloneBehavior {
-
-    private NullCloneBehavior() {
-    }
-    private static NullCloneBehavior mInstance = null;
-
-    public static synchronized NullCloneBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new NullCloneBehavior();
+﻿namespace ChipsChallenge.Shared.Clonebehaviors
+{
+    public class NullCloneBehavior : CloneBehavior
+    {
+        private NullCloneBehavior()
+        {
         }
-        return mInstance;
-    }
+        private static NullCloneBehavior instance;
 
-    public Block cloneIt(Block original) throws CloneNotSupportedException {
-        throw new CloneNotSupportedException();
+        public static NullCloneBehavior Instance
+        {
+            get
+            {
+                lock (typeof(NullCloneBehavior))
+                {
+                    return instance ?? (instance = new NullCloneBehavior());
+                }
+            }
+        }
+
+        public override Block CloneIt(Block original)
+        {
+            throw new CloneNotSupportedException();
+        }
     }
 }

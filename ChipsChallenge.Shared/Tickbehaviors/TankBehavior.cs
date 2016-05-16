@@ -1,29 +1,30 @@
-package chipschallenge.tickbehaviors;
+﻿namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    using Buttonbehaviors;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move;
-import chipschallenge.buttonbehaviors.ButtonBehavior;
+    public class TankBehavior : IButtonBehavior, IBlockTickBehavior
+    {
+        private bool isMoving = true;
 
-public class TankBehavior implements ButtonBehavior, BlockTickBehavior {
-
-    private boolean isMoving = true;
-
-    @Override
-    public void tick(Block caller) throws BlockContainerFullException {
-        if (isMoving) {
-            if (!caller.move(caller.getFacing())) {
-                isMoving = false;
+        public virtual void Tick(Block caller)
+        {
+            if (isMoving)
+            {
+                if (!caller.Move(caller.Facing))
+                {
+                    isMoving = false;
+                }
             }
         }
-    }
 
-    public void buttonDown(Block listener, Block button) {
-        listener.setFacing(Move.reverse(listener.getFacing()));
-        isMoving = true;
-    }
+        public virtual void ButtonDown(Block listener, Block button)
+        {
+            listener.Facing = Move.Reverse(listener.Facing);
+            isMoving = true;
+        }
 
-    public void buttonUp(Block listener, Block button) {
-        // Do nothing
+        public virtual void ButtonUp(Block listener, Block button)
+        {
+        }
     }
 }

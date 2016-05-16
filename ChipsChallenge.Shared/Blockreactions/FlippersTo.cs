@@ -1,36 +1,41 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Boots = Inventory.Boots;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Inventory.Boots;
-
-/**
- * Move to flippers
- */
-public class FlippersTo extends NoSlipReaction {
-
-    private FlippersTo() {
-    }
-    private static FlippersTo mInstance = null;
-
-    public static synchronized FlippersTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new FlippersTo();
+    public class FlippersTo : NoSlipReaction
+    {
+        private FlippersTo()
+        {
         }
-        return mInstance;
-    }
+        private static FlippersTo instance;
 
-    // Chip can pick up flippers
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        if (moving.isChip()) {
-            takeBoots(Boots.FLIPPERS);
-            standing.replace(createBlock(Type.FLOOR));
+        public static FlippersTo Instance
+        {
+            get
+            {
+                lock (typeof(FlippersTo))
+                {
+                    if (instance == null)
+                    {
+                        instance = new FlippersTo();
+                    }
+                    return instance;
+                }
+            }
         }
-    }
 
-    // Only chip and blocks
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip() || moving.isBlock();
+        public override void React(Block moving, Block standing)
+        {
+            if (moving.Chip)
+            {
+                TakeBoots(Boots.FLIPPERS);
+                standing.Replace(CreateBlock(Block.Type.FLOOR));
+            }
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip || moving.IsBlock();
+        }
     }
 }

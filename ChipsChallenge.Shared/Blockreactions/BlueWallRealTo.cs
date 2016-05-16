@@ -1,39 +1,35 @@
-package chipschallenge.blockreactions;
-
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Move;
-import chipschallenge.Move.Moves;
-import chipschallenge.SoundPlayer.sounds;
-
-/**
- * Move to real blue wall
- */
-public class BlueWallRealTo extends NoSlipReaction {
-
-    private BlueWallRealTo() {
-    }
-    private static BlueWallRealTo mInstance = null;
-
-    public static synchronized BlueWallRealTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BlueWallRealTo();
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    public class BlueWallRealTo : NoSlipReaction
+    {
+        private BlueWallRealTo()
+        {
         }
-        return mInstance;
-    }
+        private static BlueWallRealTo instance;
 
-    // Converstion to real wall
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        Moves facing = moving.getFacing();
-        moving.move(Move.reverse(facing));
-        moving.setFacing(facing);
-        standing.replace(createBlock(Type.WALL));
-        sound().playSound(sounds.CHIPHUM);
-    }
+        public static BlueWallRealTo Instance
+        {
+            get
+            {
+                lock (typeof(BlueWallRealTo))
+                {
+                    return instance ?? (instance = new BlueWallRealTo());
+                }
+            }
+        }
 
-    // Only chip can move here
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+            Move.Moves facing = moving.Facing;
+            moving.Move(Move.Reverse(facing));
+            moving.Facing = facing;
+            standing.Replace(CreateBlock(Block.Type.WALL));
+            Sound().Play(Shared.Sound.ChipHum);
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            return moving.Chip;
+        }
     }
 }

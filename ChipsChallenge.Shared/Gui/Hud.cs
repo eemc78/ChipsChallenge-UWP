@@ -1,240 +1,234 @@
-package chipschallenge.gui;
+﻿namespace ChipsChallenge.Shared.Gui
+{
+    using System;
 
-import chipschallenge.Block.Type;
-import chipschallenge.BlockFactory;
-import chipschallenge.BlockImageFactory;
-import chipschallenge.ChipListener;
-import chipschallenge.Game;
-import chipschallenge.GameLevel;
-import chipschallenge.Inventory;
-import chipschallenge.InventoryListener;
-import chipschallenge.Move.Moves;
-import chipschallenge.NextLevelListener;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Panel;
+    using Windows.Foundation;
+    using Windows.UI;
+    using Windows.UI.Text;
 
-class Hud extends Panel implements ChipListener, NextLevelListener, InventoryListener, HintListener, TimeListener {
+    using Microsoft.Graphics.Canvas;
+    using Microsoft.Graphics.Canvas.Text;
 
-    private int level = 0;
-    private int time = 0;
-    private int chipsLeft = 0;
-    private Inventory inventory = Game.getInstance().getInventory();
-    private boolean levelNeedsRepaint = true;
-    private boolean timeNeedsRepaint = true;
-    private boolean chipsLeftNeedsRepaint = true;
-    private boolean backgroundNeedsRepaint = true;
-    private boolean inventoryNeedsRepaint = true;
-    private boolean timeLimit = true;
+    using Moves = Move.Moves;
+    using Type = Block.Type;
 
-    public Hud() {
-        setPreferredSize(new Dimension(154, 300));
-        setVisible(true);
+    internal class Hud
+    {
+        private readonly Inventory inventory = Game.Instance.Inventory;
+        private bool timeLimit = true;
+        private static Hud hud;
 
-        // Listen for collected chips
-        Game.getInstance().addChipListener(this);
-
-        // Listen for level change
-        Game.getInstance().addNextLevelListener(this);
-
-        // Listen for inventory change
-        Game.getInstance().getInventory().addInventoryListener(this);
-
-        // Listen for hints
-        Game.getInstance().addHintListener(this);
-
-        // Listen for time
-        Game.getInstance().addTimeListener(this);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        levelNeedsRepaint = true;
-        timeNeedsRepaint = true;
-        chipsLeftNeedsRepaint = true;
-        backgroundNeedsRepaint = true;
-        update(g);
-    }
-
-    @Override
-    public void update(Graphics g) {
-        if (backgroundNeedsRepaint) {
-            g.drawImage(HudImageFactory.getInstance().getHudBackground(), 0, 0, null);
-            backgroundNeedsRepaint = false;
+        private Hud()
+        {
         }
 
-        if (levelNeedsRepaint) {
-            String s = intToPaintableString(level);
-            int x = 83;
-            int y = 38;
-            for (int i = s.length() - 1; i >= 0; i--) {
-                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), false);
-                g.drawImage(img, x, y, null);
+        public static Hud Instance
+        {
+            get
+            {
+                lock (typeof(Game))
+                {
+                    return hud ?? (hud = new Hud());
+                }
+            }
+        }
+
+        private Game GameInstance => Game.Instance;
+
+
+        public CanvasBitmap GetHudPortrait()
+        {
+            CanvasBitmap hudBackground = HudImageFactory.Instance.HudBackgroundPortrait;
+
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            CanvasRenderTarget offscreen = new CanvasRenderTarget(device, hudBackground.SizeInPixels.Width, hudBackground.SizeInPixels.Height, 96);
+            using (CanvasDrawingSession drawingSession = offscreen.CreateDrawingSession())
+            {
+                drawingSession.DrawImage(hudBackground);
+                PaintLevel(drawingSession, 60, 39);
+                PaintTime(drawingSession, 139, 39);
+                PaintInventoryKeys(drawingSession, 13, 70);
+
+                if (GameInstance.IsChipOnHintField)
+                {
+                    CanvasBitmap hintField = HudImageFactory.Instance.HintFieldPortrait;
+                    PaintHint(drawingSession, hintField, 92, 15);
+                }
+                else
+                {
+                    PaintChipsLeft(drawingSession, 236, 39);
+                    PaintInventoryBoots(drawingSession, 159, 70);
+                }
+            }
+
+            return offscreen;
+        }
+
+        public CanvasBitmap GetHudLandscape()
+        {
+            CanvasBitmap hudBackground = HudImageFactory.Instance.HudBackgroundLandscape;
+
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            CanvasRenderTarget offscreen = new CanvasRenderTarget(device, hudBackground.SizeInPixels.Width, hudBackground.SizeInPixels.Height, 96);
+            using (CanvasDrawingSession drawingSession = offscreen.CreateDrawingSession())
+            {
+                drawingSession.DrawImage(hudBackground);
+                PaintLevel(drawingSession, 83, 38);
+                PaintTime(drawingSession, 83, 100);
+
+                if (GameInstance.IsChipOnHintField)
+                {
+                    CanvasBitmap hintField = HudImageFactory.Instance.HintFieldLandscape;
+                    PaintHint(drawingSession, hintField, 13, 139);
+                }
+                else
+                {
+                    PaintChipsLeft(drawingSession, 83, 190);
+                    PaintInventoryKeys(drawingSession, 13, 221);
+                    PaintInventoryBoots(drawingSession, 13, 253);
+                }
+            }
+
+            return offscreen;
+        }
+
+        private void PaintLevel(CanvasDrawingSession ds, int x, int y)
+        {
+            string s = intToPaintableString(GameInstance.Level.LevelNumber);
+            for (int i = s.Length - 1; i >= 0; i--)
+            {
+                var img = HudImageFactory.Instance.GetNumber(s[i], false);
+                ds.DrawImage(img, x, y);
                 x -= 17;
             }
-            levelNeedsRepaint = false;
         }
-        if (timeNeedsRepaint) {
-            String s = timeLimit ? intToPaintableString(time) : "---";
-            int x = 83;
-            int y = 100;
-            boolean yellow = !timeLimit || time <= 15;
-            for (int i = s.length() - 1; i >= 0; i--) {
-                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), yellow);
-                g.drawImage(img, x, y, null);
+
+        private void PaintTime(CanvasDrawingSession ds, int x, int y)
+        {
+            string s = timeLimit ? intToPaintableString(GameInstance.Level.TimeLeft) : "---";
+            bool yellow = !timeLimit || GameInstance.Level.TimeLeft <= 15;
+            for (int i = s.Length - 1; i >= 0; i--)
+            {
+                CanvasBitmap img = HudImageFactory.Instance.GetNumber(s[i], yellow);
+                ds.DrawImage(img, x, y);
                 x -= 17;
             }
-            timeNeedsRepaint = false;
         }
-        if (chipsLeftNeedsRepaint) {
-            String s = intToPaintableString(chipsLeft);
-            int x = 83;
-            int y = 190;
-            boolean yellow = chipsLeft == 0;
-            for (int i = s.length() - 1; i >= 0; i--) {
-                Image img = HudImageFactory.getInstance().getNumber(s.charAt(i), yellow);
-                g.drawImage(img, x, y, null);
+
+        private void PaintHint(CanvasDrawingSession ds, CanvasBitmap hintField, int x, int y)
+        {
+            ds.DrawImage(hintField, x, y);
+
+            var hintText = GameInstance.Level.Hint;
+            int fontSize = hintText.Length > 83 ? 14 : 16;
+            var rect = new Rect(x + 4, y + 4, hintField.Size.Width - 8, hintField.Size.Height - 8);
+            var canvasTextFormat = new CanvasTextFormat
+            {
+                FontStyle = FontStyle.Italic,
+                FontWeight = FontWeights.Bold,
+                FontFamily = "Arial",
+                FontSize = fontSize,
+                HorizontalAlignment = CanvasHorizontalAlignment.Center
+            };
+
+            ds.TextAntialiasing = CanvasTextAntialiasing.Aliased;
+            ds.DrawText("Hint: " + hintText, rect, Colors.Aqua, canvasTextFormat);
+        }
+
+        private void PaintChipsLeft(CanvasDrawingSession ds, int x, int y)
+        {
+            string s = intToPaintableString(GameInstance.Level.ChipsLeft);
+            bool yellow = GameInstance.Level.ChipsLeft == 0;
+            for (int i = s.Length - 1; i >= 0; i--)
+            {
+                CanvasBitmap img = HudImageFactory.Instance.GetNumber(s[i], yellow);
+                ds.DrawImage(img, x, y);
                 x -= 17;
             }
-            chipsLeftNeedsRepaint = false;
         }
-        if (inventoryNeedsRepaint) {
-            BlockFactory bf = Game.getInstance().getBlockFactory();
-            BlockImageFactory bif = BlockImageFactory.getInstance();
-            int x = 13;
-            int y = 221;
-            Image im = null;
-            Image empty = bif.get(Type.FLOOR, Moves.UP, false);
+
+        private void PaintInventoryKeys(CanvasDrawingSession ds, int x, int y)
+        {
+            BlockImageFactory bif = BlockImageFactory.Instance;
+            CanvasBitmap im;
+            CanvasBitmap empty = bif.GetImage(Type.FLOOR, Moves.UP, false);
             im = empty;
-            if (inventory.hasKey(Inventory.Key.RED)) {
-                im = bif.get(Type.REDKEY, Moves.UP, false);
+            if (inventory.HasKey(Inventory.Key.RED))
+            {
+                im = bif.GetImage(Type.REDKEY, Moves.UP, false);
             }
-            g.drawImage(im, x, y, null);
+            ds.DrawImage(im, x, y);
             im = empty;
-            if (inventory.hasKey(Inventory.Key.BLUE)) {
-                im = bif.get(Type.BLUEKEY, Moves.UP, false);
+            if (inventory.HasKey(Inventory.Key.BLUE))
+            {
+                im = bif.GetImage(Type.BLUEKEY, Moves.UP, false);
             }
-            g.drawImage(im, x + 32, y, null);
+            ds.DrawImage(im, x + 32, y);
             im = empty;
-            if (inventory.hasKey(Inventory.Key.YELLOW)) {
-                im = bif.get(Type.YELLOWKEY, Moves.UP, false);
+            if (inventory.HasKey(Inventory.Key.YELLOW))
+            {
+                im = bif.GetImage(Type.YELLOWKEY, Moves.UP, false);
             }
-            g.drawImage(im, x + 2 * 32, y, null);
+            ds.DrawImage(im, x + 2 * 32, y);
             im = empty;
-            if (inventory.hasKey(Inventory.Key.GREEN)) {
-                im = bif.get(Type.GREENKEY, Moves.UP, false);
+            if (inventory.HasKey(Inventory.Key.GREEN))
+            {
+                im = bif.GetImage(Type.GREENKEY, Moves.UP, false);
             }
-            g.drawImage(im, x + 3 * 32, y, null);
-            y += 32;
-            im = empty;
-            if (inventory.hasBoots(Inventory.Boots.ICESKATES)) {
-                im = bif.get(Type.ICESKATES, Moves.UP, false);
-            }
-            g.drawImage(im, x, y, null);
-            im = empty;
-            if (inventory.hasBoots(Inventory.Boots.SUCTIONBOOTS)) {
-                im = bif.get(Type.SUCTIONBOOTS, Moves.UP, false);
-            }
-            g.drawImage(im, x + 32, y, null);
-            im = empty;
-            if (inventory.hasBoots(Inventory.Boots.FIREBOOTS)) {
-                im = bif.get(Type.FIREBOOTS, Moves.UP, false);
-            }
-            g.drawImage(im, x + 2 * 32, y, null);
-            im = empty;
-            if (inventory.hasBoots(Inventory.Boots.FLIPPERS)) {
-                im = bif.get(Type.FLIPPERS, Moves.UP, false);
-            }
-            g.drawImage(im, x + 3 * 32, y, null);
+            ds.DrawImage(im, x + 3 * 32, y);
         }
-        g.dispose();
-    }
 
-    public void setChipsLeft(int chipsLeft) {
-        if (this.chipsLeft == chipsLeft) {
-            return;
+        private void PaintInventoryBoots(CanvasDrawingSession ds, int x, int y)
+        {
+            BlockImageFactory bif = BlockImageFactory.Instance;
+            CanvasBitmap im;
+            CanvasBitmap empty = bif.GetImage(Type.FLOOR, Moves.UP, false);
+
+            im = empty;
+            if (inventory.HasBoots(Inventory.Boots.ICESKATES))
+            {
+                im = bif.GetImage(Type.ICESKATES, Moves.UP, false);
+            }
+            ds.DrawImage(im, x, y);
+            im = empty;
+            if (inventory.HasBoots(Inventory.Boots.SUCTIONBOOTS))
+            {
+                im = bif.GetImage(Type.SUCTIONBOOTS, Moves.UP, false);
+            }
+            ds.DrawImage(im, x + 32, y);
+            im = empty;
+            if (inventory.HasBoots(Inventory.Boots.FIREBOOTS))
+            {
+                im = bif.GetImage(Type.FIREBOOTS, Moves.UP, false);
+            }
+            ds.DrawImage(im, x + 2 * 32, y);
+            im = empty;
+            if (inventory.HasBoots(Inventory.Boots.FLIPPERS))
+            {
+                im = bif.GetImage(Type.FLIPPERS, Moves.UP, false);
+            }
+            ds.DrawImage(im, x + 3 * 32, y);
         }
-        this.chipsLeft = chipsLeft;
-        chipsLeftNeedsRepaint = true;
-        repaint();
-    }
 
-    public void setLevel(int level) {
-        if (this.level == level) {
-            return;
+        /// <summary>
+        /// Makes an int into a 3-character String that covers the entire textfield when painted </summary>
+        /// <param name="n"> The string to fix </param>
+        /// <returns> A string that is 3 characters of length </returns>
+        private string intToPaintableString(int n)
+        {
+            string s = Convert.ToString(n);
+            switch (s.Length)
+            {
+                case 3:
+                    return s;
+                case 2:
+                    return "x" + s;
+                case 1:
+                    return "xx" + s;
+                case 0:
+                    return "xxx";
+            }
+            return "999";
         }
-        this.level = level;
-        levelNeedsRepaint = true;
-        repaint();
-    }
-
-    public void setTime(int time) {
-        if (this.time == time) {
-            return;
-        }
-        this.time = time;
-        timeNeedsRepaint = true;
-        repaint();
-    }
-
-    /**
-     * Makes an int into a 3-character String that covers the entire textfield when painted
-     * @param s The string to fix
-     * @return A string that is 3 characters of length
-     */
-    private String intToPaintableString(int n) {
-        String s = String.valueOf(n);
-        switch (s.length()) {
-            case 3:
-                return s;
-            case 2:
-                return "x" + s;
-            case 1:
-                return "xx" + s;
-            case 0:
-                return "xxx";
-        }
-        return "999";
-    }
-
-    public void repaintEverything() {
-        levelNeedsRepaint = true;
-        timeNeedsRepaint = true;
-        chipsLeftNeedsRepaint = true;
-        backgroundNeedsRepaint = true;
-        repaint();
-    }
-
-    public void chipTaken() {
-        setChipsLeft(chipsLeft > 0 ? chipsLeft - 1 : 0);
-    }
-
-    public void nextLevel(GameLevel level) {
-        setChipsLeft(level.getNumChipsNeeded());
-        setLevel(level.getLevelNumber());
-        int numSeconds = level.getNumSeconds();
-        timeLimit = numSeconds != 0;
-        setTime(numSeconds);
-    }
-
-    public void inventoryChange(Inventory i) {
-        inventory = i;
-        inventoryNeedsRepaint = true;
-        repaint();
-        // TODO: Repaint keys and boots
-    }
-
-    public void showHint(String txt) {
-        // TODO: Show hint in Hud
-        System.out.println(txt);
-    }
-
-    public void hideHint() {
-        // TODO: Hide hint
-    }
-
-    public void timeLeft(int seconds) {
-        setTime(seconds);
     }
 }

@@ -1,63 +1,78 @@
-package chipschallenge.tickbehaviors;
+﻿using System;
 
-import chipschallenge.Block;
-import chipschallenge.BlockContainerFullException;
-import chipschallenge.Game;
-import chipschallenge.Move.Moves;
-import java.awt.Point;
+namespace ChipsChallenge.Shared.Tickbehaviors
+{
+    using Moves = Move.Moves;
 
-public class TeethTickBehavior implements BlockTickBehavior {
-
-    private TeethTickBehavior() {
-    }
-    private static TeethTickBehavior mInstance = null;
-
-    public static synchronized TeethTickBehavior getInstance() {
-        if (mInstance == null) {
-            mInstance = new TeethTickBehavior();
+    public class TeethTickBehavior : IBlockTickBehavior
+    {
+        private TeethTickBehavior()
+        {
         }
-        return mInstance;
-    }
+        private static TeethTickBehavior instance;
 
-    public Point findChip() {
-        return Game.getInstance().getLevel().findChip();
-    }
-
-    public Point findMe(Block caller) {
-        return Game.getInstance().getLevel().getPoint(caller);
-    }
-
-    public boolean inUse(Block caller) {
-        return Game.getInstance().getLevel().contains(caller);
-    }
-
-    @Override
-    public void tick(Block caller) throws BlockContainerFullException {
-        Moves m = caller.getFacing();
-        if (!inUse(caller)) {
-            return;
-        }
-        Point chip = findChip();
-        Point me = findMe(caller);
-        int dx = chip.x - me.x;
-        int dy = chip.y - me.y;
-        int pdx = Math.abs(dx);
-        int pdy = Math.abs(dy);
-        Moves xDirection = xDirection = dx > 0 ? Moves.RIGHT : Moves.LEFT;
-        Moves yDirection = yDirection = dy > 0 ? Moves.DOWN : Moves.UP;
-        if (pdx > pdy) {
-            if (caller.canMove(xDirection)) {
-                caller.move(xDirection);
-            } else if (pdy > 0 && caller.canMove(yDirection)) {
-                caller.move(yDirection);
-            }
-        } else {
-            if (caller.canMove(yDirection)) {
-                caller.move(yDirection);
-            } else if (pdx > 0 && caller.canMove(xDirection)) {
-                caller.move(xDirection);
+        public static TeethTickBehavior Instance
+        {
+            get
+            {
+                lock (typeof(TeethTickBehavior))
+                {
+                    return instance ?? (instance = new TeethTickBehavior());
+                }
             }
         }
 
+        public virtual Point FindChip()
+        {
+            return Game.Instance.Level.FindChip();
+        }
+
+        public virtual Point FindMe(Block caller)
+        {
+            return Game.Instance.Level.GetPoint(caller);
+        }
+
+        public virtual bool InUse(Block caller)
+        {
+            return Game.Instance.Level.Contains(caller);
+        }
+
+        public virtual void Tick(Block caller)
+        {
+            if (!InUse(caller))
+            {
+                return;
+            }
+            Point chip = FindChip();
+            Point me = FindMe(caller);
+            int dx = chip.X - me.X;
+            int dy = chip.Y - me.Y;
+            int pdx = Math.Abs(dx);
+            int pdy = Math.Abs(dy);
+            Moves xDirection = dx > 0 ? Moves.RIGHT : Moves.LEFT;
+            Moves yDirection = dy > 0 ? Moves.DOWN : Moves.UP;
+            if (pdx > pdy)
+            {
+                if (caller.CanMove(xDirection))
+                {
+                    caller.Move(xDirection);
+                }
+                else if (pdy > 0 && caller.CanMove(yDirection))
+                {
+                    caller.Move(yDirection);
+                }
+            }
+            else
+            {
+                if (caller.CanMove(yDirection))
+                {
+                    caller.Move(yDirection);
+                }
+                else if (pdx > 0 && caller.CanMove(xDirection))
+                {
+                    caller.Move(xDirection);
+                }
+            }
+        }
     }
 }

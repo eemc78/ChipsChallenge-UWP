@@ -1,32 +1,35 @@
-package chipschallenge.blockreactions;
+﻿namespace ChipsChallenge.Shared.Blockreactions
+{
+    using Type = Block.Type;
 
-import chipschallenge.Block;
-import chipschallenge.Block.Type;
-import chipschallenge.BlockContainerFullException;
-
-/**
- * Move to Blue fake wall
- */
-public class BlueWallFakeTo extends NoSlipReaction {
-
-    private BlueWallFakeTo() {
-    }
-    private static BlueWallFakeTo mInstance = null;
-
-    public static synchronized BlueWallFakeTo getInstance() {
-        if (mInstance == null) {
-            mInstance = new BlueWallFakeTo();
+    public class BlueWallFakeTo : NoSlipReaction
+    {
+        private BlueWallFakeTo()
+        {
         }
-        return mInstance;
-    }
+        private static BlueWallFakeTo instance;
 
-    // Wall is converted to floor
-    public void react(Block moving, Block standing) throws BlockContainerFullException {
-        standing.replace(createBlock(Type.FLOOR));
-    }
+        public static BlueWallFakeTo Instance
+        {
+            get
+            {
+                lock (typeof(BlueWallFakeTo))
+                {
+                    return instance ?? (instance = new BlueWallFakeTo());
+                }
+            }
+        }
 
-    // Only chip can move to it
-    public boolean canMove(Block moving, Block standing) {
-        return moving.isChip();
+        public override void React(Block moving, Block standing)
+        {
+            // Wall is converted to floor
+            standing.Replace(CreateBlock(Type.FLOOR));
+        }
+
+        public override bool canMove(Block moving, Block standing)
+        {
+            // Only chip can move to it
+            return moving.Chip;
+        }
     }
 }
