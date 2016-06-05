@@ -2,11 +2,11 @@
 {
     public class CloneBoss : CloneBehavior
     {
+        private static CloneBoss instance;
+
         private CloneBoss()
         {
         }
-        
-        private static CloneBoss instance;
 
         public static CloneBoss Instance
         {

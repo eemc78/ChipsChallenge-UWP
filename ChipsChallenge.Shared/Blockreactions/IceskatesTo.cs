@@ -1,16 +1,15 @@
 ﻿namespace ChipsChallenge.Shared.Blockreactions
 {
-    using Type = Block.Type;
     using Boots = Inventory.Boots;
+    using Type = Block.Type;
 
     public class IceskatesTo : NoSlipReaction
     {
+        private static IceskatesTo instance;
 
         private IceskatesTo()
         {
         }
-        
-        private static IceskatesTo instance;
 
         public static IceskatesTo Instance
         {

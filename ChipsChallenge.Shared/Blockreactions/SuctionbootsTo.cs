@@ -1,14 +1,15 @@
 ﻿namespace ChipsChallenge.Shared.Blockreactions
 {
-    using Type = Block.Type;
     using Boots = Inventory.Boots;
+    using Type = Block.Type;
 
     public class SuctionbootsTo : NoSlipReaction
     {
+        private static SuctionbootsTo instance;
+
         private SuctionbootsTo()
         {
         }
-        private static SuctionbootsTo instance;
 
         public static SuctionbootsTo Instance
         {

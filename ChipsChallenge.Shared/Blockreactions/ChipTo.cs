@@ -2,10 +2,11 @@
 {
     public class ChipTo : NoSlipReaction
     {
+        private static ChipTo instance;
+
         private ChipTo()
         {
         }
-        private static ChipTo instance;
 
         public static ChipTo Instance
         {

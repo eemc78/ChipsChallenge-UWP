@@ -4,10 +4,11 @@
 
     public class GliderTickBehavior : IBlockTickBehavior
     {
+        private static GliderTickBehavior instance;
+
         private GliderTickBehavior()
         {
         }
-        private static GliderTickBehavior instance;
 
         public static GliderTickBehavior Instance
         {
@@ -20,7 +21,39 @@
             }
         }
 
-        private bool move(Block caller, Moves m)
+        public virtual void Tick(Block caller)
+        {
+            Moves m = caller.Facing;
+            switch (m)
+            {
+                case Moves.UP:
+                    if (Move(caller, Moves.UP) || Move(caller, Moves.LEFT) || Move(caller, Moves.RIGHT) || Move(caller, Moves.DOWN))
+                    {
+                    }
+
+                    break;
+                case Moves.RIGHT:
+                    if (Move(caller, Moves.RIGHT) || Move(caller, Moves.UP) || Move(caller, Moves.DOWN) || Move(caller, Moves.LEFT))
+                    {
+                    }
+
+                    break;
+                case Moves.LEFT:
+                    if (Move(caller, Moves.LEFT) || Move(caller, Moves.DOWN) || Move(caller, Moves.UP) || Move(caller, Moves.RIGHT))
+                    {
+                    }
+
+                    break;
+                case Moves.DOWN:
+                    if (Move(caller, Moves.DOWN) || Move(caller, Moves.RIGHT) || Move(caller, Moves.LEFT) || Move(caller, Moves.UP))
+                    {
+                    }
+
+                    break;
+            }
+        }
+
+        private bool Move(Block caller, Moves m)
         {
             Moves before = caller.Facing;
             bool ret = caller.Move(m);
@@ -28,35 +61,8 @@
             {
                 caller.Facing = before;
             }
-            return ret;
-        }
 
-        public virtual void Tick(Block caller)
-        {
-            Moves m = caller.Facing;
-            switch (m)
-            {
-                case Moves.UP:
-                    if (move(caller, Moves.UP) || move(caller, Moves.LEFT) || move(caller, Moves.RIGHT) || move(caller, Moves.DOWN))
-                    {
-                    }
-                    break;
-                case Moves.RIGHT:
-                    if (move(caller, Moves.RIGHT) || move(caller, Moves.UP) || move(caller, Moves.DOWN) || move(caller, Moves.LEFT))
-                    {
-                    }
-                    break;
-                case Moves.LEFT:
-                    if (move(caller, Moves.LEFT) || move(caller, Moves.DOWN) || move(caller, Moves.UP) || move(caller, Moves.RIGHT))
-                    {
-                    }
-                    break;
-                case Moves.DOWN:
-                    if (move(caller, Moves.DOWN) || move(caller, Moves.RIGHT) || move(caller, Moves.LEFT) || move(caller, Moves.UP))
-                    {
-                    }
-                    break;
-            }
+            return ret;
         }
     }
 }

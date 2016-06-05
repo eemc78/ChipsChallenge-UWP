@@ -6,10 +6,11 @@ namespace ChipsChallenge.Shared.Tickbehaviors
 
     public class TeethTickBehavior : IBlockTickBehavior
     {
+        private static TeethTickBehavior instance;
+
         private TeethTickBehavior()
         {
         }
-        private static TeethTickBehavior instance;
 
         public static TeethTickBehavior Instance
         {

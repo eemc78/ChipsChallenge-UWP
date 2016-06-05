@@ -1,14 +1,15 @@
 ﻿namespace ChipsChallenge.Shared.Blockreactions
 {
-    using Type = Block.Type;
     using Key = Inventory.Key;
+    using Type = Block.Type;
 
     public class RedKeyTo : NoSlipReaction
     {
+        private static RedKeyTo instance;
+
         private RedKeyTo()
         {
         }
-        private static RedKeyTo instance;
 
         public static RedKeyTo Instance
         {

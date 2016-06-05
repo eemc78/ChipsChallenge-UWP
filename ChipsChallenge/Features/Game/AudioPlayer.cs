@@ -5,11 +5,11 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using Shared;
+
     using Windows.Media.Audio;
     using Windows.Media.Render;
     using Windows.Storage;
-
-    using Shared;
 
     public class AudioPlayer
     {

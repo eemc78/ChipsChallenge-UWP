@@ -2,11 +2,7 @@
 {
     public abstract class LevelFactory
     {
-        public abstract GameLevel GetLevel(int n);
-
-        public abstract int LastLevelNumber {get;}
-
-        protected internal abstract int GetLevelNumberByPassword(string pass);
+        public abstract int LastLevelNumber { get; }
 
         public GameLevel GetLevelByPassword(string password)
         {
@@ -15,7 +11,12 @@
             {
                 return null;
             }
+
             return GetLevel(n);
         }
+
+        public abstract GameLevel GetLevel(int n);
+
+        protected internal abstract int GetLevelNumberByPassword(string pass);
     }
 }

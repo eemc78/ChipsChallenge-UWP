@@ -5,10 +5,11 @@
 
     public class IceCornerTo : BlockReaction
     {
+        private static IceCornerTo instance;
+
         private IceCornerTo()
         {
         }
-        private static IceCornerTo instance;
 
         public static IceCornerTo Instance
         {

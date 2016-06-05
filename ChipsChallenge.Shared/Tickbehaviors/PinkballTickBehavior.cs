@@ -4,11 +4,11 @@
 
     public class PinkballTickBehavior : IBlockTickBehavior
     {
+        private static PinkballTickBehavior instance;
 
         private PinkballTickBehavior()
         {
         }
-        private static PinkballTickBehavior instance;
 
         public static PinkballTickBehavior Instance
         {

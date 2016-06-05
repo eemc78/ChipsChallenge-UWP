@@ -9,8 +9,13 @@
     <Page.DataContext>
         <settings:SettingsViewModel/>
     </Page.DataContext>
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <StackPanel Orientation="Vertical" Margin="10">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Settings" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,0,10"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
             <ToggleSwitch Header="Background Music" IsOn="{Binding BackgroundMusic, Mode=TwoWay}" IsEnabled="{Binding GameViewModel.IsGameInitialized}" />
             <ToggleSwitch Header="Sound Effects" IsOn="{Binding SoundEffects, Mode=TwoWay}" IsEnabled="{Binding GameViewModel.IsGameInitialized}" />
         </StackPanel>

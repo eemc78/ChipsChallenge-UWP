@@ -4,10 +4,11 @@
 
     public class FirebootsTo : NoSlipReaction
     {
+        private static FirebootsTo instance;
+
         private FirebootsTo()
         {
         }
-        private static FirebootsTo instance;
 
         public static FirebootsTo Instance
         {

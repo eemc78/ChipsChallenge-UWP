@@ -2,10 +2,11 @@
 {
     public class BlueWallRealTo : NoSlipReaction
     {
+        private static BlueWallRealTo instance;
+
         private BlueWallRealTo()
         {
         }
-        private static BlueWallRealTo instance;
 
         public static BlueWallRealTo Instance
         {

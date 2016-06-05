@@ -1,14 +1,14 @@
-﻿using System;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
+    using System;
+
     public class CloneNotSupportedException : Exception
     {
           public CloneNotSupportedException()
           {
           }
 
-          public CloneNotSupportedException(String message) : base(message)
+          public CloneNotSupportedException(string message) : base(message)
           {
           }
     }

@@ -4,11 +4,11 @@
 
     public class ParameciumTickBehavior : IBlockTickBehavior
     {
+        private static ParameciumTickBehavior instance;
+
         private ParameciumTickBehavior()
         {
         }
-
-        private static ParameciumTickBehavior instance;
 
         public static ParameciumTickBehavior Instance
         {

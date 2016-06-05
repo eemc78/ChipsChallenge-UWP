@@ -4,10 +4,11 @@
 
     public class RecessedWallTo : NoSlipReaction
     {
+        private static RecessedWallTo instance;
+
         private RecessedWallTo()
         {
         }
-        private static RecessedWallTo instance;
 
         public static RecessedWallTo Instance
         {

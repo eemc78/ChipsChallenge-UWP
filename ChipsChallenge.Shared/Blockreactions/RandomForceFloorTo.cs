@@ -5,10 +5,11 @@
 
     public class RandomForceFloorTo : BlockReaction
     {
+        private static RandomForceFloorTo instance;
+
         private RandomForceFloorTo()
         {
         }
-        private static RandomForceFloorTo instance;
 
         public static RandomForceFloorTo Instance
         {
@@ -32,7 +33,7 @@
 
         public override Moves? CausesSlip(Block moving, Block standing)
         {
-            if ((moving.Chip && HasBoots(Boots.SUCTIONBOOTS)))
+            if (moving.Chip && HasBoots(Boots.SUCTIONBOOTS))
             {
                 return null;
             }

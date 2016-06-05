@@ -2,12 +2,11 @@
 {
     public class TeleportTo : SlipReaction
     {
+        private static TeleportTo instance;
 
         private TeleportTo()
         {
         }
-
-        private static TeleportTo instance;
 
         public static TeleportTo Instance
         {
@@ -24,18 +23,19 @@
         {
             Point origin = Level().GetPoint(standing);
             Point currentStart = origin;
-            BlockContainer goal;
-            Point remote;
-            Point moveTo;
-            do
+
+            var remote = Teleports.Next(currentStart);
+            var moveTo = new Point(remote.X, remote.Y);
+            Move.UpdatePoint(ref moveTo, moving.Facing);
+            var goal = Level().GetBlockContainer(moveTo.X, moveTo.Y);
+            currentStart = remote;
+
+            if (!goal.CanMoveTo(moving) && !currentStart.Equals(origin))
             {
-                remote = Teleports.Next(currentStart);
-                moveTo = new Point(remote.X, remote.Y);
-                Move.UpdatePoint(ref moveTo, moving.Facing);
-                goal = Level().GetBlockContainer(moveTo.X, moveTo.Y);
-                currentStart = remote;
-            } while (!goal.CanMoveTo(moving) && !currentStart.Equals(origin));
-            if (remote.Equals(origin))
+                // destination blocked
+                // TODO: Play ChipHum. If moving is block, do not move it away from teleport.
+            }
+            else if (remote.Equals(origin))
             {
                 // Totally blocked
             }

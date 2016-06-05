@@ -2,10 +2,11 @@
 {
     public class DirtTo : NoSlipReaction
     {
+        private static DirtTo instance;
+
         private DirtTo()
         {
         }
-        private static DirtTo instance;
 
         public static DirtTo Instance
         {

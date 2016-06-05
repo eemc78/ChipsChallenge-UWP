@@ -2,11 +2,11 @@
 {
     public class CreatureTo : NoSlipReaction
     {
+        private static CreatureTo instance;
+
         private CreatureTo()
         {
         }
-
-        private static CreatureTo instance;
 
         public static CreatureTo Instance
         {

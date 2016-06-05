@@ -1,6 +1,6 @@
 ﻿namespace ChipsChallenge.Features.Game.UserInput
 {
-    using ChipsChallenge.Shared.Gui;
+    using Shared.Gui;
 
     public abstract class UserInputBase
     {

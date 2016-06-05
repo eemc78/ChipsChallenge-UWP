@@ -4,11 +4,11 @@
 
     public class ThinWallSeTo : NoSlipReaction
     {
+        private static ThinWallSeTo instance;
 
         private ThinWallSeTo()
         {
         }
-        private static ThinWallSeTo instance;
 
         public static ThinWallSeTo Instance
         {

@@ -4,11 +4,11 @@
 
     public class BlobTickBehavior : IBlockTickBehavior
     {
+        private static BlobTickBehavior instance;
+
         private BlobTickBehavior()
         {
         }
-        
-        private static BlobTickBehavior instance;
 
         public static BlobTickBehavior Instance
         {

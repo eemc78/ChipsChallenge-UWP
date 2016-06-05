@@ -2,11 +2,11 @@
 {
     public class HintFrom : NoSlipReaction
     {
+        private static HintFrom instance;
+
         private HintFrom()
         {
         }
-
-        private static HintFrom instance;
 
         public static HintFrom Instance
         {

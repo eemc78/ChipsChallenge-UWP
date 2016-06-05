@@ -5,10 +5,11 @@
     /// </summary>
     public class ToggleWallBehavior : IButtonBehavior
     {
+        private static ToggleWallBehavior instance;
+
         private ToggleWallBehavior()
         {
         }
-        private static ToggleWallBehavior instance;
 
         public static ToggleWallBehavior Instance
         {

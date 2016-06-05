@@ -7,10 +7,11 @@
     /// </summary>
     public class BlockTo : NoSlipReaction
     {
+        private static BlockTo instance;
+
         private BlockTo()
         {
         }
-        private static BlockTo instance;
 
         public static BlockTo Instance
         {
@@ -42,7 +43,7 @@
 
                 // We want to exclude ice corners here
                 bool isOnIce = standing.IsOn(Block.Type.ICE);
-                bool ret = (isOnIce || !isOnIce && standing.CanMoveFrom()) && standing.CanMoveTo(moving.Facing);
+                bool ret = (isOnIce || standing.CanMoveFrom()) && standing.CanMoveTo(moving.Facing);
                 standing.Facing = facingBefore;
                 return ret;
             }

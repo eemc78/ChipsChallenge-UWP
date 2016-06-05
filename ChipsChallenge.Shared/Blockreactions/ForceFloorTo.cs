@@ -5,11 +5,11 @@
 
     public class ForceFloorTo : BlockReaction
     {
+        private static ForceFloorTo instance;
+
         private ForceFloorTo()
         {
         }
-
-        private static ForceFloorTo instance;
 
         public static ForceFloorTo Instance
         {

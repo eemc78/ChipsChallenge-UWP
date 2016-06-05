@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class Buttons
     {
         private static readonly ICollection<Block> GreenButtonsListeners = new List<Block>();
@@ -85,6 +85,7 @@ namespace ChipsChallenge.Shared
                     b.ButtonDown(null);
                 }
             }
+
             if (blueButton)
             {
                 foreach (Block b in BlueButtonsListeners.ToList())
@@ -92,6 +93,7 @@ namespace ChipsChallenge.Shared
                     b.ButtonDown(null);
                 }
             }
+
             greenButton = false;
             blueButton = false;
         }

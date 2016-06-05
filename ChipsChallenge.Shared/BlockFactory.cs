@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
-    using Type = Block.Type;
+    using System.Collections.Generic;
+
     using Moves = Move.Moves;
+    using Type = Block.Type;
 
     public abstract class BlockFactory
     {

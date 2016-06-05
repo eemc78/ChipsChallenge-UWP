@@ -3,15 +3,15 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Windows.Gaming.Input;
+    using Shared.Gui;
 
-    using ChipsChallenge.Shared.Gui;
+    using Windows.Gaming.Input;
 
     public class GamePadInput : UserInputBase
     {
-        private Gamepad gamepad;
-
         private readonly Dictionary<GamepadButtons, UserInput> buttonMapping;
+
+        private Gamepad gamepad;
 
         public GamePadInput()
         {

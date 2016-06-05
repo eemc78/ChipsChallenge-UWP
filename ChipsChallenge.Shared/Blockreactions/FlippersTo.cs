@@ -4,10 +4,11 @@
 
     public class FlippersTo : NoSlipReaction
     {
+        private static FlippersTo instance;
+
         private FlippersTo()
         {
         }
-        private static FlippersTo instance;
 
         public static FlippersTo Instance
         {

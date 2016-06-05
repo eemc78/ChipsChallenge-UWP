@@ -2,11 +2,11 @@
 {
     public class SocketTo : NoSlipReaction
     {
+        private static SocketTo instance;
+
         private SocketTo()
         {
         }
-
-        private static SocketTo instance;
 
         public static SocketTo Instance
         {

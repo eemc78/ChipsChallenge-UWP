@@ -4,11 +4,11 @@
 
     public class BlueKeyTo : NoSlipReaction
     {
+        private static BlueKeyTo instance;
+
         private BlueKeyTo()
         {
         }
-
-        private static BlueKeyTo instance;
 
         public static BlueKeyTo Instance
         {

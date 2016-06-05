@@ -2,10 +2,11 @@
 {
     public class HintTo : NoSlipReaction
     {
+        private static HintTo mInstance;
+
         private HintTo()
         {
         }
-        private static HintTo mInstance;
 
         public static HintTo Instance
         {

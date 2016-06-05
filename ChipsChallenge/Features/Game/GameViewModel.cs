@@ -3,7 +3,6 @@
 namespace ChipsChallenge.Features.Game
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
     using System.Runtime.CompilerServices;
@@ -23,9 +22,8 @@ namespace ChipsChallenge.Features.Game
     {
         public readonly AudioPlayer AudioPlayer = new AudioPlayer();
         private string levelTitle = string.Empty;
-        private CanvasBitmap playField, hudLandscape, hudPortrait;
-        private Dictionary<Shared.Gui.UserInput, Action> userInputMapping;
-        private bool isGameInitialized;
+
+        private bool restartRequested;
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly PlayField gamePlayField = new PlayField(9, 9);
         private ApplicationViewOrientation orientation = ApplicationViewOrientation.Landscape;
@@ -33,21 +31,6 @@ namespace ChipsChallenge.Features.Game
         public async Task Initialize()
         {
             await AudioPlayer.InitializeSound();
-
-            userInputMapping = new Dictionary<Shared.Gui.UserInput, Action>
-                             {
-                                 { Shared.Gui.UserInput.MoveUp, MoveUp },
-                                 { Shared.Gui.UserInput.MoveDown, MoveDown },
-                                 { Shared.Gui.UserInput.MoveLeft, MoveLeft },
-                                 { Shared.Gui.UserInput.MoveRight, MoveRight },
-                                 { Shared.Gui.UserInput.NextLevel, NextLevel },
-                                 { Shared.Gui.UserInput.PreviousLevel, PreviousLevel },
-                                 { Shared.Gui.UserInput.RestartLevel, RestartLevel },
-                                 { Shared.Gui.UserInput.Pause, PauseGame },
-                                 { Shared.Gui.UserInput.Unpause, StartOrResumeGame },
-                                 { Shared.Gui.UserInput.TogglePause, TogglePause }
-                             };
-
             await InitializeHudImageFactory();
             await InitializeBlockImageFactory();
             await InitializeLevelFactory();
@@ -90,35 +73,13 @@ namespace ChipsChallenge.Features.Game
 
         private Shared.Game GameInstance => Shared.Game.Instance;
 
-        public bool IsGameInitialized
-        {
-            get
-            {
-                return isGameInitialized;
-            }
-            private set
-            {
-                isGameInitialized = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsGameInitialized { get; private set; }
+
         public int TotalLevelCount => GameInstance.TotalLevelCount;
 
         public int CurrentLevelNumber => GameInstance.CurrentLevelNumber;
 
-        public CanvasBitmap PlayField
-        {
-            get
-            {
-                return playField;
-            }
-
-            set
-            {
-                playField = value;
-                OnPropertyChanged();
-            }
-        }
+        public CanvasBitmap PlayField { get; set; }
 
         public string LevelTitle
         {
@@ -134,33 +95,9 @@ namespace ChipsChallenge.Features.Game
             }
         }
 
-        public CanvasBitmap HudLandscape
-        {
-            get
-            {
-                return hudLandscape;
-            }
+        public CanvasBitmap HudLandscape { get; set; }
 
-            set
-            {
-                hudLandscape = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public CanvasBitmap HudPortrait
-        {
-            get
-            {
-                return hudPortrait;
-            }
-
-            set
-            {
-                hudPortrait = value;
-                OnPropertyChanged();
-            }
-        }
+        public CanvasBitmap HudPortrait { get; set; }
 
         public ApplicationViewOrientation Orientation
         {
@@ -177,21 +114,6 @@ namespace ChipsChallenge.Features.Game
 
                 orientation = value;
                 UpdateGame();
-                OnPropertyChanged();
-            }
-        }
-
-        public void ExecuteUserInput(Shared.Gui.UserInput input)
-        {
-
-            if (userInputMapping.ContainsKey(input))
-            {
-                userInputMapping[input].Invoke();
-            }
-
-            else
-            {
-                throw new NotImplementedException("Input mapping not implemented!");
             }
         }
 
@@ -233,7 +155,7 @@ namespace ChipsChallenge.Features.Game
             UpdateGame();
         }
 
-        private void TogglePause()
+        public void TogglePause()
         {
             if (!GameInstance.IsStarted)
             {
@@ -277,22 +199,26 @@ namespace ChipsChallenge.Features.Game
             GameInstance.PlayBackgroundMusic();
         }
 
-        public async void  UpdateGame()
+        public void UpdateGame()
         {
-            await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            if (restartRequested)
             {
-                GameInstance.Tick();
-                PlayField = gamePlayField.GeneratePlayField();
+                restartRequested = false;
+                RestartLevel();
+                return;
+            }
 
-                if (Orientation == ApplicationViewOrientation.Landscape)
-                {
-                    HudLandscape = Hud.Instance.GetHudLandscape();
-                }
-                else
-                {
-                    HudPortrait = Hud.Instance.GetHudPortrait();
-                }
-            });
+            GameInstance.Tick();
+            PlayField = gamePlayField.GeneratePlayField();
+
+            if (Orientation == ApplicationViewOrientation.Landscape)
+            {
+                HudLandscape = Hud.Instance.GetHudLandscape();
+            }
+            else
+            {
+                HudPortrait = Hud.Instance.GetHudPortrait();
+            }
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -306,11 +232,8 @@ namespace ChipsChallenge.Features.Game
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
                 var dialog = new MessageDialog(eventArgs.Message);
-                dialog.Commands.Add(new UICommand("Restart level") {Id = 0});
-
+                dialog.Commands.Add(new UICommand("Restart level", _ => restartRequested = true) { Id = 0 });
                 await dialog.ShowAsync();
-
-                GameInstance.Restart();
             });
         }
     }

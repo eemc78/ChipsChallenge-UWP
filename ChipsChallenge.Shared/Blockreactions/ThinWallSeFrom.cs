@@ -4,12 +4,11 @@
 
     public class ThinWallSeFrom : NoSlipReaction
     {
+        private static ThinWallSeFrom instance;
 
         private ThinWallSeFrom()
         {
         }
-
-        private static ThinWallSeFrom instance;
 
         public static ThinWallSeFrom Instance
         {

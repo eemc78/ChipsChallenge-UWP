@@ -5,10 +5,11 @@
     /// </summary>
     public class CanMove : NoSlipReaction
     {
+        private static CanMove instance;
+
         private CanMove()
         {
         }
-        private static CanMove instance;
 
         public static CanMove Instance
         {

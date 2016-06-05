@@ -1,10 +1,16 @@
 ﻿namespace ChipsChallenge.Features
 {
+    using System;
     using System.ComponentModel;
     using System.Linq;
 
+    using Windows.UI.Core;
     using Windows.UI.ViewManagement;
+    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Data;
+
+    using ChipsChallenge.Features.Levels;
 
     using Game;
 
@@ -12,6 +18,7 @@
     {
         public static MainPage Current;
         public GameViewModel GameViewModel = new GameViewModel();
+        public LevelsViewModel LevelsViewModel = new LevelsViewModel();
 
         public Frame MainContentFrame => ContentFrame;
 
@@ -26,6 +33,8 @@
             {
                 GameViewModel.PropertyChanged += GameViewModelOnPropertyChanged;
                 await GameViewModel.Initialize();
+                LevelsViewModel.Initialize();
+
 
                 ContentFrame.Navigate(typeof(Game.Game));
             };
@@ -36,12 +45,15 @@
             Menu.SelectedItem = Menu.Items.OfType<MenuItem>().First(x => x.View == typeof(Game.Game));
         }
 
-        private void GameViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        private async void GameViewModelOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
         {
             if (propertyChangedEventArgs.PropertyName == nameof(GameViewModel.LevelTitle))
             {
-                var appView = ApplicationView.GetForCurrentView();
-                appView.Title = GameViewModel.LevelTitle;
+                await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    var appView = ApplicationView.GetForCurrentView();
+                    appView.Title = GameViewModel.LevelTitle;
+                });
             }
         }
 
@@ -69,10 +81,25 @@
             NavigationSplitView.IsPaneOpen = false;
         }
 
-        private void MenuButtonClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void MenuButtonClick(object sender, RoutedEventArgs e)
         {
             GameViewModel.PauseGame();
             NavigationSplitView.IsPaneOpen = !NavigationSplitView.IsPaneOpen;
+        }
+
+        private void PreviousButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            LevelsViewModel.PreviousLevel();
+        }
+
+        private void Restart_OnClick(object sender, RoutedEventArgs e)
+        {
+            LevelsViewModel.RestartLevel();
+        }
+
+        private void Next_OnClick(object sender, RoutedEventArgs e)
+        {
+            LevelsViewModel.NextLevel();
         }
     }
 }

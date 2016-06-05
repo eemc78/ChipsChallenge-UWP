@@ -16,6 +16,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavigationSplitView.DisplayMode" Value="CompactInline"/>
+                        <Setter Target="CommandBar.ClosedDisplayMode" Value="Hidden" />
                         <!--<Setter Target="NavigationSplitView.IsPaneOpen" Value="True"/>-->
                     </VisualState.Setters>
                 </VisualState>
@@ -33,6 +34,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="ContentMenuMinimal.Visibility" Value="Visible" />
+                        <Setter Target="CommandBar.ClosedDisplayMode" Value="Minimal" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -73,6 +75,13 @@
                 </Grid>
             </SplitView.Content>
         </SplitView>
-
     </Grid>
+    
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Minimal" x:Name="CommandBar">
+            <AppBarButton Icon="Previous" Label="Previous" Click="PreviousButton_OnClick"/>
+            <AppBarButton Icon="Refresh" Label="Restart" Click="Restart_OnClick" />
+            <AppBarButton Icon="Next" Label="Next" Click="Next_OnClick"/>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

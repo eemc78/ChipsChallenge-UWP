@@ -4,11 +4,11 @@
 
     public class ThinWallFrom : NoSlipReaction
     {
+        private static ThinWallFrom instance;
+
         private ThinWallFrom()
         {
         }
-
-        private static ThinWallFrom instance;
 
         public static ThinWallFrom Instance
         {
@@ -38,6 +38,7 @@
                 case Moves.RIGHT:
                     return standing.Facing != Moves.RIGHT;
             }
+
             return false;
         }
     }

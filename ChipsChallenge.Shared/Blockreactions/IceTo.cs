@@ -5,10 +5,11 @@
 
     public class IceTo : BlockReaction
     {
+        private static IceTo instance;
+
         private IceTo()
         {
         }
-        private static IceTo instance;
 
         public static IceTo Instance
         {

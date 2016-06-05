@@ -4,10 +4,11 @@
 
     public class BlueWallFakeTo : NoSlipReaction
     {
+        private static BlueWallFakeTo instance;
+
         private BlueWallFakeTo()
         {
         }
-        private static BlueWallFakeTo instance;
 
         public static BlueWallFakeTo Instance
         {

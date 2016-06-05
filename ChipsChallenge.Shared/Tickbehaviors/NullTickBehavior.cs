@@ -2,11 +2,11 @@
 {
     public class NullTickBehavior : IBlockTickBehavior
     {
+        private static NullTickBehavior instance;
+
         private NullTickBehavior()
         {
         }
-
-        private static NullTickBehavior _mInstance;
 
         public static NullTickBehavior Instance
         {
@@ -14,7 +14,7 @@
             {
                 lock (typeof(NullTickBehavior))
                 {
-                    return _mInstance ?? (_mInstance = new NullTickBehavior());
+                    return instance ?? (instance = new NullTickBehavior());
                 }
             }
         }

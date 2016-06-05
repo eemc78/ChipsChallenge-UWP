@@ -2,11 +2,11 @@
 {
     using System;
 
-    using Windows.UI.Xaml.Input;
+    using Microsoft.Graphics.Canvas.UI.Xaml;
 
     using Shared.Gui;
 
-    using Microsoft.Graphics.Canvas.UI.Xaml;
+    using Windows.UI.Xaml.Input;
 
     public class SwipeInput : UserInputBase
     {

@@ -2,10 +2,11 @@
 {
     public class BlueLockTo : NoSlipReaction
     {
+        private static BlueLockTo instance;
+
         private BlueLockTo()
         {
         }
-        private static BlueLockTo instance;
 
         public static BlueLockTo Instance
         {

@@ -4,11 +4,11 @@
 
     public class ThinWallTo : NoSlipReaction
     {
+        private static ThinWallTo instance;
 
         private ThinWallTo()
         {
         }
-        private static ThinWallTo instance;
 
         public static ThinWallTo Instance
         {
@@ -38,6 +38,7 @@
                 case Moves.RIGHT:
                     return standing.Facing != Moves.LEFT;
             }
+
             return false;
         }
     }

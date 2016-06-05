@@ -1,9 +1,9 @@
 ﻿namespace ChipsChallenge.Features.Game.UserInput
 {
+    using Shared.Gui;
+
     using Windows.System;
     using Windows.UI.Core;
-
-    using Shared.Gui;
 
     public class KeyBoardInput : UserInputBase
     {
@@ -23,6 +23,7 @@
             {
                 isCtrlKeyPressed = true;
             }
+
             if (isCtrlKeyPressed)
             {
                 switch (args.VirtualKey)

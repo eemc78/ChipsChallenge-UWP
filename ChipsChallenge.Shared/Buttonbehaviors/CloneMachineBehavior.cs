@@ -1,17 +1,17 @@
-﻿using System;
-
-namespace ChipsChallenge.Shared.Buttonbehaviors
+﻿namespace ChipsChallenge.Shared.Buttonbehaviors
 {
+    using System;
+
     /// <summary>
     /// If the button was red, clone what's on top of the listener
     /// </summary>
     public class CloneMachineBehavior : IButtonBehavior
     {
+        private static CloneMachineBehavior instance;
+
         private CloneMachineBehavior()
         {
         }
-
-        private static CloneMachineBehavior instance;
 
         public static CloneMachineBehavior Instance
         {
@@ -31,20 +31,24 @@ namespace ChipsChallenge.Shared.Buttonbehaviors
                 Game g = Game.Instance;
                 GameLevel gl = g.Level;
                 BlockContainer bc = gl.GetBlockContainer(listener);
+
                 // Take the first creature and clone it
                 Block b = bc.Upper;
 
-                
                 if (b.Creature || b.IsBlock())
                 {
                     BlockContainer moveTo = gl.GetBlockContainer(b, b.Facing);
-                    if (moveTo.CanMoveTo(b)) {
-                        try 
+                    if (moveTo.CanMoveTo(b))
+                    {
+                        try
                         {
                             Block clone = g.BlockFactory.Get(b.getType(), b.Facing);
                             Point p = b.Point;
-                            //Move.updatePoint(p, b.getFacing());
-                            if (clone.Creature && !(clone.IsA(Block.Type.TEETH) || clone.IsA(Block.Type.BLOB) || clone.IsA(Block.Type.FIREBALL))) 
+
+                            // Move.updatePoint(p, b.getFacing());
+                            if (clone.Creature
+                                && !(clone.IsA(Block.Type.TEETH) || clone.IsA(Block.Type.BLOB)
+                                     || clone.IsA(Block.Type.FIREBALL)))
                             {
                                 g.AddBlockDelay(clone, p, 3);
                             }
@@ -52,19 +56,19 @@ namespace ChipsChallenge.Shared.Buttonbehaviors
                             {
                                 gl.AddBlock(p.X, p.Y, clone, 2);
                                 gl.MoveBlock(clone, clone.Facing, true, false);
-                                if (clone.Creature) 
+                                if (clone.Creature)
                                 {
                                     Creatures.AddCreature(clone);
                                 }
                             }
-                        } 
+                        }
                         catch (BlockContainerFullException)
                         {
-                        // Ignore for now. TODO: Fix
+                            // Ignore for now. TODO: Fix
                         }
                     }
                 }
-                 
+
                 try
                 {
                     b.Clone();
@@ -75,7 +79,7 @@ namespace ChipsChallenge.Shared.Buttonbehaviors
                 }
                 catch (Exception)
                 {
-                    //System.out.println("Couldn't clone " + b);
+                    // System.out.println("Couldn't clone " + b);
                     // Ignore
                 }
             }

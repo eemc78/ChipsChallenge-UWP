@@ -4,10 +4,11 @@
 
     public class WaterFrom : NoSlipReaction
     {
+        private static WaterFrom instance;
+
         private WaterFrom()
         {
         }
-        private static WaterFrom instance;
 
         public static WaterFrom Instance
         {

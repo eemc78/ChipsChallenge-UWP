@@ -2,10 +2,10 @@
 {
     using System;
 
-    using ChipsChallenge.Shared.Gui;
+    using Shared.Gui;
 
     public class UserInputArgs : EventArgs
     {
-        public UserInput Input { set; get; }
+        public UserInput Input { get; set; }
     }
 }

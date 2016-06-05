@@ -5,10 +5,11 @@
 
     public class BootsTo : NoSlipReaction
     {
+        private static BootsTo instance;
+
         private BootsTo()
         {
         }
-        private static BootsTo instance;
 
         public static BootsTo Instance
         {

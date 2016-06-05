@@ -2,10 +2,11 @@
 {
     public class ComputerChipTo : NoSlipReaction
     {
+        private static ComputerChipTo instance;
+
         private ComputerChipTo()
         {
         }
-        private static ComputerChipTo instance;
 
         public static ComputerChipTo Instance
         {

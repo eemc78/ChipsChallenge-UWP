@@ -2,11 +2,11 @@
 {
     public class NullButtonBehavior : IButtonBehavior
     {
+        private static NullButtonBehavior instance;
+
         private NullButtonBehavior()
         {
         }
-
-        private static NullButtonBehavior instance;
 
         public static NullButtonBehavior Instance
         {

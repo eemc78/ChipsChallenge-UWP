@@ -5,10 +5,11 @@
 
     public class FireTo : NoSlipReaction
     {
+        private static FireTo instance;
+
         private FireTo()
         {
         }
-        private static FireTo instance;
 
         public static FireTo Instance
         {

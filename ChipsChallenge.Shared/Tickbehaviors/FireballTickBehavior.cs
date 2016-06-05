@@ -4,10 +4,11 @@
 
     public class FireballTickBehavior : IBlockTickBehavior
     {
+        private static FireballTickBehavior instance;
+
         private FireballTickBehavior()
         {
         }
-        private static FireballTickBehavior instance;
 
         public static FireballTickBehavior Instance
         {
@@ -20,37 +21,41 @@
             }
         }
 
-        private bool move(Block caller, Moves m)
-        {
-            return caller.Move(m);
-        }
-
         public virtual void Tick(Block caller)
         {
             Moves m = caller.Facing;
             switch (m)
             {
                 case Moves.UP:
-                    if (move(caller, Moves.UP) || move(caller, Moves.RIGHT) || move(caller, Moves.LEFT) || move(caller, Moves.DOWN))
+                    if (Move(caller, Moves.UP) || Move(caller, Moves.RIGHT) || Move(caller, Moves.LEFT) || Move(caller, Moves.DOWN))
                     {
                     }
+
                     break;
                 case Moves.RIGHT:
-                    if (move(caller, Moves.RIGHT) || move(caller, Moves.DOWN) || move(caller, Moves.UP) || move(caller, Moves.LEFT))
+                    if (Move(caller, Moves.RIGHT) || Move(caller, Moves.DOWN) || Move(caller, Moves.UP) || Move(caller, Moves.LEFT))
                     {
                     }
+
                     break;
                 case Moves.LEFT:
-                    if (move(caller, Moves.LEFT) || move(caller, Moves.UP) || move(caller, Moves.DOWN) || move(caller, Moves.RIGHT))
+                    if (Move(caller, Moves.LEFT) || Move(caller, Moves.UP) || Move(caller, Moves.DOWN) || Move(caller, Moves.RIGHT))
                     {
                     }
+
                     break;
                 case Moves.DOWN:
-                    if (move(caller, Moves.DOWN) || move(caller, Moves.LEFT) || move(caller, Moves.RIGHT) || move(caller, Moves.UP))
+                    if (Move(caller, Moves.DOWN) || Move(caller, Moves.LEFT) || Move(caller, Moves.RIGHT) || Move(caller, Moves.UP))
                     {
                     }
+
                     break;
             }
+        }
+
+        private static bool Move(Block caller, Moves m)
+        {
+            return caller.Move(m);
         }
     }
 }

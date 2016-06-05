@@ -2,10 +2,11 @@
 {
     public class CloneSameDirection : CloneBehavior
     {
+        private static CloneSameDirection instance;
+
         private CloneSameDirection()
         {
         }
-        private static CloneSameDirection instance;
 
         public static CloneSameDirection Instance
         {

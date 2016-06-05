@@ -2,10 +2,11 @@
 {
     public class BombTo : NoSlipReaction
     {
+        private static BombTo instance;
+
         private BombTo()
         {
         }
-        private static BombTo instance;
 
         public static BombTo Instance
         {

@@ -8,7 +8,7 @@
         public Levels()
         {
             InitializeComponent();
-            DataContext = new LevelsViewModel();
+            DataContext = MainPage.Current.LevelsViewModel;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
+    using System.Collections.Generic;
+
     public class Teleports
     {
         private static readonly ICollection<Point> TeleportCollection = new List<Point>();
@@ -28,6 +28,7 @@ namespace ChipsChallenge.Shared
                 {
                     continue; // Same place
                 }
+
                 int dx = o.X - p.X;
                 int dy = (o.Y - p.Y) * width;
                 int distance = dx + dy;
@@ -43,6 +44,7 @@ namespace ChipsChallenge.Shared
                     minPoint = p;
                 }
             }
+
             return minPoint;
         }
     }

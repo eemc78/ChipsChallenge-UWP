@@ -2,10 +2,11 @@
 {
     public class ThiefTo : NoSlipReaction
     {
+        private static ThiefTo instance;
+
         private ThiefTo()
         {
         }
-        private static ThiefTo instance;
 
         public static ThiefTo Instance
         {

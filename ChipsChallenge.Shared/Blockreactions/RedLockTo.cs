@@ -4,10 +4,11 @@
 
     public class RedLockTo : NoSlipReaction
     {
+        private static RedLockTo instance;
+
         private RedLockTo()
         {
         }
-        private static RedLockTo instance;
 
         public static RedLockTo Instance
         {

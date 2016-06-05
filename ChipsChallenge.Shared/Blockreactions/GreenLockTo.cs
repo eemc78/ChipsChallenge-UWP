@@ -4,10 +4,11 @@
 
     public class GreenLockTo : NoSlipReaction
     {
+        private static GreenLockTo instance;
+
         private GreenLockTo()
         {
         }
-        private static GreenLockTo instance;
 
         public static GreenLockTo Instance
         {

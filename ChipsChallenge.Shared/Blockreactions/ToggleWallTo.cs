@@ -2,10 +2,11 @@
 {
     public class ToggleWallTo : NoSlipReaction
     {
+        private static ToggleWallTo instance;
+
         private ToggleWallTo()
         {
         }
-        private static ToggleWallTo instance;
 
         public static ToggleWallTo Instance
         {

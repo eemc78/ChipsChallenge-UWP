@@ -27,7 +27,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BrownButtonFrom.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\BrownButtonTo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\CanMove.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\canMoveNoSlip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\CanMoveNoSlip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\CannotMove.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ChipTo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Blockreactions\ComputerChipTo.cs" />

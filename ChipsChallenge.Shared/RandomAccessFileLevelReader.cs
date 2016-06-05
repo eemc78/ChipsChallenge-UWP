@@ -1,7 +1,7 @@
-﻿using System.IO;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
+    using System.IO;
+
     public class RandomAccessFileLevelReader : ILevelFileReader
     {
         private readonly BinaryReader binaryReader;

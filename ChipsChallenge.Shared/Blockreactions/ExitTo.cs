@@ -2,10 +2,11 @@
 {
     public class ExitTo : NoSlipReaction
     {
+        private static ExitTo instance;
+
         private ExitTo()
         {
         }
-        private static ExitTo instance;
 
         public static ExitTo Instance
         {

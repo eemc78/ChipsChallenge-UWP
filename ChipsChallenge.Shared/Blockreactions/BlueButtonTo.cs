@@ -2,10 +2,11 @@
 {
     public class BlueButtonTo : NoSlipReaction
     {
+        private static BlueButtonTo instance;
+
         private BlueButtonTo()
         {
         }
-        private static BlueButtonTo instance;
 
         public static BlueButtonTo Instance
         {

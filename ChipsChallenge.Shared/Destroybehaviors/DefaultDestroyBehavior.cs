@@ -5,11 +5,11 @@
 
     public class DefaultDestroyBehavior : IDestroyBehavior
     {
+        private static DefaultDestroyBehavior instance;
+
         private DefaultDestroyBehavior()
         {
         }
-        
-        private static DefaultDestroyBehavior instance;
 
         public static DefaultDestroyBehavior Instance
         {

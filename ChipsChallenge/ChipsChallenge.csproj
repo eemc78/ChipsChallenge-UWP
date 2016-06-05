@@ -112,6 +112,8 @@
     <Compile Include="Features\Game\UserInput\SwipeInput.cs" />
     <Compile Include="Features\Game\UserInput\UserInputArgs.cs" />
     <Compile Include="Features\Game\UserInput\UserInputBase.cs" />
+    <Compile Include="Features\Levels\DelegateCommand.cs" />
+    <Compile Include="Features\Levels\LevelControl.cs" />
     <Compile Include="Features\Levels\Levels.xaml.cs">
       <DependentUpon>Levels.xaml</DependentUpon>
     </Compile>

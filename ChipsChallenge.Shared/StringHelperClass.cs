@@ -10,6 +10,7 @@ internal static class StringHelperClass
     {
         return NewString(bytes, 0, bytes.Length, encoding);
     }
+
     internal static string NewString(sbyte[] bytes, int index, int count, string encoding)
     {
         return System.Text.Encoding.GetEncoding(encoding).GetString((byte[])(object)bytes, index, count);

@@ -1,6 +1,7 @@
 ﻿namespace ChipsChallenge.Features.Game
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Numerics;
     using System.Threading.Tasks;
@@ -30,6 +31,7 @@
         private CanvasBitmap backgroundImagePortrait;
         private CanvasBitmap backgroundTile;
         private CanvasImageBrush backgroundTileBrush;
+        private readonly Dictionary<Shared.Gui.UserInput, Action> userInputMapping;
 
         public Game()
         {
@@ -37,7 +39,22 @@
             GameCanvas.TargetElapsedTime = TimeSpan.FromMilliseconds(100);
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            userInputMapping = new Dictionary<Shared.Gui.UserInput, Action>
+                             {
+                                 { Shared.Gui.UserInput.MoveUp,ViewModel.MoveUp },
+                                 { Shared.Gui.UserInput.MoveDown, ViewModel.MoveDown },
+                                 { Shared.Gui.UserInput.MoveLeft, ViewModel.MoveLeft },
+                                 { Shared.Gui.UserInput.MoveRight, ViewModel.MoveRight },
+                                 { Shared.Gui.UserInput.NextLevel, ViewModel.NextLevel },
+                                 { Shared.Gui.UserInput.PreviousLevel, ViewModel.PreviousLevel },
+                                 { Shared.Gui.UserInput.RestartLevel, ViewModel.RestartLevel },
+                                 { Shared.Gui.UserInput.Pause, ViewModel.PauseGame },
+                                 { Shared.Gui.UserInput.Unpause, ViewModel.StartOrResumeGame },
+                                 { Shared.Gui.UserInput.TogglePause, ViewModel.TogglePause }
+                             };
         }
+
+        private static GameViewModel ViewModel => MainPage.Current.GameViewModel;
 
         private void RefreshGameSize()
         {
@@ -51,13 +68,13 @@
             {
                 gameWidth = (int)backgroundImageLandscape.Size.Width;
                 gameHeight = (int)backgroundImageLandscape.Size.Height;
-                MainPage.Current.GameViewModel.Orientation = ApplicationViewOrientation.Landscape;
+                ViewModel.Orientation = ApplicationViewOrientation.Landscape;
             }
             else
             {
                 gameWidth = (int)backgroundImagePortrait.Size.Width;
                 gameHeight = (int)backgroundImagePortrait.Size.Height;
-                MainPage.Current.GameViewModel.Orientation = ApplicationViewOrientation.Portrait;
+                ViewModel.Orientation = ApplicationViewOrientation.Portrait;
             }
 
             double gameAspectRatio = (double)gameWidth / gameHeight;
@@ -82,10 +99,10 @@
             Window.Current.CoreWindow.KeyDown += keyBoardInput.WindowKeyDown;
             Window.Current.CoreWindow.KeyUp += keyBoardInput.WindowKeyUp;
 
-            gamepadInput.UserInputReceived += (s, args) => MainPage.Current.GameViewModel.ExecuteUserInput(args.Input);
-            keyBoardInput.UserInputReceived += (s, args) => MainPage.Current.GameViewModel.ExecuteUserInput(args.Input);
-            swipeJoystickInput.UserInputReceived += (s, args) => MainPage.Current.GameViewModel.ExecuteUserInput(args.Input);
-            swipeJoystickInput.ActivateTouchInput(GameCanvas);
+            gamepadInput.UserInputReceived += (s, args) => ExecuteUserInput(args.Input);
+            keyBoardInput.UserInputReceived += (s, args) => ExecuteUserInput(args.Input);
+            swipeJoystickInput.UserInputReceived += (s, args) => ExecuteUserInput(args.Input);
+            swipeJoystickInput.EnableSwipeJoystickFor(GameCanvas);
             gamepadTimer.Interval = TimeSpan.FromMilliseconds(20);
             gamepadTimer.Tick += GamepadTimerOnTick;
             gamepadTimer.Start();
@@ -93,7 +110,7 @@
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            MainPage.Current.GameViewModel.PauseGame();
+            ViewModel.PauseGame();
 
             Window.Current.CoreWindow.KeyDown -= keyBoardInput.WindowKeyDown;
             Window.Current.CoreWindow.KeyUp -= keyBoardInput.WindowKeyUp;
@@ -103,6 +120,18 @@
 
             gamepadTimer.Tick -= GamepadTimerOnTick;
             gamepadTimer.Stop();
+        }
+
+        public async void ExecuteUserInput(Shared.Gui.UserInput input)
+        {
+            if (userInputMapping.ContainsKey(input))
+            {
+                await GameCanvas.RunOnGameLoopThreadAsync(() => userInputMapping[input].Invoke());
+            }
+            else
+            {
+                throw new NotImplementedException("Input mapping not implemented!");
+            }
         }
 
         private void GameCanvasCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
@@ -119,7 +148,7 @@
 
         private void GameCanvasDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
-            if (!MainPage.Current.GameViewModel.IsGameInitialized || GameCanvas == null)
+            if (!ViewModel.IsGameInitialized || GameCanvas == null)
             {
                 return;
             }
@@ -142,7 +171,7 @@
 
         private void GameCanvasUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
-            if (!MainPage.Current.GameViewModel.IsGameInitialized || GameCanvas == null)
+            if (!ViewModel.IsGameInitialized || GameCanvas == null)
             {
                 return;
             }
@@ -150,7 +179,7 @@
             try
             {
                 
-                MainPage.Current.GameViewModel.UpdateGame();
+                ViewModel.UpdateGame();
 
                 RefreshGameSize();
                 InitializeOrRefreshDrawingSurface();
@@ -163,14 +192,14 @@
                 if (gameWidth > gameHeight)
                 {
                     nextSurface.CopyPixelsFromBitmap(backgroundImageLandscape);
-                    nextSurface.CopyPixelsFromBitmap(MainPage.Current.GameViewModel.PlayField, 32, 32);
-                    nextSurface.CopyPixelsFromBitmap(MainPage.Current.GameViewModel.HudLandscape, 339, 26);
+                    nextSurface.CopyPixelsFromBitmap(ViewModel.PlayField, 32, 32);
+                    nextSurface.CopyPixelsFromBitmap(ViewModel.HudLandscape, 339, 26);
                 }
                 else
                 {
                     nextSurface.CopyPixelsFromBitmap(backgroundImagePortrait);
-                    nextSurface.CopyPixelsFromBitmap(MainPage.Current.GameViewModel.PlayField, 32, 32);
-                    nextSurface.CopyPixelsFromBitmap(MainPage.Current.GameViewModel.HudPortrait, 26, 339);
+                    nextSurface.CopyPixelsFromBitmap(ViewModel.PlayField, 32, 32);
+                    nextSurface.CopyPixelsFromBitmap(ViewModel.HudPortrait, 26, 339);
                 }
 
                 SwapSurfaces();

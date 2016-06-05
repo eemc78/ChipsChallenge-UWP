@@ -2,10 +2,11 @@
 {
     public class NullCloneBehavior : CloneBehavior
     {
+        private static NullCloneBehavior instance;
+
         private NullCloneBehavior()
         {
         }
-        private static NullCloneBehavior instance;
 
         public static NullCloneBehavior Instance
         {

@@ -1,7 +1,5 @@
 ﻿namespace ChipsChallenge.Shared
 {
-    using Type = Block.Type;
-    using Moves = Move.Moves;
     using Blockreactions;
 
     using Buttonbehaviors;
@@ -11,37 +9,39 @@
 
     using Destroybehaviors;
 
-    using CloneMachineBehavior = Buttonbehaviors.CloneMachineBehavior;
-    using NullButtonBehavior = Buttonbehaviors.NullButtonBehavior;
-    using ToggleWallBehavior = Buttonbehaviors.ToggleWallBehavior;
-    using TrapBehavior = Buttonbehaviors.TrapBehavior;
     using BlobCloneBehavior = Clonebehaviors.BlobCloneBehavior;
-    using CloneBehavior = Clonebehaviors.CloneBehavior;
-    using CloneBoss = Clonebehaviors.CloneBoss;
-    using CloneSameDirection = Clonebehaviors.CloneSameDirection;
-    using NullCloneBehavior = Clonebehaviors.NullCloneBehavior;
-    using DefaultDestroyBehavior = Destroybehaviors.DefaultDestroyBehavior;
-    using ChipTickBehavior = Tickbehaviors.ChipTickBehavior;
-    using NullTickBehavior = Tickbehaviors.NullTickBehavior;
     using BlobTickBehavior = Tickbehaviors.BlobTickBehavior;
     using BugTickBehavior = Tickbehaviors.BugTickBehavior;
+    using ChipTickBehavior = Tickbehaviors.ChipTickBehavior;
+    using CloneBehavior = Clonebehaviors.CloneBehavior;
+    using CloneBoss = Clonebehaviors.CloneBoss;
+    using CloneMachineBehavior = Buttonbehaviors.CloneMachineBehavior;
+    using CloneSameDirection = Clonebehaviors.CloneSameDirection;
+    using ControllerTrapReleaseBehavior = Trapreleasebehaviors.ControllerTrapReleaseBehavior;
+    using DefaultDestroyBehavior = Destroybehaviors.DefaultDestroyBehavior;
+    using DefaultTrapReleaseBehavior = Trapreleasebehaviors.DefaultTrapReleaseBehavior;
     using FireballTickBehavior = Tickbehaviors.FireballTickBehavior;
     using GliderTickBehavior = Tickbehaviors.GliderTickBehavior;
+    using Moves = Move.Moves;
+    using NullButtonBehavior = Buttonbehaviors.NullButtonBehavior;
+    using NullCloneBehavior = Clonebehaviors.NullCloneBehavior;
+    using NullTickBehavior = Tickbehaviors.NullTickBehavior;
     using ParameciumTickBehavior = Tickbehaviors.ParameciumTickBehavior;
     using PinkballTickBehavior = Tickbehaviors.PinkballTickBehavior;
     using TankBehavior = Tickbehaviors.TankBehavior;
     using TeethTickBehavior = Tickbehaviors.TeethTickBehavior;
+    using ToggleWallBehavior = Buttonbehaviors.ToggleWallBehavior;
+    using TrapBehavior = Buttonbehaviors.TrapBehavior;
+    using Type = Block.Type;
     using WalkerTickBehavior = Tickbehaviors.WalkerTickBehavior;
-    using ControllerTrapReleaseBehavior = Trapreleasebehaviors.ControllerTrapReleaseBehavior;
-    using DefaultTrapReleaseBehavior = Trapreleasebehaviors.DefaultTrapReleaseBehavior;
 
     public class MicrosoftBlockFactory : BlockFactory
     {
+        private static MicrosoftBlockFactory instance;
+
         private MicrosoftBlockFactory()
         {
         }
-
-        private static MicrosoftBlockFactory instance;
 
         public static MicrosoftBlockFactory Instance
         {
@@ -253,9 +253,10 @@
 
             if (ret == null)
             {
-                //System.out.println("The block requested hasn't been implemented. Using default behaviors");
+                // System.out.println("The block requested hasn't been implemented. Using default behaviors");
                 ret = new Block(type, facing);
             }
+
             return ret;
         }
     }

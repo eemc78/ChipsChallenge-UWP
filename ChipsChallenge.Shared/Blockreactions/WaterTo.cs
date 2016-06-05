@@ -5,10 +5,11 @@
 
     public class WaterTo : NoSlipReaction
     {
+        private static WaterTo instance;
+
         private WaterTo()
         {
         }
-        private static WaterTo instance;
 
         public static WaterTo Instance
         {

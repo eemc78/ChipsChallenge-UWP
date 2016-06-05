@@ -2,10 +2,11 @@
 {
     public class DefaultTrapReleaseBehavior : ITrapReleaseBehavior
     {
+        private static DefaultTrapReleaseBehavior instance;
+
         private DefaultTrapReleaseBehavior()
         {
         }
-        private static DefaultTrapReleaseBehavior instance;
 
         public static DefaultTrapReleaseBehavior Instance
         {

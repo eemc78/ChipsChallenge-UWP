@@ -4,10 +4,11 @@
 
     public class WalkerTickBehavior : IBlockTickBehavior
     {
+        private static WalkerTickBehavior instance;
+
         private WalkerTickBehavior()
         {
         }
-        private static WalkerTickBehavior instance;
 
         public static WalkerTickBehavior Instance
         {
@@ -18,12 +19,6 @@
                     return instance ?? (instance = new WalkerTickBehavior());
                 }
             }
-        }
-
-        private bool Move(Block caller, Moves m)
-        {
-            caller.Facing = m;
-            return caller.Move(m);
         }
 
         public virtual void Tick(Block caller)
@@ -76,11 +71,19 @@
                                 dir = 0;
                                 caller.Facing = m;
                             }
-                        break;
+                            break;
                     }
                 }
-                outerBreak:;
+
+                outerBreak:
+                ;
             }
+        }
+
+        private bool Move(Block caller, Moves m)
+        {
+            caller.Facing = m;
+            return caller.Move(m);
         }
     }
 }

@@ -4,11 +4,11 @@
 
     public class IceFrom : NoSlipReaction
     {
+        private static IceFrom instance;
+
         private IceFrom()
         {
         }
-
-        private static IceFrom instance;
 
         public static IceFrom Instance
         {

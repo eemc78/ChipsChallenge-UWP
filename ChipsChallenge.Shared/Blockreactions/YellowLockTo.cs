@@ -4,11 +4,11 @@
 
     public class YellowLockTo : NoSlipReaction
     {
+        private static YellowLockTo instance;
+
         private YellowLockTo()
         {
         }
-
-        private static YellowLockTo instance;
 
         public static YellowLockTo Instance
         {

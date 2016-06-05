@@ -2,11 +2,11 @@
 {
     public class ToggleWallDestroyBehavior : IDestroyBehavior
     {
+        private static ToggleWallDestroyBehavior instance;
+
         private ToggleWallDestroyBehavior()
         {
         }
-        
-        private static ToggleWallDestroyBehavior instance;
 
         public static ToggleWallDestroyBehavior Instance
         {

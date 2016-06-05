@@ -2,10 +2,11 @@
 {
     public class BrownButtonTo : NoSlipReaction
     {
+        private static BrownButtonTo instance;
+
         private BrownButtonTo()
         {
         }
-        private static BrownButtonTo instance;
 
         public static BrownButtonTo Instance
         {

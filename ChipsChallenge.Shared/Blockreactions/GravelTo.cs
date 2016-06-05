@@ -2,10 +2,11 @@
 {
     public class GravelTo : NoSlipReaction
     {
+        private static GravelTo instance;
+
         private GravelTo()
         {
         }
-        private static GravelTo instance;
 
         public static GravelTo Instance
         {

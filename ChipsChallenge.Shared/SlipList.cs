@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.Concurrent;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+
     using Moves = Move.Moves;
 
     public class SlipList
@@ -13,9 +13,10 @@ namespace ChipsChallenge.Shared
         public virtual void Put(Block b, Moves m)
         {
             map[b] = m;
-            if(!order.Contains(b)){
+            if (!order.Contains(b))
+            {
                 order.Add(b);
-            };
+            }
         }
 
         public virtual void Remove(Block b)

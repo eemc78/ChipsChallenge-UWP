@@ -4,11 +4,11 @@
 
     public class BugTickBehavior : IBlockTickBehavior
     {
+        private static BugTickBehavior instance;
+
         private BugTickBehavior()
         {
         }
-
-        private static BugTickBehavior instance;
 
         public static BugTickBehavior Instance
         {

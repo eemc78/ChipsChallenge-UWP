@@ -5,6 +5,8 @@
 
     public abstract class CloneBehavior
     {
+        public abstract Block CloneIt(Block original);
+
         protected internal Block CloneTo(Block original, Moves direction)
         {
             Game gameInstance = Game.Instance;
@@ -26,7 +28,7 @@
                         }
                         else
                         {
-                            throw new CloneNotSupportedException();
+                            //throw new CloneNotSupportedException();
                         }
                         break;
                     default:
@@ -40,7 +42,5 @@
 
             return clone;
         }
-
-        public abstract Block CloneIt(Block original);
     }
 }

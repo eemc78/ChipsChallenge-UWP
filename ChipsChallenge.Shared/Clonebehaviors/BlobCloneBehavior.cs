@@ -4,11 +4,11 @@
 
     public class BlobCloneBehavior : CloneBehavior
     {
+        private static BlobCloneBehavior instance;
+
         private BlobCloneBehavior()
         {
         }
-
-        private static BlobCloneBehavior instance;
 
         public static BlobCloneBehavior Instance
         {

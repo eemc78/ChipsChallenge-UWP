@@ -2,10 +2,11 @@
 {
     public class TrapTo : NoSlipReaction
     {
+        private static TrapTo instance;
+
         private TrapTo()
         {
         }
-        private static TrapTo instance;
 
         public static TrapTo Instance
         {

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class Creatures
     {
         private static readonly IList<Block> CreatureList = new List<Block>();
