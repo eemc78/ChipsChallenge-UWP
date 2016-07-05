@@ -2,10 +2,15 @@
 {
     public enum UserInput
     {
+        None,
         MoveUp,
         MoveDown,
         MoveLeft,
         MoveRight,
+        RepeatMoveUp,
+        RepeatMoveDown,
+        RepeatMoveLeft,
+        RepeatMoveRight,
         Pause,
         Unpause,
         TogglePause,

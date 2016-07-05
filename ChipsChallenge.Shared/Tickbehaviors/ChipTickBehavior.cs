@@ -6,7 +6,7 @@
     public class ChipTickBehavior : IBlockTickBehavior
     {
         private static ChipTickBehavior instance;
-        private Moves? proposedMove;
+        public Moves? proposedMove;
         private int ticksBeforeTurn;
         private int chipTicks;
 

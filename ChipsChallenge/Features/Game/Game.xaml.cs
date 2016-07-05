@@ -7,6 +7,7 @@
     using System.Threading.Tasks;
 
     using Windows.Foundation;
+    using Windows.UI.Core;
     using Windows.UI.ViewManagement;
     using Windows.UI.Xaml;
 
@@ -41,10 +42,15 @@
             Unloaded += OnUnloaded;
             userInputMapping = new Dictionary<Shared.Gui.UserInput, Action>
                              {
+                                 { Shared.Gui.UserInput.None, ViewModel.ClearMove },
                                  { Shared.Gui.UserInput.MoveUp,ViewModel.MoveUp },
                                  { Shared.Gui.UserInput.MoveDown, ViewModel.MoveDown },
                                  { Shared.Gui.UserInput.MoveLeft, ViewModel.MoveLeft },
                                  { Shared.Gui.UserInput.MoveRight, ViewModel.MoveRight },
+                                 { Shared.Gui.UserInput.RepeatMoveUp,ViewModel.RepeatMoveUp },
+                                 { Shared.Gui.UserInput.RepeatMoveDown, ViewModel.RepeatMoveDown },
+                                 { Shared.Gui.UserInput.RepeatMoveLeft, ViewModel.RepeatMoveLeft },
+                                 { Shared.Gui.UserInput.RepeatMoveRight, ViewModel.RepeatMoveRight },
                                  { Shared.Gui.UserInput.NextLevel, ViewModel.NextLevel },
                                  { Shared.Gui.UserInput.PreviousLevel, ViewModel.PreviousLevel },
                                  { Shared.Gui.UserInput.RestartLevel, ViewModel.RestartLevel },
@@ -55,6 +61,25 @@
         }
 
         private static GameViewModel ViewModel => MainPage.Current.GameViewModel;
+
+        public async void ExecuteUserInput(Shared.Gui.UserInput input)
+        {
+            if (userInputMapping.ContainsKey(input))
+            {
+                try
+                {
+                    await GameCanvas.RunOnGameLoopThreadAsync(() => userInputMapping[input].Invoke());
+                }
+                catch (NullReferenceException)
+                {
+                    // Ignore user input if game canvas has been unloaded (e.g. when disposing view).
+                }
+            }
+            else
+            {
+                throw new NotImplementedException("Input mapping not implemented!");
+            }
+        }
 
         private void RefreshGameSize()
         {
@@ -96,6 +121,7 @@
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             PageTargetForKeyboardFocus.Focus(FocusState.Programmatic);
+            Window.Current.Activated += CurrentOnActivated;
             Window.Current.CoreWindow.KeyDown += keyBoardInput.WindowKeyDown;
             Window.Current.CoreWindow.KeyUp += keyBoardInput.WindowKeyUp;
 
@@ -112,6 +138,7 @@
         {
             ViewModel.PauseGame();
 
+            Window.Current.Activated -= CurrentOnActivated;
             Window.Current.CoreWindow.KeyDown -= keyBoardInput.WindowKeyDown;
             Window.Current.CoreWindow.KeyUp -= keyBoardInput.WindowKeyUp;
             
@@ -122,15 +149,11 @@
             gamepadTimer.Stop();
         }
 
-        public async void ExecuteUserInput(Shared.Gui.UserInput input)
+        private void CurrentOnActivated(object sender, WindowActivatedEventArgs windowActivatedEventArgs)
         {
-            if (userInputMapping.ContainsKey(input))
+            if (windowActivatedEventArgs.WindowActivationState == CoreWindowActivationState.Deactivated)
             {
-                await GameCanvas.RunOnGameLoopThreadAsync(() => userInputMapping[input].Invoke());
-            }
-            else
-            {
-                throw new NotImplementedException("Input mapping not implemented!");
+                keyBoardInput.StopUserInput();
             }
         }
 
@@ -178,7 +201,6 @@
 
             try
             {
-                
                 ViewModel.UpdateGame();
 
                 RefreshGameSize();

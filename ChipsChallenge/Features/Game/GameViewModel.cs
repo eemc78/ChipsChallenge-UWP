@@ -27,6 +27,7 @@ namespace ChipsChallenge.Features.Game
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly PlayField gamePlayField = new PlayField(9, 9);
         private ApplicationViewOrientation orientation = ApplicationViewOrientation.Landscape;
+        private Shared.Gui.UserInput proposedmove;
 
         public async Task Initialize()
         {
@@ -141,6 +142,31 @@ namespace ChipsChallenge.Features.Game
             StartOrResumeGame();
         }
 
+        public void RepeatMoveUp()
+        {
+            proposedmove = Shared.Gui.UserInput.MoveUp;
+        }
+
+        public void RepeatMoveDown()
+        {
+            proposedmove = Shared.Gui.UserInput.MoveDown;
+        }
+
+        public void RepeatMoveLeft()
+        {
+            proposedmove = Shared.Gui.UserInput.MoveLeft;
+        }
+
+        public void RepeatMoveRight()
+        {
+            proposedmove = Shared.Gui.UserInput.MoveRight;
+        }
+
+        public void ClearMove()
+        {
+            proposedmove = Shared.Gui.UserInput.None;
+        }
+
         public void StartOrResumeGame()
         {
             if (!GameInstance.IsStarted)
@@ -208,6 +234,26 @@ namespace ChipsChallenge.Features.Game
                 return;
             }
 
+            if (ChipTickBehavior.Instance.proposedMove == null && proposedmove != Shared.Gui.UserInput.None)
+            {
+                switch (proposedmove)
+                {
+                        case Shared.Gui.UserInput.MoveUp:
+                        MoveUp();
+                        break;
+                        case Shared.Gui.UserInput.MoveDown:
+                        MoveDown();
+                        break;
+                        case Shared.Gui.UserInput.MoveLeft:
+                        MoveLeft();
+                        break;
+                        case Shared.Gui.UserInput.MoveRight:
+                        MoveRight();
+                        break;
+                }
+            }
+
+            proposedmove = Shared.Gui.UserInput.None;
             GameInstance.Tick();
             PlayField = gamePlayField.GeneratePlayField();
 
