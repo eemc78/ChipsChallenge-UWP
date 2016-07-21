@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading;
-
-namespace ChipsChallenge.Shared
+﻿namespace ChipsChallenge.Shared
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using Features.Settings;
+
     using Moves = Move.Moves;
 
     public class Game
@@ -28,6 +29,7 @@ namespace ChipsChallenge.Shared
         private BlockMove chipForced;
         private Block chip;
         public bool ShowLevelPassword;
+        private UserSettings userSettings = new UserSettings();
 
         private Game()
         {
@@ -88,6 +90,8 @@ namespace ChipsChallenge.Shared
         {
             if (levelNumber > 0 && levelNumber <= mLevelFactory.LastLevelNumber)
             {
+                userSettings.LevelNumber = levelNumber;
+
                 ClearStuff();
 
                 level = mLevelFactory.GetLevel(levelNumber);

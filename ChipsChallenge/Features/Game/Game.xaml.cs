@@ -141,7 +141,7 @@
             Window.Current.Activated -= CurrentOnActivated;
             Window.Current.CoreWindow.KeyDown -= keyBoardInput.WindowKeyDown;
             Window.Current.CoreWindow.KeyUp -= keyBoardInput.WindowKeyUp;
-            
+
             GameCanvas.RemoveFromVisualTree();
             GameCanvas = null;
 
@@ -205,7 +205,7 @@
 
                 RefreshGameSize();
                 InitializeOrRefreshDrawingSurface();
-                
+
                 using (CanvasDrawingSession drawingSession = nextSurface.CreateDrawingSession())
                 {
                     drawingSession.FillRectangle(new Rect(new Point(), nextSurface.Size), backgroundTileBrush);

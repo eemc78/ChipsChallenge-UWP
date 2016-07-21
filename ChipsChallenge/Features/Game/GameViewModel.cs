@@ -1,11 +1,10 @@
-﻿using Windows.UI.Core;
+﻿using PropertyChanged;
 
 namespace ChipsChallenge.Features.Game
 {
     using System;
     using System.ComponentModel;
     using System.IO;
-    using System.Runtime.CompilerServices;
     using System.Threading.Tasks;
 
     using Windows.Storage;
@@ -15,14 +14,16 @@ namespace ChipsChallenge.Features.Game
     using Shared;
     using Shared.Gui;
     using Shared.Tickbehaviors;
+    using Settings;
 
     using Microsoft.Graphics.Canvas;
 
+    using Windows.UI.Core;
+
     public class GameViewModel : INotifyPropertyChanged
     {
+        private readonly UserSettings userSettings = new UserSettings();
         public readonly AudioPlayer AudioPlayer = new AudioPlayer();
-        private string levelTitle = string.Empty;
-
         private bool restartRequested;
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly PlayField gamePlayField = new PlayField(9, 9);
@@ -39,7 +40,7 @@ namespace ChipsChallenge.Features.Game
             GameInstance.BlockFactory = MicrosoftBlockFactory.Instance;
             GameInstance.ChipsDied += GameInstanceOnChipsDied;
 
-            GoToLevel(1);
+            GoToLevel(userSettings.LevelNumber);
 
             HudLandscape = Hud.Instance.GetHudLandscape();
             HudPortrait = Hud.Instance.GetHudPortrait();
@@ -80,26 +81,18 @@ namespace ChipsChallenge.Features.Game
 
         public int CurrentLevelNumber => GameInstance.CurrentLevelNumber;
 
+        [DoNotNotify]
         public CanvasBitmap PlayField { get; set; }
 
-        public string LevelTitle
-        {
-            get
-            {
-                return levelTitle;
-            }
+        public string LevelTitle { get; set; }
 
-            set
-            {
-                levelTitle = value;
-                OnPropertyChanged();
-            }
-        }
-
+        [DoNotNotify]
         public CanvasBitmap HudLandscape { get; set; }
 
+        [DoNotNotify]
         public CanvasBitmap HudPortrait { get; set; }
 
+        [DoNotNotify]
         public ApplicationViewOrientation Orientation
         {
             get
@@ -265,12 +258,6 @@ namespace ChipsChallenge.Features.Game
             {
                 HudPortrait = Hud.Instance.GetHudPortrait();
             }
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private async void GameInstanceOnChipsDied(object sender, MessageEventArgs eventArgs)

@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace ChipsChallenge.Features.Levels
 {
     using System.Collections.ObjectModel;
@@ -6,7 +8,7 @@ namespace ChipsChallenge.Features.Levels
 
     public class LevelsViewModel
     {
-        public ObservableCollection<int> Levels { get; } = new ObservableCollection<int>();
+        public ObservableCollection<Level> Levels { get; } = new ObservableCollection<Level>();
 
         public ObservableCollection<LevelControl> LevelControls { get; } = new ObservableCollection<LevelControl>();
 
@@ -16,10 +18,19 @@ namespace ChipsChallenge.Features.Levels
             LevelControls.Add(new LevelControl(Symbol.Refresh, "Restart", _ => RestartLevel(), _ => true));
             LevelControls.Add(new LevelControl(Symbol.Next, "Next", o => NextLevel(), o => HasNextLevel()));
 
-            for (int i = 1; i <= MainPage.Current.GameViewModel.TotalLevelCount; i++)
+            var currentLevelNumber = MainPage.Current.GameViewModel.CurrentLevelNumber;
+            for (int levelNumber = 1; levelNumber <= MainPage.Current.GameViewModel.TotalLevelCount; levelNumber++)
             {
-                Levels.Add(i);
+                var isActive = levelNumber == currentLevelNumber;
+                var level = new Level(levelNumber, isActive);
+                Levels.Add(level);
             }
+        }
+
+        public void Refresh()
+        {
+            Levels.Single(x => x.IsActive).IsActive = false;
+            Levels.Single(x => x.Number == MainPage.Current.GameViewModel.CurrentLevelNumber).IsActive = true;
         }
 
         public void PreviousLevel()

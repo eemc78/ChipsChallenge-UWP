@@ -7,6 +7,9 @@
     using Microsoft.Graphics.Canvas;
     using Microsoft.Graphics.Canvas.Text;
 
+    using System;
+    using System.Diagnostics;
+
     internal class PlayField
     {
         private readonly int width;
@@ -25,16 +28,23 @@
             CanvasDevice device = CanvasDevice.GetSharedDevice();
             CanvasRenderTarget offscreen = new CanvasRenderTarget(device, width * 32, height * 32, 96);
 
-            using (CanvasDrawingSession drawingSession = offscreen.CreateDrawingSession())
+            try
             {
-                if (!GameInstance.IsPaused)
+                using (CanvasDrawingSession drawingSession = offscreen.CreateDrawingSession())
                 {
-                    DrawPlayField(drawingSession);
+                    if (!GameInstance.IsPaused)
+                    {
+                        DrawPlayField(drawingSession);
+                    }
+                    else
+                    {
+                        DrawPauseScreen(drawingSession);
+                    }
                 }
-                else
-                {
-                    DrawPauseScreen(drawingSession);
-                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
             }
 
             return offscreen;

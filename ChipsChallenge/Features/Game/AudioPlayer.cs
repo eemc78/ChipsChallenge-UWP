@@ -6,6 +6,7 @@
     using System.Threading.Tasks;
 
     using Shared;
+    using Settings;
 
     using Windows.Media.Audio;
     using Windows.Media.Render;
@@ -17,7 +18,8 @@
         private readonly Dictionary<Sound, string> soundMappings;
         private AudioGraph graph;
         private AudioDeviceOutputNode deviceOutput;
-        private bool backgroundMusic, isInitialized;
+        private bool isInitialized;
+        private readonly UserSettings userSettings = new UserSettings();
 
         public AudioPlayer()
         {
@@ -42,24 +44,27 @@
                                     { Sound.TimeOver, "BELL.WAV" },
                                     { Sound.Socket, "DOOR.WAV" }
                                 };
-
-            SoundEffects = true;
-            BackgroundMusic = false;
         }
 
-        public bool SoundEffects { get; set; }
+        public bool SoundEffects {
+            get { return userSettings.SoundEffects; }
+            set
+            {
+                userSettings.SoundEffects = value;
+            }
+        }
 
         public bool BackgroundMusic
         {
             get
             {
-                return backgroundMusic;
+                return userSettings.BackgroundMusic;
             }
             set
             {
-                backgroundMusic = value;
+                userSettings.BackgroundMusic = value;
 
-                if (!backgroundMusic)
+                if (!userSettings.BackgroundMusic)
                 {
                     StopAllBackgroundMusic();
                 }

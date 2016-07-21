@@ -7,6 +7,9 @@
     xmlns:levels="using:ChipsChallenge.Features.Levels"
     d:DataContext="{d:DesignInstance levels:LevelsViewModel}"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <levels:BooleanToColorConverter x:Key="ColorConverter"/>
+    </UserControl.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10" >
         <Grid.RowDefinitions>
@@ -45,7 +48,27 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Margin="0,0,10,10" Width="75" Height="75" Content="{Binding}" Tag="{Binding}" Click="ButtonBase_OnClick" />
+                        <Button Margin="0,0,10,10" Width="150" Height="150" Tag="{Binding Number}" Click="ButtonBase_OnClick">
+                            <Button.Background>
+                                <ImageBrush ImageSource="{Binding Image}"></ImageBrush>
+                            </Button.Background>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="VerticalContentAlignment" Value="Top"></Setter>
+                                    <Setter Property="HorizontalContentAlignment" Value="Right"></Setter>
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="Padding" Value="0" />
+                                </Style>
+                            </Button.Style>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Rectangle Grid.Row="0" Height="26" Width="37" Fill="{Binding IsActive, Mode=OneWay, Converter={StaticResource ColorConverter}}" />
+                                <TextBlock Grid.Row="0" TextAlignment="Center"><Run Text="{Binding Number}"/></TextBlock>
+                            </Grid>
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

@@ -12,6 +12,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Settings" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,0,0,10"/>
@@ -19,5 +20,6 @@
             <ToggleSwitch Header="Background Music" IsOn="{Binding BackgroundMusic, Mode=TwoWay}" IsEnabled="{Binding GameViewModel.IsGameInitialized}" />
             <ToggleSwitch Header="Sound Effects" IsOn="{Binding SoundEffects, Mode=TwoWay}" IsEnabled="{Binding GameViewModel.IsGameInitialized}" />
         </StackPanel>
+        <TextBlock Grid.Row="2" Text="{Binding Version}" Margin="0,0,0,10"/>
     </Grid>
 </Page>

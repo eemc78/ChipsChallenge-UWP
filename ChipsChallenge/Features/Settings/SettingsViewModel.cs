@@ -1,10 +1,13 @@
-﻿namespace ChipsChallenge.Features.Settings
+﻿using Windows.ApplicationModel;
+
+namespace ChipsChallenge.Features.Settings
 {
-    using ChipsChallenge.Features.Game;
+    using Game;
 
     public class SettingsViewModel
     {
         private AudioPlayer AudioPlayer => GameViewModel.AudioPlayer;
+
         public GameViewModel GameViewModel => MainPage.Current.GameViewModel;
 
         public bool SoundEffects
@@ -33,6 +36,18 @@
                 {
                     GameViewModel.StartBackgroundMusic();
                 }
+            }
+        }
+
+        public string Version
+        {
+            get
+            {
+                Package package = Package.Current;
+                PackageId packageId = package.Id;
+                PackageVersion version = packageId.Version;
+
+                return $"Chip's Challenge {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
             }
         }
     }

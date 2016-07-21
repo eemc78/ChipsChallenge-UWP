@@ -9,6 +9,7 @@
         {
             InitializeComponent();
             DataContext = MainPage.Current.LevelsViewModel;
+            Loaded += (sender, args) => MainPage.Current.LevelsViewModel.Refresh();
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
