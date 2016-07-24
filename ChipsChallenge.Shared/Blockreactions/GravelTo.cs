@@ -25,7 +25,7 @@
 
         public override bool canMove(Block moving, Block standing)
         {
-            return moving.Chip;
+            return moving.Chip || moving.IsBlock();
         }
     }
 }
