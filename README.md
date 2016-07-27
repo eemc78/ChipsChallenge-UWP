@@ -13,7 +13,7 @@ A Universal Windows Platform (UWP) implementation of the Microsoft version of Ch
 ## Supported Devices
 - Windows 10
 - Windows 10 Mobile
-- Xbox One
+- (Xbox One)
 
 ## Screenshots
 ### Windows 10

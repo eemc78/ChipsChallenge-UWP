@@ -15,10 +15,10 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="ChipsChallenge.App">
-      <uap:VisualElements DisplayName="Chip's Challenge" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Chip's Challenge" BackgroundColor="black">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+      <uap:VisualElements DisplayName="Chip's Challenge" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="Chip's Challenge" BackgroundColor="transparent">
+        <uap:DefaultTile Square310x310Logo="Assets\Square310x310Logo.png" Square71x71Logo="Assets\Square71x71Logo.png" Wide310x150Logo="Assets\Wide310x150Logo.png">
         </uap:DefaultTile>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="black" />
       </uap:VisualElements>
     </Application>
   </Applications>
